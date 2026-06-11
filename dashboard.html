@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanuló Felület - Online Angol Iskola</title>
-    <!-- Relative paths link your MacBook project folder safe for websupport.sk -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
@@ -13,7 +12,6 @@
     <!-- 1. GLOBAL STATIC HORIZONTAL TOP NAVBAR -->
     <header class="site-header">
         <div class="header-container">
-            <!-- Logo returns user securely back to index.html -->
             <a href="index.html" class="logo" aria-label="Vissza a főoldalra">
                 <span class="logo-text">NeolixStudio</span>
             </a>
@@ -28,7 +26,7 @@
             </nav>
 
             <div class="header-actions">
-                <span class="user-welcome">Szia, Laci!</span>
+                <span class="user-welcome">Szia, Péter!</span>
                 <a href="index.html" class="btn btn-logout">Kijelentkezés</a>
             </div>
         </div>
@@ -44,43 +42,26 @@
             <div class="sidebar-progress-card">
                 <p class="progress-label">A szint teljesítettsége:</p>
                 <div class="progress-bar-container">
-                    <div class="progress-bar-fill" style="width: 50%;"></div>
+                    <div class="progress-bar-fill" style="width: 0%;"></div>
                 </div>
-                <span class="progress-percentage">50% Kész</span>
+                <span class="progress-percentage">0% Kész</span>
             </div>
 
-            <!-- Content Selector Links -->
+            <!-- Navigation Links Wrapper -->
             <nav class="sidebar-nav">
-                <!-- Group Cluster 1 -->
+                <!-- Group 1: New First Lesson Cluster -->
                 <div class="nav-group">
-                    <h3 class="group-title">Nyelvtan (Grammar)</h3>
+                    <h3 class="group-title">Tananyag (Lessons)</h3>
                     <ul>
                         <li>
-                            <a href="#" class="sidebar-link active" data-level="A1" data-section="Pronouns">
-                                <span class="status-icon done">✓</span> Pronouns (Névmások)
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="sidebar-link" data-level="A1" data-section="Prepositions">
-                                <span class="status-icon active-dot">•</span> Prepositions (Elöljárók)
+                            <a href="#" class="sidebar-link active" data-level="A1" data-section="ToBe">
+                                <span class="status-icon active-dot">•</span> Első lecke: A "Lenni" Ige (The Verb "TO BE")
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Group Cluster 2 -->
-                <div class="nav-group">
-                    <h3 class="group-title">Készségek (Skills)</h3>
-                    <ul>
-                        <li>
-                            <a href="#" class="sidebar-link" data-level="A2" data-section="Pronouns">
-                                <span class="status-icon empty">○</span> Reading (Olvasásértés)
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Group Cluster 3 -->
+                <!-- Group 2: Final Evaluations -->
                 <div class="nav-group exam-group">
                     <h3 class="group-title">Vizsgák</h3>
                     <ul>
@@ -103,10 +84,9 @@
                     <ol class="breadcrumb-list">
                         <li>A1 Kezdő</li>
                         <li>Nyelvtan</li>
-                        <li aria-current="page">Pronouns</li>
+                        <li aria-current="page">Verb To Be</li>
                     </ol>
                 </nav>
-                <!-- Title text gets updated dynamically by JavaScript -->
                 <h1 class="current-topic-title">Töltés...</h1>
             </header>
 
@@ -134,7 +114,17 @@
         </main>
     </div>
 
-    <!-- Script assets required to process data and control inputs -->
+    <!-- ANIMATED WIP MODAL OVERLAY BOX FOR DASHBOARD -->
+    <div id="wip-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content glass-panel">
+            <div class="wip-badge">🚧 WIP 🚧</div>
+            <h2>Hamarosan érkezik!</h2>
+            <p>A B1 és B2 szintek jelenleg fejlesztés alatt állnak. Tanáraink gőzerővel dolgoznak a magyar nyelvű magyarázatokon és teszteken.</p>
+            <button id="close-wip-btn" class="btn-close-modal">Bezárás</button>
+        </div>
+    </div>
+
+    <!-- Script assets -->
     <script src="js/data.js"></script>
     <script src="js/dashboard.js"></script>
 </body>

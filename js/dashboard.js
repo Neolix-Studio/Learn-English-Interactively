@@ -1,54 +1,106 @@
 // js/dashboard.js
 
-// Inside js/dashboard.js (Update the top block)
-
 document.addEventListener("DOMContentLoaded", () => {
-    initNavigationListeners();
+    // Start listening for both sidebar clicks AND global top navbar level clicks
+    initSidebarListeners();
+    initTopNavbarListeners();
+    initModalListeners();
     
-    // 1. Read what level was clicked on index.html (fallback to A1 if empty)
+    // Read what level was clicked on index.html (fallback to A1 if empty)
     const levelToLoad = localStorage.getItem("selectedLevel") || "A1";
     
-    // 2. Clear out the storage key so refreshing doesn't break standard flows
-    // localStorage.removeItem("selectedLevel"); 
-    
-    // 3. Automatically launch the workspace with the correct level data context!
-    renderModule(levelToLoad, "Pronouns");
-    
-    // 4. Highlight the correct navbar state item on top matching the selection
-    const activeNavbarItem = document.getElementById(`nav-${levelToLoad.toLowerCase()}`);
-    if (activeNavbarItem) {
-        activeNavbarItem.classList.add("active");
-    }
+    // Automatically launch the workspace with the correct level data context
+    switchGlobalLevel(levelToLoad);
 });
 
-
-function initNavigationListeners() {
+// 1. LISTEN TO VERTICAL SIDEBAR MODULE LINKS
+function initSidebarListeners() {
     const sidebarLinks = document.querySelectorAll(".sidebar-link");
 
     sidebarLinks.forEach(link => {
         link.addEventListener("click", (event) => {
-            event.preventDefault(); // Prevents page from jumping to top
+            event.preventDefault();
 
             const targetLevel = link.getAttribute("data-level");
             const targetSection = link.getAttribute("data-section");
 
             if (targetLevel && targetSection) {
-                // Remove the highlighted 'active' state from previous links
+                // Remove highlighted active states from side menu rows
                 sidebarLinks.forEach(l => l.classList.remove("active"));
-                // Highlight the newly clicked link
                 link.classList.add("active");
 
-                // Update the Breadcrumb display area text
-                updateBreadcrumbs(targetLevel, targetSection);
-
-                // Inject the chosen lesson text and practice questions
+                // Render content details instantly
                 renderModule(targetLevel, targetSection);
             }
         });
     });
 }
 
-function updateBreadcrumbs(level, section) {
+// 2. LISTEN TO GLOBAL STATIC TOP NAVBAR LEVEL BUTTONS
+function initTopNavbarListeners() {
+    // Select our horizontal navbar element links
+    const topNavLinks = {
+        A1: document.getElementById("nav-a1"),
+        A2: document.getElementById("nav-a2"),
+        B1: document.getElementById("nav-a1") ? document.getElementById("nav-b1") : null,
+        B2: document.getElementById("nav-a1") ? document.getElementById("nav-b2") : null
+    };
+
+    // Simple loop mapping events over keys
+    Object.keys(topNavLinks).forEach(level => {
+        const button = topNavLinks[level];
+        if (!button) return;
+
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            if (level === "A1" || level === "A2") {
+                // Trigger live context layout switch without page refreshes
+                switchGlobalLevel(level);
+            } else if (level === "B1" || level === "B2") {
+                // Call premium glowing overlay alert module
+                openWipModal();
+            }
+        });
+    });
+}
+
+// 3. SEAMLESSLY SWITCH LEVEL DOMAIN WINDOW
+function switchGlobalLevel(levelName) {
+    // Update active visual status anchors across top header links
+    const navbarLinks = document.querySelectorAll(".site-header .nav-link");
+    navbarLinks.forEach(link => link.classList.remove("active"));
+    
+    const targetHeaderLink = document.getElementById(`nav-${levelName.toLowerCase()}`);
+    if (targetHeaderLink) targetHeaderLink.classList.add("active");
+
+    // Dynamic Filter: Update sidebar items to map to the freshly selected level
+    const sidebarLinks = document.querySelectorAll(".sidebar-link");
+    let initialSectionToLoad = "ToBe"; // Default fallback topic
+
+    sidebarLinks.forEach(link => {
+        // We override previous attributes to match the new global scope context
+        link.setAttribute("data-level", levelName);
+        
+        // Clear active highlighting state properties out
+        link.classList.remove("active");
+
+        // Auto-select the first match link row to trigger as default highlight
+        if (link.getAttribute("data-section") === initialSectionToLoad) {
+            link.classList.add("active");
+        }
+    });
+
+    // Run core engine to paint chosen view frame variables
+    renderModule(levelName, initialSectionToLoad);
+}
+
+// 4. CORE LESSON RENDERING MACHINERY
+function renderModule(level, section) {
+    const workspace = document.getElementById("workspace");
+    const moduleData = learningContent[level]?.[section];
+
+    // Synchronize breadcrumbs position trail tracking strip text strings
     const breadcrumbs = document.querySelector(".breadcrumb-list");
     if (breadcrumbs) {
         breadcrumbs.innerHTML = `
@@ -57,23 +109,15 @@ function updateBreadcrumbs(level, section) {
             <li aria-current="page">${section}</li>
         `;
     }
-}
-
-function renderModule(level, section) {
-    const workspace = document.getElementById("workspace");
-    
-    // Pull data out of our data.js repository object safely
-    const moduleData = learningContent[level]?.[section];
 
     if (!moduleData) {
-        workspace.innerHTML = `<p class="error-text" style="color: var(--color-error);">Hiba: A tananyag nem található.</p>`;
+        document.querySelector(".current-topic-title").textContent = "Tananyag Nem Található";
+        workspace.innerHTML = `<p class="error-text" style="color: var(--color-error); padding: 2rem;">Sajnáljuk, ehhez a részhez még nem töltöttek fel feladatokat.</p>`;
         return;
     }
 
-    // Set the Main Lesson Header Title text
     document.querySelector(".current-topic-title").textContent = moduleData.title;
 
-    // Build the interactive True/False question template components using string loops
     let quizHtml = "";
     moduleData.quiz.forEach((item, index) => {
         quizHtml += `
@@ -88,7 +132,6 @@ function renderModule(level, section) {
         `;
     });
 
-    // Replace old screen layout context with the clean fresh module container
     workspace.innerHTML = `
         <div class="lesson-view">
             <article class="explanation-box">
@@ -104,7 +147,6 @@ function renderModule(level, section) {
     `;
 }
 
-// Function triggered instantly when a student clicks an Igaz/Hamis choice button
 function checkAnswer(level, section, quizIndex, studentAnswer) {
     const correctAnswer = learningContent[level][section].quiz[quizIndex].answer;
     const feedbackBox = document.getElementById(`feedback-${quizIndex}`);
@@ -115,5 +157,34 @@ function checkAnswer(level, section, quizIndex, studentAnswer) {
     } else {
         feedbackBox.innerHTML = `✗ Nem jó. Próbáld meg újra!`;
         feedbackBox.className = "quiz-feedback incorrect";
+    }
+}
+
+// 5. MODAL SYSTEM STATE CONTROLLERS
+function initModalListeners() {
+    const wipModal = document.getElementById("wip-modal");
+    const closeWipBtn = document.getElementById("close-wip-btn");
+
+    if (closeWipBtn && wipModal) {
+        closeWipBtn.addEventListener("click", closeWipModal);
+        wipModal.addEventListener("click", (e) => {
+            if (e.target === wipModal) closeWipModal();
+        });
+    }
+}
+
+function openWipModal() {
+    const wipModal = document.getElementById("wip-modal");
+    if (wipModal) {
+        wipModal.classList.add("is-active");
+        wipModal.setAttribute("aria-hidden", "false");
+    }
+}
+
+function closeWipModal() {
+    const wipModal = document.getElementById("wip-modal");
+    if (wipModal) {
+        wipModal.classList.remove("is-active");
+        wipModal.setAttribute("aria-hidden", "true");
     }
 }
