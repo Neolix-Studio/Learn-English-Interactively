@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Angol Nyelvtanulás Magyaroknak</title>
+    <!-- Relative paths link your MacBook project folder safe for websupport.sk -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+    <!-- 1. GLOBAL STATIC HORIZONTAL TOP NAVBAR -->
+    <header class="site-header">
+        <div class="header-container">
+            <!-- Clicking the logo always returns them here to the main landing page -->
+            <a href="index.html" class="logo" aria-label="Főoldal">
+                <span class="logo-text">NeolixStudio</span>
+            </a>
+            
+            <nav class="main-nav" aria-label="Fő navigáció">
+                <ul class="nav-list">
+                    <!-- On the landing page, these use hash links that scroll or trigger WIP alerts -->
+                    <li><a href="#levels" class="nav-link">A1 Kezdő</a></li>
+                    <li><a href="#levels" class="nav-link">A2 Alapfok</a></li>
+                    <li><a href="#levels" class="nav-link">B1 Középfok</a></li>
+                    <li><a href="#levels" class="nav-link">B2 Haladó</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a href="#login" class="btn btn-logout">Bejelentkezés / Regisztráció</a>
+            </div>
+        </div>
+    </header>
+
+    <main style="margin-top: 70px;">
+        <!-- 2. HERO SECTION (Főcím és bevezetés) -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <h1 class="hero-title">Tanulj angolul egyszerűen, a saját tempódban!</h1>
+                <p class="hero-subtitle">Magyar nyelvű nyelvtani magyarázatok, gyakorlati feladatok és szintfelmérő tesztek. Minden egy helyen, ami a magabiztos nyelvtudáshoz kell.</p>
+                <a href="#levels" class="btn-start">Kezdd el most ingyen</a>
+            </div>
+        </section>
+
+                <!-- 3. LEVEL SELECTION CARDS -->
+        <section id="levels" class="levels-section">
+            <h2 class="section-title">Válaszd ki a szinted, és kezdd el a tanulást!</h2>
+            
+            <div class="cards-grid">
+                <!-- A1 Card -->
+                <article class="level-card border-a1">
+                    <header class="card-header">
+                        <span class="level-badge badge-a1">A1</span>
+                        <h3>A1 – Kezdő szint</h3>
+                    </header>
+                    <p class="card-description">Teljesen az alapoktól indulunk. Megtanulod a betűzést, a számokat, a legegyszerűbb mondatszerkezeteket és az alapvető kifejezéseket.</p>
+                    <footer class="card-footer">
+                        <a href="#dashboard" class="btn-card landing-level-btn" data-level="A1">Belépés az A1 tananyaghoz</a>
+                    </footer>
+                </article>
+
+                <!-- A2 Card -->
+                <article class="level-card border-a2">
+                    <header class="card-header">
+                        <span class="level-badge badge-a2">A2</span>
+                        <h3>A2 – Alapfok</h3>
+                    </header>
+                    <p class="card-description">Képes leszel egyszerű, mindennapi témákról beszélgetni. Megtanulod a legfontosabb múlt és jövő időket, illetve a mindennapi szófordulatokat.</p>
+                    <footer class="card-footer">
+                        <a href="#dashboard" class="btn-card landing-level-btn" data-level="A2">Belépés az A2 tananyaghoz</a>
+                    </footer>
+                </article>
+
+                <!-- B1 Card -->
+                <article class="level-card border-b1">
+                    <header class="card-header">
+                        <span class="level-badge badge-b1">B1</span>
+                        <h3>B1 – Küszöbszint</h3>
+                    </header>
+                    <p class="card-description">Utazás során már könnyedén feltalálod magad. Megérted a bonyolultabb nyelvtani összefüggéseket, és hosszabb szövegeket is képes leszel feldolgozni.</p>
+                    <footer class="card-footer">
+                        <a href="#dashboard" class="btn-card landing-level-btn" data-level="B1">Belépés a B1 tananyaghoz</a>
+                    </footer>
+                </article>
+
+                <!-- B2 Card -->
+                <article class="level-card border-b2">
+                    <header class="card-header">
+                        <span class="level-badge badge-b2">B2</span>
+                        <h3>B2 – Haladó szint</h3>
+                    </header>
+                    <p class="card-description">Magabiztos, folyamatos kommunikáció anyanyelvi beszélőkkel. Összetett szövegek, absztrakt témák megértése és felkészülés a B2-es nyelvvizsgára.</p>
+                    <footer class="card-footer">
+                        <a href="#dashboard" class="btn-card landing-level-btn" data-level="B2">Belépés a B2 tananyaghoz</a>
+                    </footer>
+                </article>
+            </div>
+        </section>
+
+        <!-- 4. HOW IT WORKS SECTION (Now correctly situated beneath the cards) -->
+        <section class="how-it-works-section">
+            <h2 class="section-title">Így épül fel a tananyag:</h2>
+            
+            <div class="steps-grid">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <h3>Magyar nyelvű elmélet</h3>
+                    <p>Nem kell szótáraznod a szabályokat. Minden nyelvtani részt egyszerű, érthető magyar magyarázatokkal mutatunk be.</p>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <h3>Sokszínű gyakorlás</h3>
+                    <p>Olvasásértési feladatok, igaz/hamis tesztek és interaktív kvízek segítenek abban, hogy a gyakorlatban is rögzüljön a frissen szerzett tudás.</p>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <h3>Szintzáró vizsgák</h3>
+                    <p>Minden kisebb témakör után egy rövid kvíz vár, az adott szint végén pedig egy nagy összefoglaló vizsgával ellenőrizheted a tudásod.</p>
+                </div>
+            </div>
+        </section>
+    </main> <!-- Wires down core landing view main frame safely -->
+
+    <!-- 5. CORRECTED FOOTER POSITIONING (Sits directly underneath main contents) -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span class="footer-logo">NeolixStudio</span>
+                <p>Online angol nyelvtanulás magyaroknak, egyszerűen és hatékonyan.</p>
+            </div>
+            
+            <nav class="footer-nav" aria-label="Lábléc navigáció">
+                <ul class="footer-links">
+                    <li><a href="#">Gyakran Ismételt Kérdések (GYIK)</a></li>
+                    <li><a href="#">Adatkezelési Tájékoztató</a></li>
+                    <li><a href="#">Kapcsolat</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 NeolixStudio. Minden jog fenntartva.</p>
+        </div>
+    </footer>
+
+    <!-- 6. ANIMATED WIP MODAL OVERLAY BOX -->
+    <div id="wip-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content glass-panel">
+            <div class="wip-badge">🚧 WIP 🚧</div>
+            <h2>Hamarosan érkezik!</h2>
+            <p>A B1 és B2 szintek jelenleg fejlesztés alatt állnak. Tanáraink gőzerővel dolgoznak a magyar nyelvű magyarázatokon és teszteken.</p>
+            <button id="close-wip-btn" class="btn-close-modal">Bezárás</button>
+        </div>
+    </div>
+
+    <script src="js/landing.js"></script>
+</body>
+</html>

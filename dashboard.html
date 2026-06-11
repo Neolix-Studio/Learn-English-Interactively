@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanuló Felület - Online Angol Iskola</title>
+    <!-- Relative paths link your MacBook project folder safe for websupport.sk -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <!-- 1. GLOBAL STATIC HORIZONTAL TOP NAVBAR -->
+    <header class="site-header">
+        <div class="header-container">
+            <!-- Logo returns user securely back to index.html -->
+            <a href="index.html" class="logo" aria-label="Vissza a főoldalra">
+                <span class="logo-text">NeolixStudio</span>
+            </a>
+            
+            <nav class="main-nav" aria-label="Szintválasztó navigáció">
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-link" id="nav-a1">A1 Kezdő</a></li>
+                    <li><a href="#" class="nav-link" id="nav-a2">A2 Alapfok</a></li>
+                    <li><a href="#" class="nav-link" id="nav-b1">B1 Középfok</a></li>
+                    <li><a href="#" class="nav-link" id="nav-b2">B2 Haladó</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <span class="user-welcome">Szia, Laci!</span>
+                <a href="index.html" class="btn btn-logout">Kijelentkezés</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. MAIN LAYOUT GRID FRAMEWORK -->
+    <div class="dashboard-container">
+        
+        <!-- A. SIDE PANEL COLUMN -->
+        <aside class="dashboard-sidebar" aria-label="Tananyag menü">
+            
+            <!-- Live Progress Widget Container -->
+            <div class="sidebar-progress-card">
+                <p class="progress-label">A szint teljesítettsége:</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 50%;"></div>
+                </div>
+                <span class="progress-percentage">50% Kész</span>
+            </div>
+
+            <!-- Content Selector Links -->
+            <nav class="sidebar-nav">
+                <!-- Group Cluster 1 -->
+                <div class="nav-group">
+                    <h3 class="group-title">Nyelvtan (Grammar)</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="sidebar-link active" data-level="A1" data-section="Pronouns">
+                                <span class="status-icon done">✓</span> Pronouns (Névmások)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-link" data-level="A1" data-section="Prepositions">
+                                <span class="status-icon active-dot">•</span> Prepositions (Elöljárók)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Group Cluster 2 -->
+                <div class="nav-group">
+                    <h3 class="group-title">Készségek (Skills)</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="sidebar-link" data-level="A2" data-section="Pronouns">
+                                <span class="status-icon empty">○</span> Reading (Olvasásértés)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Group Cluster 3 -->
+                <div class="nav-group exam-group">
+                    <h3 class="group-title">Vizsgák</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="sidebar-link final-exam-link">
+                                <span class="status-icon">🏆</span> SZINTZÁRÓ VIZSGA
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- B. MAIN DISPLAY VIEWPORT -->
+        <main class="dashboard-content">
+            
+            <!-- Tracking Breadcrumb Navigation -->
+            <header class="content-context-header">
+                <nav aria-label="Breadcrumb">
+                    <ol class="breadcrumb-list">
+                        <li>A1 Kezdő</li>
+                        <li>Nyelvtan</li>
+                        <li aria-current="page">Pronouns</li>
+                    </ol>
+                </nav>
+                <!-- Title text gets updated dynamically by JavaScript -->
+                <h1 class="current-topic-title">Töltés...</h1>
+            </header>
+
+            <!-- Metrics Counter Strip -->
+            <section class="metrics-grid" aria-label="Statisztikák">
+                <div class="metric-card">
+                    <span class="metric-value">0 / 0</span>
+                    <span class="metric-title">Pontszám</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">00:00</span>
+                    <span class="metric-title">Ezzel töltött idő</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">0%</span>
+                    <span class="metric-title">Sikerességi ráta</span>
+                </div>
+            </section>
+
+            <!-- DYNAMIC TARGET CONTAINER (Where Javascript drops lessons/quizzes) -->
+            <section class="workspace-area" id="workspace">
+                <!-- Javascript will wipe this completely out and load content dynamically -->
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script assets required to process data and control inputs -->
+    <script src="js/data.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

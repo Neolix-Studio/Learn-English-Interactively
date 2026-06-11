@@ -1,0 +1,354 @@
+/* ==========================================================================
+   1. FONTS & COLOR SYSTEM SETUP
+   ========================================================================== */
+@import url('https://googleapis.com');
+
+:root {
+    /* Fonts definitions */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* OKLCH System Color Palette */
+    --color-bg-base: oklch(0.15 0.01 260);
+    --color-bg-surface: oklch(0.2 0.02 260 / 0.5);
+    --color-text-main: oklch(0.95 0.01 260);
+    --color-text-muted: oklch(0.7 0.02 260);
+    
+    /* Neon Accents */
+    --color-accent-in: oklch(0.75 0.15 250);
+    --color-accent-on: oklch(0.75 0.18 310);
+    --color-accent-at: oklch(0.8 0.18 150);
+    
+    /* Statuses */
+    --color-success: oklch(0.75 0.2 150);
+    --color-error: oklch(0.65 0.2 25);
+
+    /* Animation & Glassmorphism Defaults */
+    --transition-base: 0.3s ease;
+    --glass-border: 1px solid oklch(1 0 0 / 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* ==========================================================================
+   2. GLOBAL BODY & RESET LOGIC
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-bg-base);
+    /* Translucent Ambient Background Gradients */
+    background-image: 
+        radial-gradient(circle at 15% 50%, oklch(0.25 0.05 260 / 0.4), transparent 25%),
+        radial-gradient(circle at 85% 30%, oklch(0.25 0.05 310 / 0.4), transparent 25%);
+    background-attachment: fixed;
+    color: var(--color-text-main);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, .logo-text {
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   3. GLOBAL STATIC TOP HEADER NAVBAR
+   ========================================================================== */
+.site-header {
+    background: var(--color-bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1400px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo Alignment */
+.logo {
+    display: flex;
+    align-items: center;
+    transition: transform var(--transition-base);
+}
+
+.logo:hover {
+    transform: scale(1.02);
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, var(--color-accent-in), var(--color-accent-on));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Navigation List Row */
+.nav-list {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color var(--transition-base);
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--color-text-main);
+}
+
+/* Glowing Neon Indicator Line under links */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent-in);
+    box-shadow: 0 0 8px var(--color-accent-in);
+    transition: width var(--transition-base);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+}
+
+/* User Actions Layout */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.user-welcome {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+
+.btn-logout {
+    font-size: 0.85rem;
+    border: 1px solid var(--color-text-muted);
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    transition: all var(--transition-base);
+}
+
+.btn-logout:hover {
+    background: var(--color-error);
+    border-color: var(--color-error);
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 0 12px var(--color-error);
+}
+
+/* Accessibility Guard: Motion Safeguard */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-delay: -1ms !important;
+        animation-duration: -1ms !important;
+        animation-iteration-count: 1 !important;
+        background-attachment: initial !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+    }
+}
+
+/* ==========================================================================
+   WIP MODAL GLASSMORPHISM POPUP ACCENTS
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base), backdrop-filter var(--transition-base);
+}
+
+.modal-overlay.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.glass-panel {
+    background: var(--color-bg-surface);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    transform: scale(0.8) translateY(20px);
+    transition: transform var(--transition-base);
+}
+
+.modal-overlay.is-active .glass-panel {
+    transform: scale(1) translateY(0);
+}
+
+.wip-badge {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--color-accent-on);
+    text-shadow: 0 0 10px var(--color-accent-on);
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.glass-panel h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-main);
+}
+
+.glass-panel p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+
+/* Pulse animation for neon badge */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 18px var(--color-accent-on); }
+}
+
+/* ==========================================================================
+   GLOBAL GLASSMORPHISM FOOTER LAYOUT DESIGN
+   ========================================================================== */
+.site-footer {
+    background: var(--color-bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    padding: 3.5rem 2rem 2rem 2rem;
+    margin-top: auto; /* Ensures footer sticks to bottom if content is short */
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid oklch(1 0 0 / 0.05);
+}
+
+.footer-brand {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-logo {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--color-text-main);
+}
+
+.footer-brand p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+/* Footer Link Columns alignment */
+.footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    text-align: right;
+}
+
+.footer-links a {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    transition: color var(--transition-base), transform var(--transition-base);
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: var(--color-accent-in);
+    transform: translateX(-4px);
+}
+
+/* Legal Copyright Bottom Bar */
+.footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: oklch(0.6 0.01 260);
+}
+
+/* Responsive Footer Layout Strategy for Tablets/Mobile */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .footer-links {
+        text-align: center;
+    }
+
+    .footer-links a:hover {
+        transform: translateY(-2px); /* Changes direction to match layout orientation */
+    }
+}

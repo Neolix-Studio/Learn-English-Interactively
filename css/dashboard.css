@@ -1,0 +1,331 @@
+/* ==========================================================================
+   1. DASHBOARD RESPONSIVE CONTAINER LAYOUT
+   ========================================================================== */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 70px auto 0 auto; /* Pushes content down below fixed 70px header */
+    min-height: calc(100vh - 70px);
+    display: grid;
+    /* Grid layout Blueprint: 300px sidebar and remaining content space */
+    grid-template-columns: 300px 1fr;
+}
+
+/* ==========================================================================
+   2. STICKY VERTICAL SIDEBAR MENU PANEL
+   ========================================================================== */
+.dashboard-sidebar {
+    background: oklch(0.18 0.01 260 / 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-right: var(--glass-border);
+    padding: 2rem 1.5rem;
+    height: calc(100vh - 70px);
+    position: sticky;
+    top: 70px; /* Keeps sidebar fixed vertically alongside content window scrolling */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    overflow-y: auto;
+}
+
+/* Sidebar Completion Meter Card */
+.sidebar-progress-card {
+    background: var(--color-bg-surface);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.progress-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar-container {
+    background: oklch(0.1 0.01 260);
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+}
+
+.progress-bar-fill {
+    background: linear-gradient(90deg, var(--color-accent-in), var(--color-accent-at));
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-percentage {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Navigation Group Clusters */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.group-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    transition: all var(--transition-base);
+}
+
+.sidebar-link:hover {
+    background: oklch(1 0 0 / 0.05);
+    color: var(--color-text-main);
+    transform: translateX(4px);
+}
+
+.sidebar-link.active {
+    background: var(--color-bg-surface);
+    border-left: 3px solid var(--color-accent-on);
+    color: var(--color-text-main);
+    font-weight: 500;
+}
+
+/* State-Driven Status Badges */
+.status-icon {
+    font-size: 0.9rem;
+    width: 20px;
+    display: inline-block;
+}
+.status-icon.done { color: var(--color-success); }
+.status-icon.locked { color: oklch(0.5 0 0); }
+.status-icon.active-dot { color: var(--color-accent-in); }
+
+/* Special Level Exam Callout Link */
+.final-exam-link {
+    border: 1px dashed var(--color-accent-on);
+    background: oklch(0.75 0.18 310 / 0.05);
+}
+.final-exam-link:hover {
+    background: var(--color-accent-on);
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 0 15px var(--color-accent-on);
+}
+
+/* ==========================================================================
+   3. CLASSROOM MAIN MAIN WORKSPACE MAIN PANEL
+   ========================================================================== */
+.dashboard-content {
+    padding: 2.5rem;
+    overflow-y: auto;
+}
+
+/* Module Breadcrumbs Header */
+.content-context-header {
+    margin-bottom: 2rem;
+}
+
+.breadcrumb-list {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.breadcrumb-list li::after {
+    content: '/';
+    margin-left: 0.5rem;
+}
+
+.breadcrumb-list li:last-child::after {
+    content: '';
+}
+
+.current-topic-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem); /* Fluid responsive sizing integration */
+    color: var(--color-text-main);
+    letter-spacing: -0.5px;
+}
+
+/* Metrics Dynamic Metric Row Banner */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.metric-card {
+    background: var(--color-bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 14px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: transform var(--transition-base);
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+}
+
+.metric-value {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-accent-in);
+}
+
+.metric-title {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   4. INJECTED WORKSPACE CONTENT OBJECT STYLES
+   ========================================================================== */
+.explanation-box {
+    background: var(--color-bg-surface);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.explanation-box h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--color-accent-on);
+}
+
+/* True / False Layout Blocks */
+.practice-box h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+}
+
+.quiz-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.quiz-item {
+    background: oklch(1 0 0 / 0.02);
+    border: 1px solid oklch(1 0 0 / 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.quiz-question {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.quiz-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-tf {
+    background: var(--color-bg-surface);
+    border: var(--glass-border);
+    color: var(--color-text-main);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.btn-tf:hover {
+    background: oklch(1 0 0 / 0.1);
+    transform: translateY(-2px);
+}
+
+/* Interactive Feedback Bubble Animations */
+.quiz-feedback {
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    display: none; /* Injected Javascript controls activation */
+}
+
+.quiz-feedback.correct {
+    display: block;
+    background: oklch(0.75 0.2 150 / 0.1);
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+    box-shadow: 0 0 15px oklch(0.75 0.2 150 / 0.2);
+}
+
+.quiz-feedback.incorrect {
+    display: block;
+    background: oklch(0.65 0.2 25 / 0.1);
+    border: 1px solid var(--color-error);
+    color: var(--color-error);
+    box-shadow: 0 0 15px oklch(0.65 0.2 25 / 0.2);
+}
+
+/* ==========================================================================
+   5. RESPONSIVE BREAKPOINT SYSTEM STRATEGY (768px Tablet Shift)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .dashboard-container {
+        /* Collapse horizontal layout into vertical column stack */
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-sidebar {
+        height: auto;
+        position: relative;
+        top: 0;
+        border-right: none;
+        border-bottom: var(--glass-border);
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr; /* Stack dashboard counters vertically */
+        gap: 1rem;
+    }
+
+    .dashboard-content {
+        padding: 1.5rem;
+    }
+}

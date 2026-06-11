@@ -1,0 +1,252 @@
+/* ==========================================================================
+   1. HERO SECTION (Fluid Typography & Sleek Layout)
+   ========================================================================== */
+.hero-section {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+}
+
+.hero-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Fluid Heading Scaling from Design Guide */
+.hero-title {
+    font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--color-text-muted);
+    max-width: 700px;
+    text-wrap: balance;
+}
+
+/* Central Neon Action Button */
+.btn-start {
+    margin-top: 1rem;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000;
+    background: var(--color-accent-in);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    box-shadow: 0 0 20px oklch(0.75 0.15 250 / 0.4);
+    transition: all var(--transition-base);
+}
+
+.btn-start:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 35px var(--color-accent-in);
+    filter: brightness(1.1);
+}
+
+/* ==========================================================================
+   2. LEVEL SELECTION CARDS (Glassmorphism & Neon Borders)
+   ========================================================================== */
+.levels-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+}
+
+.section-title {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    text-align: center;
+    margin-bottom: 3.5rem;
+    letter-spacing: -0.5px;
+}
+
+/* 4-Column Responsive Grid Layout */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+/* Glassmorphism Panel Engineering */
+.level-card {
+    background: var(--color-bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.level-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* Card Header & Badges */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.level-badge {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    color: #000;
+}
+
+.level-card h3 {
+    font-size: 1.3rem;
+    color: var(--color-text-main);
+}
+
+.card-description {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+/* Specific Card Custom Colors (OKLCH Neon Accents) */
+.badge-a1 { background: var(--color-accent-in); }
+.border-a1:hover { box-shadow: 0 0 25px oklch(0.75 0.15 250 / 0.25); border-color: var(--color-accent-in); }
+
+.badge-a2 { background: var(--color-accent-on); }
+.border-a2:hover { box-shadow: 0 0 25px oklch(0.75 0.18 310 / 0.25); border-color: var(--color-accent-on); }
+
+.badge-b1 { background: var(--color-accent-at); }
+.border-b1:hover { box-shadow: 0 0 25px oklch(0.8 0.18 150 / 0.25); border-color: var(--color-accent-at); }
+
+.badge-b2 { background: var(--color-success); }
+.border-b2:hover { box-shadow: 0 0 25px oklch(0.75 0.2 150 / 0.25); border-color: var(--color-success); }
+
+/* Card Call to Action Buttons */
+.btn-card {
+    display: block;
+    text-align: center;
+    background: oklch(1 0 0 / 0.05);
+    border: 1px solid oklch(1 0 0 / 0.1);
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all var(--transition-base);
+}
+
+.level-card:hover .btn-card {
+    background: var(--color-text-main);
+    color: #000;
+    border-color: var(--color-text-main);
+}
+
+/* ==========================================================================
+   3. HOW IT WORKS SECTION (Sequential Steps)
+   ========================================================================== */
+.how-it-works-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 5rem 2rem 8rem 2rem;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.step-number {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    width: 50px;
+    height: 50px;
+    background: oklch(1 0 0 / 0.03);
+    border: var(--glass-border);
+    color: var(--color-accent-in);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: var(--glass-shadow);
+}
+
+.step-item h3 {
+    font-size: 1.25rem;
+    color: var(--color-text-main);
+}
+
+.step-item p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    max-width: 320px;
+}
+
+/* ==========================================================================
+   4. WIP SYSTEM SPECIFIC UTILITIES
+   ========================================================================== */
+.btn-close-modal {
+    background: var(--color-accent-on);
+    color: #000;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 15px oklch(0.75 0.18 310 / 0.3);
+    transition: all var(--transition-base);
+}
+
+.btn-close-modal:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px var(--color-accent-on);
+}
+
+/* ==========================================================================
+   5. RESPONSIVE BREAKPOINT GRID STRATEGY (Mobile-First Adjustments)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2x2 grid layout on laptops/tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-grid, .steps-grid {
+        grid-template-columns: 1fr; /* Full single column stack layout on smartphones */
+        gap: 1.5rem;
+    }
+    
+    .how-it-works-section {
+        padding-bottom: 4rem;
+    }
+}
