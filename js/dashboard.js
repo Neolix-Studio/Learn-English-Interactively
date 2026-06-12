@@ -729,7 +729,7 @@ async function renderWordsTemplate(workspace, data, moduleData) {
     } else {
         try {
             // Append version parameter to bust browser caches for static content updates
-            const response = await fetch(source + "?v=1.0.2");
+            const response = await fetch(source + "?v=1.0.3");
             if (!response.ok) throw new Error("HTTP error " + response.status);
             items = await response.json();
             vocabCache[source] = items;
