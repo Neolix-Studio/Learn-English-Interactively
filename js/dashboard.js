@@ -728,7 +728,8 @@ async function renderWordsTemplate(workspace, data, moduleData) {
         items = vocabCache[source];
     } else {
         try {
-            const response = await fetch(source);
+            // Append version parameter to bust browser caches for static content updates
+            const response = await fetch(source + "?v=1.0.2");
             if (!response.ok) throw new Error("HTTP error " + response.status);
             items = await response.json();
             vocabCache[source] = items;
