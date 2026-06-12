@@ -10,12 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
             const pickedLevel = button.getAttribute("data-level");
 
-            if (pickedLevel === "A1" || pickedLevel === "A2") {
+            if (pickedLevel === "A1") {
                 // Save choice into browser storage memory
                 localStorage.setItem("selectedLevel", pickedLevel);
                 // Redirect user to the workspace page safely
                 window.location.href = "dashboard.html";
-            } else if (pickedLevel === "B1" || pickedLevel === "B2") {
+            } else if (pickedLevel === "A2" || pickedLevel === "B1" || pickedLevel === "B2") {
                 // Trigger the animated WIP modal overlay visibility
                 openWipModal();
             }
