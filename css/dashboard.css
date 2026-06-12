@@ -1464,3 +1464,87 @@
         justify-self: center;
     }
 }
+
+/* ===== MANUAL COMPLETION BUTTON & FLOATING POINTS STYLES ===== */
+
+.completion-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    position: relative;
+    width: 100%;
+}
+
+.btn-complete-section {
+    background: linear-gradient(135deg, oklch(0.75 0.18 150), oklch(0.65 0.18 170));
+    color: oklch(0.1 0 0);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.85rem 2.5rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: 0 4px 15px oklch(0.75 0.18 150 / 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+}
+
+.btn-complete-section:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px oklch(0.75 0.18 150 / 0.4);
+    filter: brightness(1.05);
+}
+
+.btn-complete-section:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.btn-complete-section:disabled {
+    background: oklch(0.25 0.01 260);
+    border: 1px solid oklch(1 0 0 / 0.08);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-complete-section.completed-badge {
+    background: oklch(0.75 0.2 150 / 0.08);
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+    cursor: default;
+    box-shadow: none;
+}
+
+/* Floating points animated pop-up */
+.floating-points-pop {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: oklch(0.85 0.15 120); /* Golden-green pop color */
+    text-shadow: 0 0 10px oklch(0.85 0.15 120 / 0.5);
+    pointer-events: none;
+    animation: floatUpFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes floatUpFade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.8);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -15px) scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -60px) scale(1);
+    }
+}

@@ -1,0 +1,14 @@
+[
+    { "en": "I am", "hu": "Én vagyok", "example": "I am a student." },
+    { "en": "You are", "hu": "Te vagy", "example": "You are my friend." },
+    { "en": "He is", "hu": "Ő (fiú) van", "example": "He is tall." },
+    { "en": "She is", "hu": "Ő (lány) van", "example": "She is a teacher." },
+    { "en": "It is", "hu": "Az/Ez van", "example": "It is a cat." },
+    { "en": "We are", "hu": "Mi vagyunk", "example": "We are happy." },
+    { "en": "They are", "hu": "Ők vannak", "example": "They are at home." },
+    { "en": "happy", "hu": "boldog", "example": "I am happy." },
+    { "en": "tall", "hu": "magas", "example": "He is tall." },
+    { "en": "student", "hu": "diák", "example": "She is a student." },
+    { "en": "teacher", "hu": "tanár", "example": "He is a teacher." },
+    { "en": "tired", "hu": "fáradt", "example": "We are tired." }
+]

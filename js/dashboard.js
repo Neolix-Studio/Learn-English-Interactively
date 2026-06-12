@@ -1,10 +1,13 @@
 // js/dashboard.js
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // Start listening for sidebar accordion clicks, top navbar clicks, and modal events
     initAccordionListeners();
     initTopNavbarListeners();
     initModalListeners();
+    
+    // Initialize progression tracking for the logged-in user
+    await initUserProgress();
     
     // Read what level was clicked on index.html (fallback to A1 if empty)
     const levelToLoad = localStorage.getItem("selectedLevel") || "A1";
@@ -17,6 +20,219 @@ document.addEventListener("DOMContentLoaded", () => {
 let currentLevel = "A1";
 let currentSection = "ToBe";
 let currentSubsection = "explanation";
+
+// Individual user progress state tracking
+let userProgress = {
+    username: "Vendég",
+    points: 0,
+    completed: {},
+    scores: {}
+};
+
+// Global cache for fetched vocabulary data to prevent redundant network hits
+const vocabCache = {};
+
+// Extracts the logged-in user's name from the header welcome message dynamically
+function getLoggedInUser() {
+    const welcomeSpan = document.querySelector(".user-welcome");
+    if (welcomeSpan) {
+        const text = welcomeSpan.textContent;
+        const match = text.match(/Szia,?\s+(.+)!/);
+        if (match && match[1]) {
+            return match[1].trim();
+        }
+    }
+    return "Vendég";
+}
+
+// Loads progression from backend PHP API with LocalStorage fallback
+async function initUserProgress() {
+    const username = getLoggedInUser();
+    
+    try {
+        const response = await fetch(`api/progress.php?user=${encodeURIComponent(username)}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data && data.completed) {
+                userProgress = data;
+                if (typeof userProgress.points === "undefined") userProgress.points = 0;
+                updateProgressUI();
+                return;
+            }
+        }
+    } catch (err) {
+        console.warn("Backend API nem érhető el, localStorage fallback használata:", err);
+    }
+
+    const localData = localStorage.getItem(`progress_${username}`);
+    if (localData) {
+        userProgress = JSON.parse(localData);
+        if (typeof userProgress.points === "undefined") userProgress.points = 0;
+    } else {
+        userProgress = {
+            username: username,
+            points: 0,
+            completed: {},
+            scores: {}
+        };
+    }
+    updateProgressUI();
+}
+
+// Saves progression to backend database and updates local cache
+async function saveUserProgress() {
+    const username = userProgress.username;
+    
+    // Always update local cache for instant client validation
+    localStorage.setItem(`progress_${username}`, JSON.stringify(userProgress));
+    
+    try {
+        await fetch('api/progress.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userProgress)
+        });
+    } catch (err) {
+        console.warn("Sikertelen mentés a szerverre:", err);
+    }
+    
+    updateProgressUI();
+}
+
+// Marks a specific section page as completed
+function markSubsectionCompleted(level, section, subsection, score = null) {
+    const key = `${level}_${section}_${subsection}`;
+    userProgress.completed[key] = true;
+    if (score !== null) {
+        userProgress.scores[key] = score;
+    }
+    saveUserProgress();
+}
+
+// Generates the completion button HTML based on completion state
+function getCompleteButtonHtml(level, section, subsection, requiresAttempt = false) {
+    const key = `${level}_${section}_${subsection}`;
+    const isCompleted = userProgress.completed[key];
+    
+    let disabledAttr = "";
+    if (requiresAttempt && !isCompleted) {
+        disabledAttr = "disabled";
+    }
+
+    if (isCompleted) {
+        return `
+            <div class="completion-button-container">
+                <button class="btn-complete-section completed-badge" disabled>
+                    Teljesítve ✓
+                </button>
+            </div>
+        `;
+    } else {
+        return `
+            <div class="completion-button-container">
+                <button class="btn-complete-section" ${disabledAttr} onclick="completeSubsectionAction('${level}', '${section}', '${subsection}', this)">
+                    <span>Teljesítettem (+5 pont)</span>
+                </button>
+            </div>
+        `;
+    }
+}
+
+// Action handler for manual section completion
+function completeSubsectionAction(level, section, subsection, buttonEl) {
+    const key = `${level}_${section}_${subsection}`;
+    
+    // Prevent duplicate point claims
+    if (userProgress.completed[key]) return;
+    
+    // Reward points
+    userProgress.points = (userProgress.points || 0) + 5;
+    
+    // Mark as completed
+    userProgress.completed[key] = true;
+    
+    // Trigger floating +5 points pop animation
+    const container = buttonEl.closest(".completion-button-container");
+    if (container) {
+        const pop = document.createElement("div");
+        pop.className = "floating-points-pop";
+        pop.textContent = "+5 Pont! 🎉";
+        container.appendChild(pop);
+        
+        // Remove pop element after animation completes
+        setTimeout(() => {
+            pop.remove();
+        }, 1200);
+    }
+    
+    // Transform button to completed state
+    buttonEl.className = "btn-complete-section completed-badge";
+    buttonEl.disabled = true;
+    buttonEl.innerHTML = "Teljesítve ✓";
+    
+    // Save state and update UI
+    saveUserProgress();
+}
+
+// Scans the sidebar links to display completion checkmarks and update the level completion meter
+function updateProgressUI() {
+    const links = document.querySelectorAll(".subsection-link");
+    let totalItems = 0;
+    let completedItems = 0;
+
+    links.forEach(link => {
+        const accordion = link.closest(".course-accordion");
+        if (!accordion) return;
+
+        const level = accordion.getAttribute("data-level");
+        const section = accordion.getAttribute("data-section");
+        const subsection = link.getAttribute("data-subsection");
+        const key = `${level}_${section}_${subsection}`;
+
+        // Only count subsections belonging to the current visual level track
+        if (level === currentLevel) {
+            totalItems++;
+            if (userProgress.completed[key]) {
+                completedItems++;
+            }
+        }
+
+        // Render visual checkmark badge in sidebar if completed
+        let badge = link.querySelector(".progress-badge-sidebar");
+        if (userProgress.completed[key]) {
+            if (!badge) {
+                badge = document.createElement("span");
+                badge.className = "progress-badge-sidebar done";
+                badge.innerHTML = " ✓";
+                badge.style.color = "var(--color-success)";
+                badge.style.fontWeight = "bold";
+                badge.style.marginLeft = "auto";
+                link.appendChild(badge);
+            }
+        } else {
+            if (badge) {
+                badge.remove();
+            }
+        }
+    });
+
+    const percentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+    const progressBar = document.querySelector(".progress-bar-fill");
+    const progressPercentageText = document.querySelector(".progress-percentage");
+
+    if (progressBar) {
+        progressBar.style.width = `${percentage}%`;
+    }
+    if (progressPercentageText) {
+        progressPercentageText.textContent = `${percentage}% Kész`;
+    }
+
+    // Update global points counter
+    const pointsEl = document.getElementById("points-counter");
+    if (pointsEl) {
+        pointsEl.textContent = userProgress.points || 0;
+    }
+}
 
 // 1. LISTEN TO SIDEBAR ACCORDION SUBSECTION LINKS
 function initAccordionListeners() {
@@ -96,6 +312,7 @@ function switchGlobalLevel(levelName) {
 
     // Run core engine to paint the chosen view
     renderSubsection(currentLevel, currentSection, currentSubsection);
+    updateProgressUI();
 }
 
 // 4. CORE SUBSECTION RENDERING MACHINERY
@@ -452,6 +669,7 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                 <div class="explanation-next-hint">
                     <p>Ha megértetted a magyarázatot, lépj tovább a <strong>Szavak</strong> szekcióra! →</p>
                 </div>
+                ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, false)}
             </div>
         `;
         initExplanationTabs();
@@ -467,6 +685,7 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                 <div class="explanation-next-hint">
                     <p>Ha megértetted a magyarázatot, lépj tovább a <strong>Szavak</strong> szekcióra! →</p>
                 </div>
+                ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, false)}
             </div>
         `;
     }
@@ -487,15 +706,46 @@ function initExplanationTabs() {
     });
 }
 
-// SZAVAK (Words) — Vocabulary table with English, Hungarian, and Example
-function renderWordsTemplate(workspace, data, moduleData) {
-    if (data.items.length === 0) {
+// SZAVAK (Words) — Vocabulary table loaded asynchronously from JSON with caching
+async function renderWordsTemplate(workspace, data, moduleData) {
+    // Show a loading state
+    workspace.innerHTML = `
+        <div class="empty-state-section" style="min-height: 200px;">
+            <div class="empty-state">
+                <div class="empty-state-icon">⏳</div>
+                <h2>Szavak betöltése...</h2>
+                <div class="empty-state-pulse"></div>
+            </div>
+        </div>
+    `;
+
+    const source = data.dataSource;
+    let items = [];
+
+    if (!source) {
+        items = data.items || [];
+    } else if (vocabCache[source]) {
+        items = vocabCache[source];
+    } else {
+        try {
+            const response = await fetch(source);
+            if (!response.ok) throw new Error("HTTP error " + response.status);
+            items = await response.json();
+            vocabCache[source] = items;
+        } catch (error) {
+            console.error("Hiba a szavak betöltésekor:", error);
+            workspace.innerHTML = renderEmptyState("Szavak", "Nem sikerült betölteni a szókincset a szerverről. Kérjük, próbáld újra később!");
+            return;
+        }
+    }
+
+    if (items.length === 0) {
         workspace.innerHTML = renderEmptyState("Szavak", "Ehhez a leckéhez hamarosan feltöltjük a szókincset.");
         return;
     }
 
     let rowsHtml = "";
-    data.items.forEach((item, i) => {
+    items.forEach((item, i) => {
         rowsHtml += `
             <tr class="word-row" style="animation-delay: ${i * 0.05}s">
                 <td class="word-en">${item.en}</td>
@@ -522,6 +772,7 @@ function renderWordsTemplate(workspace, data, moduleData) {
                     </table>
                 </div>
             </section>
+            ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, false)}
         </div>
     `;
 }
@@ -557,6 +808,7 @@ function renderFillBlanksTemplate(workspace, data) {
                 <p class="section-instruction">Írd be a megfelelő alakját a "to be" igének (am, is, are) a hiányzó helyre.</p>
                 <div class="fill-blanks-list">${questionsHtml}</div>
             </section>
+            ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, true)}
         </div>
     `;
 }
@@ -602,6 +854,7 @@ function renderWordOrderTemplate(workspace, data) {
                 <p class="section-instruction">Kattints a szavakra a helyes sorrendben, hogy kiadják az angol mondatot.</p>
                 <div class="word-order-list">${questionsHtml}</div>
             </section>
+            ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, true)}
         </div>
     `;
 }
@@ -638,6 +891,7 @@ function renderTrueFalseTemplate(workspace, data) {
                 <p class="section-instruction">Olvasd el az állítást, és döntsd el, hogy igaz vagy hamis!</p>
                 <div class="quiz-list">${quizHtml}</div>
             </section>
+            ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, true)}
         </div>
     `;
 }
@@ -704,6 +958,7 @@ function renderSectionExamTemplate(workspace, data) {
                     <div class="exam-result" id="exam-result"></div>
                 </div>
             </section>
+            ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, true)}
         </div>
     `;
 }
@@ -745,6 +1000,8 @@ function checkFillBlank(index, correctAnswer) {
         input.classList.add("input-incorrect");
         input.classList.remove("input-correct");
     }
+    const completeBtn = document.querySelector(".btn-complete-section");
+    if (completeBtn) completeBtn.disabled = false;
 }
 
 // True/False checker
@@ -760,6 +1017,8 @@ function checkTrueFalse(index, studentAnswer) {
         feedback.innerHTML = `✗ ${item.explanation}`;
         feedback.className = "quiz-feedback incorrect";
     }
+    const completeBtn = document.querySelector(".btn-complete-section");
+    if (completeBtn) completeBtn.disabled = false;
 }
 
 // Word Order — select chips to build sentence
@@ -808,6 +1067,8 @@ function checkWordOrder(index) {
         feedback.innerHTML = `✗ Nem jó. A helyes sorrend: "${correctAnswer}"`;
         feedback.className = "quiz-feedback incorrect";
     }
+    const completeBtn = document.querySelector(".btn-complete-section");
+    if (completeBtn) completeBtn.disabled = false;
 }
 
 // Reset word order question
@@ -902,6 +1163,10 @@ function gradeExam() {
             <p class="exam-grade">${grade}</p>
         </div>
     `;
+    if (percentage >= 50) {
+        const completeBtn = document.querySelector(".btn-complete-section");
+        if (completeBtn) completeBtn.disabled = false;
+    }
 }
 
 // =====================================================================
