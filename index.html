@@ -156,6 +156,50 @@
         </div>
     </div>
 
-    <script src="js/landing.js?v=1.0.6"></script>
+    <!-- 7. LOGIN / REGISTER MODAL OVERLAY -->
+    <div id="login-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content glass-panel" style="max-width: 400px;">
+            <div class="auth-tabs" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid oklch(1 0 0 / 0.1); padding-bottom: 0.5rem;">
+                <button type="button" class="auth-tab active" id="tab-login" style="background: none; border: none; color: var(--color-text-main); font-weight: 600; font-size: 1rem; cursor: pointer; padding-bottom: 0.25rem;">Bejelentkezés</button>
+                <button type="button" class="auth-tab" id="tab-register" style="background: none; border: none; color: var(--color-text-muted); font-weight: 600; font-size: 1rem; cursor: pointer; padding-bottom: 0.25rem;">Regisztráció</button>
+            </div>
+            <form id="auth-form" class="auth-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                <!-- Username field (only shown on registration) -->
+                <div class="form-group" id="group-username" style="display: none; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <label for="auth-username" style="font-size: 0.85rem; color: var(--color-text-muted);">Felhasználónév</label>
+                    <input type="text" id="auth-username" placeholder="Pl. Péter" autocomplete="username" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                </div>
+                <!-- Age selector (only shown on registration) -->
+                <div class="form-group" id="group-age" style="display: none; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <label for="auth-age" style="font-size: 0.85rem; color: var(--color-text-muted);">Életkor csoport</label>
+                    <select id="auth-age" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                        <option value="" disabled selected>Válassz életkort...</option>
+                        <option value="under_18">18 év alatti</option>
+                        <option value="18_24">18 - 24 év</option>
+                        <option value="25_34">25 - 34 év</option>
+                        <option value="35_44">35 - 44 év</option>
+                        <option value="45_54">45 - 54 év</option>
+                        <option value="55_plus">55 év feletti</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 0.4rem;">
+                    <label for="auth-email" style="font-size: 0.85rem; color: var(--color-text-muted);">E-mail cím</label>
+                    <input type="email" id="auth-email" placeholder="email@domain.com" required autocomplete="email" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 0.4rem;">
+                    <label for="auth-password" style="font-size: 0.85rem; color: var(--color-text-muted);">Jelszó</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" required autocomplete="current-password" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                </div>
+                <div class="auth-error-message" id="auth-error" style="color: var(--color-error); font-size: 0.85rem; min-height: 20px; font-weight: 500;"></div>
+                <button type="submit" class="btn btn-submit-auth" id="btn-submit-auth" style="margin-top: 0.5rem; width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at)); color: #000; box-shadow: 0 4px 15px oklch(0.75 0.18 150 / 0.25);">Bejelentkezés</button>
+            </form>
+            <button id="close-login-btn" class="btn-close-modal">Bezárás</button>
+        </div>
+    </div>
+
+    <!-- Script assets -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js?v=1.0.7"></script>
+    <script src="js/landing.js?v=1.0.7"></script>
 </body>
 </html>

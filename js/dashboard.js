@@ -32,6 +32,12 @@ let userProgress = {
 // Global cache for fetched vocabulary data to prevent redundant network hits
 const vocabCache = {};
 
+// Global Supabase Client
+let supabaseClient = null;
+if (typeof SUPABASE_URL !== "undefined" && typeof SUPABASE_ANON_KEY !== "undefined" && SUPABASE_URL !== "YOUR_SUPABASE_URL") {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
 // Stopwatch timer state
 let stopwatchInterval = null;
 let stopwatchSeconds = 0;
@@ -142,25 +148,92 @@ function getLoggedInUser() {
     return "Vendég";
 }
 
-// Loads progression from backend PHP API with LocalStorage fallback
+// Loads progression from backend database or LocalStorage fallback
 async function initUserProgress() {
-    const username = getLoggedInUser();
-    
-    try {
-        const response = await fetch(`api/progress.php?user=${encodeURIComponent(username)}`);
-        if (response.ok) {
-            const data = await response.json();
-            if (data && data.completed) {
-                userProgress = data;
-                if (typeof userProgress.points === "undefined") userProgress.points = 0;
-                updateProgressUI();
-                return;
+    let loggedInUser = "Vendég";
+    let userId = null;
+
+    if (supabaseClient) {
+        try {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                loggedInUser = user.user_metadata?.username || user.email.split('@')[0];
+                userId = user.id;
+
+                // Sync header username display
+                const welcomeSpan = document.querySelector(".user-welcome");
+                if (welcomeSpan) {
+                    welcomeSpan.textContent = `Szia, ${loggedInUser}!`;
+                }
+                
+                // Hook sign out to logout button
+                const logoutBtn = document.querySelector(".btn-logout");
+                if (logoutBtn) {
+                    logoutBtn.textContent = "Kijelentkezés";
+                    // Clone to replace any previous static navigation event listeners
+                    const newLogoutBtn = logoutBtn.cloneNode(true);
+                    logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
+                    newLogoutBtn.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        await supabaseClient.auth.signOut();
+                        window.location.href = "index.html";
+                    });
+                }
+
+                // Fetch their row from user_progress table
+                let { data: progressRow, error } = await supabaseClient
+                    .from('user_progress')
+                    .select('*')
+                    .eq('id', userId)
+                    .maybeSingle();
+
+                if (error) {
+                    console.error("Hiba a Supabase betöltésekor:", error);
+                } else if (progressRow) {
+                    userProgress = {
+                        username: loggedInUser,
+                        points: progressRow.points || 0,
+                        completed: progressRow.completed || {},
+                        scores: progressRow.scores || {},
+                        id: userId
+                    };
+                    updateProgressUI();
+                    return;
+                } else {
+                    // Create default row in table
+                    const newProgress = {
+                        id: userId,
+                        username: loggedInUser,
+                        points: 0,
+                        completed: {},
+                        scores: {}
+                    };
+                    const { error: insertError } = await supabaseClient
+                        .from('user_progress')
+                        .insert(newProgress);
+
+                    if (insertError) {
+                        console.error("Hiba a Supabase sor beszúrásakor:", insertError);
+                    } else {
+                        userProgress = {
+                            username: loggedInUser,
+                            points: 0,
+                            completed: {},
+                            scores: {},
+                            id: userId
+                        };
+                        updateProgressUI();
+                        return;
+                    }
+                }
             }
+        } catch (authErr) {
+            console.warn("Hiba a Supabase azonosítás során:", authErr);
         }
-    } catch (err) {
-        console.warn("Backend API nem érhető el, localStorage fallback használata:", err);
     }
 
+    // Fallback to local storage for guest
+    const username = getLoggedInUser();
     const localData = localStorage.getItem(`progress_${username}`);
     if (localData) {
         userProgress = JSON.parse(localData);
@@ -176,21 +249,30 @@ async function initUserProgress() {
     updateProgressUI();
 }
 
-// Saves progression to backend database and updates local cache
+// Saves progression to database or updates local cache fallback
 async function saveUserProgress() {
     const username = userProgress.username;
     
     // Always update local cache for instant client validation
     localStorage.setItem(`progress_${username}`, JSON.stringify(userProgress));
     
-    try {
-        await fetch('api/progress.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userProgress)
-        });
-    } catch (err) {
-        console.warn("Sikertelen mentés a szerverre:", err);
+    if (supabaseClient && userProgress.id) {
+        try {
+            const { error } = await supabaseClient
+                .from('user_progress')
+                .update({
+                    points: userProgress.points || 0,
+                    completed: userProgress.completed || {},
+                    scores: userProgress.scores || {}
+                })
+                .eq('id', userProgress.id);
+
+            if (error) {
+                console.error("Sikertelen Supabase mentés:", error);
+            }
+        } catch (err) {
+            console.warn("Hiba a Supabase mentésekor:", err);
+        }
     }
     
     updateProgressUI();
