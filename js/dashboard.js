@@ -729,7 +729,7 @@ async function renderWordsTemplate(workspace, data, moduleData) {
     } else {
         try {
             // Append version parameter to bust browser caches for static content updates
-            const response = await fetch(source + "?v=1.0.5");
+            const response = await fetch(source + "?v=1.0.6");
             if (!response.ok) throw new Error("HTTP error " + response.status);
             items = await response.json();
             vocabCache[source] = items;
@@ -797,7 +797,7 @@ async function renderFillBlanksTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.5");
+                const response = await fetch(source + "?v=1.0.6");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
@@ -864,7 +864,7 @@ async function renderWordOrderTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.5");
+                const response = await fetch(source + "?v=1.0.6");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
@@ -942,7 +942,7 @@ async function renderTrueFalseTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.5");
+                const response = await fetch(source + "?v=1.0.6");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
@@ -1010,7 +1010,7 @@ async function renderSectionExamTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.5");
+                const response = await fetch(source + "?v=1.0.6");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
@@ -1085,7 +1085,6 @@ async function renderSectionExamTemplate(workspace, data) {
                     <div class="exam-result" id="exam-result"></div>
                 </div>
             </section>
-            ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, true)}
         </div>
     `;
 }
@@ -1228,18 +1227,23 @@ function resetWordOrder(index) {
     feedback.innerHTML = "";
 }
 
-// Exam T/F checker
+// Exam T/F selection handler (does not grade immediately)
 function checkExamTF(index, studentAnswer) {
-    const data = learningContent[currentLevel][currentSection].subsections.sectionExam;
-    const item = data.items[index];
-    const feedback = document.getElementById(`exam-feedback-${index}`);
-
-    if (studentAnswer === item.answer) {
-        feedback.innerHTML = `✓ ${item.explanation || "Helyes!"}`;
-        feedback.className = "quiz-feedback correct";
-    } else {
-        feedback.innerHTML = `✗ ${item.explanation || "Helytelen!"}`;
-        feedback.className = "quiz-feedback incorrect";
+    const container = document.querySelector(`.exam-item[data-index="${index}"] .quiz-buttons`);
+    if (container) {
+        container.setAttribute("data-user-answer", studentAnswer);
+        
+        // Highlight active button selection
+        const btnTrue = container.querySelector(".btn-true");
+        const btnFalse = container.querySelector(".btn-false");
+        
+        if (studentAnswer === true) {
+            btnTrue.classList.add("selected");
+            btnFalse.classList.remove("selected");
+        } else {
+            btnFalse.classList.add("selected");
+            btnTrue.classList.remove("selected");
+        }
     }
 }
 
@@ -1269,8 +1273,19 @@ function gradeExam() {
                 if (input) { input.classList.add("input-incorrect"); input.classList.remove("input-correct"); }
             }
         } else if (item.type === "tf") {
-            // Already handled by checkExamTF click handler
-            if (feedback.classList.contains("correct")) correct++;
+            const container = document.querySelector(`.exam-item[data-index="${i}"] .quiz-buttons`);
+            const userAnswerStr = container ? container.getAttribute("data-user-answer") : "";
+            const userAnswer = userAnswerStr === "true" ? true : userAnswerStr === "false" ? false : null;
+
+            if (userAnswer === item.answer) {
+                correct++;
+                feedback.innerHTML = `✓ Helyes! ${item.explanation || ""}`;
+                feedback.className = "quiz-feedback correct";
+            } else {
+                const displayCorrect = item.answer ? "IGAZ" : "HAMIS";
+                feedback.innerHTML = `✗ Helytelen! A helyes válasz: <strong>${displayCorrect}</strong>. ${item.explanation || ""}`;
+                feedback.className = "quiz-feedback incorrect";
+            }
         } else if (item.type === "order") {
             const answerZone = document.getElementById(`answer-zone-${i}`);
             const correctAnswer = answerZone?.getAttribute("data-correct") || "";
@@ -1308,10 +1323,31 @@ function gradeExam() {
             <p class="exam-grade">${grade}</p>
         </div>
     `;
+
+    // Award points dynamically on exam grading
+    const examKey = `${currentLevel}_${currentSection}_sectionExam`;
     if (percentage >= 50) {
-        const completeBtn = document.querySelector(".btn-complete-section");
-        if (completeBtn) completeBtn.disabled = false;
+        userProgress.completed[examKey] = true;
+        
+        const previousBest = userProgress.scores[examKey] || 0;
+        if (correct > previousBest) {
+            const diff = correct - previousBest;
+            userProgress.points = (userProgress.points || 0) + diff;
+            userProgress.scores[examKey] = correct;
+            
+            // Trigger floating points animation on the results card
+            const resultCard = resultEl.querySelector(".exam-result-card");
+            if (resultCard) {
+                const pop = document.createElement("div");
+                pop.className = "floating-points-pop";
+                pop.style.top = "20px";
+                pop.textContent = `+${diff} Pont! 🎉`;
+                resultCard.appendChild(pop);
+                setTimeout(() => pop.remove(), 1200);
+            }
+        }
     }
+    saveUserProgress();
 }
 
 // =====================================================================

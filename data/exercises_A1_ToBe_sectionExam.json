@@ -1,15 +1,116 @@
 {
-  "description": "A vizsga kitöltésével mérheted le a fejezetben szerzett tudásod. Legalább 50%-ot kell elérned a sikeres vizsgához.",
+  "description": "Ez a fejezet összefoglaló vizsgája. 20 kérdésből áll, minden helyes válasz 1 pontot ér. Legalább 50%-ot (10 pont) kell elérned a sikeres vizsgához.",
   "items": [
-    { "question": "I ___ a student.", "type": "fill", "answer": "am" },
-    { "question": "\"He are happy\" – ez helyes?", "type": "tf", "answer": false, "explanation": "A helyes: \"He is happy.\"" },
-    { "question": "She ___ my sister.", "type": "fill", "answer": "is" },
-    { "question": "Rendezd: \"are / We / tired\"", "type": "order", "correct": "We are tired.", "scrambled": ["are", "We", "tired"] },
-    { "question": "They ___ at school.", "type": "fill", "answer": "are" },
-    { "question": "\"It am cold\" – ez helyes mondat?", "type": "tf", "answer": false, "explanation": "A helyes: \"It is cold.\"" },
-    { "question": "You ___ very kind.", "type": "fill", "answer": "are" },
-    { "question": "Rendezd: \"is / He / tall / very\"", "type": "order", "correct": "He is very tall.", "scrambled": ["is", "He", "tall", "very"] },
-    { "question": "\"We are happy\" – ez helyes?", "type": "tf", "answer": true, "explanation": "Helyes! Többes szám első személlyel az \"are\"-t használjuk." },
-    { "question": "It ___ a beautiful day.", "type": "fill", "answer": "is" }
+    {
+      "question": "I ______ a student. (+)",
+      "type": "fill",
+      "answer": "am"
+    },
+    {
+      "question": "You ______ tired today. (+)",
+      "type": "fill",
+      "answer": "are"
+    },
+    {
+      "question": "He ______ a doctor. He is a teacher. (-)",
+      "type": "fill",
+      "answer": "isn't/is not"
+    },
+    {
+      "question": "She ______ my mother. (+)",
+      "type": "fill",
+      "answer": "is"
+    },
+    {
+      "question": "It ______ a big house. It is small. (-)",
+      "type": "fill",
+      "answer": "isn't/is not"
+    },
+    {
+      "question": "We ______ in the kitchen. (+)",
+      "type": "fill",
+      "answer": "are"
+    },
+    {
+      "question": "They ______ my friends. (+)",
+      "type": "fill",
+      "answer": "are"
+    },
+    {
+      "question": "The cat ______ on the table. It is under the chair. (-)",
+      "type": "fill",
+      "answer": "isn't/is not"
+    },
+    {
+      "question": "The children ______ happy today. (+)",
+      "type": "fill",
+      "answer": "are"
+    },
+    {
+      "question": "Rakd sorrendbe: father / my / he / is",
+      "type": "order",
+      "correct": "He is my father.",
+      "scrambled": ["He", "is", "my", "father"]
+    },
+    {
+      "question": "Rakd sorrendbe: in / room / the / are / we",
+      "type": "order",
+      "correct": "We are in the room.",
+      "scrambled": ["We", "are", "in", "the", "room"]
+    },
+    {
+      "question": "Rakd sorrendbe: green / is / car / this",
+      "type": "order",
+      "correct": "This car is green.",
+      "scrambled": ["This", "car", "is", "green"]
+    },
+    {
+      "question": "Rakd sorrendbe: is / teacher / the / Where",
+      "type": "order",
+      "correct": "Where is the teacher?",
+      "scrambled": ["Where", "is", "the", "teacher"]
+    },
+    {
+      "question": "Rakd sorrendbe: big / house / that / Is",
+      "type": "order",
+      "correct": "Is that house big?",
+      "scrambled": ["Is", "that", "house", "big"]
+    },
+    {
+      "question": "Rakd sorrendbe: bed / the / on / is / cat / The",
+      "type": "order",
+      "correct": "The cat is on the bed.",
+      "scrambled": ["The", "cat", "is", "on", "the", "bed"]
+    },
+    {
+      "question": "\"He are a doctor\" – Ez a mondat helyes?",
+      "type": "tf",
+      "answer": false,
+      "explanation": "Helytelen! A helyes mondat: \"He is a doctor.\""
+    },
+    {
+      "question": "\"They is happy\" – Ez a mondat helyes?",
+      "type": "tf",
+      "answer": false,
+      "explanation": "Helytelen! A helyes mondat: \"They are happy.\""
+    },
+    {
+      "question": "\"We is friends\" – Ez a mondat helyes?",
+      "type": "tf",
+      "answer": false,
+      "explanation": "Helytelen! A helyes mondat: \"We are friends.\""
+    },
+    {
+      "question": "A 'hungry' szó jelentése magyarul 'éhes'.",
+      "type": "tf",
+      "answer": true,
+      "explanation": "Helyes! A 'hungry' valóban 'éhes' jelentéssel bír."
+    },
+    {
+      "question": "A 'beautiful' szó jelentése magyarul 'hideg'.",
+      "type": "tf",
+      "answer": false,
+      "explanation": "Helytelen! A 'beautiful' jelentése szép/gyönyörű. A hideg angolul: 'cold'."
+    }
   ]
 }

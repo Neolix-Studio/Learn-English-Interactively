@@ -747,6 +747,20 @@
     transform: translateY(-2px);
 }
 
+.btn-true.selected {
+    background: oklch(0.75 0.2 150 / 0.15);
+    border-color: var(--color-success);
+    color: var(--color-success);
+    box-shadow: 0 0 10px oklch(0.75 0.2 150 / 0.1);
+}
+
+.btn-false.selected {
+    background: oklch(0.65 0.2 25 / 0.15);
+    border-color: var(--color-error);
+    color: var(--color-error);
+    box-shadow: 0 0 10px oklch(0.65 0.2 25 / 0.1);
+}
+
 /* Interactive Feedback Bubble Animations */
 .quiz-feedback {
     font-size: 0.95rem;
