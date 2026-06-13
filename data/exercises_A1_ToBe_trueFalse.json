@@ -1,12 +1,15 @@
 {
   "description": "Olvasd el az állítást, és döntsd el, hogy igaz vagy hamis!",
   "items": [
-    { "question": "\"I am\" – Ez helyes: \"Én vagyok\".", "answer": true, "explanation": "Helyes! Az \"I am\" valóban azt jelenti: \"Én vagyok\"." },
-    { "question": "\"She are happy.\" – Ez helyes angol mondat.", "answer": false, "explanation": "Helytelen! A helyes forma: \"She is happy.\" – Egyes szám harmadik személlyel \"is\"-t használunk." },
-    { "question": "\"They is at home.\" – Ez helyes angol mondat.", "answer": false, "explanation": "Helytelen! A helyes forma: \"They are at home.\" – Többes számban \"are\"-t használunk." },
-    { "question": "\"We are students.\" – Ez helyes angol mondat.", "answer": true, "explanation": "Helyes! Többes szám első személlyel az \"are\"-t használjuk." },
-    { "question": "Az \"is\" alakot az \"I\" (én) névmással használjuk.", "answer": false, "explanation": "Helytelen! Az \"I\" névmással az \"am\" alakot használjuk: \"I am\"." },
-    { "question": "\"You is tired.\" – Ez helyes angol mondat.", "answer": false, "explanation": "Helytelen! A helyes forma: \"You are tired.\"" },
-    { "question": "A \"to be\" igének jelen időben három alakja van: am, is, are.", "answer": true, "explanation": "Helyes! Ez a három alak: I am, he/she/it is, you/we/they are." }
+    { "question": "He are a doctor", "answer": false, "explanation": "Nem, nem helyes! A helyes mondat: \"He is a doctor.\"."},
+    { "question": "I am a student", "answer": true, "explanation": "Igen, ez egy helyes mondat."},
+    { "question": "They is happy", "answer": false, "explanation": "Nem, nem helyes! A helyes mondat: \"They are happy.\"."},
+    { "question": "We are teachers", "answer": true, "explanation": "Igen, ez egy helyes mondat."},
+    { "question": "She is tall", "answer": true, "explanation": "Igen, ez egy helyes mondat."},
+    { "question": "You are tired", "answer": true, "explanation": "Igen, ez egy helyes mondat."},
+    { "question": "It is a cat", "answer": true, "explanation": "Igen, ez egy helyes mondat."},
+    { "question": "I do not like fish", "answer": true, "explanation": "Igen, ez egy helyes mondat."},
+    { "question": "He are swimming", "answer": false, "explanation":"Nem, nem helyes! A helyes mondat: \"He is swimming.\"."},
+    { "question": "We is friends", "answer": false, "explanation":"Nem, nem helyes! A helyes mondat: \"We are friends.\"."}
   ]
 }
