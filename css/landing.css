@@ -279,3 +279,31 @@
     background: oklch(0.12 0.01 260);
     color: var(--color-text-main);
 }
+
+/* ==========================================================================
+   MODAL UI POLISH
+   ========================================================================== */
+.btn-close-icon {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: oklch(1 0 0 / 0.05);
+    border: 1px solid oklch(1 0 0 / 0.1);
+    color: var(--color-text-main);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.btn-close-icon:hover {
+    background: oklch(0.65 0.2 25 / 0.2);
+    color: var(--color-error);
+    border-color: var(--color-error);
+    transform: rotate(90deg);
+}

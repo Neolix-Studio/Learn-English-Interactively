@@ -1575,3 +1575,289 @@
     box-shadow: none !important;
     border-color: transparent !important;
 }
+
+/* ==========================================================================
+   8. USER PROFILE MODAL & USERNAME BUTTON
+   ========================================================================== */
+#user-profile-btn {
+    cursor: pointer;
+    transition: color var(--transition-base), text-shadow var(--transition-base);
+}
+
+#user-profile-btn:hover {
+    color: var(--color-accent-in);
+    text-shadow: 0 0 10px oklch(0.75 0.15 250 / 0.5);
+}
+
+.profile-glass-panel {
+    max-width: 800px;
+    width: 90%;
+    padding: 2.5rem;
+    text-align: left;
+}
+
+.profile-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--color-accent-in);
+    font-size: 1.8rem;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.profile-settings-section h3, .profile-stats-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-main);
+    border-bottom: 1px solid oklch(1 0 0 / 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.profile-info-block {
+    background: oklch(1 0 0 / 0.03);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-info-block p {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-muted);
+}
+.profile-info-block p strong {
+    color: var(--color-text-main);
+}
+
+.password-form .input-group {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.password-form label {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.password-form input {
+    background: oklch(0.12 0.01 260);
+    border: 1px solid oklch(1 0 0 / 0.15);
+    border-radius: 8px;
+    color: var(--color-text-main);
+    padding: 0.6rem;
+    font-size: 0.95rem;
+    transition: border-color var(--transition-base);
+}
+
+.password-form input:focus {
+    outline: none;
+    border-color: var(--color-accent-in);
+}
+
+.info-tooltip {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: oklch(0.75 0.15 250 / 0.2);
+    color: var(--color-accent-in);
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: help;
+    margin-left: 0.3rem;
+}
+
+.error-msg {
+    color: var(--color-error);
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+.success-msg {
+    color: var(--color-success);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.stat-card {
+    background: oklch(1 0 0 / 0.03);
+    border: 1px solid oklch(1 0 0 / 0.08);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card h4 {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-large-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-accent-on);
+    font-family: var(--font-heading);
+}
+
+.course-progress-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--color-text-main);
+}
+
+.empty-state-text {
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+/* Custom Tooltip Styling */
+.tooltip-container {
+    display: inline-flex;
+    position: relative;
+    vertical-align: middle;
+}
+
+.custom-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    width: 260px;
+    background-color: oklch(0.2 0.02 260);
+    color: var(--color-text-main);
+    text-align: center;
+    border-radius: 8px;
+    padding: 0.85rem;
+    position: absolute;
+    z-index: 100;
+    bottom: 150%; 
+    left: 50%;
+    margin-left: -130px;
+    box-shadow: 0 4px 15px oklch(0 0 0 / 0.5);
+    border: 1px solid var(--color-accent-on);
+    font-size: 0.85rem;
+    font-weight: normal;
+    transition: opacity 0.3s, visibility 0.3s;
+    pointer-events: none;
+    line-height: 1.4;
+}
+
+.custom-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--color-accent-on) transparent transparent transparent;
+}
+
+.tooltip-container:hover .custom-tooltip,
+.info-tooltip:focus + .custom-tooltip,
+.info-tooltip:active + .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   9. MODAL UI POLISH
+   ========================================================================== */
+.btn-close-icon {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: oklch(1 0 0 / 0.05);
+    border: 1px solid oklch(1 0 0 / 0.1);
+    color: var(--color-text-main);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.btn-close-icon:hover {
+    background: oklch(0.65 0.2 25 / 0.2);
+    color: var(--color-error);
+    border-color: var(--color-error);
+    transform: rotate(90deg);
+}
+
+.profile-glass-panel {
+    position: relative;
+}
+
+#btn-change-password {
+    background: linear-gradient(135deg, var(--color-accent-in), oklch(0.7 0.15 250));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all var(--transition-base);
+    box-shadow: 0 4px 15px oklch(0.75 0.15 250 / 0.3);
+}
+
+#btn-change-password:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px oklch(0.75 0.15 250 / 0.5);
+}
+
+#btn-change-password:disabled {
+    background: oklch(0.4 0.01 260);
+    color: oklch(0.6 0.01 260);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-close-modal {
+    background: var(--color-accent-on);
+    color: #000;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 15px oklch(0.75 0.18 310 / 0.3);
+    transition: all var(--transition-base);
+    margin-top: 1rem;
+}
+
+.btn-close-modal:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px var(--color-accent-on);
+}

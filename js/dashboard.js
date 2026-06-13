@@ -1,10 +1,10 @@
 // js/dashboard.js
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Start listening for sidebar accordion clicks, top navbar clicks, and modal events
     initAccordionListeners();
     initTopNavbarListeners();
     initModalListeners();
+    initProfileListeners();
     
     // Initialize progression tracking for the logged-in user
     await initUserProgress();
@@ -329,6 +329,11 @@ function completeSubsectionAction(level, section, subsection, buttonEl) {
 
     // Reward points
     userProgress.points = (userProgress.points || 0) + 5;
+    
+    // Add to time spent & exercises count (saved within scores to avoid DB schema migrations)
+    if (!userProgress.scores) userProgress.scores = {};
+    userProgress.scores.totalTimeSpent = (userProgress.scores.totalTimeSpent || 0) + stopwatchSeconds;
+    userProgress.scores.exercisesCompleted = (userProgress.scores.exercisesCompleted || 0) + 1;
     
     // Mark as completed
     userProgress.completed[key] = true;
@@ -1628,9 +1633,6 @@ function initModalListeners() {
 
     if (closeWipBtn && wipModal) {
         closeWipBtn.addEventListener("click", closeWipModal);
-        wipModal.addEventListener("click", (e) => {
-            if (e.target === wipModal) closeWipModal();
-        });
     }
 
     const lockedModal = document.getElementById("locked-modal");
@@ -1638,9 +1640,6 @@ function initModalListeners() {
 
     if (closeLockedBtn && lockedModal) {
         closeLockedBtn.addEventListener("click", closeLockedModal);
-        lockedModal.addEventListener("click", (e) => {
-            if (e.target === lockedModal) closeLockedModal();
-        });
     }
 }
 
@@ -1673,5 +1672,210 @@ function closeLockedModal() {
     if (lockedModal) {
         lockedModal.classList.remove("is-active");
         lockedModal.setAttribute("aria-hidden", "true");
+    }
+}
+
+// =====================================================================
+//   USER PROFILE & PASSWORD MANAGEMENT
+// =====================================================================
+
+function initProfileListeners() {
+    const profileBtn = document.getElementById("user-profile-btn");
+    const closeProfileBtn = document.getElementById("close-profile-btn");
+    const profileModal = document.getElementById("profile-modal");
+    const passwordForm = document.getElementById("password-change-form");
+
+    if (profileBtn) {
+        profileBtn.addEventListener("click", () => {
+            openProfileModal();
+        });
+    }
+
+    if (closeProfileBtn) {
+        closeProfileBtn.addEventListener("click", () => {
+            closeProfileModal();
+        });
+    }
+
+    // Handle Password Change Form Submit
+    if (passwordForm) {
+        passwordForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await handlePasswordChange();
+        });
+    }
+}
+
+async function openProfileModal() {
+    const profileModal = document.getElementById("profile-modal");
+    if (!profileModal) return;
+
+    // Reset password form fields and messages
+    const passwordForm = document.getElementById("password-change-form");
+    if (passwordForm) passwordForm.reset();
+    document.getElementById("password-error-msg").textContent = "";
+    document.getElementById("password-success-msg").textContent = "";
+
+    // 1. Render Account Info
+    const usernameDisplay = document.getElementById("profile-username-display");
+    const emailDisplay = document.getElementById("profile-email-display");
+    
+    if (usernameDisplay) usernameDisplay.textContent = userProgress.username;
+    
+    if (supabaseClient) {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (user && emailDisplay) {
+            emailDisplay.textContent = user.email;
+        } else if (emailDisplay) {
+            emailDisplay.textContent = "Nincs (Vendég fiók)";
+        }
+    } else {
+        if (emailDisplay) emailDisplay.textContent = "Nincs (Vendég fiók)";
+    }
+
+    // 2. Render Statistics
+    renderProfileStatistics();
+
+    // 3. Show Modal
+    profileModal.classList.add("is-active");
+    profileModal.setAttribute("aria-hidden", "false");
+}
+
+function closeProfileModal() {
+    const profileModal = document.getElementById("profile-modal");
+    if (profileModal) {
+        profileModal.classList.remove("is-active");
+        profileModal.setAttribute("aria-hidden", "true");
+    }
+}
+
+function renderProfileStatistics() {
+    // A. Started Courses (Look through completed keys)
+    const startedLevels = new Set();
+    if (userProgress.completed) {
+        for (const key in userProgress.completed) {
+            if (userProgress.completed[key]) {
+                const levelStr = key.split('_')[0]; // e.g. A1, A2
+                startedLevels.add(levelStr);
+            }
+        }
+    }
+
+    const startedCoursesContainer = document.getElementById("profile-started-courses");
+    if (startedCoursesContainer) {
+        if (startedLevels.size === 0) {
+            startedCoursesContainer.innerHTML = `<p class="empty-state-text">Még nem kezdtél el tanfolyamot.</p>`;
+        } else {
+            let html = "";
+            const levelNames = {
+                "A1": "A1 Kezdő",
+                "A2": "A2 Alapfok",
+                "B1": "B1 Középfok",
+                "B2": "B2 Haladó"
+            };
+            
+            startedLevels.forEach(level => {
+                // Determine percentage roughly based on DOM progress bar or simple check
+                // For a more precise check, we could duplicate the updateProgressUI logic per level.
+                // Since this is a simple dashboard, we will just say "Folyamatban" (In Progress).
+                html += `
+                    <div class="course-progress-item">
+                        <span>${levelNames[level] || level}</span>
+                        <span style="color: var(--color-accent-in);">Folyamatban</span>
+                    </div>
+                `;
+            });
+            startedCoursesContainer.innerHTML = html;
+        }
+    }
+
+    // B. Average Time
+    const avgTimeDisplay = document.getElementById("profile-avg-time");
+    if (avgTimeDisplay) {
+        const totalTime = (userProgress.scores && userProgress.scores.totalTimeSpent) ? userProgress.scores.totalTimeSpent : 0;
+        const totalExercises = (userProgress.scores && userProgress.scores.exercisesCompleted) ? userProgress.scores.exercisesCompleted : 0;
+        
+        if (totalExercises > 0 && totalTime > 0) {
+            const avgSeconds = Math.round(totalTime / totalExercises);
+            const mins = Math.floor(avgSeconds / 60);
+            const secs = avgSeconds % 60;
+            const formatted = `${mins > 0 ? mins + 'p ' : ''}${secs}mp`;
+            avgTimeDisplay.textContent = formatted;
+        } else {
+            avgTimeDisplay.textContent = "-";
+        }
+    }
+
+    // C. Total Points
+    const totalPointsDisplay = document.getElementById("profile-total-points");
+    if (totalPointsDisplay) {
+        totalPointsDisplay.textContent = userProgress.points || 0;
+    }
+}
+
+async function handlePasswordChange() {
+    const errorMsg = document.getElementById("password-error-msg");
+    const successMsg = document.getElementById("password-success-msg");
+    errorMsg.textContent = "";
+    successMsg.textContent = "";
+
+    const currentPassword = document.getElementById("current-password").value;
+    const newPassword = document.getElementById("new-password").value;
+    const repeatPassword = document.getElementById("repeat-password").value;
+
+    if (newPassword !== repeatPassword) {
+        errorMsg.textContent = "A két új jelszó nem egyezik meg!";
+        return;
+    }
+
+    // Regex Check: 8-16 chars, Lowercase, Uppercase, Number, Symbol
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/;
+    if (!passwordRegex.test(newPassword)) {
+        errorMsg.textContent = "A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.";
+        return;
+    }
+
+    if (!supabaseClient) {
+        errorMsg.textContent = "Vendégként nem tudsz jelszót módosítani.";
+        return;
+    }
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) {
+        errorMsg.textContent = "Kérjük jelentkezz be újra a jelszó módosításához.";
+        return;
+    }
+
+    // Optional but recommended: Verify current password by signing in again before changing it
+    // Supabase allows auth.updateUser without current password if session is valid, 
+    // but to be secure and meet the requirement, we will simulate re-auth.
+    const email = user.email;
+    const { error: signInError } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: currentPassword
+    });
+
+    if (signInError) {
+        errorMsg.textContent = "A jelenlegi jelszó helytelen.";
+        return;
+    }
+
+    // Now update password
+    const btn = document.getElementById("btn-change-password");
+    btn.disabled = true;
+    btn.textContent = "Kérjük várj...";
+
+    const { error: updateError } = await supabaseClient.auth.updateUser({
+        password: newPassword
+    });
+
+    btn.disabled = false;
+    btn.textContent = "Mentés";
+
+    if (updateError) {
+        errorMsg.textContent = "Hiba történt a jelszó módosításakor. Próbáld újra.";
+    } else {
+        successMsg.textContent = "Jelszó sikeresen frissítve!";
+        document.getElementById("password-change-form").reset();
     }
 }

@@ -7,6 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
         supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
 
+    // Check if user is already logged in and update UI accordingly
+    if (supabaseClient) {
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                const navLoginLink = document.querySelector('a[href="#login"]');
+                if (navLoginLink) {
+                    navLoginLink.textContent = "Tanuló Felület";
+                    navLoginLink.href = "dashboard.html";
+                    // It will now just act as a normal link to dashboard.html 
+                    // instead of opening the login modal.
+                }
+            }
+        });
+    }
+
     // 2. Setup Level Card Redirection for Guests
     const levelButtons = document.querySelectorAll(".landing-level-btn");
     levelButtons.forEach(button => {
@@ -29,9 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (closeWipBtn && wipModal) {
         closeWipBtn.addEventListener("click", closeWipModal);
-        wipModal.addEventListener("click", (e) => {
-            if (e.target === wipModal) closeWipModal();
-        });
     }
 
     function openWipModal() {
@@ -52,15 +64,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (navLoginLink && loginModal) {
         navLoginLink.addEventListener("click", (e) => {
             e.preventDefault();
-            openLoginModal();
+            if (navLoginLink.textContent === "Tanuló Felület") {
+                window.location.href = "dashboard.html";
+            } else {
+                openLoginModal();
+            }
         });
     }
 
     if (closeLoginBtn && loginModal) {
         closeLoginBtn.addEventListener("click", closeLoginModal);
-        loginModal.addEventListener("click", (e) => {
-            if (e.target === loginModal) closeLoginModal();
-        });
     }
 
     function openLoginModal() {

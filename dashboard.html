@@ -26,7 +26,7 @@
             </nav>
 
             <div class="header-actions">
-                <span class="user-welcome">Szia, Péter!</span>
+                <span class="user-welcome" id="user-profile-btn" role="button" tabindex="0" title="Profil megtekintése">Szia, Vendég!</span>
                 <a href="index.html" class="btn btn-logout">Kijelentkezés</a>
             </div>
         </div>
@@ -165,6 +165,71 @@
             <h2>Vizsga zárolva!</h2>
             <p>A fejezet vizsga megkezdéséhez előbb teljesítened kell az összes megelőző feladatot (Magyarázat, Szavak, Lyukas mondatok, Szórendezés, Igaz vagy Hamis).</p>
             <button id="close-locked-btn" class="btn-close-modal">Bezárás</button>
+        </div>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div id="profile-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content glass-panel profile-glass-panel">
+            <button id="close-profile-btn" class="btn-close-icon" aria-label="Bezárás">✕</button>
+            <h2 class="profile-title">👤 Profilom</h2>
+            
+            <div class="profile-layout">
+                <!-- Left Side: Account & Password -->
+                <div class="profile-settings-section">
+                    <h3>Fiók Információk</h3>
+                    <div class="profile-info-block">
+                        <p><strong>Felhasználónév:</strong> <span id="profile-username-display">Betöltés...</span></p>
+                        <p><strong>Email:</strong> <span id="profile-email-display">Betöltés...</span></p>
+                    </div>
+
+                    <h3 class="mt-4">Jelszó megváltoztatása</h3>
+                    <form id="password-change-form" class="password-form">
+                        <div class="input-group">
+                            <label for="current-password">Jelenlegi jelszó</label>
+                            <input type="password" id="current-password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-password">Új jelszó 
+                                <div class="tooltip-container" onclick="event.preventDefault();">
+                                    <span class="info-tooltip" tabindex="0">ⓘ</span>
+                                    <div class="custom-tooltip">Minimum 8, maximum 16 karakter. Tartalmaznia kell: kisbetűt, nagybetűt, számot és speciális karaktert.</div>
+                                </div>
+                            </label>
+                            <input type="password" id="new-password" required>
+                            <div id="password-error-msg" class="error-msg"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="repeat-password">Új jelszó megerősítése</label>
+                            <input type="password" id="repeat-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btn-change-password">Mentés</button>
+                        <div id="password-success-msg" class="success-msg"></div>
+                    </form>
+                </div>
+
+                <!-- Right Side: Dashboard Stats -->
+                <div class="profile-stats-section">
+                    <h3>Tanulmányi Statisztikák</h3>
+                    
+                    <div class="stat-card">
+                        <h4>Megkezdett kurzusok</h4>
+                        <div id="profile-started-courses">
+                            <p class="empty-state-text">Még nem kezdtél el tanfolyamot.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h4>Átlagos idő feladatonként</h4>
+                        <div id="profile-avg-time" class="stat-large-value">-</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <h4>Összesített pontszám</h4>
+                        <div id="profile-total-points" class="stat-large-value">0</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
