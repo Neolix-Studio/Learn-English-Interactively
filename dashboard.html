@@ -131,11 +131,11 @@
                     <span class="metric-title">Pontszám</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-value">00:00</span>
+                    <span class="metric-value" id="timer-display">00:00</span>
                     <span class="metric-title">Ezzel töltött idő</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-value">0%</span>
+                    <span class="metric-value" id="success-rate-display">0%</span>
                     <span class="metric-title">Sikerességi ráta</span>
                 </div>
             </section>
@@ -155,6 +155,16 @@
             <h2>Hamarosan érkezik!</h2>
             <p>Az A2, B1 és B2 szintek jelenleg fejlesztés alatt állnak. Tanáraink gőzerővel dolgoznak a magyar nyelvű magyarázatokon és teszteken.</p>
             <button id="close-wip-btn" class="btn-close-modal">Bezárás</button>
+        </div>
+    </div>
+
+    <!-- EXAM LOCKED WARNING MODAL -->
+    <div id="locked-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content glass-panel">
+            <div class="wip-badge" style="background: oklch(0.65 0.2 25 / 0.2); border-color: var(--color-error); color: var(--color-error);">🔒 ZÁROLVA</div>
+            <h2>Vizsga zárolva!</h2>
+            <p>A fejezet vizsga megkezdéséhez előbb teljesítened kell az összes megelőző feladatot (Magyarázat, Szavak, Lyukas mondatok, Szórendezés, Igaz vagy Hamis).</p>
+            <button id="close-locked-btn" class="btn-close-modal">Bezárás</button>
         </div>
     </div>
 

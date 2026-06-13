@@ -32,6 +32,103 @@ let userProgress = {
 // Global cache for fetched vocabulary data to prevent redundant network hits
 const vocabCache = {};
 
+// Stopwatch timer state
+let stopwatchInterval = null;
+let stopwatchSeconds = 0;
+
+// Tracking correctness attempts map for the current active exercise view (maps question index -> boolean correctness)
+let exerciseAttempts = {};
+
+// Global classification helpers to distinguish types cleanly
+function isExplanation(subsectionData) {
+    return subsectionData && subsectionData.type === "explanation";
+}
+
+function isVocabulary(subsectionData) {
+    return subsectionData && subsectionData.type === "words";
+}
+
+function isExercise(subsectionData) {
+    return subsectionData && ["fill_blanks", "word_order", "true_false"].includes(subsectionData.type);
+}
+
+function isExam(subsectionData) {
+    return subsectionData && subsectionData.type === "section_exam";
+}
+
+// Stopwatch actions
+function startStopwatch() {
+    stopStopwatch();
+    stopwatchSeconds = 0;
+    updateStopwatchDisplay();
+    
+    stopwatchInterval = setInterval(() => {
+        stopwatchSeconds++;
+        updateStopwatchDisplay();
+    }, 1000);
+}
+
+function stopStopwatch() {
+    if (stopwatchInterval) {
+        clearInterval(stopwatchInterval);
+        stopwatchInterval = null;
+    }
+}
+
+function updateStopwatchDisplay() {
+    const timerDisplay = document.getElementById("timer-display");
+    if (timerDisplay) {
+        const minutes = Math.floor(stopwatchSeconds / 60);
+        const seconds = stopwatchSeconds % 60;
+        const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        timerDisplay.textContent = formatted;
+    }
+}
+
+// Dynamic success rate tracker
+function updateSuccessRateDisplay(isActive) {
+    const displayEl = document.getElementById("success-rate-display");
+    if (!displayEl) return;
+    
+    if (!isActive) {
+        displayEl.textContent = "-";
+        return;
+    }
+    
+    const attempted = Object.keys(exerciseAttempts).length;
+    if (attempted === 0) {
+        displayEl.textContent = "0%";
+        return;
+    }
+    
+    let correctCount = 0;
+    for (let key in exerciseAttempts) {
+        if (exerciseAttempts[key]) {
+            correctCount++;
+        }
+    }
+    const rate = Math.round((correctCount / attempted) * 100);
+    displayEl.textContent = `${rate}%`;
+}
+
+// Global section exam locking checks
+function isSectionExamLocked(level, section) {
+    const moduleData = learningContent[level]?.[section];
+    if (!moduleData || !moduleData.subsections) return false;
+    
+    for (const subKey in moduleData.subsections) {
+        const subData = moduleData.subsections[subKey];
+        if (isExam(subData)) {
+            continue; // Skip the exam itself
+        }
+        const key = `${level}_${section}_${subKey}`;
+        if (!userProgress.completed[key]) {
+            return true; // Lock the exam because a preceding lesson is not completed
+        }
+    }
+    return false; // All preceding lessons completed, unlocked!
+}
+
 // Extracts the logged-in user's name from the header welcome message dynamically
 function getLoggedInUser() {
     const welcomeSpan = document.querySelector(".user-welcome");
@@ -145,6 +242,9 @@ function completeSubsectionAction(level, section, subsection, buttonEl) {
     // Prevent duplicate point claims
     if (userProgress.completed[key]) return;
     
+    // Stop the timer
+    stopStopwatch();
+
     // Reward points
     userProgress.points = (userProgress.points || 0) + 5;
     
@@ -188,9 +288,23 @@ function updateProgressUI() {
         const section = accordion.getAttribute("data-section");
         const subsection = link.getAttribute("data-subsection");
         const key = `${level}_${section}_${subsection}`;
+        const subData = learningContent[level]?.[section]?.subsections?.[subsection];
 
-        // Only count subsections belonging to the current visual level track
-        if (level === currentLevel) {
+        // Lock/unlock section exams in the sidebar
+        if (isExam(subData)) {
+            const isLocked = isSectionExamLocked(level, section);
+            const iconSpan = link.querySelector(".subsection-icon");
+            if (isLocked) {
+                link.classList.add("locked");
+                if (iconSpan) iconSpan.textContent = "🔒";
+            } else {
+                link.classList.remove("locked");
+                if (iconSpan) iconSpan.textContent = subData.icon || "🏆";
+            }
+        }
+
+        // Only count subsections belonging to the current visual level track, excluding exam
+        if (level === currentLevel && !isExam(subData)) {
             totalItems++;
             if (userProgress.completed[key]) {
                 completedItems++;
@@ -241,6 +355,11 @@ function initAccordionListeners() {
     subsectionLinks.forEach(link => {
         link.addEventListener("click", (event) => {
             event.preventDefault();
+
+            if (link.classList.contains("locked")) {
+                openLockedModal();
+                return;
+            }
 
             const subsectionKey = link.getAttribute("data-subsection");
             if (!subsectionKey) return;
@@ -338,6 +457,20 @@ function renderSubsection(level, section, subsection) {
         document.querySelector(".current-topic-title").textContent = "Tananyag Nem Található";
         workspace.innerHTML = `<p class="error-text" style="color: var(--color-error); padding: 2rem;">Sajnáljuk, ehhez a részhez még nem töltöttek fel feladatokat.</p>`;
         return;
+    }
+
+    // Reset exercise attempts tracking for the new view
+    exerciseAttempts = {};
+
+    // Setup stopwatch and success rate display
+    if (isExercise(subsectionData) || isExam(subsectionData)) {
+        startStopwatch();
+        updateSuccessRateDisplay(true);
+    } else {
+        stopStopwatch();
+        stopwatchSeconds = 0;
+        updateStopwatchDisplay();
+        updateSuccessRateDisplay(false);
     }
 
     document.querySelector(".current-topic-title").textContent = `${subsectionData.icon} ${subsectionData.title}`;
@@ -1121,11 +1254,13 @@ function checkFillBlank(index) {
     // Support multiple options split by '/' (e.g. "isn't/is not")
     const possibleAnswers = correctAnswer.toLowerCase().split("/").map(ans => ans.trim());
 
+    let isCorrect = false;
     if (possibleAnswers.includes(userAnswer)) {
         feedback.innerHTML = `✓ Helyes válasz! Ügyes vagy!`;
         feedback.className = "quiz-feedback correct";
         input.classList.add("input-correct");
         input.classList.remove("input-incorrect");
+        isCorrect = true;
     } else {
         const displayAnswer = correctAnswer.replace(/\//g, " / ");
         feedback.innerHTML = `✗ Nem jó. A helyes válasz: <strong>${displayAnswer}</strong>`;
@@ -1133,8 +1268,15 @@ function checkFillBlank(index) {
         input.classList.add("input-incorrect");
         input.classList.remove("input-correct");
     }
+    
+    exerciseAttempts[index] = isCorrect;
+    updateSuccessRateDisplay(true);
+
     const completeBtn = document.querySelector(".btn-complete-section");
-    if (completeBtn) completeBtn.disabled = false;
+    const totalQuestions = data.items.length;
+    if (completeBtn && Object.keys(exerciseAttempts).length === totalQuestions) {
+        completeBtn.disabled = false;
+    }
 }
 
 // True/False checker
@@ -1142,16 +1284,37 @@ function checkTrueFalse(index, studentAnswer) {
     const data = learningContent[currentLevel][currentSection].subsections.trueFalse;
     const item = data.items[index];
     const feedback = document.getElementById(`tf-feedback-${index}`);
+    
+    const container = document.querySelector(`.quiz-item[data-index="${index}"] .quiz-buttons`);
+    if (container) {
+        const btnTrue = container.querySelector(".btn-true");
+        const btnFalse = container.querySelector(".btn-false");
+        if (studentAnswer === true) {
+            btnTrue.classList.add("selected");
+            btnFalse.classList.remove("selected");
+        } else {
+            btnFalse.classList.add("selected");
+            btnTrue.classList.remove("selected");
+        }
+    }
 
-    if (studentAnswer === item.answer) {
+    const isCorrect = (studentAnswer === item.answer);
+    if (isCorrect) {
         feedback.innerHTML = `✓ ${item.explanation}`;
         feedback.className = "quiz-feedback correct";
     } else {
         feedback.innerHTML = `✗ ${item.explanation}`;
         feedback.className = "quiz-feedback incorrect";
     }
+    
+    exerciseAttempts[index] = isCorrect;
+    updateSuccessRateDisplay(true);
+
     const completeBtn = document.querySelector(".btn-complete-section");
-    if (completeBtn) completeBtn.disabled = false;
+    const totalQuestions = data.items.length;
+    if (completeBtn && Object.keys(exerciseAttempts).length === totalQuestions) {
+        completeBtn.disabled = false;
+    }
 }
 
 // Word Order — select chips to build sentence
@@ -1186,6 +1349,7 @@ function selectWordChip(chipEl, questionIndex, isExam = false) {
 
 // Check word order correctness
 function checkWordOrder(index) {
+    const data = learningContent[currentLevel][currentSection].subsections.wordOrder;
     const answerZone = document.getElementById(`answer-zone-${index}`);
     const feedback = document.getElementById(`order-feedback-${index}`);
     const correctAnswer = answerZone.getAttribute("data-correct");
@@ -1197,15 +1361,24 @@ function checkWordOrder(index) {
     const cleanUser = userAnswer.toLowerCase().replace(/[.?!,]/g, "").replace(/\s+/g, " ").trim();
     const cleanCorrect = correctAnswer.toLowerCase().replace(/[.?!,]/g, "").replace(/\s+/g, " ").trim();
 
+    let isCorrect = false;
     if (cleanUser === cleanCorrect) {
         feedback.innerHTML = `✓ Helyes! A mondat: "${correctAnswer}"`;
         feedback.className = "quiz-feedback correct";
+        isCorrect = true;
     } else {
         feedback.innerHTML = `✗ Nem jó. A helyes sorrend: "${correctAnswer}"`;
         feedback.className = "quiz-feedback incorrect";
     }
+    
+    exerciseAttempts[index] = isCorrect;
+    updateSuccessRateDisplay(true);
+
     const completeBtn = document.querySelector(".btn-complete-section");
-    if (completeBtn) completeBtn.disabled = false;
+    const totalQuestions = data.items.length;
+    if (completeBtn && Object.keys(exerciseAttempts).length === totalQuestions) {
+        completeBtn.disabled = false;
+    }
 }
 
 // Reset word order question
@@ -1252,6 +1425,9 @@ function gradeExam() {
     const data = learningContent[currentLevel][currentSection].subsections.sectionExam;
     let correct = 0;
     let total = data.items.length;
+
+    // Stop stopwatch timer
+    stopStopwatch();
 
     data.items.forEach((item, i) => {
         const feedback = document.getElementById(`exam-feedback-${i}`);
@@ -1324,6 +1500,12 @@ function gradeExam() {
         </div>
     `;
 
+    // Update the success rate metric in the header
+    const successRateDisplay = document.getElementById("success-rate-display");
+    if (successRateDisplay) {
+        successRateDisplay.textContent = `${percentage}%`;
+    }
+
     // Award points dynamically on exam grading
     const examKey = `${currentLevel}_${currentSection}_sectionExam`;
     if (percentage >= 50) {
@@ -1368,6 +1550,16 @@ function initModalListeners() {
             if (e.target === wipModal) closeWipModal();
         });
     }
+
+    const lockedModal = document.getElementById("locked-modal");
+    const closeLockedBtn = document.getElementById("close-locked-btn");
+
+    if (closeLockedBtn && lockedModal) {
+        closeLockedBtn.addEventListener("click", closeLockedModal);
+        lockedModal.addEventListener("click", (e) => {
+            if (e.target === lockedModal) closeLockedModal();
+        });
+    }
 }
 
 function openWipModal() {
@@ -1383,5 +1575,21 @@ function closeWipModal() {
     if (wipModal) {
         wipModal.classList.remove("is-active");
         wipModal.setAttribute("aria-hidden", "true");
+    }
+}
+
+function openLockedModal() {
+    const lockedModal = document.getElementById("locked-modal");
+    if (lockedModal) {
+        lockedModal.classList.add("is-active");
+        lockedModal.setAttribute("aria-hidden", "false");
+    }
+}
+
+function closeLockedModal() {
+    const lockedModal = document.getElementById("locked-modal");
+    if (lockedModal) {
+        lockedModal.classList.remove("is-active");
+        lockedModal.setAttribute("aria-hidden", "true");
     }
 }

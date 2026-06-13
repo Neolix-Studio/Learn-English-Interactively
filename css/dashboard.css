@@ -1562,3 +1562,16 @@
         transform: translate(-50%, -60px) scale(1);
     }
 }
+
+/* Locked subsection link styling */
+.subsection-link.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.subsection-link.locked:hover {
+    transform: none !important;
+    background: transparent !important;
+    color: var(--color-text-muted) !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
