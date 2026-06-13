@@ -729,7 +729,7 @@ async function renderWordsTemplate(workspace, data, moduleData) {
     } else {
         try {
             // Append version parameter to bust browser caches for static content updates
-            const response = await fetch(source + "?v=1.0.4");
+            const response = await fetch(source + "?v=1.0.5");
             if (!response.ok) throw new Error("HTTP error " + response.status);
             items = await response.json();
             vocabCache[source] = items;
@@ -797,7 +797,7 @@ async function renderFillBlanksTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.4");
+                const response = await fetch(source + "?v=1.0.5");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
@@ -864,7 +864,7 @@ async function renderWordOrderTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.4");
+                const response = await fetch(source + "?v=1.0.5");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
@@ -942,7 +942,7 @@ async function renderTrueFalseTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.4");
+                const response = await fetch(source + "?v=1.0.5");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
@@ -1010,7 +1010,7 @@ async function renderSectionExamTemplate(workspace, data) {
                 </div>
             `;
             try {
-                const response = await fetch(source + "?v=1.0.4");
+                const response = await fetch(source + "?v=1.0.5");
                 if (!response.ok) throw new Error("HTTP error " + response.status);
                 const fetched = await response.json();
                 vocabCache[source] = fetched;
