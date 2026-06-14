@@ -63,46 +63,8 @@
                 <div class="nav-group">
                     <h3 class="group-title">Tananyag (Lessons)</h3>
                     
-                    <!-- Accordion Course Item using native <details> -->
-                    <details class="course-accordion" data-level="A1" data-section="ToBe" open>
-                        <summary class="course-accordion-header">
-                            <span class="accordion-icon">📘</span>
-                            <span class="accordion-title">Első lecke: A "Lenni" Ige</span>
-                            <span class="accordion-chevron"></span>
-                        </summary>
-                        <ul class="subsection-list">
-                            <li>
-                                <a href="#" class="subsection-link active" data-subsection="explanation">
-                                    <span class="subsection-icon">📚</span> Magyarázat
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="subsection-link" data-subsection="words">
-                                    <span class="subsection-icon">📖</span> Szavak
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="subsection-link" data-subsection="fillBlanks">
-                                    <span class="subsection-icon">✏️</span> Lyukas mondatok
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="subsection-link" data-subsection="wordOrder">
-                                    <span class="subsection-icon">🔀</span> Szórendezés
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="subsection-link" data-subsection="trueFalse">
-                                    <span class="subsection-icon">✅</span> Igaz vagy Hamis
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="subsection-link subsection-exam" data-subsection="sectionExam">
-                                    <span class="subsection-icon">🏆</span> Fejezet vizsga
-                                </a>
-                            </li>
-                        </ul>
-                    </details>
+                    <!-- Dynamic lessons will be injected here by renderSidebar() -->
+                    <div id="sidebar-lessons-container"></div>
                 </div>
 
                 <!-- Group 2: Final Evaluations -->
@@ -302,11 +264,19 @@
         </div>
     </div>
 
+    <!-- IMAGE LIGHTBOX MODAL -->
+    <div id="image-lightbox" class="modal-overlay" aria-hidden="true" onclick="closeLightbox(event)">
+        <div class="lightbox-content" style="position: relative; max-width: 90vw; max-height: 90vh; display: flex; justify-content: center; align-items: center;" onclick="event.stopPropagation()">
+            <button id="close-lightbox-btn" class="btn-close-icon" aria-label="Bezárás" style="position: absolute; top: -15px; right: -15px; background: oklch(0.2 0.05 250); border: 2px solid oklch(1 0 0 / 0.1); border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: white; font-size: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);" onclick="closeLightbox(event)">✕</button>
+            <img id="lightbox-img" src="" alt="Nagyított kép" style="max-width: 100%; max-height: 85vh; border-radius: 8px; box-shadow: 0 4px 30px rgba(0,0,0,0.5); object-fit: contain;">
+        </div>
+    </div>
+
     <!-- Script assets -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/config.js?v=1.0.7"></script>
-    <script src="js/data.js?v=1.0.7"></script>
-    <script src="js/nav.js?v=1.0.7"></script>
-    <script src="js/dashboard.js?v=1.0.7"></script>
+    <script src="js/config.js?v=1.0.8"></script>
+    <script src="js/data.js?v=1.0.8"></script>
+    <script src="js/nav.js?v=1.0.8"></script>
+    <script src="js/dashboard.js?v=1.0.8"></script>
 </body>
 </html>

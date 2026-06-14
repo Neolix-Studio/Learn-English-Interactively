@@ -1,7 +1,7 @@
 // js/dashboard.js
 
 document.addEventListener("DOMContentLoaded", async () => {
-    initAccordionListeners();
+    // Accordion listeners are now initialized dynamically inside renderSidebar()
     initTopNavbarListeners();
     // Initialize standard modal and profile listeners if they exist in external scripts or below
     if (typeof initModalListeners === "function") initModalListeners();
@@ -223,22 +223,35 @@ function isSectionExamLocked(level, section) {
     return false; // All preceding lessons completed, unlocked!
 }
 
-// Calculates the next logical lesson step based on completion state
-function getNextUncompletedLesson(level, section) {
-    const moduleData = learningContent[level]?.[section];
-    if (!moduleData || !moduleData.subsections) return null;
-    
-    for (const subKey in moduleData.subsections) {
-        const key = `${level}_${section}_${subKey}`;
-        if (!userProgress.completed[key]) {
-            return {
-                key: subKey,
-                title: moduleData.subsections[subKey].title || subKey,
-                isExam: isExam(moduleData.subsections[subKey])
-            };
+// Calculates the next logical lesson step based on completion state across ALL sections
+function getNextUncompletedLesson(level) {
+    const sections = Object.keys(learningContent[level] || {});
+    for (const secKey of sections) {
+        const moduleData = learningContent[level][secKey];
+        if (!moduleData || !moduleData.subsections) continue;
+        
+        // If the entire section is deemed complete (registered users pass the exam)
+        if (userProgress.completed[`${level}_${secKey}_sectionExam`]) {
+            continue; // Skip this entire section!
+        }
+        
+        for (const subKey in moduleData.subsections) {
+            // Check if the user is even allowed to access this subsection
+            const isAccessible = isContentAccessible(level, secKey, subKey);
+            if (!isAccessible) continue; // Skip asking them to complete inaccessible lessons!
+
+            const key = `${level}_${secKey}_${subKey}`;
+            if (!userProgress.completed[key]) {
+                return {
+                    section: secKey,
+                    key: subKey,
+                    title: moduleData.subsections[subKey].title || subKey,
+                    isExam: isExam(moduleData.subsections[subKey])
+                };
+            }
         }
     }
-    return null; // All completed
+    return null; // All sections in the level are completely finished
 }
 
 // Scans forward through the entire curriculum to find the next valid, accessible lesson
@@ -330,6 +343,8 @@ async function initUserProgress() {
                     localStorage.removeItem(key);
                 }
             });
+            // Mark the guest as visibly logged out without deleting their progress
+            localStorage.setItem("guest_logged_out", "true");
             window.location.href = "index.html";
         });
     });
@@ -514,6 +529,21 @@ async function saveUserProgress() {
     }
     
     updateProgressUI();
+}
+
+// Debounced answer saver
+let saveAnswerTimeout = null;
+function saveExerciseAnswer(level, section, subsection, index, value) {
+    const key = `${level}_${section}_${subsection}_answers`;
+    if (!userProgress.completed[key]) {
+        userProgress.completed[key] = {};
+    }
+    userProgress.completed[key][index] = value;
+    
+    if (saveAnswerTimeout) clearTimeout(saveAnswerTimeout);
+    saveAnswerTimeout = setTimeout(() => {
+        saveUserProgress();
+    }, 500);
 }
 
 // Marks a specific section page as completed
@@ -735,7 +765,7 @@ async function updateProgressUI() {
     }
 
     // UPDATE HERO CTA CARD DYNAMICALLY
-    const nextLesson = getNextUncompletedLesson(currentLevel, currentSection);
+    const nextLesson = getNextUncompletedLesson(currentLevel);
     const ctaCard = document.querySelector(".resume-cta-card");
     const ctaHeader = document.querySelector(".resume-cta-header");
     const ctaTitle = document.querySelector(".resume-cta-title");
@@ -744,9 +774,10 @@ async function updateProgressUI() {
     if (ctaCard && ctaHeader && ctaTitle && ctaBtn) {
         if (!nextLesson) {
             // Course completely finished!
-            // Retrieve exam score
-            const examKey = `${currentLevel}_${currentSection}_sectionExam`;
-            const examData = learningContent[currentLevel]?.[currentSection]?.subsections?.sectionExam;
+            // Retrieve exam score for the last section as a proxy, or total course points
+            const lastSection = Object.keys(learningContent[currentLevel] || {}).pop() || "ToBe";
+            const examKey = `${currentLevel}_${lastSection}_sectionExam`;
+            const examData = learningContent[currentLevel]?.[lastSection]?.subsections?.sectionExam;
             
             let totalQuestions = (examData && examData.items) ? examData.items.length : 0;
             
@@ -820,6 +851,77 @@ async function updateProgressUI() {
     }
 }
 
+// ==========================================================================
+// DYNAMIC SIDEBAR RENDERER
+// ==========================================================================
+function renderSidebar(levelName) {
+    const container = document.getElementById("sidebar-lessons-container");
+    if (!container) return;
+    
+    container.innerHTML = "";
+    
+    const levelData = learningContent[levelName];
+    if (!levelData) return;
+    
+    Object.keys(levelData).forEach(sectionKey => {
+        const sectionData = levelData[sectionKey];
+        const title = sectionData.title_hu || sectionData.title || `Lecke: ${sectionKey}`;
+        
+        let subsectionsHtml = "";
+        
+        if (sectionData.subsections) {
+            Object.keys(sectionData.subsections).forEach(subKey => {
+                const subData = sectionData.subsections[subKey];
+                const isAccessible = isContentAccessible(levelName, sectionKey, subKey);
+                
+                let linkClass = "subsection-link";
+                let iconHtml = subData.icon || "•";
+                
+                if (!isAccessible) {
+                    if (isExam(subData)) {
+                        linkClass += " locked";
+                        iconHtml = "🔒";
+                    } else if (ProgressManager.isGuest) {
+                        linkClass += " guest-locked";
+                        iconHtml = "🔒";
+                    }
+                }
+                
+                if (isExam(subData)) {
+                    linkClass += " subsection-exam";
+                }
+                
+                subsectionsHtml += `
+                            <li>
+                                <a href="#" class="${linkClass}" data-subsection="${subKey}">
+                                    <span class="subsection-icon">${iconHtml}</span> ${subData.title}
+                                </a>
+                            </li>
+                `;
+            });
+        }
+        
+        const isOpen = sectionKey === currentSection ? "open" : "";
+        
+        const detailsHtml = `
+                    <details class="course-accordion" data-level="${levelName}" data-section="${sectionKey}" ${isOpen}>
+                        <summary class="course-accordion-header">
+                            <span class="accordion-icon">📘</span>
+                            <span class="accordion-title">${title}</span>
+                            <span class="accordion-chevron"></span>
+                        </summary>
+                        <ul class="subsection-list">
+${subsectionsHtml}
+                        </ul>
+                    </details>
+        `;
+        
+        container.insertAdjacentHTML("beforeend", detailsHtml);
+    });
+    
+    initAccordionListeners();
+}
+
 // 1. LISTEN TO SIDEBAR ACCORDION SUBSECTION LINKS
 function initAccordionListeners() {
     const subsectionLinks = document.querySelectorAll(".subsection-link");
@@ -845,12 +947,18 @@ function initAccordionListeners() {
             subsectionLinks.forEach(l => l.classList.remove("active"));
             link.classList.add("active");
 
+            // Extract the correct level and section from the parent accordion
+            const accordion = link.closest(".course-accordion");
+            if (accordion) {
+                currentLevel = accordion.getAttribute("data-level");
+                currentSection = accordion.getAttribute("data-section");
+            }
+
             // Update current subsection and render
             currentSubsection = subsectionKey;
             renderSubsection(currentLevel, currentSection, currentSubsection);
 
             // Close the parent accordion after clicking to keep UI clean
-            const accordion = link.closest(".course-accordion");
             if (accordion) {
                 accordion.open = false;
             }
@@ -944,7 +1052,21 @@ function initTopNavbarListeners() {
 // 3. SEAMLESSLY SWITCH LEVEL DOMAIN WINDOW
 function switchGlobalLevel(levelName, startEmpty = false) {
     currentLevel = levelName;
-    currentSection = "ToBe";
+    
+    // SMART RESUME LOGIC
+    const nextUncompleted = getNextUncompletedLesson(levelName);
+    if (nextUncompleted) {
+        currentSection = nextUncompleted.section;
+        if (!startEmpty) {
+            currentSubsection = nextUncompleted.key;
+        }
+    } else {
+        // Fallback to first section if entirely completed
+        currentSection = Object.keys(learningContent[levelName] || {})[0] || "ToBe";
+        if (!startEmpty) {
+            currentSubsection = "explanation";
+        }
+    }
 
     // Update active visual status anchors across top header links
     const navbarLinks = document.querySelectorAll(".site-header .nav-link");
@@ -953,11 +1075,8 @@ function switchGlobalLevel(levelName, startEmpty = false) {
     const targetHeaderLink = document.getElementById(`nav-${levelName.toLowerCase()}`);
     if (targetHeaderLink) targetHeaderLink.classList.add("active");
 
-    // Update accordion data attributes
-    const accordion = document.querySelector(".course-accordion");
-    if (accordion) {
-        accordion.setAttribute("data-level", levelName);
-    }
+    // NEW: Dynamically build the sidebar for the target level
+    renderSidebar(levelName);
 
     const subsectionLinks = document.querySelectorAll(".subsection-link");
     subsectionLinks.forEach(l => l.classList.remove("active"));
@@ -1123,6 +1242,10 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                             <span class="brother-chip brother-is">IS</span>
                             <span class="brother-chip brother-are">ARE</span>
                         </div>
+                    </div>
+                    
+                    <div class="explanation-image-container" style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 30px oklch(0.12 0.01 260 / 0.5); border: 1px solid oklch(1 0 0 / 0.1);">
+                        <img src="assets/images/tobe_verb_visual.png" alt="The Verb 'TO BE' - Simple Present" style="width: 100%; height: auto; display: block; object-fit: contain; cursor: pointer; transition: transform 0.2s ease;" onclick="openLightbox(this.src)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     </div>
                 </article>
 
@@ -1541,13 +1664,19 @@ async function renderFillBlanksTemplate(workspace, data) {
         return;
     }
 
+    const answersKey = `${currentLevel}_${currentSection}_${currentSubsection}_answers`;
+    const savedAnswers = userProgress.completed[answersKey] || {};
+
     let questionsHtml = "";
     data.items.forEach((item, i) => {
+        const savedAnswer = savedAnswers[i] || "";
+        const escapedAnswer = savedAnswer.replace(/"/g, '&quot;');
+        
         questionsHtml += `
             <div class="fill-blank-item" data-index="${i}" style="animation-delay: ${i * 0.06}s">
                 <p class="fill-blank-sentence">
                     <span class="question-number">${i + 1}.</span>
-                    ${item.sentence.replace(/_{3,}/, `<input type="text" class="fill-blank-input" id="fill-input-${i}" placeholder="..." autocomplete="off">`) }
+                    ${item.sentence.replace(/_{3,}/, `<input type="text" class="fill-blank-input" id="fill-input-${i}" placeholder="..." autocomplete="off" value="${escapedAnswer}" oninput="saveExerciseAnswer('${currentLevel}', '${currentSection}', '${currentSubsection}', ${i}, this.value)">`) }
                     <span class="fill-hint">${item.hint}</span>
                 </p>
                 <div class="fill-blank-actions">
@@ -1646,6 +1775,34 @@ async function renderWordOrderTemplate(workspace, data) {
             ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, true)}
         </div>
     `;
+
+    // Restore word order saved state
+    setTimeout(() => {
+        const answersKey = `${currentLevel}_${currentSection}_${currentSubsection}_answers`;
+        const savedAnswers = userProgress.completed[answersKey] || {};
+        
+        data.items.forEach((item, i) => {
+            const savedStr = savedAnswers[i];
+            if (savedStr) {
+                try {
+                    const savedWords = JSON.parse(savedStr);
+                    savedWords.forEach(word => {
+                        const sourceZone = document.getElementById(`chips-source-${i}`);
+                        if (!sourceZone) return;
+                        const chips = sourceZone.querySelectorAll(".word-chip:not(.used)");
+                        for (let chip of chips) {
+                            if (chip.textContent === word) {
+                                selectWordChip(chip, i);
+                                break;
+                            }
+                        }
+                    });
+                } catch(e) {
+                    console.warn("Failed to parse saved word order", e);
+                }
+            }
+        });
+    }, 50);
 }
 
 // IGAZ VAGY HAMIS (True or False) — Two-button quiz
@@ -1714,6 +1871,18 @@ async function renderTrueFalseTemplate(workspace, data) {
             ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, true)}
         </div>
     `;
+
+    // Restore true/false saved state
+    setTimeout(() => {
+        const answersKey = `${currentLevel}_${currentSection}_${currentSubsection}_answers`;
+        const savedAnswers = userProgress.completed[answersKey] || {};
+        
+        data.items.forEach((item, i) => {
+            if (savedAnswers[i] !== undefined) {
+                checkTrueFalse(i, savedAnswers[i]);
+            }
+        });
+    }, 50);
 }
 
 // FEJEZET VIZSGA (Section Exam) — Mixed question types
@@ -1754,22 +1923,31 @@ async function renderSectionExamTemplate(workspace, data) {
         return;
     }
 
+    const lockedKey = `${currentLevel}_${currentSection}_${currentSubsection}_locked`;
+    const isLocked = userProgress.completed[lockedKey] || false;
+    const disabledAttr = isLocked ? "disabled" : "";
+
+    const answersKey = `${currentLevel}_${currentSection}_${currentSubsection}_answers`;
+    const savedAnswers = userProgress.completed[answersKey] || {};
+
     let questionsHtml = "";
     data.items.forEach((item, i) => {
         let questionContentHtml = "";
+        const savedAnswer = savedAnswers[i];
 
         if (item.type === "fill") {
+            const escapedAnswer = savedAnswer ? savedAnswer.replace(/"/g, '&quot;') : "";
             questionContentHtml = `
-                <p class="exam-question"><span class="question-number">${i + 1}.</span> ${item.question.replace(/_{3,}/, `<input type="text" class="fill-blank-input exam-input" id="exam-input-${i}" placeholder="..." autocomplete="off">`)}</p>
+                <p class="exam-question"><span class="question-number">${i + 1}.</span> ${item.question.replace(/_{3,}/, `<input type="text" class="fill-blank-input exam-input" id="exam-input-${i}" placeholder="..." autocomplete="off" value="${escapedAnswer}" oninput="saveExerciseAnswer('${currentLevel}', '${currentSection}', '${currentSubsection}', ${i}, this.value)" ${disabledAttr}>`)}</p>
             `;
         } else if (item.type === "tf") {
             questionContentHtml = `
                 <p class="exam-question"><span class="question-number">${i + 1}.</span> ${item.question}</p>
                 <div class="quiz-buttons">
-                    <button class="btn btn-tf btn-true" onclick="checkExamTF(${i}, true)">
+                    <button class="btn btn-tf btn-true" onclick="checkExamTF(${i}, true)" ${disabledAttr}>
                         <span class="tf-icon">✓</span> IGAZ
                     </button>
-                    <button class="btn btn-tf btn-false" onclick="checkExamTF(${i}, false)">
+                    <button class="btn btn-tf btn-false" onclick="checkExamTF(${i}, false)" ${disabledAttr}>
                         <span class="tf-icon">✗</span> HAMIS
                     </button>
                 </div>
@@ -1778,7 +1956,7 @@ async function renderSectionExamTemplate(workspace, data) {
             const scrambledArray = item.scrambled || [];
             const shuffled = [...scrambledArray].sort(() => Math.random() - 0.5);
             const chipsHtml = shuffled.map(word =>
-                `<button class="word-chip" onclick="selectWordChip(this, ${i}, true)">${word}</button>`
+                `<button class="word-chip" onclick="selectWordChip(this, ${i}, true)" ${disabledAttr}>${word}</button>`
             ).join("");
             questionContentHtml = `
                 <p class="exam-question"><span class="question-number">${i + 1}.</span> ${item.question}</p>
@@ -1806,12 +1984,65 @@ async function renderSectionExamTemplate(workspace, data) {
                 </div>
                 <div class="exam-list">${questionsHtml}</div>
                 <div class="exam-footer">
-                    <button class="btn btn-submit-exam" onclick="gradeExam()">📋 Vizsga értékelése</button>
+                    ${isLocked 
+                        ? `<button class="btn btn-reset" onclick="retakeExam()">🔄 Újraírás (Retake Exam)</button>`
+                        : `<button class="btn btn-submit-exam" onclick="gradeExam()">📋 Vizsga értékelése</button>`
+                    }
                     <div class="exam-result" id="exam-result"></div>
                 </div>
             </section>
         </div>
     `;
+
+    // Restore Exam UI state
+    setTimeout(() => {
+        data.items.forEach((item, i) => {
+            const savedAns = savedAnswers[i];
+            if (savedAns !== undefined) {
+                if (item.type === "tf") {
+                    const container = document.querySelector(`.exam-item[data-index="${i}"] .quiz-buttons`);
+                    if (container) {
+                        const btnTrue = container.querySelector(".btn-true");
+                        const btnFalse = container.querySelector(".btn-false");
+                        if (savedAns === true) {
+                            btnTrue.classList.add("selected");
+                        } else {
+                            btnFalse.classList.add("selected");
+                        }
+                    }
+                } else if (item.type === "order") {
+                    try {
+                        const savedWords = JSON.parse(savedAns);
+                        savedWords.forEach(word => {
+                            const sourceZone = document.getElementById(`chips-source-${i}`);
+                            if (!sourceZone) return;
+                            const chips = sourceZone.querySelectorAll(".word-chip:not(.used)");
+                            for (let chip of chips) {
+                                if (chip.textContent === word) {
+                                    selectWordChip(chip, i, true);
+                                    break;
+                                }
+                            }
+                        });
+                    } catch(e) {}
+                }
+            }
+        });
+
+        if (isLocked) {
+            const scoreKey = `${currentLevel}_${currentSection}_${currentSubsection}`;
+            const savedScore = userProgress.scores[scoreKey] || 0;
+            const resultDiv = document.getElementById("exam-result");
+            resultDiv.innerHTML = `Eredmény: ${savedScore} / ${data.items.length}`;
+            resultDiv.style.display = "block";
+            resultDiv.className = "exam-result correct";
+            
+            // Ensure placed word chips are disabled
+            document.querySelectorAll(".exam-item .word-chip.placed").forEach(chip => {
+                chip.style.pointerEvents = "none";
+            });
+        }
+    }, 50);
 }
 
 // Renders an empty/placeholder state for sections without data
@@ -1890,6 +2121,8 @@ function checkTrueFalse(index, studentAnswer) {
         }
     }
 
+    saveExerciseAnswer(currentLevel, currentSection, currentSubsection, index, studentAnswer);
+
     const isCorrect = (studentAnswer === item.answer);
     if (isCorrect) {
         feedback.innerHTML = `✓ ${item.explanation}`;
@@ -1931,12 +2164,23 @@ function selectWordChip(chipEl, questionIndex, isExam = false) {
         if (answerZone.children.length === 0) {
             answerZone.innerHTML = `<span class="answer-placeholder">Kattints a szavakra a helyes sorrendben...</span>`;
         }
+        saveWordOrderState(questionIndex);
     };
     answerZone.appendChild(clone);
 
     // Visually disable original chip
     chipEl.classList.add("used");
     chipEl.disabled = true;
+    saveWordOrderState(questionIndex);
+}
+
+// Helper to save word order state dynamically
+function saveWordOrderState(index) {
+    const answerZone = document.getElementById(`answer-zone-${index}`);
+    if (!answerZone) return;
+    const placedChips = answerZone.querySelectorAll(".word-chip.placed");
+    const words = Array.from(placedChips).map(c => c.textContent);
+    saveExerciseAnswer(currentLevel, currentSection, currentSubsection, index, JSON.stringify(words));
 }
 
 // Check word order correctness
@@ -2125,10 +2369,37 @@ function gradeExam() {
         saveUserProgress(); // This triggers updateProgressUI which updates the CTA Hero
         
         // Scroll to the top of the page smoothly to show the Hero CTA congratulation message
+        // Scroll to the top of the page smoothly to show the Hero CTA congratulation message
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
         saveUserProgress();
     }
+
+    // Lock the exam after grading
+    const lockedKey = `${currentLevel}_${currentSection}_sectionExam_locked`;
+    userProgress.completed[lockedKey] = true;
+    saveUserProgress();
+
+    // Re-render the exam UI so the lock visually applies and inputs disable
+    setTimeout(() => {
+        const workspace = document.querySelector(".workspace-content");
+        renderSectionExamTemplate(workspace, data);
+    }, 1500); // Wait a brief moment to let them see the initial feedback popups before freezing
+}
+
+// Retake Exam Handler
+function retakeExam() {
+    const lockedKey = `${currentLevel}_${currentSection}_sectionExam_locked`;
+    const answersKey = `${currentLevel}_${currentSection}_sectionExam_answers`;
+    
+    userProgress.completed[lockedKey] = false;
+    userProgress.completed[answersKey] = {};
+    saveUserProgress();
+    
+    // Re-render the exam UI to unlock inputs
+    const workspace = document.querySelector(".workspace-content");
+    const data = learningContent[currentLevel][currentSection].subsections.sectionExam;
+    renderSectionExamTemplate(workspace, data);
 }
 
 // =====================================================================
@@ -2518,3 +2789,45 @@ async function handlePasswordChange() {
         document.getElementById("password-change-form").reset();
     }
 }
+
+// ==========================================================================
+// IMAGE LIGHTBOX LOGIC
+// ==========================================================================
+window.openLightbox = function(src) {
+    const lightbox = document.getElementById("image-lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    if (lightbox && lightboxImg) {
+        lightboxImg.src = src;
+        lightbox.classList.add("is-active");
+        lightbox.setAttribute("aria-hidden", "false");
+    }
+};
+
+window.closeLightbox = function(event) {
+    if (event) event.stopPropagation();
+    const lightbox = document.getElementById("image-lightbox");
+    if (lightbox) {
+        lightbox.classList.remove("is-active");
+        lightbox.setAttribute("aria-hidden", "true");
+        // Clear src after animation so it doesn't flash the old image next time
+        setTimeout(() => {
+            const img = document.getElementById("lightbox-img");
+            if (img) img.src = "";
+        }, 300);
+    }
+};
+
+// Auto-open profile modal if requested via URL search param
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("action") === "profile") {
+        setTimeout(() => {
+            if (typeof openProfileModal === "function") {
+                openProfileModal();
+            }
+        }, 300);
+        
+        // Clean up URL
+        window.history.replaceState(null, null, window.location.pathname);
+    }
+});

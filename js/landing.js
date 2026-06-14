@@ -10,17 +10,53 @@ document.addEventListener("DOMContentLoaded", () => {
     // Track if user is currently logged in
     let isUserLoggedIn = false;
 
-    // Check if user is already logged in and update UI accordingly
-    if (supabaseClient) {
-        // Listen for auth events (like clicking the email link and successfully logging in)
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN') {
-                isUserLoggedIn = true;
-                const navLoginLink = document.querySelector('a[href="#login"]');
+    function updateLandingUI(session) {
+        const navLoginLink = document.querySelector('a[href="#login"]') || document.querySelector('a[href="dashboard.html"]');
+        const profileBtn = document.getElementById('user-profile-btn');
+        
+        if (session) {
+            isUserLoggedIn = true;
+            if (navLoginLink) {
+                navLoginLink.textContent = "Tanuló Felület";
+                navLoginLink.href = "dashboard.html";
+            }
+            if (profileBtn) {
+                const username = session.user?.user_metadata?.username || session.user?.email?.split('@')[0] || "Felhasználó";
+                profileBtn.textContent = `Szia, ${username}!`;
+                profileBtn.style.display = "inline-block";
+            }
+        } else {
+            // Check for active guest
+            const guestProgress = localStorage.getItem("neolix_guest_progress");
+            const isGuestLoggedOut = localStorage.getItem("guest_logged_out") === "true";
+            
+            if (guestProgress && !isGuestLoggedOut) {
+                isUserLoggedIn = true; // Functionally logged in for UI
                 if (navLoginLink) {
                     navLoginLink.textContent = "Tanuló Felület";
                     navLoginLink.href = "dashboard.html";
                 }
+                if (profileBtn) {
+                    profileBtn.textContent = `Szia, Vendég!`;
+                    profileBtn.style.display = "inline-block";
+                }
+            } else {
+                isUserLoggedIn = false;
+                if (navLoginLink) {
+                    navLoginLink.textContent = "Bejelentkezés / Regisztráció";
+                    navLoginLink.href = "#login";
+                }
+                if (profileBtn) {
+                    profileBtn.style.display = "none";
+                }
+            }
+        }
+    }
+
+    if (supabaseClient) {
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                updateLandingUI(session);
 
                 // If they just arrived via an email verification link
                 if (window.location.hash.includes("type=signup") || window.location.hash.includes("access_token")) {
@@ -29,31 +65,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         successModal.classList.add("is-active");
                         successModal.setAttribute("aria-hidden", "false");
                     }
-                    // It is now safe to clean up the URL so they don't accidentally auto-login again later!
                     window.history.replaceState(null, null, window.location.pathname);
                 }
             } else if (event === 'SIGNED_OUT') {
-                isUserLoggedIn = false;
-                // If they sign out, reset the button back
-                const navLoginLink = document.querySelector('a[href="dashboard.html"]');
-                if (navLoginLink) {
-                    navLoginLink.textContent = "Bejelentkezés / Regisztráció";
-                    navLoginLink.href = "#login";
-                }
+                updateLandingUI(null);
             }
         });
 
         // Initial check on page load
         supabaseClient.auth.getSession().then(({ data: { session } }) => {
-            if (session) {
-                isUserLoggedIn = true;
-                const navLoginLink = document.querySelector('a[href="#login"]');
-                if (navLoginLink) {
-                    navLoginLink.textContent = "Tanuló Felület";
-                    navLoginLink.href = "dashboard.html";
-                }
-            }
+            updateLandingUI(session);
         });
+    } else {
+        // Fallback for when Supabase is not configured, just check for Guest
+        updateLandingUI(null);
     }
 
     // Global state to hold the level chosen before showing modal
@@ -149,6 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
         guestLoginBtn.addEventListener("click", () => {
             // Save the intercepted level and boot them into the dashboard
             localStorage.setItem("selectedLevel", pendingGuestLevel);
+            // Clear any previous visual logout state for guests
+            localStorage.removeItem("guest_logged_out");
             window.location.href = "dashboard.html";
         });
     }
