@@ -3,8 +3,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
     initAccordionListeners();
     initTopNavbarListeners();
-    initModalListeners();
-    initProfileListeners();
+    // Initialize standard modal and profile listeners if they exist in external scripts or below
+    if (typeof initModalListeners === "function") initModalListeners();
+    if (typeof initProfileListeners === "function") initProfileListeners();
+    initResumeCTAListener();
     
     // Initialize progression tracking for the logged-in user
     await initUserProgress();
@@ -13,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const levelToLoad = localStorage.getItem("selectedLevel") || "A1";
     
     // Automatically launch the workspace with the correct level data context
-    switchGlobalLevel(levelToLoad);
+    switchGlobalLevel(levelToLoad, true);
 });
 
 // Track the currently active module context
@@ -21,13 +23,45 @@ let currentLevel = "A1";
 let currentSection = "ToBe";
 let currentSubsection = "explanation";
 
-// Individual user progress state tracking
-let userProgress = {
-    username: "Vendég",
-    points: 0,
-    completed: {},
-    scores: {}
+// LocalStorage Persistence Layer specifically for Guests
+const LocalSavingsService = {
+    getKey: () => `neolix_guest_progress`,
+    save: (data) => {
+        localStorage.setItem(LocalSavingsService.getKey(), JSON.stringify(data));
+    },
+    load: () => {
+        const saved = localStorage.getItem(LocalSavingsService.getKey());
+        return saved ? JSON.parse(saved) : null;
+    },
+    clear: () => {
+        localStorage.removeItem(LocalSavingsService.getKey());
+    }
 };
+
+// Global Progress Tracking Object & Abstraction Layer
+const ProgressManager = {
+    isGuest: true,
+    data: {
+        username: "Vendég",
+        points: 0,
+        completed: {},
+        scores: {},
+        role: "user",
+        subscription_tier: "free"
+    },
+    getGuestPayload: function() {
+        return LocalSavingsService.load();
+    },
+    clearGuestData: function() {
+        if (this.isGuest) {
+            LocalSavingsService.clear();
+            window.location.reload();
+        }
+    }
+};
+
+// Individual user progress state tracking alias
+let userProgress = ProgressManager.data;
 
 // Global cache for fetched vocabulary data to prevent redundant network hits
 const vocabCache = {};
@@ -60,6 +94,60 @@ function isExercise(subsectionData) {
 
 function isExam(subsectionData) {
     return subsectionData && subsectionData.type === "section_exam";
+}
+
+// Gatekeeper logic for content access (Limits guests, respects RBAC/subscriptions)
+function isContentAccessible(level, courseKey, subsectionType = null) {
+    if (!ProgressManager.isGuest) {
+        // Admin or Lifetime bypasses everything
+        if (ProgressManager.data.role === "admin" || ProgressManager.data.subscription_tier === "lifetime") {
+            return true;
+        }
+
+        // BETA GIFT: Currently giving all registered users full access
+        return true; 
+        
+        // FUTURE IMPLEMENTATION:
+        // Here we would check their subscription tier against the required tier for this level
+        // if (level !== "A1" && ProgressManager.data.subscription_tier === "free") return false;
+    }
+
+    // Calculate total valid courses across all levels (excluding exams)
+    let totalCourses = 0;
+    const courseList = []; // Ordered list of course paths to determine index
+
+    // Define predictable level order
+    const levels = ["A1", "A2", "B1", "B2", "C1", "C2"];
+    
+    for (const lvl of levels) {
+        if (learningContent[lvl]) {
+            for (const key in learningContent[lvl]) {
+                // If the section is a global level exam, don't count it as a "course" for the 20% pool
+                if (key !== "level_exam" && key !== "final_exam") {
+                    totalCourses++;
+                    courseList.push(`${lvl}_${key}`);
+                }
+            }
+        }
+    }
+
+    const allowedCount = Math.ceil(totalCourses * 0.20);
+    const targetPath = `${level}_${courseKey}`;
+    const courseIndex = courseList.indexOf(targetPath);
+
+    // 1. Is the course outside the 20% cap or an explicitly blocked global exam?
+    if (courseIndex === -1 || courseIndex >= allowedCount || courseKey === "level_exam" || courseKey === "final_exam") {
+        return false;
+    }
+
+    // 2. Even within allowed courses, block premium features
+    if (subsectionType) {
+        if (subsectionType === "explanation" || subsectionType === "section_exam" || subsectionType === "sectionExam" || subsectionType === "final_exam" || subsectionType === "finalExam") {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 // Stopwatch actions
@@ -135,6 +223,73 @@ function isSectionExamLocked(level, section) {
     return false; // All preceding lessons completed, unlocked!
 }
 
+// Calculates the next logical lesson step based on completion state
+function getNextUncompletedLesson(level, section) {
+    const moduleData = learningContent[level]?.[section];
+    if (!moduleData || !moduleData.subsections) return null;
+    
+    for (const subKey in moduleData.subsections) {
+        const key = `${level}_${section}_${subKey}`;
+        if (!userProgress.completed[key]) {
+            return {
+                key: subKey,
+                title: moduleData.subsections[subKey].title || subKey,
+                isExam: isExam(moduleData.subsections[subKey])
+            };
+        }
+    }
+    return null; // All completed
+}
+
+// Scans forward through the entire curriculum to find the next valid, accessible lesson
+function findNextGuestAccessibleLesson(level, section) {
+    const levels = ["A1", "A2", "B1", "B2", "C1", "C2"];
+    let foundCurrentSec = false;
+    
+    for (const lvl of levels) {
+        if (!learningContent[lvl]) continue;
+        
+        const sections = Object.keys(learningContent[lvl]);
+        for (const secKey of sections) {
+            // Fast-forward to current section
+            if (!foundCurrentSec) {
+                if (lvl === level && secKey === section) {
+                    foundCurrentSec = true;
+                } else {
+                    continue; // Skip until we find the current section
+                }
+            }
+            
+            // Check the current or subsequent section
+            const moduleData = learningContent[lvl][secKey];
+            if (!moduleData || !moduleData.subsections) continue;
+            
+            for (const subKey in moduleData.subsections) {
+                const subData = moduleData.subsections[subKey];
+                const key = `${lvl}_${secKey}_${subKey}`;
+                
+                // Skip if completed
+                if (userProgress.completed[key]) continue;
+                
+                // Check if accessible
+                const isAccessible = isContentAccessible(lvl, secKey, subData.type || subKey);
+                if (isAccessible) {
+                    return {
+                        level: lvl,
+                        section: secKey,
+                        key: subKey,
+                        title: subData.title || subKey,
+                        isExam: isExam(subData)
+                    };
+                }
+            }
+        }
+    }
+    
+    // Completely exhausted 20% cap or all content
+    return { endOfGuestContent: true };
+}
+
 // Extracts the logged-in user's name from the header welcome message dynamically
 function getLoggedInUser() {
     const welcomeSpan = document.querySelector(".user-welcome");
@@ -153,6 +308,32 @@ async function initUserProgress() {
     let loggedInUser = "Vendég";
     let userId = null;
 
+    // Hook sign out to ALL logout buttons unconditionally at the START
+    // This allows users to always log out, regardless of early returns or guest mode
+    const logoutBtns = document.querySelectorAll(".btn-logout");
+    logoutBtns.forEach(logoutBtn => {
+        logoutBtn.textContent = "Kijelentkezés";
+        const newLogoutBtn = logoutBtn.cloneNode(true);
+        logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
+        newLogoutBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.auth.signOut();
+                } catch (err) {
+                    console.warn("SignOut API failed, proceeding with local wipe:", err);
+                }
+            }
+            // Force hard wipe of any leftover Supabase auth tokens in LocalStorage
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('sb-') && key.includes('auth-token')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            window.location.href = "index.html";
+        });
+    });
+
     if (supabaseClient) {
         try {
             const { data: { user } } = await supabaseClient.auth.getUser();
@@ -165,20 +346,6 @@ async function initUserProgress() {
                 if (welcomeSpan) {
                     welcomeSpan.textContent = `Szia, ${loggedInUser}!`;
                 }
-                
-                // Hook sign out to logout button
-                const logoutBtn = document.querySelector(".btn-logout");
-                if (logoutBtn) {
-                    logoutBtn.textContent = "Kijelentkezés";
-                    // Clone to replace any previous static navigation event listeners
-                    const newLogoutBtn = logoutBtn.cloneNode(true);
-                    logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
-                    newLogoutBtn.addEventListener("click", async (e) => {
-                        e.preventDefault();
-                        await supabaseClient.auth.signOut();
-                        window.location.href = "index.html";
-                    });
-                }
 
                 // Fetch their row from user_progress table
                 let { data: progressRow, error } = await supabaseClient
@@ -187,91 +354,162 @@ async function initUserProgress() {
                     .eq('id', userId)
                     .maybeSingle();
 
-                if (error) {
-                    console.error("Hiba a Supabase betöltésekor:", error);
-                } else if (progressRow) {
-                    userProgress = {
-                        username: loggedInUser,
-                        points: progressRow.points || 0,
-                        completed: progressRow.completed || {},
-                        scores: progressRow.scores || {},
-                        id: userId
-                    };
-                    updateProgressUI();
-                    return;
-                } else {
-                    // Create default row in table
-                    const newProgress = {
-                        id: userId,
-                        username: loggedInUser,
-                        points: 0,
-                        completed: {},
-                        scores: {}
-                    };
-                    const { error: insertError } = await supabaseClient
-                        .from('user_progress')
-                        .insert(newProgress);
+                // Fetch their role and subscription from user_subscriptions table
+                let { data: subRow, error: subError } = await supabaseClient
+                    .from('user_subscriptions')
+                    .select('role, subscription_tier')
+                    .eq('id', userId)
+                    .maybeSingle();
 
-                    if (insertError) {
-                        console.error("Hiba a Supabase sor beszúrásakor:", insertError);
-                    } else {
+                if (subError) {
+                    console.error("Supabase user_subscriptions RLS or Fetch error:", subError);
+                }
+
+                    if (error) {
+                        console.error("Hiba a Supabase betöltésekor:", error);
+                    } else if (progressRow) {
+                        ProgressManager.isGuest = false;
+                        LocalSavingsService.clear(); // Ensure guest data is wiped when successfully logged in
                         userProgress = {
                             username: loggedInUser,
-                            points: 0,
-                            completed: {},
-                            scores: {},
+                            points: progressRow.points || 0,
+                            completed: progressRow.completed || {},
+                            scores: progressRow.scores || {},
+                            role: subRow?.role || "user",
+                            subscription_tier: subRow?.subscription_tier || "free",
                             id: userId
                         };
+                        ProgressManager.data = userProgress;
+                        
+                        console.log("🔓 User Loaded:", ProgressManager.data);
+                        
                         updateProgressUI();
+                        refreshProfileDOM(); // Wipe loading states
                         return;
+                    } else {
+                        // Create default row in table
+                        // Use guest migration data from user_metadata if it exists
+                        const migrationData = user.user_metadata?.guest_migration || {};
+                        const ageRange = user.user_metadata?.age_range || "unknown";
+                        
+                        const newProgress = {
+                            id: userId,
+                            username: loggedInUser,
+                            age_range: ageRange,
+                            points: migrationData.points || 0,
+                            completed: migrationData.completed || {},
+                            scores: migrationData.scores || {}
+                        };
+                        const { error: insertError } = await supabaseClient
+                            .from('user_progress')
+                            .insert(newProgress);
+
+                        if (insertError) {
+                            console.error("Hiba a Supabase sor beszúrásakor:", insertError);
+                        } else {
+                            ProgressManager.isGuest = false;
+                            LocalSavingsService.clear(); // Ensure guest data is wiped after successful migration
+                            userProgress = {
+                                username: loggedInUser,
+                                points: newProgress.points,
+                                completed: newProgress.completed,
+                                scores: newProgress.scores,
+                                role: subRow?.role || "user",
+                                subscription_tier: subRow?.subscription_tier || "free",
+                                id: userId
+                            };
+                            ProgressManager.data = userProgress;
+
+                            console.log("🔓 New User Progress Created:", ProgressManager.data);
+
+                            updateProgressUI();
+                            refreshProfileDOM(); // Wipe loading states after successful migration
+                            return;
+                        }
                     }
-                }
             }
         } catch (authErr) {
             console.warn("Hiba a Supabase azonosítás során:", authErr);
         }
     }
 
-    // Fallback to local storage for guest
-    const username = getLoggedInUser();
-    const localData = localStorage.getItem(`progress_${username}`);
+    // Fallback to ProgressManager for guest
+    ProgressManager.isGuest = true;
+    const localData = LocalSavingsService.load();
     if (localData) {
-        userProgress = JSON.parse(localData);
+        userProgress = localData;
+        userProgress.username = "Vendég";
         if (typeof userProgress.points === "undefined") userProgress.points = 0;
+        if (!userProgress.scores) userProgress.scores = {};
     } else {
         userProgress = {
-            username: username,
+            username: "Vendég",
             points: 0,
             completed: {},
             scores: {}
         };
     }
+    ProgressManager.data = userProgress;
     updateProgressUI();
+    refreshProfileDOM(); // Ensure "Betöltés" states are wiped for guests too
 }
 
-// Saves progression to database or updates local cache fallback
-async function saveUserProgress() {
-    const username = userProgress.username;
+// Explicit Profile DOM refresh to avoid "Betöltés" loading hangs
+function refreshProfileDOM() {
+    const usernameDisplay = document.getElementById("profile-username-display");
+    const subDisplay = document.getElementById("profile-subscription-display");
     
-    // Always update local cache for instant client validation
-    localStorage.setItem(`progress_${username}`, JSON.stringify(userProgress));
+    if (usernameDisplay && userProgress) {
+        usernameDisplay.textContent = userProgress.username;
+    }
     
-    if (supabaseClient && userProgress.id) {
-        try {
-            const { error } = await supabaseClient
-                .from('user_progress')
-                .update({
-                    points: userProgress.points || 0,
-                    completed: userProgress.completed || {},
-                    scores: userProgress.scores || {}
-                })
-                .eq('id', userProgress.id);
+    if (subDisplay && userProgress) {
+        const tier = userProgress.subscription_tier || "free";
+        const role = userProgress.role || "user";
+        
+        if (role === "admin") {
+            subDisplay.textContent = "Örökös Prémium (Admin)";
+            subDisplay.style.background = "oklch(0.65 0.2 25 / 0.15)";
+            subDisplay.style.color = "var(--color-accent-in)";
+            subDisplay.style.border = "1px solid var(--color-accent-in)";
+        } else if (tier === "lifetime") {
+            subDisplay.textContent = "Örökös Prémium";
+            subDisplay.style.background = "oklch(0.65 0.2 25 / 0.15)";
+            subDisplay.style.color = "var(--color-accent-in)";
+            subDisplay.style.border = "1px solid var(--color-accent-in)";
+        } else {
+            subDisplay.textContent = "Ingyenes Béta";
+            subDisplay.style.background = "oklch(0.6 0.05 250 / 0.15)";
+            subDisplay.style.color = "var(--color-text-muted)";
+            subDisplay.style.border = "1px solid oklch(0.6 0.05 250 / 0.3)";
+        }
+    }
+}
 
-            if (error) {
-                console.error("Sikertelen Supabase mentés:", error);
+// Saves progression to database or updates local cache fallback via abstraction
+async function saveUserProgress() {
+    if (ProgressManager.isGuest) {
+        // Isolated guest traffic, purely client-side
+        LocalSavingsService.save(userProgress);
+    } else {
+        // Only write to Supabase if authenticated
+        if (supabaseClient && userProgress.id) {
+            try {
+                const { error } = await supabaseClient
+                    .from('user_progress')
+                    .update({
+                        points: userProgress.points || 0,
+                        completed: userProgress.completed || {},
+                        scores: userProgress.scores || {}
+                    })
+                    .eq('id', userProgress.id);
+
+                if (error) {
+                    console.error("Sikertelen Supabase mentés:", error);
+                }
+            } catch (err) {
+                console.warn("Hiba a Supabase mentésekor:", err);
             }
-        } catch (err) {
-            console.warn("Hiba a Supabase mentésekor:", err);
         }
     }
     
@@ -359,10 +597,59 @@ function completeSubsectionAction(level, section, subsection, buttonEl) {
     
     // Save state and update UI
     saveUserProgress();
+
+    // Render convenient "Next Lesson" button right next to it so user doesn't have to scroll up
+    if (container) {
+        const nextLessonInfo = findNextGuestAccessibleLesson(level, section);
+        if (nextLessonInfo) {
+            container.style.display = "flex";
+            container.style.gap = "1rem";
+            container.style.justifyContent = "center";
+            container.style.flexWrap = "wrap";
+            
+            const nextBtn = document.createElement("button");
+            nextBtn.className = "btn-complete-section";
+            nextBtn.style.background = "linear-gradient(135deg, var(--color-accent-in), var(--color-accent-on))";
+            nextBtn.style.color = "#000";
+            
+            if (nextLessonInfo.endOfGuestContent) {
+                nextBtn.innerHTML = `<span>Teljes Hozzáférés Feloldása</span>`;
+                nextBtn.onclick = () => {
+                    openPaywallModal();
+                };
+            } else {
+                nextBtn.innerHTML = `<span>Tovább: ${nextLessonInfo.title}</span> <span style="font-size: 1.2rem;">→</span>`;
+                nextBtn.onclick = () => {
+                    const targetLevel = nextLessonInfo.level;
+                    const targetSection = nextLessonInfo.section;
+                    const targetKey = nextLessonInfo.key;
+                    
+                    const accordion = document.querySelector(`.course-accordion[data-level="${targetLevel}"][data-section="${targetSection}"]`);
+                    if (accordion) accordion.open = true;
+
+                    const links = document.querySelectorAll(".subsection-link");
+                    links.forEach(l => l.classList.remove("active"));
+                    
+                    if (accordion) {
+                        const targetLink = accordion.querySelector(`.subsection-link[data-subsection="${targetKey}"]`);
+                        if (targetLink) targetLink.classList.add("active");
+                    }
+                    currentLevel = targetLevel;
+                    currentSection = targetSection;
+                    currentSubsection = targetKey;
+                    renderSubsection(targetLevel, targetSection, targetKey);
+                    updateProgressUI();
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+            }
+            container.appendChild(nextBtn);
+        }
+    }
 }
 
 // Scans the sidebar links to display completion checkmarks and update the level completion meter
-function updateProgressUI() {
+async function updateProgressUI() {
     const links = document.querySelectorAll(".subsection-link");
     let totalItems = 0;
     let completedItems = 0;
@@ -377,16 +664,29 @@ function updateProgressUI() {
         const key = `${level}_${section}_${subsection}`;
         const subData = learningContent[level]?.[section]?.subsections?.[subsection];
 
-        // Lock/unlock section exams in the sidebar
-        if (isExam(subData)) {
-            const isLocked = isSectionExamLocked(level, section);
-            const iconSpan = link.querySelector(".subsection-icon");
-            if (isLocked) {
-                link.classList.add("locked");
-                if (iconSpan) iconSpan.textContent = "🔒";
+        // 1. Guest/Subscription Restrictions
+        const isContentRestricted = !isContentAccessible(level, section, subsection);
+        const iconSpan = link.querySelector(".subsection-icon");
+        
+        if (isContentRestricted) {
+            link.classList.add("guest-locked");
+            link.classList.remove("locked"); // Ensure it doesn't trigger standard exam lock
+            if (iconSpan) iconSpan.textContent = "🔒";
+        } else {
+            link.classList.remove("guest-locked");
+            // If it's an exam, we still need to check if it's progression-locked
+            if (isExam(subData)) {
+                const isProgressionLocked = isSectionExamLocked(level, section);
+                if (isProgressionLocked) {
+                    link.classList.add("locked");
+                    if (iconSpan) iconSpan.textContent = "🔒";
+                } else {
+                    link.classList.remove("locked");
+                    if (iconSpan) iconSpan.textContent = subData.icon || "🏆";
+                }
             } else {
                 link.classList.remove("locked");
-                if (iconSpan) iconSpan.textContent = subData.icon || "🏆";
+                if (iconSpan) iconSpan.textContent = subData.icon || "📚";
             }
         }
 
@@ -433,6 +733,91 @@ function updateProgressUI() {
     if (pointsEl) {
         pointsEl.textContent = userProgress.points || 0;
     }
+
+    // UPDATE HERO CTA CARD DYNAMICALLY
+    const nextLesson = getNextUncompletedLesson(currentLevel, currentSection);
+    const ctaCard = document.querySelector(".resume-cta-card");
+    const ctaHeader = document.querySelector(".resume-cta-header");
+    const ctaTitle = document.querySelector(".resume-cta-title");
+    const ctaBtn = document.getElementById("btn-resume-lesson");
+    
+    if (ctaCard && ctaHeader && ctaTitle && ctaBtn) {
+        if (!nextLesson) {
+            // Course completely finished!
+            // Retrieve exam score
+            const examKey = `${currentLevel}_${currentSection}_sectionExam`;
+            const examData = learningContent[currentLevel]?.[currentSection]?.subsections?.sectionExam;
+            
+            let totalQuestions = (examData && examData.items) ? examData.items.length : 0;
+            
+            // If the exam data hasn't been lazy-loaded yet, fetch it just to calculate the true length
+            if (totalQuestions === 0 && examData && examData.dataSource) {
+                if (vocabCache[examData.dataSource]) {
+                    totalQuestions = vocabCache[examData.dataSource].items ? vocabCache[examData.dataSource].items.length : 0;
+                } else {
+                    try {
+                        const res = await fetch(examData.dataSource + "?v=1.0.7");
+                        if (res.ok) {
+                            const json = await res.json();
+                            vocabCache[examData.dataSource] = json;
+                            totalQuestions = json.items ? json.items.length : 0;
+                        }
+                    } catch(e) {
+                        console.error("Could not fetch exam max score length", e);
+                    }
+                }
+            }
+            
+            const bestScore = userProgress.scores[examKey] || 0;
+            const percentage = totalQuestions > 0 ? Math.round((bestScore / totalQuestions) * 100) : 100;
+            
+            let grade = "";
+            if (percentage >= 90) grade = "Kiváló! 🌟";
+            else if (percentage >= 70) grade = "Jó munka! 👍";
+            else if (percentage >= 50) grade = "Átmentél! 📚";
+            
+            ctaCard.innerHTML = `
+                <div style="text-align: center; width: 100%;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎊</div>
+                    <div class="resume-cta-title" style="color: var(--color-accent-in); margin-bottom: 0.5rem;">Gratulálunk!</div>
+                    <p style="color: var(--color-text-main); font-size: 1.1rem; line-height: 1.5; margin-bottom: 1rem;">
+                        Az <strong>Első Lecke (A "Lenni" Ige)</strong> befejezve!<br>Hamarosan érkezik a következő modul.
+                    </p>
+                    <div class="exam-result-card passed" style="max-width: 300px; margin: 0 auto; background: var(--color-bg-surface); padding: 1rem; border-radius: 12px; border: 1px solid var(--color-success);">
+                        <span class="exam-score" style="display: block; font-size: 2rem; font-weight: bold; color: var(--color-success);">${bestScore} / ${totalQuestions}</span>
+                        <span class="exam-percentage" style="display: block; color: var(--color-success);">(${percentage}%)</span>
+                        <p class="exam-grade" style="margin-top: 0.5rem;">${grade}</p>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Check if current view is completed
+            const currentKey = `${currentLevel}_${currentSection}_${currentSubsection}`;
+            const isCurrentCompleted = userProgress.completed[currentKey];
+            
+            ctaTitle.textContent = `${currentLevel} - ${nextLesson.title}`;
+            
+            if (isCurrentCompleted) {
+                ctaHeader.textContent = "Következő lecke";
+                ctaBtn.innerHTML = `<span>Folytatás</span> <span style="font-size: 1.2rem;">→</span>`;
+                ctaBtn.style.opacity = "1";
+                ctaBtn.style.pointerEvents = "auto";
+                ctaBtn.style.background = "linear-gradient(135deg, var(--color-accent-in), var(--color-accent-on))";
+                ctaBtn.style.border = "none";
+                ctaBtn.style.color = "#000";
+                ctaBtn.setAttribute("data-target", nextLesson.key);
+            } else {
+                ctaHeader.textContent = "Aktuális lecke";
+                ctaBtn.innerHTML = `<span>Fejezd be az aktuális leckét!</span> <span style="font-size: 1.2rem;">🔒</span>`;
+                ctaBtn.style.opacity = "0.7";
+                ctaBtn.style.pointerEvents = "none";
+                ctaBtn.style.background = "var(--color-bg-surface)";
+                ctaBtn.style.border = "1px dashed var(--color-text-muted)";
+                ctaBtn.style.color = "var(--color-text-muted)";
+                ctaBtn.removeAttribute("data-target");
+            }
+        }
+    }
 }
 
 // 1. LISTEN TO SIDEBAR ACCORDION SUBSECTION LINKS
@@ -442,6 +827,11 @@ function initAccordionListeners() {
     subsectionLinks.forEach(link => {
         link.addEventListener("click", (event) => {
             event.preventDefault();
+
+            if (link.classList.contains("guest-locked")) {
+                openPaywallModal();
+                return;
+            }
 
             if (link.classList.contains("locked")) {
                 openLockedModal();
@@ -458,7 +848,53 @@ function initAccordionListeners() {
             // Update current subsection and render
             currentSubsection = subsectionKey;
             renderSubsection(currentLevel, currentSection, currentSubsection);
+
+            // Close the parent accordion after clicking to keep UI clean
+            const accordion = link.closest(".course-accordion");
+            if (accordion) {
+                accordion.open = false;
+            }
         });
+    });
+}
+
+// 1.5. LISTEN TO HERO RESUME CTA BUTTON
+function initResumeCTAListener() {
+    // We use event delegation because the CTA card might be re-rendered or modified
+    document.addEventListener("click", (e) => {
+        const resumeBtn = e.target.closest("#btn-resume-lesson");
+        if (!resumeBtn) return;
+        
+        e.preventDefault();
+        
+        const targetSubKey = resumeBtn.getAttribute("data-target");
+        if (!targetSubKey) return; // Blocked state (current lesson not completed), do nothing
+        
+        const level = currentLevel;
+        const section = currentSection;
+        
+        // Visual sync: open the correct accordion if closed
+        const accordion = document.querySelector(`.course-accordion[data-level="${level}"][data-section="${section}"]`);
+        if (accordion) accordion.open = true;
+
+        // Update active state in sidebar
+        const links = document.querySelectorAll(".subsection-link");
+        links.forEach(l => l.classList.remove("active"));
+        
+        if (accordion) {
+            const targetLink = accordion.querySelector(`.subsection-link[data-subsection="${targetSubKey}"]`);
+            if (targetLink) targetLink.classList.add("active");
+        }
+        
+        // Render subsection
+        currentSubsection = targetSubKey;
+        renderSubsection(level, section, targetSubKey);
+        
+        // Update UI to check locks and next steps immediately
+        updateProgressUI();
+
+        // Smooth scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
@@ -480,11 +916,25 @@ function initTopNavbarListeners() {
         button.addEventListener("click", (event) => {
             event.preventDefault();
 
-            if (level === "A1") {
+            // Check if the requested level's first course is accessible
+            const accessible = isContentAccessible(level, "ToBe");
+
+            if (!accessible) {
+                if (ProgressManager.isGuest) {
+                    openPaywallModal();
+                } else {
+                    // Authenticated users get the WIP modal if the content isn't built yet
+                    openWipModal();
+                }
+                return;
+            }
+
+            if (level === "A1" || ProgressManager.data.role === "admin") {
                 // Trigger live context layout switch without page refreshes
-                switchGlobalLevel(level);
+                // Admins can bypass WIP and see the empty layouts for testing
+                switchGlobalLevel(level, true); // Start empty when switching levels
             } else if (level === "A2" || level === "B1" || level === "B2") {
-                // Call premium glowing overlay alert module
+                // Since they are allowed, but the content is currently empty, show WIP
                 openWipModal();
             }
         });
@@ -492,10 +942,9 @@ function initTopNavbarListeners() {
 }
 
 // 3. SEAMLESSLY SWITCH LEVEL DOMAIN WINDOW
-function switchGlobalLevel(levelName) {
+function switchGlobalLevel(levelName, startEmpty = false) {
     currentLevel = levelName;
     currentSection = "ToBe";
-    currentSubsection = "explanation";
 
     // Update active visual status anchors across top header links
     const navbarLinks = document.querySelectorAll(".site-header .nav-link");
@@ -510,14 +959,42 @@ function switchGlobalLevel(levelName) {
         accordion.setAttribute("data-level", levelName);
     }
 
-    // Reset active subsection link to the first one (Szavak)
     const subsectionLinks = document.querySelectorAll(".subsection-link");
     subsectionLinks.forEach(l => l.classList.remove("active"));
-    const firstLink = document.querySelector('.subsection-link[data-subsection="explanation"]');
-    if (firstLink) firstLink.classList.add("active");
 
-    // Run core engine to paint the chosen view
-    renderSubsection(currentLevel, currentSection, currentSubsection);
+    if (startEmpty) {
+        currentSubsection = null;
+        const workspace = document.getElementById("workspace");
+        document.querySelector(".current-topic-title").textContent = "Üdvözlünk a Dashboardon!";
+        
+        // Ensure breadcrumbs reflect the general section without a specific sub-topic
+        const breadcrumbs = document.querySelector(".breadcrumb-list");
+        if (breadcrumbs) {
+            const levelLabel = levelName === "A1" ? "A1 Kezdő" : levelName === "A2" ? "A2 Alapfok" : levelName;
+            breadcrumbs.innerHTML = `
+                <li>${levelLabel}</li>
+                <li aria-current="page">Áttekintés</li>
+            `;
+        }
+
+        workspace.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 400px; text-align: center; padding: 2rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">👋</div>
+                <h2 style="color: var(--color-text-main); margin-bottom: 1rem;">Válassz egy leckét a folytatáshoz!</h2>
+                <p style="color: var(--color-text-muted); max-width: 500px; line-height: 1.6;">
+                    A bal oldali menüben találod a tananyagokat. Kezdésként kattints a <strong>${ProgressManager.isGuest ? 'Szavak' : 'Magyarázat'}</strong> menüpontra az első modulban.
+                </p>
+            </div>
+        `;
+    } else {
+        currentSubsection = "explanation";
+        const firstLink = document.querySelector('.subsection-link[data-subsection="explanation"]');
+        if (firstLink) firstLink.classList.add("active");
+        
+        // Run core engine to paint the chosen view
+        renderSubsection(currentLevel, currentSection, currentSubsection);
+    }
+    
     updateProgressUI();
 }
 
@@ -544,6 +1021,34 @@ function renderSubsection(level, section, subsection) {
         document.querySelector(".current-topic-title").textContent = "Tananyag Nem Található";
         workspace.innerHTML = `<p class="error-text" style="color: var(--color-error); padding: 2rem;">Sajnáljuk, ehhez a részhez még nem töltöttek fel feladatokat.</p>`;
         return;
+    }
+
+    if (!isContentAccessible(level, section, subsection)) {
+        if (ProgressManager.isGuest) {
+            openPaywallModal();
+            // If they land directly on a blocked page (e.g. via direct load), fallback safely to "words" if it was "explanation"
+            if (subsection === "explanation" || subsection === "sectionExam") {
+                // To avoid an infinite loop or broken UI state, manually render the "words" section instead
+                const safeSubsection = "words";
+                const safeData = moduleData?.subsections?.[safeSubsection];
+                if (safeData) {
+                    currentSubsection = safeSubsection;
+                    document.querySelector(".current-topic-title").textContent = `${safeData.icon} ${safeData.title}`;
+                    
+                    // Sync sidebar active link
+                    const links = document.querySelectorAll(".subsection-link");
+                    links.forEach(l => l.classList.remove("active"));
+                    const accordion = document.querySelector(`.course-accordion[data-level="${level}"][data-section="${section}"]`);
+                    if (accordion) {
+                        const targetLink = accordion.querySelector(`.subsection-link[data-subsection="${safeSubsection}"]`);
+                        if (targetLink) targetLink.classList.add("active");
+                    }
+
+                    renderWordsTemplate(workspace, safeData, moduleData);
+                }
+            }
+            return;
+        }
     }
 
     // Reset exercise attempts tracking for the new view
@@ -1579,6 +2084,7 @@ function gradeExam() {
     else if (percentage >= 50) grade = "Átment, de gyakorolj tovább! 📚";
     else grade = "Sajnos nem sikerült. Próbáld újra! 💪";
 
+    // Show result locally below the exam questions
     resultEl.innerHTML = `
         <div class="exam-result-card ${percentage >= 50 ? 'passed' : 'failed'}">
             <span class="exam-score">${correct} / ${total}</span>
@@ -1615,8 +2121,14 @@ function gradeExam() {
                 setTimeout(() => pop.remove(), 1200);
             }
         }
+        
+        saveUserProgress(); // This triggers updateProgressUI which updates the CTA Hero
+        
+        // Scroll to the top of the page smoothly to show the Hero CTA congratulation message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        saveUserProgress();
     }
-    saveUserProgress();
 }
 
 // =====================================================================
@@ -1640,6 +2152,22 @@ function initModalListeners() {
 
     if (closeLockedBtn && lockedModal) {
         closeLockedBtn.addEventListener("click", closeLockedModal);
+    }
+
+    const paywallModal = document.getElementById("paywall-modal");
+    const closePaywallBtn = document.getElementById("close-paywall-btn");
+    const paywallRegisterBtn = document.getElementById("btn-paywall-register");
+
+    if (closePaywallBtn && paywallModal) {
+        closePaywallBtn.addEventListener("click", closePaywallModal);
+    }
+
+    if (paywallRegisterBtn) {
+        paywallRegisterBtn.addEventListener("click", () => {
+            // Reusing the same flow as the guest profile registration button
+            localStorage.setItem("forceRegisterModal", "true");
+            window.location.href = "index.html";
+        });
     }
 }
 
@@ -1675,6 +2203,22 @@ function closeLockedModal() {
     }
 }
 
+function openPaywallModal() {
+    const paywallModal = document.getElementById("paywall-modal");
+    if (paywallModal) {
+        paywallModal.classList.add("is-active");
+        paywallModal.setAttribute("aria-hidden", "false");
+    }
+}
+
+function closePaywallModal() {
+    const paywallModal = document.getElementById("paywall-modal");
+    if (paywallModal) {
+        paywallModal.classList.remove("is-active");
+        paywallModal.setAttribute("aria-hidden", "true");
+    }
+}
+
 // =====================================================================
 //   USER PROFILE & PASSWORD MANAGEMENT
 // =====================================================================
@@ -1704,6 +2248,26 @@ function initProfileListeners() {
             await handlePasswordChange();
         });
     }
+
+    // Handle Guest Data Clear
+    const btnClearGuest = document.getElementById("btn-clear-guest-data");
+    if (btnClearGuest) {
+        btnClearGuest.addEventListener("click", () => {
+            if (confirm("Biztosan törölni szeretnéd az eddigi haladásodat? Ez a művelet nem vonható vissza.")) {
+                ProgressManager.clearGuestData();
+            }
+        });
+    }
+
+    // Handle Guest Register Redirect
+    const btnGuestRegister = document.getElementById("btn-guest-register");
+    if (btnGuestRegister) {
+        btnGuestRegister.addEventListener("click", () => {
+            // Set flag so landing.js opens register modal
+            localStorage.setItem("forceRegisterModal", "true");
+            window.location.href = "index.html";
+        });
+    }
 }
 
 async function openProfileModal() {
@@ -1719,18 +2283,90 @@ async function openProfileModal() {
     // 1. Render Account Info
     const usernameDisplay = document.getElementById("profile-username-display");
     const emailDisplay = document.getElementById("profile-email-display");
+    const subDisplay = document.getElementById("profile-subscription-display");
     
     if (usernameDisplay) usernameDisplay.textContent = userProgress.username;
     
+    if (subDisplay) {
+        const tier = userProgress.subscription_tier || "free";
+        const role = userProgress.role || "user";
+        
+        if (role === "admin") {
+            subDisplay.textContent = "Örökös Prémium (Admin)";
+            subDisplay.style.background = "oklch(0.65 0.2 25 / 0.15)";
+            subDisplay.style.color = "var(--color-accent-in)";
+            subDisplay.style.border = "1px solid var(--color-accent-in)";
+        } else if (tier === "lifetime") {
+            subDisplay.textContent = "Örökös Prémium";
+            subDisplay.style.background = "oklch(0.65 0.2 25 / 0.15)";
+            subDisplay.style.color = "var(--color-accent-in)";
+            subDisplay.style.border = "1px solid var(--color-accent-in)";
+        } else {
+            subDisplay.textContent = "Ingyenes Béta";
+            subDisplay.style.background = "oklch(0.6 0.05 250 / 0.15)";
+            subDisplay.style.color = "var(--color-text-muted)";
+            subDisplay.style.border = "1px solid oklch(0.6 0.05 250 / 0.3)";
+        }
+    }
+    
+    let isGuest = true;
     if (supabaseClient) {
         const { data: { user } } = await supabaseClient.auth.getUser();
-        if (user && emailDisplay) {
-            emailDisplay.textContent = user.email;
+        if (user) {
+            isGuest = false;
+            if (emailDisplay) {
+                // TEMPORARY BYPASS: Treat all users as confirmed if they have a user.id. 
+                // Placeholder for testing purposes.
+                // TODO: When migrating to websupport.sk DB, remove `|| user.id` to strictly enforce email_confirmed_at.
+                if (user.email_confirmed_at || user.id) {
+                    emailDisplay.innerHTML = `${user.email} <span style="color: var(--color-success); font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem;">(✓ Hitelesítve)</span>`;
+                } else {
+                    emailDisplay.innerHTML = `${user.email} <span style="color: var(--color-error); font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem;">(Nincs hitelesítve)</span>`;
+                }
+            }
         } else if (emailDisplay) {
             emailDisplay.textContent = "Nincs (Vendég fiók)";
+            if (subDisplay) {
+                subDisplay.textContent = "Vendég Limitált";
+                subDisplay.style.background = "transparent";
+                subDisplay.style.color = "var(--color-text-muted)";
+                subDisplay.style.border = "1px solid var(--color-text-muted)";
+            }
         }
     } else {
         if (emailDisplay) emailDisplay.textContent = "Nincs (Vendég fiók)";
+    }
+
+    // 1.5. Manage Guest Password Form State
+    const currentPassInput = document.getElementById("current-password");
+    const newPassInput = document.getElementById("new-password");
+    const repeatPassInput = document.getElementById("repeat-password");
+    const btnChangePass = document.getElementById("btn-change-password");
+    const errorMsg = document.getElementById("password-error-msg");
+    const guestDataContainer = document.getElementById("guest-data-clear-container");
+    const guestRegPrompt = document.getElementById("guest-registration-prompt");
+
+    if (isGuest) {
+        if (currentPassInput) { currentPassInput.disabled = true; currentPassInput.style.cursor = "not-allowed"; }
+        if (newPassInput) { newPassInput.disabled = true; newPassInput.style.cursor = "not-allowed"; }
+        if (repeatPassInput) { repeatPassInput.disabled = true; repeatPassInput.style.cursor = "not-allowed"; }
+        if (btnChangePass) { btnChangePass.disabled = true; btnChangePass.style.cursor = "not-allowed"; btnChangePass.style.opacity = "0.5"; }
+        if (errorMsg) {
+            errorMsg.textContent = "Vendégként ez a funkció nem elérhető.";
+            errorMsg.style.color = "var(--color-text-muted)";
+        }
+        if (guestDataContainer) guestDataContainer.style.display = "block";
+        if (guestRegPrompt) guestRegPrompt.style.display = "block";
+    } else {
+        if (currentPassInput) { currentPassInput.disabled = false; currentPassInput.style.cursor = "text"; }
+        if (newPassInput) { newPassInput.disabled = false; newPassInput.style.cursor = "text"; }
+        if (repeatPassInput) { repeatPassInput.disabled = false; repeatPassInput.style.cursor = "text"; }
+        if (btnChangePass) { btnChangePass.disabled = false; btnChangePass.style.cursor = "pointer"; btnChangePass.style.opacity = "1"; }
+        if (errorMsg) {
+            errorMsg.style.color = "var(--color-error)"; // Restore original color
+        }
+        if (guestDataContainer) guestDataContainer.style.display = "none";
+        if (guestRegPrompt) guestRegPrompt.style.display = "none";
     }
 
     // 2. Render Statistics
@@ -1835,16 +2471,19 @@ async function handlePasswordChange() {
         return;
     }
 
-    if (!supabaseClient) {
-        errorMsg.textContent = "Vendégként nem tudsz jelszót módosítani.";
+    let isGuest = true;
+    if (supabaseClient) {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (user) isGuest = false;
+    }
+
+    if (isGuest) {
+        errorMsg.textContent = "Hiba 403 (Forbidden): Vendég munkamenet nem módosíthat jelszót.";
+        console.error("403 Forbidden: Password update rejected for guest session.");
         return;
     }
 
     const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-        errorMsg.textContent = "Kérjük jelentkezz be újra a jelszó módosításához.";
-        return;
-    }
 
     // Optional but recommended: Verify current password by signing in again before changing it
     // Supabase allows auth.updateUser without current password if session is valid, 

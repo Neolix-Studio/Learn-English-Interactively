@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Angol Nyelvtanulás Magyaroknak</title>
     <!-- Relative paths link your MacBook project folder safe for websupport.sk -->
-    <link rel="stylesheet" href="css/main.css?v=1.0.6">
-    <link rel="stylesheet" href="css/landing.css?v=1.0.6">
+    <link rel="stylesheet" href="css/main.css?v=1.0.7">
+    <link rel="stylesheet" href="css/landing.css?v=1.0.7">
 </head>
 <body>
 
@@ -18,18 +18,28 @@
                 <span class="logo-text">NeolixStudio</span>
             </a>
             
-            <nav class="main-nav" aria-label="Fő navigáció">
-                <ul class="nav-list">
-                    <!-- On the landing page, these use hash links that scroll or trigger WIP alerts -->
-                    <li><a href="#levels" class="nav-link">A1 Kezdő</a></li>
-                    <li><a href="#levels" class="nav-link">A2 Alapfok</a></li>
-                    <li><a href="#levels" class="nav-link">B1 Középfok</a></li>
-                    <li><a href="#levels" class="nav-link">B2 Haladó</a></li>
-                </ul>
-            </nav>
+            <!-- Hamburger Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menü megnyitása" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
 
-            <div class="header-actions">
-                <a href="#login" class="btn btn-logout">Bejelentkezés / Regisztráció</a>
+            <!-- Nav Drawer Wrapper -->
+            <div class="nav-drawer" id="nav-drawer">
+                <nav class="main-nav" aria-label="Fő navigáció">
+                    <ul class="nav-list">
+                        <!-- On the landing page, these use hash links that scroll or trigger WIP alerts -->
+                        <li><a href="#levels" class="nav-link">A1 Kezdő</a></li>
+                        <li><a href="#levels" class="nav-link">A2 Alapfok</a></li>
+                        <li><a href="#levels" class="nav-link">B1 Középfok</a></li>
+                        <li><a href="#levels" class="nav-link">B2 Haladó</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <a href="#login" class="btn btn-logout">Bejelentkezés / Regisztráció</a>
+                </div>
             </div>
         </div>
     </header>
@@ -146,6 +156,31 @@
         </div>
     </footer>
 
+    <!-- VERIFY EMAIL PENDING MODAL -->
+    <div id="verify-email-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
+            <button id="close-verify-email-btn" class="btn-close-icon" aria-label="Bezárás">✕</button>
+            <div style="font-size: 3rem; margin-bottom: 1rem;">✉️</div>
+            <h2 style="color: var(--color-accent-in); margin-bottom: 1rem;">Erősítsd meg az e-mail címed!</h2>
+            <p style="color: var(--color-text-muted); line-height: 1.5; margin-bottom: 1.5rem;">
+                Sikeresen regisztráltál! Kérjük, ellenőrizd a postafiókodat, és kattints az e-mailben található linkre a fiókod aktiválásához.
+            </p>
+            <button class="btn btn-primary" onclick="const m = document.getElementById('verify-email-modal'); m.classList.remove('is-active'); m.setAttribute('aria-hidden', 'true');" style="width: 100%;">Értettem</button>
+        </div>
+    </div>
+
+    <!-- VERIFICATION SUCCESS MODAL -->
+    <div id="verification-success-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content glass-panel" style="text-align: center; max-width: 400px; padding: 2.5rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+            <h2 style="color: var(--color-success); margin-bottom: 1rem;">Sikeres Hitelesítés!</h2>
+            <p style="color: var(--color-text-muted); line-height: 1.5; margin-bottom: 1.5rem;">
+                A fiókod sikeresen aktiválva lett, és az <strong>Örökös Prémium</strong> hozzáférés beállítva.
+            </p>
+            <a href="dashboard.html" class="btn btn-primary" style="display: block; width: 100%; text-decoration: none;">Irány a Tanuló Felület</a>
+        </div>
+    </div>
+
     <!-- 6. ANIMATED WIP MODAL OVERLAY BOX -->
     <div id="wip-modal" class="modal-overlay" aria-hidden="true">
         <div class="modal-content glass-panel">
@@ -158,7 +193,7 @@
 
     <!-- 7. LOGIN / REGISTER MODAL OVERLAY -->
     <div id="login-modal" class="modal-overlay" aria-hidden="true">
-        <div class="modal-content glass-panel" style="max-width: 400px;">
+        <div class="modal-content glass-panel">
             <div class="auth-tabs" style="display: flex; gap: 1rem; border-bottom: 1px solid oklch(1 0 0 / 0.1); margin-bottom: 1.5rem;">
                 <button type="button" class="auth-tab active" id="tab-login" style="background: none; border: none; color: var(--color-text-main); font-weight: 600; font-size: 1rem; cursor: pointer; padding-bottom: 0.25rem;">Bejelentkezés</button>
                 <button type="button" class="auth-tab" id="tab-register" style="background: none; border: none; color: var(--color-text-muted); font-weight: 600; font-size: 1rem; cursor: pointer; padding-bottom: 0.25rem;">Regisztráció</button>
@@ -167,12 +202,12 @@
                 <!-- Username field (only shown on registration) -->
                 <div class="form-group" id="group-username" style="display: none; flex-direction: column; gap: 0.4rem;">
                     <label for="auth-username" style="font-size: 0.85rem; color: var(--color-text-muted);">Felhasználónév</label>
-                    <input type="text" id="auth-username" placeholder="Pl. Péter" autocomplete="username" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                    <input type="text" id="auth-username" placeholder="Pl. Péter" autocomplete="username" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <!-- Age selector (only shown on registration) -->
                 <div class="form-group" id="group-age" style="display: none; flex-direction: column; gap: 0.4rem;">
                     <label for="auth-age" style="font-size: 0.85rem; color: var(--color-text-muted);">Életkor csoport</label>
-                    <select id="auth-age" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                    <select id="auth-age" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box; cursor: pointer; appearance: auto;">
                         <option value="" disabled selected>Válassz életkort...</option>
                         <option value="under_18">18 év alatti</option>
                         <option value="18_24">18 - 24 év</option>
@@ -184,15 +219,16 @@
                 </div>
                 <div class="form-group" style="display: flex; flex-direction: column; gap: 0.4rem;">
                     <label for="auth-email" style="font-size: 0.85rem; color: var(--color-text-muted);">E-mail cím</label>
-                    <input type="email" id="auth-email" placeholder="email@domain.com" required autocomplete="email" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                    <input type="email" id="auth-email" placeholder="email@domain.com" required autocomplete="email" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <div class="form-group" style="display: flex; flex-direction: column; gap: 0.4rem;">
                     <label for="auth-password" style="font-size: 0.85rem; color: var(--color-text-muted);">Jelszó</label>
-                    <input type="password" id="auth-password" placeholder="••••••••" required autocomplete="current-password" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.6rem 0.8rem; outline: none; font-size: 0.95rem;">
+                    <input type="password" id="auth-password" placeholder="••••••••" required autocomplete="current-password" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <div class="auth-error-message" id="auth-error" style="color: var(--color-error); font-size: 0.85rem; min-height: 20px; font-weight: 500;"></div>
                 <button type="submit" class="btn btn-submit-auth" id="btn-submit-auth" style="margin-top: 0.5rem; width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at)); color: #000; box-shadow: 0 4px 15px oklch(0.75 0.18 150 / 0.25);">Bejelentkezés</button>
             </form>
+            <button id="guest-login-btn" type="button" data-i18n="guest_login" style="margin-top: 1.5rem; width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: 1px solid var(--color-accent-in); background: transparent; color: var(--color-accent-in); transition: all var(--transition-base);">Folytatás Vendégként (Próba)</button>
             <button id="close-login-btn" class="btn-close-modal" style="margin-top: 1rem; width: 100%;">Bezárás</button>
         </div>
     </div>
@@ -200,6 +236,7 @@
     <!-- Script assets -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js?v=1.0.7"></script>
+    <script src="js/nav.js?v=1.0.7"></script>
     <script src="js/landing.js?v=1.0.7"></script>
 </body>
 </html>

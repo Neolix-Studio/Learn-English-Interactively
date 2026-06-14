@@ -7,20 +7,57 @@ document.addEventListener("DOMContentLoaded", () => {
         supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
 
+    // Track if user is currently logged in
+    let isUserLoggedIn = false;
+
     // Check if user is already logged in and update UI accordingly
     if (supabaseClient) {
-        supabaseClient.auth.getSession().then(({ data: { session } }) => {
-            if (session) {
+        // Listen for auth events (like clicking the email link and successfully logging in)
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                isUserLoggedIn = true;
                 const navLoginLink = document.querySelector('a[href="#login"]');
                 if (navLoginLink) {
                     navLoginLink.textContent = "Tanuló Felület";
                     navLoginLink.href = "dashboard.html";
-                    // It will now just act as a normal link to dashboard.html 
-                    // instead of opening the login modal.
+                }
+
+                // If they just arrived via an email verification link
+                if (window.location.hash.includes("type=signup") || window.location.hash.includes("access_token")) {
+                    const successModal = document.getElementById("verification-success-modal");
+                    if (successModal) {
+                        successModal.classList.add("is-active");
+                        successModal.setAttribute("aria-hidden", "false");
+                    }
+                    // It is now safe to clean up the URL so they don't accidentally auto-login again later!
+                    window.history.replaceState(null, null, window.location.pathname);
+                }
+            } else if (event === 'SIGNED_OUT') {
+                isUserLoggedIn = false;
+                // If they sign out, reset the button back
+                const navLoginLink = document.querySelector('a[href="dashboard.html"]');
+                if (navLoginLink) {
+                    navLoginLink.textContent = "Bejelentkezés / Regisztráció";
+                    navLoginLink.href = "#login";
+                }
+            }
+        });
+
+        // Initial check on page load
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                isUserLoggedIn = true;
+                const navLoginLink = document.querySelector('a[href="#login"]');
+                if (navLoginLink) {
+                    navLoginLink.textContent = "Tanuló Felület";
+                    navLoginLink.href = "dashboard.html";
                 }
             }
         });
     }
+
+    // Global state to hold the level chosen before showing modal
+    let pendingGuestLevel = "A1";
 
     // 2. Setup Level Card Redirection for Guests
     const levelButtons = document.querySelectorAll(".landing-level-btn");
@@ -30,8 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
             const pickedLevel = button.getAttribute("data-level");
 
             if (pickedLevel === "A1") {
-                localStorage.setItem("selectedLevel", pickedLevel);
-                window.location.href = "dashboard.html";
+                if (isUserLoggedIn) {
+                    // Logged in users bypass the auth modal check
+                    localStorage.setItem("selectedLevel", pickedLevel);
+                    window.location.href = "dashboard.html";
+                } else {
+                    // Guests get intercepted to choose their login method
+                    pendingGuestLevel = pickedLevel;
+                    openLoginModal();
+                }
             } else if (pickedLevel === "A2" || pickedLevel === "B1" || pickedLevel === "B2") {
                 openWipModal();
             }
@@ -54,6 +98,18 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeWipModal() {
         wipModal.classList.remove("is-active");
         wipModal.setAttribute("aria-hidden", "true");
+    }
+
+    // 3.5 Setup Verify Email Modal Listeners
+    const closeVerifyEmailBtn = document.getElementById("close-verify-email-btn");
+    if (closeVerifyEmailBtn) {
+        closeVerifyEmailBtn.addEventListener("click", () => {
+            const verifyModal = document.getElementById("verify-email-modal");
+            if (verifyModal) {
+                verifyModal.classList.remove("is-active");
+                verifyModal.setAttribute("aria-hidden", "true");
+            }
+        });
     }
 
     // 4. Setup Authentication Modal Controls
@@ -85,6 +141,28 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeLoginModal() {
         loginModal.classList.remove("is-active");
         loginModal.setAttribute("aria-hidden", "true");
+    }
+
+    // 4.5 Setup Guest Login Action
+    const guestLoginBtn = document.getElementById("guest-login-btn");
+    if (guestLoginBtn) {
+        guestLoginBtn.addEventListener("click", () => {
+            // Save the intercepted level and boot them into the dashboard
+            localStorage.setItem("selectedLevel", pendingGuestLevel);
+            window.location.href = "dashboard.html";
+        });
+    }
+
+    // 4.6 Auto-open Register Modal if redirected from Guest Profile
+    if (localStorage.getItem("forceRegisterModal") === "true") {
+        localStorage.removeItem("forceRegisterModal");
+        openLoginModal();
+        
+        // Wait a small tick for the DOM to be ready to click the register tab
+        setTimeout(() => {
+            const tabRegister = document.getElementById("tab-register");
+            if (tabRegister) tabRegister.click();
+        }, 50);
     }
 
     // 5. Setup Login / Register Tab Switching
@@ -154,13 +232,37 @@ document.addEventListener("DOMContentLoaded", () => {
                         return;
                     }
 
+                    // Check for existing guest data to migrate
+                    const guestKey = "neolix_guest_progress";
+                    const guestDataRaw = localStorage.getItem(guestKey);
+                    let initialPoints = 0;
+                    let initialCompleted = {};
+                    let initialScores = {};
+
+                    if (guestDataRaw) {
+                        try {
+                            const guestData = JSON.parse(guestDataRaw);
+                            initialPoints = guestData.points || 0;
+                            initialCompleted = guestData.completed || {};
+                            initialScores = guestData.scores || {};
+                        } catch(e) {
+                            console.warn("Hiba a vendég adatok beolvasásakor", e);
+                        }
+                    }
+
                     const { data, error } = await supabaseClient.auth.signUp({
                         email,
                         password,
                         options: {
                             data: {
                                 username: username,
-                                age_range: ageRange
+                                name: username, // Explicitly tell Supabase UI to display this in the native column
+                                age_range: ageRange,
+                                guest_migration: {
+                                    points: initialPoints,
+                                    completed: initialCompleted,
+                                    scores: initialScores
+                                }
                             }
                         }
                     });
@@ -172,24 +274,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     const user = data.user;
                     if (user) {
-                        // Create their initial user_progress row in the database
-                        const { error: dbError } = await supabaseClient
-                            .from('user_progress')
-                            .insert({
-                                id: user.id,
-                                username: username,
-                                age_range: ageRange,
-                                points: 0,
-                                completed: {},
-                                scores: {}
-                            });
-
-                        if (dbError) {
-                            console.error("Hiba a profil mentésekor:", dbError);
+                        if (data.session) {
+                            // If confirmation is OFF, they are instantly logged in
+                            localStorage.setItem("selectedLevel", "A1");
+                            window.location.href = "dashboard.html";
+                        } else {
+                            // If confirmation is ON, they need to verify their email
+                            const authModal = document.getElementById("login-modal");
+                            if (authModal) {
+                                authModal.classList.remove("is-active");
+                                authModal.setAttribute("aria-hidden", "true");
+                            }
+                            
+                            const verifyModal = document.getElementById("verify-email-modal");
+                            if (verifyModal) {
+                                verifyModal.classList.add("is-active");
+                                verifyModal.setAttribute("aria-hidden", "false");
+                            }
                         }
-                        
-                        localStorage.setItem("selectedLevel", "A1");
-                        window.location.href = "dashboard.html";
                     }
                 } else {
                     // Sign-in flow

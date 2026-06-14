@@ -1,31 +1,31 @@
 /* ==========================================================================
-   1. DASHBOARD RESPONSIVE CONTAINER LAYOUT
+   1. DASHBOARD RESPONSIVE CONTAINER LAYOUT (Mobile-First)
    ========================================================================== */
 .dashboard-container {
     max-width: 1400px;
-    margin: 70px auto 0 auto; /* Pushes content down below fixed 70px header */
+    margin: 70px auto 0 auto;
     min-height: calc(100vh - 70px);
-    display: grid;
-    /* Grid layout Blueprint: 300px sidebar and remaining content space */
-    grid-template-columns: 300px 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 80px; /* Space for mobile bottom bar */
 }
 
 /* ==========================================================================
    2. STICKY VERTICAL SIDEBAR MENU PANEL
    ========================================================================== */
 .dashboard-sidebar {
-    background: oklch(0.18 0.01 260 / 0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-right: var(--glass-border);
-    padding: 2rem 1.5rem;
-    height: calc(100vh - 70px);
-    position: sticky;
-    top: 70px; /* Keeps sidebar fixed vertically alongside content window scrolling */
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-right: none;
+    padding: 1.5rem 1.5rem 0 1.5rem;
+    height: auto;
+    position: static;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    overflow-y: auto;
+    gap: 1.5rem;
+    overflow-y: visible;
 }
 
 /* Sidebar Completion Meter Card */
@@ -65,11 +65,21 @@
     font-weight: 600;
 }
 
-/* Navigation Group Clusters */
+/* Navigation Group Clusters (Mobile Horizontal Carousel) */
 .sidebar-nav {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    flex-direction: row;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox */
+}
+.sidebar-nav::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+.sidebar-nav > .nav-group {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
 }
 
 .group-title {
@@ -1564,11 +1574,13 @@
 }
 
 /* Locked subsection link styling */
-.subsection-link.locked {
+.subsection-link.locked,
+.subsection-link.guest-locked {
     opacity: 0.4;
     cursor: not-allowed;
 }
-.subsection-link.locked:hover {
+.subsection-link.locked:hover,
+.subsection-link.guest-locked:hover {
     transform: none !important;
     background: transparent !important;
     color: var(--color-text-muted) !important;
@@ -1590,10 +1602,14 @@
 }
 
 .profile-glass-panel {
-    max-width: 800px;
-    width: 90%;
-    padding: 2.5rem;
     text-align: left;
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .profile-glass-panel {
+        max-width: 800px;
+    }
 }
 
 .profile-title {
@@ -1745,7 +1761,8 @@
 .custom-tooltip {
     visibility: hidden;
     opacity: 0;
-    width: 260px;
+    width: max-content;
+    max-width: 220px;
     background-color: oklch(0.2 0.02 260);
     color: var(--color-text-main);
     text-align: center;
@@ -1755,7 +1772,7 @@
     z-index: 100;
     bottom: 150%; 
     left: 50%;
-    margin-left: -130px;
+    transform: translateX(-50%);
     box-shadow: 0 4px 15px oklch(0 0 0 / 0.5);
     border: 1px solid var(--color-accent-on);
     font-size: 0.85rem;
@@ -1763,6 +1780,7 @@
     transition: opacity 0.3s, visibility 0.3s;
     pointer-events: none;
     line-height: 1.4;
+    white-space: normal;
 }
 
 .custom-tooltip::after {
@@ -1811,9 +1829,7 @@
     transform: rotate(90deg);
 }
 
-.profile-glass-panel {
-    position: relative;
-}
+
 
 #btn-change-password {
     background: linear-gradient(135deg, var(--color-accent-in), oklch(0.7 0.15 250));
@@ -1860,4 +1876,165 @@
 .btn-close-modal:hover {
     transform: scale(1.03);
     box-shadow: 0 0 25px var(--color-accent-on);
+}
+
+/* ==========================================================================
+   MOBILE BOTTOM NAVIGATION BAR
+   ========================================================================== */
+.mobile-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: var(--color-bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: var(--glass-border);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    gap: 0.25rem;
+    text-decoration: none;
+    transition: color var(--transition-base);
+    padding: 0.5rem;
+    min-width: 64px;
+    min-height: 44px;
+}
+
+.bottom-nav-item.active,
+.bottom-nav-item:hover {
+    color: var(--color-accent-in);
+}
+
+.bottom-nav-icon {
+    font-size: 1.5rem;
+}
+
+/* ==========================================================================
+   RESUME CTA CARD (HERO)
+   ========================================================================== */
+.resume-cta-card {
+    background: linear-gradient(135deg, oklch(0.2 0.02 260), oklch(0.15 0.01 260));
+    border: 1px solid var(--color-accent-in);
+    box-shadow: 0 8px 32px oklch(0.75 0.15 250 / 0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 0 1.5rem 1.5rem 1.5rem; /* Margins for mobile */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.resume-cta-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, var(--color-accent-in) 0%, transparent 70%);
+    opacity: 0.1;
+    transform: translate(30%, -30%);
+}
+
+.resume-cta-header {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--color-accent-in);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.resume-cta-title {
+    font-size: 1.5rem;
+    color: var(--color-text-main);
+    font-weight: 700;
+}
+
+.resume-cta-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--color-accent-in), var(--color-accent-on));
+    color: #000;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    min-height: 44px;
+}
+
+.resume-cta-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px oklch(0.75 0.18 310 / 0.4);
+}
+
+/* ==========================================================================
+   DESKTOP MEDIA QUERY (>= 768px)
+   ========================================================================== */
+@media (min-width: 768px) {
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 0;
+        padding-bottom: 0;
+    }
+    
+    .dashboard-sidebar {
+        background: oklch(0.18 0.01 260 / 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-right: var(--glass-border);
+        padding: 2rem 1.5rem;
+        height: calc(100vh - 70px);
+        position: sticky;
+        top: 70px;
+        flex-direction: column;
+        gap: 2rem;
+        overflow-y: auto;
+    }
+    
+    .sidebar-nav {
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow-x: visible;
+        scroll-snap-type: none;
+    }
+    
+    .sidebar-nav > .nav-group {
+        flex: auto;
+        scroll-snap-align: none;
+    }
+    
+    .mobile-bottom-bar {
+        display: none;
+    }
+    
+    .resume-cta-card {
+        margin: 0 0 2rem 0; /* Reset margins for grid context */
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .resume-cta-action {
+        align-self: center;
+        margin-bottom: 0;
+    }
 }
