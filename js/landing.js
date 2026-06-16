@@ -1,14 +1,11 @@
 // js/landing.js
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Initialize Supabase Client
-    let supabaseClient = null;
-    if (typeof SUPABASE_URL !== "undefined" && typeof SUPABASE_ANON_KEY !== "undefined" && SUPABASE_URL !== "YOUR_SUPABASE_URL") {
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-
     // Track if user is currently logged in
     let isUserLoggedIn = false;
+
+    // Track if we are in "Forgot Password" mode inside the login modal
+    let isForgotPasswordMode = false;
 
     function updateLandingUI(session) {
         const navLoginLink = document.querySelector('a[href="#login"]') || document.querySelector('a[href="dashboard.html"]');
@@ -53,38 +50,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    if (supabaseClient) {
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN') {
-                updateLandingUI(session);
-
-                // If they just arrived via an email verification link
-                if (window.location.hash.includes("type=signup") || window.location.hash.includes("access_token")) {
-                    const successModal = document.getElementById("verification-success-modal");
-                    if (successModal) {
-                        successModal.classList.add("is-active");
-                        successModal.setAttribute("aria-hidden", "false");
-                    }
-                    window.history.replaceState(null, null, window.location.pathname);
+    // Check PHP session on page load
+    async function checkSession() {
+        try {
+            const res = await fetch(`${API_URL}?action=get_session`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.session) {
+                    updateLandingUI(data.session);
+                } else {
+                    updateLandingUI(null);
                 }
-            } else if (event === 'SIGNED_OUT') {
+            } else {
                 updateLandingUI(null);
             }
-        });
-
-        // Initial check on page load
-        supabaseClient.auth.getSession().then(({ data: { session } }) => {
-            updateLandingUI(session);
-        });
-    } else {
-        // Fallback for when Supabase is not configured, just check for Guest
-        updateLandingUI(null);
+        } catch (err) {
+            console.warn("Session check failed, falling back to guest mode:", err);
+            updateLandingUI(null);
+        }
     }
+
+    checkSession();
 
     // Global state to hold the level chosen before showing modal
     let pendingGuestLevel = "A1";
 
-    // 2. Setup Level Card Redirection for Guests
+    // Setup Level Card Redirection for Guests
     const levelButtons = document.querySelectorAll(".landing-level-btn");
     levelButtons.forEach(button => {
         button.addEventListener("click", (event) => {
@@ -107,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 3. Setup General WIP Modal Listeners
+    // Setup General WIP Modal Listeners
     const wipModal = document.getElementById("wip-modal");
     const closeWipBtn = document.getElementById("close-wip-btn");
 
@@ -125,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         wipModal.setAttribute("aria-hidden", "true");
     }
 
-    // 3.5 Setup Verify Email Modal Listeners
+    // Setup Verify Email Modal Listeners (Keep as fallback display helper)
     const closeVerifyEmailBtn = document.getElementById("close-verify-email-btn");
     if (closeVerifyEmailBtn) {
         closeVerifyEmailBtn.addEventListener("click", () => {
@@ -137,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. Setup Authentication Modal Controls
+    // Setup Authentication Modal Controls
     const loginModal = document.getElementById("login-modal");
     const closeLoginBtn = document.getElementById("close-login-btn");
     const navLoginLink = document.querySelector('a[href="#login"]');
@@ -161,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loginModal.classList.add("is-active");
         loginModal.setAttribute("aria-hidden", "false");
         document.getElementById("auth-error").textContent = "";
+        resetForgotPasswordMode();
     }
 
     function closeLoginModal() {
@@ -168,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loginModal.setAttribute("aria-hidden", "true");
     }
 
-    // 4.5 Setup Guest Login Action
+    // Setup Guest Login Action
     const guestLoginBtn = document.getElementById("guest-login-btn");
     if (guestLoginBtn) {
         guestLoginBtn.addEventListener("click", () => {
@@ -180,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4.6 Auto-open Register Modal if redirected from Guest Profile
+    // Auto-open Register Modal if redirected from Guest Profile
     if (localStorage.getItem("forceRegisterModal") === "true") {
         localStorage.removeItem("forceRegisterModal");
         openLoginModal();
@@ -192,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 50);
     }
 
-    // 5. Setup Login / Register Tab Switching
+    // Setup Login / Register Tab Switching
     const tabLogin = document.getElementById("tab-login");
     const tabRegister = document.getElementById("tab-register");
     const groupUsername = document.getElementById("group-username");
@@ -203,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (tabLogin && tabRegister) {
         tabLogin.addEventListener("click", () => {
+            if (isForgotPasswordMode) return;
             isRegisterMode = false;
             tabLogin.classList.add("active");
             tabRegister.classList.remove("active");
@@ -216,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         tabRegister.addEventListener("click", () => {
+            if (isForgotPasswordMode) return;
             isRegisterMode = true;
             tabRegister.classList.add("active");
             tabLogin.classList.remove("active");
@@ -229,7 +223,70 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 6. Handle Auth Form Submission
+    // --- Forgot Password Toggle Logic ---
+    const forgotPasswordLink = document.getElementById("forgot-password-link");
+    const forgotPasswordBackLink = document.getElementById("forgot-password-back-link");
+    const forgotPasswordBackContainer = document.getElementById("forgot-password-back-container");
+    const groupPassword = document.getElementById("group-password");
+    const emailLabel = document.querySelector('label[for="auth-email"]');
+    const emailInput = document.getElementById("auth-email");
+    const tabsContainer = document.querySelector(".auth-tabs");
+
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            enableForgotPasswordMode();
+        });
+    }
+
+    if (forgotPasswordBackLink) {
+        forgotPasswordBackLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            resetForgotPasswordMode();
+        });
+    }
+
+    function enableForgotPasswordMode() {
+        isForgotPasswordMode = true;
+        if (tabsContainer) tabsContainer.style.display = "none";
+        if (groupUsername) groupUsername.style.display = "none";
+        if (groupAge) groupAge.style.display = "none";
+        if (groupPassword) groupPassword.style.display = "none";
+        if (guestLoginBtn) guestLoginBtn.style.display = "none";
+        if (forgotPasswordBackContainer) forgotPasswordBackContainer.style.display = "block";
+        
+        if (emailLabel) emailLabel.textContent = "Kérjük, add meg a regisztrált e-mail címed:";
+        if (emailInput) {
+            emailInput.required = true;
+            emailInput.placeholder = "email@domain.com";
+        }
+        if (btnSubmitAuth) btnSubmitAuth.textContent = "Visszaállítási link küldése";
+        document.getElementById("auth-error").textContent = "";
+    }
+
+    function resetForgotPasswordMode() {
+        isForgotPasswordMode = false;
+        if (tabsContainer) tabsContainer.style.display = "flex";
+        if (guestLoginBtn) guestLoginBtn.style.display = "block";
+        if (forgotPasswordBackContainer) forgotPasswordBackContainer.style.display = "none";
+        if (emailLabel) emailLabel.textContent = "E-mail cím";
+        
+        if (groupPassword) groupPassword.style.display = "flex";
+        
+        if (isRegisterMode) {
+            if (groupUsername) groupUsername.style.display = "flex";
+            if (groupAge) groupAge.style.display = "flex";
+            if (btnSubmitAuth) btnSubmitAuth.textContent = "Regisztráció";
+        } else {
+            if (groupUsername) groupUsername.style.display = "none";
+            if (groupAge) groupAge.style.display = "none";
+            if (btnSubmitAuth) btnSubmitAuth.textContent = "Bejelentkezés";
+        }
+        
+        document.getElementById("auth-error").textContent = "";
+    }
+
+    // Handle Auth Form Submission
     const authForm = document.getElementById("auth-form");
     if (authForm) {
         authForm.addEventListener("submit", async (e) => {
@@ -242,14 +299,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
             errorEl.textContent = "";
 
-            if (!supabaseClient) {
-                errorEl.textContent = "Supabase kapcsolat nincs beállítva a js/config.js-ben!";
-                return;
-            }
-
             try {
-                if (isRegisterMode) {
-                    // Sign-up flow
+                if (isForgotPasswordMode) {
+                    // Forgot Password request
+                    const res = await fetch(`${API_URL}?action=forgot_password`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email })
+                    });
+                    
+                    const data = await res.json();
+                    if (data.error) {
+                        errorEl.style.color = "var(--color-error)";
+                        errorEl.textContent = data.error;
+                    } else {
+                        errorEl.style.color = "var(--color-success)";
+                        errorEl.textContent = data.message || "A visszaállítási linket elküldtük az e-mail címedre!";
+                        // Clear email field
+                        document.getElementById("auth-email").value = "";
+                    }
+                } else if (isRegisterMode) {
+                    // Sign-up flow (Direct sign-up)
                     if (!username) {
                         errorEl.textContent = "Kérjük, adj meg egy felhasználónevet!";
                         return;
@@ -277,67 +347,143 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
 
-                    const { data, error } = await supabaseClient.auth.signUp({
-                        email,
-                        password,
-                        options: {
-                            data: {
-                                username: username,
-                                name: username, // Explicitly tell Supabase UI to display this in the native column
-                                age_range: ageRange,
-                                guest_migration: {
-                                    points: initialPoints,
-                                    completed: initialCompleted,
-                                    scores: initialScores
-                                }
+                    const res = await fetch(`${API_URL}?action=signup`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            email,
+                            password,
+                            username,
+                            age_range: ageRange,
+                            guest_migration: {
+                                points: initialPoints,
+                                completed: initialCompleted,
+                                scores: initialScores
                             }
-                        }
+                        })
                     });
 
-                    if (error) {
-                        errorEl.textContent = error.message;
+                    const data = await res.json();
+
+                    if (data.error) {
+                        errorEl.style.color = "var(--color-error)";
+                        errorEl.textContent = data.error;
                         return;
                     }
 
-                    const user = data.user;
-                    if (user) {
-                        if (data.session) {
-                            // If confirmation is OFF, they are instantly logged in
-                            localStorage.setItem("selectedLevel", "A1");
-                            window.location.href = "dashboard.html";
-                        } else {
-                            // If confirmation is ON, they need to verify their email
-                            const authModal = document.getElementById("login-modal");
-                            if (authModal) {
-                                authModal.classList.remove("is-active");
-                                authModal.setAttribute("aria-hidden", "true");
-                            }
-                            
-                            const verifyModal = document.getElementById("verify-email-modal");
-                            if (verifyModal) {
-                                verifyModal.classList.add("is-active");
-                                verifyModal.setAttribute("aria-hidden", "false");
-                            }
-                        }
+                    if (data.success) {
+                        localStorage.setItem("selectedLevel", "A1");
+                        window.location.href = "dashboard.html";
                     }
                 } else {
                     // Sign-in flow
-                    const { data, error } = await supabaseClient.auth.signInWithPassword({
-                        email,
-                        password
+                    const res = await fetch(`${API_URL}?action=login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password })
                     });
 
-                    if (error) {
-                        errorEl.textContent = error.message;
+                    const data = await res.json();
+
+                    if (data.error) {
+                        errorEl.style.color = "var(--color-error)";
+                        errorEl.textContent = data.error;
                         return;
                     }
 
-                    localStorage.setItem("selectedLevel", "A1");
-                    window.location.href = "dashboard.html";
+                    if (data.success) {
+                        localStorage.setItem("selectedLevel", "A1");
+                        window.location.href = "dashboard.html";
+                    }
                 }
             } catch (err) {
                 console.error("Auth hiba:", err);
+                errorEl.style.color = "var(--color-error)";
                 errorEl.textContent = "Hiba történt az azonosítás során.";
+            }
+        });
+    }
+
+    // --- Password Reset Parsing & Modal controls ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const actionParam = urlParams.get('action');
+    const tokenParam = urlParams.get('token');
+
+    if (actionParam === 'reset_password' && tokenParam) {
+        // Open the reset password modal
+        const resetModal = document.getElementById("reset-password-modal");
+        if (resetModal) {
+            resetModal.classList.add("is-active");
+            resetModal.setAttribute("aria-hidden", "false");
+            document.getElementById("reset-token-hidden").value = tokenParam;
+        }
+        // Clean URL params so they are not kept in history
+        window.history.replaceState(null, null, window.location.pathname);
+    }
+
+    // Reset password form submit handler
+    const resetForm = document.getElementById("reset-password-form");
+    if (resetForm) {
+        resetForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const password = document.getElementById("reset-password").value;
+            const passwordConfirm = document.getElementById("reset-password-confirm").value;
+            const token = document.getElementById("reset-token-hidden").value;
+            const errorEl = document.getElementById("reset-error");
+
+            errorEl.textContent = "";
+
+            if (password !== passwordConfirm) {
+                errorEl.textContent = "A két jelszó nem egyezik meg!";
+                return;
+            }
+
+            if (password.length < 6) {
+                errorEl.textContent = "A jelszónak legalább 6 karakterből kell állnia!";
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}?action=reset_password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token, password })
+                });
+
+                const data = await res.json();
+                if (data.error) {
+                    errorEl.style.color = "var(--color-error)";
+                    errorEl.textContent = data.error;
+                } else {
+                    errorEl.style.color = "var(--color-success)";
+                    errorEl.textContent = data.message || "A jelszó sikeresen megváltoztatva!";
+                    
+                    // Direct redirect to login modal after a short delay
+                    setTimeout(() => {
+                        const resetModal = document.getElementById("reset-password-modal");
+                        if (resetModal) {
+                            resetModal.classList.remove("is-active");
+                            resetModal.setAttribute("aria-hidden", "true");
+                        }
+                        openLoginModal();
+                    }, 1800);
+                }
+            } catch (err) {
+                console.error("Password reset error:", err);
+                errorEl.style.color = "var(--color-error)";
+                errorEl.textContent = "Hiba történt a jelszó visszaállítása során.";
+            }
+        });
+    }
+
+    // Close reset modal button
+    const closeResetModalBtn = document.getElementById("close-reset-modal-btn");
+    if (closeResetModalBtn) {
+        closeResetModalBtn.addEventListener("click", () => {
+            const resetModal = document.getElementById("reset-password-modal");
+            if (resetModal) {
+                resetModal.classList.remove("is-active");
+                resetModal.setAttribute("aria-hidden", "true");
             }
         });
     }

@@ -1,4 +1,3 @@
 // js/config.js
-
-const SUPABASE_URL = "https://oyaykwfpumvtaehrudwn.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im95YXlrd2ZwdW12dGFlaHJ1ZHduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTc3NzEsImV4cCI6MjA5Njg5Mzc3MX0.KhjpkTdKWMBnmreGWQnKaQ9bmz8bmk2yhP1c4OR68E0";
+// Local API Endpoint for MariaDB 11.4 Backend via PHP
+const API_URL = "api.php";

@@ -66,11 +66,8 @@ let userProgress = ProgressManager.data;
 // Global cache for fetched vocabulary data to prevent redundant network hits
 const vocabCache = {};
 
-// Global Supabase Client
-let supabaseClient = null;
-if (typeof SUPABASE_URL !== "undefined" && typeof SUPABASE_ANON_KEY !== "undefined" && SUPABASE_URL !== "YOUR_SUPABASE_URL") {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-}
+// Global API Client Endpoint for local WebSupport MariaDB backend
+// Uses config.js API_URL constraint
 
 // Stopwatch timer state
 let stopwatchInterval = null;
@@ -330,12 +327,10 @@ async function initUserProgress() {
         logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
         newLogoutBtn.addEventListener("click", async (e) => {
             e.preventDefault();
-            if (supabaseClient) {
-                try {
-                    await supabaseClient.auth.signOut();
-                } catch (err) {
-                    console.warn("SignOut API failed, proceeding with local wipe:", err);
-                }
+            try {
+                await fetch(`${API_URL}?action=logout`);
+            } catch (err) {
+                console.warn("Logout API failed, proceeding with local wipe:", err);
             }
             // Force hard wipe of any leftover Supabase auth tokens in LocalStorage
             Object.keys(localStorage).forEach(key => {
@@ -349,10 +344,13 @@ async function initUserProgress() {
         });
     });
 
-    if (supabaseClient) {
-        try {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (user) {
+    try {
+        const res = await fetch(`${API_URL}?action=get_session`);
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.session) {
+                const session = data.session;
+                const user = session.user;
                 loggedInUser = user.user_metadata?.username || user.email.split('@')[0];
                 userId = user.id;
 
@@ -362,90 +360,47 @@ async function initUserProgress() {
                     welcomeSpan.textContent = `Szia, ${loggedInUser}!`;
                 }
 
-                // Fetch their row from user_progress table
-                let { data: progressRow, error } = await supabaseClient
-                    .from('user_progress')
-                    .select('*')
-                    .eq('id', userId)
-                    .maybeSingle();
+                const progress = session.progress;
+                const subscription = session.subscription;
 
-                // Fetch their role and subscription from user_subscriptions table
-                let { data: subRow, error: subError } = await supabaseClient
-                    .from('user_subscriptions')
-                    .select('role, subscription_tier')
-                    .eq('id', userId)
-                    .maybeSingle();
-
-                if (subError) {
-                    console.error("Supabase user_subscriptions RLS or Fetch error:", subError);
+                let completedObj = progress.completed;
+                if (!completedObj || Array.isArray(completedObj)) {
+                    completedObj = {};
+                }
+                let scoresObj = progress.scores;
+                if (!scoresObj || Array.isArray(scoresObj)) {
+                    scoresObj = {};
                 }
 
-                    if (error) {
-                        console.error("Hiba a Supabase betöltésekor:", error);
-                    } else if (progressRow) {
-                        ProgressManager.isGuest = false;
-                        LocalSavingsService.clear(); // Ensure guest data is wiped when successfully logged in
-                        userProgress = {
-                            username: loggedInUser,
-                            points: progressRow.points || 0,
-                            completed: progressRow.completed || {},
-                            scores: progressRow.scores || {},
-                            role: subRow?.role || "user",
-                            subscription_tier: subRow?.subscription_tier || "free",
-                            id: userId
-                        };
-                        ProgressManager.data = userProgress;
-                        
-                        console.log("🔓 User Loaded:", ProgressManager.data);
-                        
-                        updateProgressUI();
-                        refreshProfileDOM(); // Wipe loading states
-                        return;
-                    } else {
-                        // Create default row in table
-                        // Use guest migration data from user_metadata if it exists
-                        const migrationData = user.user_metadata?.guest_migration || {};
-                        const ageRange = user.user_metadata?.age_range || "unknown";
-                        
-                        const newProgress = {
-                            id: userId,
-                            username: loggedInUser,
-                            age_range: ageRange,
-                            points: migrationData.points || 0,
-                            completed: migrationData.completed || {},
-                            scores: migrationData.scores || {}
-                        };
-                        const { error: insertError } = await supabaseClient
-                            .from('user_progress')
-                            .insert(newProgress);
+                ProgressManager.isGuest = false;
+                LocalSavingsService.clear(); // Ensure guest data is wiped when successfully logged in
+                userProgress = {
+                    username: loggedInUser,
+                    email: user.email || "",
+                    points: progress.points || 0,
+                    completed: completedObj,
+                    scores: scoresObj,
+                    role: subscription?.role || "user",
+                    subscription_tier: subscription?.subscription_tier || "free",
+                    id: userId
+                };
+                ProgressManager.data = userProgress;
 
-                        if (insertError) {
-                            console.error("Hiba a Supabase sor beszúrásakor:", insertError);
-                        } else {
-                            ProgressManager.isGuest = false;
-                            LocalSavingsService.clear(); // Ensure guest data is wiped after successful migration
-                            userProgress = {
-                                username: loggedInUser,
-                                points: newProgress.points,
-                                completed: newProgress.completed,
-                                scores: newProgress.scores,
-                                role: subRow?.role || "user",
-                                subscription_tier: subRow?.subscription_tier || "free",
-                                id: userId
-                            };
-                            ProgressManager.data = userProgress;
-
-                            console.log("🔓 New User Progress Created:", ProgressManager.data);
-
-                            updateProgressUI();
-                            refreshProfileDOM(); // Wipe loading states after successful migration
-                            return;
-                        }
-                    }
+                // Set profile email field in the modal since it is available in the session
+                const emailDisplay = document.getElementById("profile-email-display");
+                if (emailDisplay) {
+                    emailDisplay.textContent = user.email || "";
+                }
+                
+                console.log("🔓 User Loaded:", ProgressManager.data);
+                
+                updateProgressUI();
+                refreshProfileDOM(); // Wipe loading states
+                return;
             }
-        } catch (authErr) {
-            console.warn("Hiba a Supabase azonosítás során:", authErr);
         }
+    } catch (authErr) {
+        console.warn("Hiba a munkamenet lekérése során:", authErr);
     }
 
     // Fallback to ProgressManager for guest
@@ -465,6 +420,13 @@ async function initUserProgress() {
         };
     }
     ProgressManager.data = userProgress;
+
+    // Set profile email display for guest
+    const emailDisplay = document.getElementById("profile-email-display");
+    if (emailDisplay) {
+        emailDisplay.textContent = "Nincs (Vendég)";
+    }
+
     updateProgressUI();
     refreshProfileDOM(); // Ensure "Betöltés" states are wiped for guests too
 }
@@ -507,23 +469,27 @@ async function saveUserProgress() {
         // Isolated guest traffic, purely client-side
         LocalSavingsService.save(userProgress);
     } else {
-        // Only write to Supabase if authenticated
-        if (supabaseClient && userProgress.id) {
+        if (userProgress.id) {
             try {
-                const { error } = await supabaseClient
-                    .from('user_progress')
-                    .update({
+                const res = await fetch(`${API_URL}?action=save_progress`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
                         points: userProgress.points || 0,
                         completed: userProgress.completed || {},
                         scores: userProgress.scores || {}
                     })
-                    .eq('id', userProgress.id);
-
-                if (error) {
-                    console.error("Sikertelen Supabase mentés:", error);
+                });
+                if (!res.ok) {
+                    console.error("Sikertelen mentés a szerverre");
+                } else {
+                    const data = await res.json();
+                    if (data.error) {
+                        console.error("Sikertelen mentés:", data.error);
+                    }
                 }
             } catch (err) {
-                console.warn("Hiba a Supabase mentésekor:", err);
+                console.warn("Hiba a mentés során:", err);
             }
         }
     }
@@ -2580,32 +2546,19 @@ async function openProfileModal() {
         }
     }
     
-    let isGuest = true;
-    if (supabaseClient) {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (user) {
-            isGuest = false;
-            if (emailDisplay) {
-                // TEMPORARY BYPASS: Treat all users as confirmed if they have a user.id. 
-                // Placeholder for testing purposes.
-                // TODO: When migrating to websupport.sk DB, remove `|| user.id` to strictly enforce email_confirmed_at.
-                if (user.email_confirmed_at || user.id) {
-                    emailDisplay.innerHTML = `${user.email} <span style="color: var(--color-success); font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem;">(✓ Hitelesítve)</span>`;
-                } else {
-                    emailDisplay.innerHTML = `${user.email} <span style="color: var(--color-error); font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem;">(Nincs hitelesítve)</span>`;
-                }
-            }
-        } else if (emailDisplay) {
-            emailDisplay.textContent = "Nincs (Vendég fiók)";
-            if (subDisplay) {
-                subDisplay.textContent = "Vendég Limitált";
-                subDisplay.style.background = "transparent";
-                subDisplay.style.color = "var(--color-text-muted)";
-                subDisplay.style.border = "1px solid var(--color-text-muted)";
-            }
+    let isGuest = ProgressManager.isGuest;
+    if (!isGuest) {
+        if (emailDisplay) {
+            emailDisplay.innerHTML = `${userProgress.email || ""} <span style="color: var(--color-success); font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem;">(✓ Hitelesítve)</span>`;
         }
     } else {
         if (emailDisplay) emailDisplay.textContent = "Nincs (Vendég fiók)";
+        if (subDisplay) {
+            subDisplay.textContent = "Vendég Limitált";
+            subDisplay.style.background = "transparent";
+            subDisplay.style.color = "var(--color-text-muted)";
+            subDisplay.style.border = "1px solid var(--color-text-muted)";
+        }
     }
 
     // 1.5. Manage Guest Password Form State
@@ -2742,51 +2695,46 @@ async function handlePasswordChange() {
         return;
     }
 
-    let isGuest = true;
-    if (supabaseClient) {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (user) isGuest = false;
-    }
-
-    if (isGuest) {
+    if (ProgressManager.isGuest) {
         errorMsg.textContent = "Hiba 403 (Forbidden): Vendég munkamenet nem módosíthat jelszót.";
         console.error("403 Forbidden: Password update rejected for guest session.");
         return;
     }
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
-
-    // Optional but recommended: Verify current password by signing in again before changing it
-    // Supabase allows auth.updateUser without current password if session is valid, 
-    // but to be secure and meet the requirement, we will simulate re-auth.
-    const email = user.email;
-    const { error: signInError } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: currentPassword
-    });
-
-    if (signInError) {
-        errorMsg.textContent = "A jelenlegi jelszó helytelen.";
-        return;
-    }
-
-    // Now update password
+    // Now update password on PHP backend
     const btn = document.getElementById("btn-change-password");
     btn.disabled = true;
     btn.textContent = "Kérjük várj...";
 
-    const { error: updateError } = await supabaseClient.auth.updateUser({
-        password: newPassword
-    });
+    try {
+        const res = await fetch(`${API_URL}?action=update_password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                current_password: currentPassword,
+                new_password: newPassword
+            })
+        });
 
-    btn.disabled = false;
-    btn.textContent = "Mentés";
+        btn.disabled = false;
+        btn.textContent = "Mentés";
 
-    if (updateError) {
-        errorMsg.textContent = "Hiba történt a jelszó módosításakor. Próbáld újra.";
-    } else {
-        successMsg.textContent = "Jelszó sikeresen frissítve!";
-        document.getElementById("password-change-form").reset();
+        if (res.ok) {
+            const data = await res.json();
+            if (data.error) {
+                errorMsg.textContent = data.error;
+            } else {
+                successMsg.textContent = "Jelszó sikeresen frissítve!";
+                document.getElementById("password-change-form").reset();
+            }
+        } else {
+            errorMsg.textContent = "Hiba történt a jelszó módosításakor. Próbáld újra.";
+        }
+    } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "Mentés";
+        errorMsg.textContent = "Hálózati hiba történt a jelszó módosításakor.";
+        console.error("Password update error:", err);
     }
 }
 
