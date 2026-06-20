@@ -4012,7 +4012,9 @@ async function openProfileModal() {
     let isGuest = ProgressManager.isGuest;
     if (!isGuest) {
         if (emailDisplay) {
-            emailDisplay.innerHTML = `${userProgress.email || ""} <span style="color: var(--color-success); font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem;">(✓ Hitelesítve)</span>`;
+            // 🛡️ Sentinel: Sanitize user input to prevent XSS
+            emailDisplay.textContent = userProgress.email || "";
+            emailDisplay.insertAdjacentHTML('beforeend', ' <span style="color: var(--color-success); font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem;">(✓ Hitelesítve)</span>');
         }
     } else {
         if (emailDisplay) emailDisplay.textContent = "Nincs (Vendég fiók)";
