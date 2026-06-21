@@ -15,6 +15,10 @@ session_start([
 ]);
 
 header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1; mode=block');
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 
 // Include database configuration
 if (!file_exists(__DIR__ . '/db_config.php')) {
@@ -103,6 +107,16 @@ function handleSignup($pdo, $data) {
         return;
     }
 
+    if (mb_strlen($username) > 50) {
+        echo json_encode(['error' => 'A felhasználónév maximum 50 karakter hosszú lehet!']);
+        return;
+    }
+
+    if (mb_strlen($email) > 100) {
+        echo json_encode(['error' => 'Az e-mail cím maximum 100 karakter hosszú lehet!']);
+        return;
+    }
+
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(['error' => 'Érvénytelen e-mail cím formátum!']);
         return;
@@ -158,7 +172,7 @@ function handleSignup($pdo, $data) {
             'user' => [
                 'id' => $userId,
                 'email' => $email,
-                'username' => $username,
+                'username' => htmlspecialchars($username, ENT_QUOTES, 'UTF-8'),
                 'age_range' => $ageRange
             ]
         ]);
@@ -203,7 +217,7 @@ function handleLogin($pdo, $data) {
             'user' => [
                 'id' => $user['id'],
                 'email' => $user['email'],
-                'username' => $user['username'],
+                'username' => htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'),
                 'age_range' => $user['age_range']
             ]
         ]);
@@ -266,7 +280,7 @@ function handleGetSession($pdo) {
                     'id' => $userId,
                     'email' => $user['email'],
                     'user_metadata' => [
-                        'username' => $user['username'],
+                        'username' => htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'),
                         'age_range' => $user['age_range']
                     ]
                 ],
