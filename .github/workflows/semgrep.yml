@@ -37,7 +37,7 @@ jobs:
             COLOR="danger"
           fi
 
-          payload=\$(cat <<EOF
+          payload=$(cat <<EOF
           {
             "text": "*Semgrep Security Scan Results*",
             "attachments": [
@@ -58,4 +58,4 @@ jobs:
           EOF
           )
 
-          curl -X POST -H 'Content-type: application/json' --data "\$payload" "$SLACK_WEBHOOK"
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "$SLACK_WEBHOOK"
