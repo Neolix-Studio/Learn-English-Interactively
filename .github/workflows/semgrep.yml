@@ -24,8 +24,38 @@ jobs:
         if: always()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          JOB_STATUS: ${{ job.status }}
         run: |
-          CLEAN_SUMMARY=$(tail -n 12 semgrep_results.txt | grep -E "Findings|Targets|Lines|skipped" || echo "Scan completed successfully.")
-          ESCAPED_SUMMARY=$(echo "$CLEAN_SUMMARY" | jq -aR . | jq -s -c 'join("\\n")' | sed 's/^"//;s/"$//')
-          payload="{\"text\": \"*📊 Semgrep Security Scan Summary (GitHub Actions)*\\n\`\`\`\\n${ESCAPED_SUMMARY}\\n\`\`\`\"}"
-          curl -X POST -H 'Content-type: application/json' --data "$payload" "$SLACK_WEBHOOK"
+          TARGETS=$(grep -E "Targets scanned:" semgrep_results.txt | awk '{print $NF}' || echo "0")
+          FINDINGS=$(grep -E "Findings:" semgrep_results.txt | head -n 1 | awk '{print $3}' || echo "0")
+          SUPPLY_CHAIN=$(grep -E "Supply chain findings|SCA" semgrep_results.txt | awk '{print $NF}' || echo "0")
+          SECRETS="0 (Free Tier)"
+
+          if [ "$JOB_STATUS" = "success" ]; then
+            COLOR="good"
+          else
+            COLOR="danger"
+          fi
+
+          payload=\$(cat <<EOF
+          {
+            "text": "*Semgrep Security Scan Results*",
+            "attachments": [
+              {
+                "color": "${COLOR}",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "• *Files Scanned:* ${TARGETS}\n• *Code Issues Found:* ${FINDINGS}\n• *Supply Chain Issues:* ${SUPPLY_CHAIN}\n• *Secrets Issues:* ${SECRETS}"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          )
+
+          curl -X POST -H 'Content-type: application/json' --data "\$payload" "$SLACK_WEBHOOK"
