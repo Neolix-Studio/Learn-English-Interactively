@@ -447,7 +447,8 @@ function handleForgotPassword($pdo, $data) {
         $stmtUpdate->execute([$token, $expiry, $user['id']]);
 
         // Construct reset link
-        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'neolix.studio';
+        $allowedHosts = ['neolix.studio'];
+        $host = isset($_SERVER['HTTP_HOST']) && in_array($_SERVER['HTTP_HOST'], $allowedHosts, true) ? $_SERVER['HTTP_HOST'] : 'neolix.studio';
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
         $resetLink = $protocol . "://" . $host . "/index.html?action=reset_password&token=" . $token;
 
