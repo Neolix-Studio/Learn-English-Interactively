@@ -66,7 +66,7 @@ function createGitHubIssue(issue) {
   else return; // Skip minor/info issues
 
   // Add security label for security vulnerabilities or security-tagged issues
-  const isSecurity = issue.type === 'VULNERABILITY' || (issue.tags && issue.tags.includes('security'));
+  const isSecurity = issue.type === 'VULNERABILITY' || issue.tags?.includes('security');
   if (isSecurity) {
     labels.push('security');
   }
@@ -155,7 +155,7 @@ function addIssueToProject(issueUrl, isSecurity) {
     }
 
     // Extract item ID (e.g. PVTI_...) from output
-    const match = addResult.stdout.match(/PVTI_[A-Za-z0-9_\-]+/);
+    const match = addResult.stdout.match(/PVTI_[A-Za-z0-9_-]+/);
     if (!match) {
       console.error(`Could not parse project item ID from output: ${addResult.stdout}`);
       return;
