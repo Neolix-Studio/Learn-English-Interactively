@@ -99,16 +99,7 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
-        run: |
-          cat <<EOF > db_config.php
-          <?php
-          // Automatically compiled by GitHub Actions
-          define('DB_HOST', "$DB_HOST");
-          define('DB_NAME', "$DB_NAME");
-          define('DB_USER', "$DB_USER");
-          define('DB_PASS', "$DB_PASS");
-          define('MIGRATION_TOKEN', "$MIGRATION_TOKEN");
-          EOF
+        run: node js/write_db_config.js
 
       - name: Deploy files via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -129,6 +120,7 @@ jobs:
             eslint.config.js
             .stylelintrc.json
             js/validate_json.js
+            js/write_db_config.js
 
       - name: Run Remote Migrations
         env:
