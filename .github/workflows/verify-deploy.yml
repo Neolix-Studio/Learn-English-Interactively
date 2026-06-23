@@ -30,13 +30,13 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@c541c155eee451ee3a6b32722b54d9f688e1467a # v2.31.0
+        uses: shivammathur/setup-php@e4308575001469e8b7593c6f86236b2880c5c643 # v2.30.0
         with:
           php-version: '8.2'
           extensions: pdo, pdo_mysql
 
       - name: Setup Node.js
-        uses: actions/setup-node@60a0b8e9edd22c36feb61405e3afa0eb139f32a2 # v4.0.2
+        uses: actions/setup-node@917d6981881532163155708573673c68331d2797 # v4.0.3
         with:
           node-version: '20'
 
@@ -111,7 +111,7 @@ jobs:
           EOF
 
       - name: Deploy files via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@00101b22e1d0092c905301413340059b04b901b5 # v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65 # v4.3.5
         with:
           server: ${{ secrets.WEBSUPPORT_FTP_SERVER }}
           username: ${{ secrets.WEBSUPPORT_FTP_USERNAME }}
