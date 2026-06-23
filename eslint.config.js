@@ -1,5 +1,5 @@
-// ESLint configuration for project JavaScript files.
-import js from "@eslint/js";
+// ESLint configuration for the project JavaScript files.
+import js from '@eslint/js';
 
 export default [
   js.configs.recommended,
