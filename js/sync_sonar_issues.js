@@ -128,8 +128,8 @@ function addIssueToProject(issueUrl, isSecurity) {
     }
     const itemId = match[0];
 
-    // 2. Set status to "Security Hotspots" or "Backlog"
-    const targetStatus = isSecurity ? 'Security Hotspots' : 'Backlog';
+    // 2. Set status to "Security Hotspots" or "Bug/Refinement"
+    const targetStatus = isSecurity ? 'Security Hotspots' : 'Bug/Refinement';
     console.log(`Setting status of item ${itemId} to '${targetStatus}'...`);
     const editResult = spawnSync('gh', ['project', 'item-edit', projectNumber, '--owner', owner, '--id', itemId, '--field', 'Status', '--value', targetStatus], { encoding: 'utf8' });
     if (editResult.status !== 0) {
