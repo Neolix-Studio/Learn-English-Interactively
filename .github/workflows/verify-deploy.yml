@@ -134,7 +134,7 @@ jobs:
         env:
           MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
         run: |
-          curl -f -s "${{ steps.vars.outputs.site_url }}/migrate.php?token=$MIGRATION_TOKEN"
+          curl -f -s -H "X-Migration-Token: $MIGRATION_TOKEN" "${{ steps.vars.outputs.site_url }}/migrate.php"
 
       - name: Perform Post-Deploy Health Check
         run: |

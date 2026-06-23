@@ -37,6 +37,9 @@ if (!$isCli) {
     }
 
     $providedToken = isset($_GET['token']) ? $_GET['token'] : '';
+    if (empty($providedToken) && isset($_SERVER['HTTP_X_MIGRATION_TOKEN'])) {
+        $providedToken = $_SERVER['HTTP_X_MIGRATION_TOKEN'];
+    }
     if (!hash_equals($expectedToken, $providedToken)) {
         http_response_code(401);
         echo json_encode(['success' => false, 'error' => 'Unauthorized migration attempt.']);
