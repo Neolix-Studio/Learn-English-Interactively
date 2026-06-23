@@ -126,7 +126,15 @@ jobs:
         env:
           MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
         run: |
-          curl -f -s -H "X-Migration-Token: $MIGRATION_TOKEN" "${{ steps.vars.outputs.site_url }}/migrate.php"
+          RESPONSE=$(curl -s -w "\n%{http_code}" -H "X-Migration-Token: $MIGRATION_TOKEN" "${{ steps.vars.outputs.site_url }}/migrate.php")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP Status Code: $HTTP_CODE"
+          echo "Response Body:"
+          echo "$BODY"
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            exit 1
+          fi
 
       - name: Perform Post-Deploy Health Check
         run: |
