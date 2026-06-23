@@ -1,10 +1,20 @@
 const { execSync } = require('node:child_process');
 const https = require('node:https');
 
-// Fixed, unwriteable directories path for safe OS command execution
+let ghPath = 'gh';
+try {
+  ghPath = execSync('which gh', {
+    encoding: 'utf8',
+    env: { PATH: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin' }
+  }).trim();
+} catch (e) {
+  ghPath = 'gh';
+}
+
+// Fixed, unwriteable system directories path for safe execution
 const safeEnv = {
   ...process.env,
-  PATH: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin'
+  PATH: '/usr/bin:/bin:/usr/sbin:/sbin'
 };
 
 // Configuration
@@ -47,7 +57,7 @@ function fetchSonarIssues() {
 // Check existing GitHub issues with 'sonarcloud' label
 function fetchExistingGitHubIssues() {
   try {
-    const output = execSync('gh issue list --label "sonarcloud" --json title,body,number --limit 200', { encoding: 'utf8', env: safeEnv });
+    const output = execSync(`${ghPath} issue list --label "sonarcloud" --json title,body,number --limit 200`, { encoding: 'utf8', env: safeEnv });
     return JSON.parse(output || '[]');
   } catch (e) {
     console.error('Failed to fetch existing GitHub issues via gh CLI:', e.message);
@@ -95,7 +105,7 @@ function createGitHubIssue(issue) {
       args.push('--label', l);
     });
 
-    const result = spawnSync('gh', args, { encoding: 'utf8', env: safeEnv });
+    const result = spawnSync(ghPath, args, { encoding: 'utf8', env: safeEnv });
     if (result.status === 0) {
       const issueUrl = result.stdout.trim();
       console.log(`Created GitHub issue: ${issueUrl} for SonarCloud key: ${issue.key}`);
@@ -120,7 +130,7 @@ function addIssueToProject(issueUrl, isSecurity) {
     
     // 1. Add item to project
     console.log(`Adding issue to project #${projectNumber}...`);
-    const addResult = spawnSync('gh', ['project', 'item-add', projectNumber, '--owner', owner, '--url', issueUrl], { encoding: 'utf8', env: safeEnv });
+    const addResult = spawnSync(ghPath, ['project', 'item-add', projectNumber, '--owner', owner, '--url', issueUrl], { encoding: 'utf8', env: safeEnv });
     if (addResult.status !== 0) {
       console.error(`Failed to add issue to project: ${addResult.stderr}`);
       return;
@@ -137,7 +147,7 @@ function addIssueToProject(issueUrl, isSecurity) {
     // 2. Set status to "Security Hotspots" or "Bug/Refinement"
     const targetStatus = isSecurity ? 'Security Hotspots' : 'Bug/Refinement';
     console.log(`Setting status of item ${itemId} to '${targetStatus}'...`);
-    const editResult = spawnSync('gh', ['project', 'item-edit', projectNumber, '--owner', owner, '--id', itemId, '--field', 'Status', '--value', targetStatus], { encoding: 'utf8', env: safeEnv });
+    const editResult = spawnSync(ghPath, ['project', 'item-edit', projectNumber, '--owner', owner, '--id', itemId, '--field', 'Status', '--value', targetStatus], { encoding: 'utf8', env: safeEnv });
     if (editResult.status !== 0) {
       console.error(`Failed to set status field: ${editResult.stderr}`);
     }
