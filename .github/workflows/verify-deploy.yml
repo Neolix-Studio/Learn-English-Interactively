@@ -69,6 +69,24 @@ jobs:
       - name: Verify Database Migrations in Sandbox
         run: php migrate.php
 
+      - name: Notify Slack on CI Failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -n "$SLACK_WEBHOOK_URL" ]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"❌ *CI Verify Failed* for <https://github.com/Neolix-Studio/Learn-English-Interactively/commit/${{ github.sha }}|${{ github.sha }}> (branch `${{ github.ref_name }}` by ${{ github.actor }})"}' "$SLACK_WEBHOOK_URL"
+          fi
+
+      - name: Notify Slack on CI Success (PR Only)
+        if: success() && github.event_name == 'pull_request'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -n "$SLACK_WEBHOOK_URL" ]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"✅ *CI Verify Passed* for PR <https://github.com/Neolix-Studio/Learn-English-Interactively/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}> (branch `${{ github.ref_name }}` by ${{ github.actor }})"}' "$SLACK_WEBHOOK_URL"
+          fi
+
   deploy:
     name: Deploy (CD)
     needs: verify
@@ -121,6 +139,8 @@ jobs:
             .stylelintrc.json
             js/validate_json.js
             js/write_db_config.js
+            js/sync_sonar_issues.js
+            .github/**
 
       - name: Run Remote Migrations
         env:
@@ -139,3 +159,21 @@ jobs:
       - name: Perform Post-Deploy Health Check
         run: |
           curl -f -s "${{ steps.vars.outputs.site_url }}/api.php?action=get_session"
+
+      - name: Notify Slack on Deploy Success
+        if: success()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -n "$SLACK_WEBHOOK_URL" ]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"🚀 *CD Deploy Succeeded* to staging/production for <https://github.com/Neolix-Studio/Learn-English-Interactively/commit/${{ github.sha }}|${{ github.sha }}> (branch `${{ github.ref_name }}` by ${{ github.actor }})"}' "$SLACK_WEBHOOK_URL"
+          fi
+
+      - name: Notify Slack on Deploy Failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ -n "$SLACK_WEBHOOK_URL" ]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"❌ *CD Deploy Failed* for <https://github.com/Neolix-Studio/Learn-English-Interactively/commit/${{ github.sha }}|${{ github.sha }}> (branch `${{ github.ref_name }}` by ${{ github.actor }})"}' "$SLACK_WEBHOOK_URL"
+          fi
