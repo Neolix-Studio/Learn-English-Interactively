@@ -1,0 +1,16 @@
+{
+  "name": "learn-english-interactively",
+  "version": "1.0.0",
+  "description": "Learn English Interactively website codebase",
+  "main": "js/dashboard.js",
+  "scripts": {
+    "lint:js": "eslint js/**/*.js --format stylish || true",
+    "lint:css": "stylelint css/**/*.css || true",
+    "validate:json": "node js/validate_json.js"
+  },
+  "devDependencies": {
+    "eslint": "^9.5.0",
+    "stylelint": "^16.6.1",
+    "stylelint-config-standard": "^36.0.0"
+  }
+}

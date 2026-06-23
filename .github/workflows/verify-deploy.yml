@@ -1,0 +1,141 @@
+name: CI/CD Verify and Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  verify:
+    name: Verify (CI)
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:10.6
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: learn_english_test
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_mysql
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run PHP Syntax Linter
+        run: |
+          find . -name "*.php" -not -path "*/vendor/*" | xargs -n 1 php -l
+
+      - name: Run ESLint (JS warnings)
+        run: npm run lint:js
+
+      - name: Run Stylelint (CSS warnings)
+        run: npm run lint:css
+
+      - name: Run JSON Data Validator
+        run: npm run validate:json
+
+      - name: Write Temporary Sandbox DB Config
+        run: |
+          cat <<EOF > db_config.php
+          <?php
+          define('DB_HOST', '127.0.0.1');
+          define('DB_NAME', 'learn_english_test');
+          define('DB_USER', 'root');
+          define('DB_PASS', 'root');
+          EOF
+
+      - name: Verify Database Migrations in Sandbox
+        run: php migrate.php
+
+  deploy:
+    name: Deploy (CD)
+    needs: verify
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+
+      - name: Set Environment Variables
+        id: vars
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "server_dir=neolix.studio/web" >> $GITHUB_OUTPUT
+            echo "site_url=https://neolix.studio" >> $GITHUB_OUTPUT
+          else
+            echo "server_dir=neolix.studio/sub/develop" >> $GITHUB_OUTPUT
+            echo "site_url=https://develop.neolix.studio" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Write Server Production DB Config
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
+        run: |
+          cat <<EOF > db_config.php
+          <?php
+          // Automatically compiled by GitHub Actions
+          define('DB_HOST', "$DB_HOST");
+          define('DB_NAME', "$DB_NAME");
+          define('DB_USER', "$DB_USER");
+          define('DB_PASS', "$DB_PASS");
+          define('MIGRATION_TOKEN', "$MIGRATION_TOKEN");
+          EOF
+
+      - name: Deploy files via SFTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.WEBSUPPORT_FTP_SERVER }}
+          username: ${{ secrets.WEBSUPPORT_FTP_USERNAME }}
+          password: ${{ secrets.WEBSUPPORT_FTP_PASSWORD }}
+          port: 22
+          protocol: sftp
+          local-dir: ./
+          server-dir: ${{ steps.vars.outputs.server_dir }}/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            package-lock.json
+            package.json
+            eslint.config.js
+            .stylelintrc.json
+            js/validate_json.js
+
+      - name: Run Remote Migrations
+        env:
+          MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
+        run: |
+          curl -f -s "${{ steps.vars.outputs.site_url }}/migrate.php?token=$MIGRATION_TOKEN"
+
+      - name: Perform Post-Deploy Health Check
+        run: |
+          curl -f -s "${{ steps.vars.outputs.site_url }}/api.php?action=get_session"
