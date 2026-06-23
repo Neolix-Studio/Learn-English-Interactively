@@ -27,16 +27,16 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@c541c155eee451ee3a6b32722b54d9f688e1467a # v2.31.0
         with:
           php-version: '8.2'
           extensions: pdo, pdo_mysql
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@60a0b8e9edd22c36feb61405e3afa0eb139f32a2 # v4.0.2
         with:
           node-version: '20'
 
@@ -77,7 +77,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           fetch-depth: 0
 
@@ -93,19 +93,25 @@ jobs:
           fi
 
       - name: Write Server Production DB Config
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
         run: |
           cat <<EOF > db_config.php
           <?php
           // Automatically compiled by GitHub Actions
-          define('DB_HOST', '${{ secrets.DB_HOST }}');
-          define('DB_NAME', '${{ secrets.DB_NAME }}');
-          define('DB_USER', '${{ secrets.DB_USER }}');
-          define('DB_PASS', '${{ secrets.DB_PASS }}');
-          define('MIGRATION_TOKEN', '${{ secrets.MIGRATION_TOKEN }}');
+          define('DB_HOST', "$DB_HOST");
+          define('DB_NAME', "$DB_NAME");
+          define('DB_USER', "$DB_USER");
+          define('DB_PASS', "$DB_PASS");
+          define('MIGRATION_TOKEN', "$MIGRATION_TOKEN");
           EOF
 
       - name: Deploy files via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@00101b22e1d0092c905301413340059b04b901b5 # v4.3.5
         with:
           server: ${{ secrets.WEBSUPPORT_FTP_SERVER }}
           username: ${{ secrets.WEBSUPPORT_FTP_USERNAME }}
@@ -125,8 +131,10 @@ jobs:
             js/validate_json.js
 
       - name: Run Remote Migrations
+        env:
+          MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
         run: |
-          curl -f -s "${{ steps.vars.outputs.site_url }}/migrate.php?token=${{ secrets.MIGRATION_TOKEN }}"
+          curl -f -s "${{ steps.vars.outputs.site_url }}/migrate.php?token=$MIGRATION_TOKEN"
 
       - name: Perform Post-Deploy Health Check
         run: |
