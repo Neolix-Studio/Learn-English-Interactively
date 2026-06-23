@@ -110,8 +110,32 @@ function addIssueToProject(issueUrl, isSecurity) {
   const owner = 'Neolix-Studio';
   
   try {
-    const { spawnSync } = require('child_process');
+    const { spawnSync, execSync } = require('child_process');
     
+    // 0. Resolve Project Node ID
+    console.log(`Resolving project details...`);
+    const projectOutput = execSync(`gh project view ${projectNumber} --owner ${owner} --format json`, { encoding: 'utf8' });
+    const project = JSON.parse(projectOutput);
+    const projectId = project.id;
+
+    // 0b. Resolve Field & Option IDs
+    const fieldsOutput = execSync(`gh project field-list ${projectNumber} --owner ${owner} --format json`, { encoding: 'utf8' });
+    const fieldsData = JSON.parse(fieldsOutput);
+    const statusField = (fieldsData.fields || []).find(f => f.name === 'Status');
+    if (!statusField) {
+      console.error('Status field not found in project.');
+      return;
+    }
+    const fieldId = statusField.id;
+
+    const targetStatusName = isSecurity ? 'Security Hotspots' : 'Bug/Refinement';
+    const option = (statusField.options || []).find(o => o.name === targetStatusName);
+    if (!option) {
+      console.error(`Option '${targetStatusName}' not found in Status field.`);
+      return;
+    }
+    const optionId = option.id;
+
     // 1. Add item to project
     console.log(`Adding issue to project #${projectNumber}...`);
     const addResult = spawnSync('gh', ['project', 'item-add', projectNumber, '--owner', owner, '--url', issueUrl], { encoding: 'utf8' });
@@ -128,11 +152,19 @@ function addIssueToProject(issueUrl, isSecurity) {
     }
     const itemId = match[0];
 
-    // 2. Set status to "Security Hotspots" or "Bug/Refinement"
-    const targetStatus = isSecurity ? 'Security Hotspots' : 'Bug/Refinement';
-    console.log(`Setting status of item ${itemId} to '${targetStatus}'...`);
-    const editResult = spawnSync('gh', ['project', 'item-edit', projectNumber, '--owner', owner, '--id', itemId, '--field', 'Status', '--value', targetStatus], { encoding: 'utf8' });
-    if (editResult.status !== 0) {
+    // 2. Set status using node IDs
+    console.log(`Setting status of item ${itemId} to '${targetStatusName}' (${optionId})...`);
+    const editResult = spawnSync('gh', [
+      'project', 'item-edit',
+      '--project-id', projectId,
+      '--id', itemId,
+      '--field-id', fieldId,
+      '--single-select-option-id', optionId
+    ], { encoding: 'utf8' });
+
+    if (editResult.status === 0) {
+      console.log(`Successfully moved item to '${targetStatusName}'.`);
+    } else {
       console.error(`Failed to set status field: ${editResult.stderr}`);
     }
   } catch (e) {
