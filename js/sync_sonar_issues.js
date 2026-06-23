@@ -82,12 +82,20 @@ function createGitHubIssue(issue) {
 `;
 
   try {
-    const labelFlags = labels.map(l => `--label "${l}"`).join(' ');
-    const command = `gh issue create --title ${JSON.stringify(title)} --body ${JSON.stringify(body)} ${labelFlags}`;
-    const output = execSync(command, { encoding: 'utf8' });
-    console.log(`Created GitHub issue: ${output.trim()} for SonarCloud key: ${issue.key}`);
+    const { spawnSync } = require('child_process');
+    const args = ['issue', 'create', '--title', title, '--body', body];
+    labels.forEach(l => {
+      args.push('--label', l);
+    });
+
+    const result = spawnSync('gh', args, { encoding: 'utf8' });
+    if (result.status === 0) {
+      console.log(`Created GitHub issue: ${result.stdout.trim()} for SonarCloud key: ${issue.key}`);
+    } else {
+      console.error(`Failed to create issue for SonarCloud key ${issue.key}: ${result.stderr}`);
+    }
   } catch (e) {
-    console.error(`Failed to create issue for SonarCloud key ${issue.key}:`, e.message);
+    console.error(`Failed to execute gh CLI for SonarCloud key ${issue.key}:`, e.message);
   }
 }
 
