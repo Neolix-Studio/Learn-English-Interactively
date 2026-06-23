@@ -4566,7 +4566,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function checkStreakOnLoad() {
+function checkStreakOnLoadSecondary() {
     if (ProgressManager.isGuest) return;
     
     if (!userProgress.streak_last_date) {
