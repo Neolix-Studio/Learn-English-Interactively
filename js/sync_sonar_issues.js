@@ -114,6 +114,38 @@ function addIssueToProject(issueUrl, isSecurity) {
   const owner = 'Neolix-Studio';
   
   try {
+    // 0. Resolve Project Node ID
+    console.log(`Resolving project details...`);
+    const projectResult = spawnSync(GH_PATH, ['project', 'view', projectNumber, '--owner', owner, '--format', 'json'], { encoding: 'utf8' });
+    if (projectResult.status !== 0) {
+      console.error(`Failed to resolve project details: ${projectResult.stderr}`);
+      return;
+    }
+    const project = JSON.parse(projectResult.stdout);
+    const projectId = project.id;
+
+    // 0b. Resolve Field & Option IDs
+    const fieldsResult = spawnSync(GH_PATH, ['project', 'field-list', projectNumber, '--owner', owner, '--format', 'json'], { encoding: 'utf8' });
+    if (fieldsResult.status !== 0) {
+      console.error(`Failed to resolve project fields: ${fieldsResult.stderr}`);
+      return;
+    }
+    const fieldsData = JSON.parse(fieldsResult.stdout);
+    const statusField = (fieldsData.fields || []).find(f => f.name === 'Status');
+    if (!statusField) {
+      console.error('Status field not found in project.');
+      return;
+    }
+    const fieldId = statusField.id;
+
+    const targetStatusName = isSecurity ? 'Security Hotspots' : 'Bug/Refinement';
+    const option = (statusField.options || []).find(o => o.name === targetStatusName);
+    if (!option) {
+      console.error(`Option '${targetStatusName}' not found in Status field.`);
+      return;
+    }
+    const optionId = option.id;
+
     // 1. Add item to project
     console.log(`Adding issue to project #${projectNumber}...`);
     const addResult = spawnSync(GH_PATH, ['project', 'item-add', projectNumber, '--owner', owner, '--url', issueUrl], { encoding: 'utf8' });
@@ -130,11 +162,19 @@ function addIssueToProject(issueUrl, isSecurity) {
     }
     const itemId = match[0];
 
-    // 2. Set status to "Security Hotspots" or "Bug/Refinement"
-    const targetStatus = isSecurity ? 'Security Hotspots' : 'Bug/Refinement';
-    console.log(`Setting status of item ${itemId} to '${targetStatus}'...`);
-    const editResult = spawnSync(GH_PATH, ['project', 'item-edit', projectNumber, '--owner', owner, '--id', itemId, '--field', 'Status', '--value', targetStatus], { encoding: 'utf8' });
-    if (editResult.status !== 0) {
+    // 2. Set status using node IDs
+    console.log(`Setting status of item ${itemId} to '${targetStatusName}' (${optionId})...`);
+    const editResult = spawnSync(GH_PATH, [
+      'project', 'item-edit',
+      '--project-id', projectId,
+      '--id', itemId,
+      '--field-id', fieldId,
+      '--single-select-option-id', optionId
+    ], { encoding: 'utf8' });
+
+    if (editResult.status === 0) {
+      console.log(`Successfully moved item to '${targetStatusName}'.`);
+    } else {
       console.error(`Failed to set status field: ${editResult.stderr}`);
     }
   } catch (e) {
@@ -163,6 +203,14 @@ async function run() {
 
     // Filter and process new issues
     let createdCount = 0;
+    
+    // Sort issues so that security-related issues are prioritized and processed first
+    const getIssuePriority = (issue) => {
+      const isSecurity = issue.type === 'VULNERABILITY' || (issue.tags && issue.tags.includes('security'));
+      return isSecurity ? 1 : 0;
+    };
+    sonarIssues.sort((a, b) => getIssuePriority(b) - getIssuePriority(a));
+
     for (const issue of sonarIssues) {
       if (existingKeys.has(issue.key)) {
         continue; // Already tracked
