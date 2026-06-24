@@ -3323,7 +3323,7 @@ function renderQuizCardQuestion() {
     if (quizState.type === 'word_order') {
         const shuffled = [...qData.scrambledWords].sort(() => secureRandom() - 0.5);
         const chipsHtml = shuffled.map(word =>
-            `<button class="word-chip" onclick="selectQuizWordChip(this, '${escapeHTML(word)}')">${escapeHTML(word)}</button>`
+            `<button class="word-chip" onclick="selectQuizWordChip(this, this.textContent)">${escapeHTML(word)}</button>`
         ).join("");
 
         container.innerHTML = `
@@ -4200,9 +4200,17 @@ function closeWipModal() {
     }
 }
 
-function openLockedModal() {
+function openLockedModal(customMessage) {
     const lockedModal = document.getElementById("locked-modal");
     if (lockedModal) {
+        const paragraph = lockedModal.querySelector("p");
+        if (paragraph) {
+            if (customMessage) {
+                paragraph.textContent = customMessage;
+            } else {
+                paragraph.textContent = "A fejezet vizsga megkezdéséhez előbb teljesítened kell az összes megelőző feladatot (Magyarázat, Szavak, Lyukas mondatok, Szórendezés, Igaz vagy Hamis).";
+            }
+        }
         lockedModal.classList.add("is-active");
         lockedModal.setAttribute("aria-hidden", "false");
     }
