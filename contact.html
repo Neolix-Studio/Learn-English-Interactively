@@ -353,7 +353,7 @@
             }
             
             // Simple email pattern check
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
             if (!emailPattern.test(email)) {
                 showStatus('Kérjük, valós e-mail címet adjon meg!', 'error');
                 emailInput.focus();
