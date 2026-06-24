@@ -216,6 +216,26 @@ function triggerFloatPop(amount, element, label = null) {
     }, 1200);
 }
 
+function calculateCappedXP(amount, stepName, elementForFloatPop) {
+    if (!stepName || amount <= 0) {
+        return amount;
+    }
+    const nodeKey = `${currentLevel}_${currentSection}_${stepName}`;
+    const currentEarned = userProgress.scores.earned_xp_per_node[nodeKey] || 0;
+    const maxAllowed = maxXpPerNode[stepName] || 0;
+    
+    if (currentEarned >= maxAllowed) {
+        if (elementForFloatPop) triggerFloatPop(0, elementForFloatPop, "Max XP elérve!");
+        return 0;
+    }
+    
+    const actualAdd = Math.min(amount, maxAllowed - currentEarned);
+    if (actualAdd > 0) {
+        userProgress.scores.earned_xp_per_node[nodeKey] = currentEarned + actualAdd;
+    }
+    return actualAdd;
+}
+
 // Centralized XP rewarding mechanism with double-claim exploit guards
 function addXP(amount, elementForFloatPop = null, stepName = null) {
     if (!userProgress.scores) userProgress.scores = {};
@@ -223,32 +243,17 @@ function addXP(amount, elementForFloatPop = null, stepName = null) {
         userProgress.scores.earned_xp_per_node = {};
     }
     
-    let actualAdd = amount;
-    
-    if (stepName && amount > 0) {
-        const nodeKey = `${currentLevel}_${currentSection}_${stepName}`;
-        const currentEarned = userProgress.scores.earned_xp_per_node[nodeKey] || 0;
-        const maxAllowed = maxXpPerNode[stepName] || 0;
-        
-        if (currentEarned >= maxAllowed) {
-            if (elementForFloatPop) triggerFloatPop(0, elementForFloatPop, "Max XP elérve!");
-            return 0;
-        }
-        
-        actualAdd = Math.min(amount, maxAllowed - currentEarned);
-        if (actualAdd <= 0) return 0;
-        
-        userProgress.scores.earned_xp_per_node[nodeKey] = currentEarned + actualAdd;
-    }
+    const actualAdd = calculateCappedXP(amount, stepName, elementForFloatPop);
+    if (actualAdd <= 0) return 0;
     
     userProgress.points = (userProgress.points || 0) + actualAdd;
     if (userProgress.points < 0) userProgress.points = 0;
     
-    if (typeof updateQuestProgress === 'function' && actualAdd > 0) {
+    if (typeof updateQuestProgress === 'function') {
         updateQuestProgress('earn_xp', actualAdd);
     }
     
-    if (elementForFloatPop && actualAdd !== 0) {
+    if (elementForFloatPop) {
         triggerFloatPop(actualAdd, elementForFloatPop);
     }
     
@@ -307,6 +312,22 @@ function isLevelExamUnlocked(level) {
     return percentage >= 0.8;
 }
 
+function handleLevelUpEffects(oldLevel, newLevel) {
+    if (newLevel > oldLevel) {
+        AudioSynth.playTone(880, 'sine', 0.2);
+        setTimeout(() => AudioSynth.playTone(1320, 'sine', 0.4), 150);
+        alert(`🎉 Szintet léptél! Új szinted: Level ${newLevel}! Gratulálunk!`);
+    }
+}
+
+function getXPTierLabelText(level) {
+    if (level >= 5) return "Angol Professzor";
+    if (level >= 4) return "Haladó Angolos";
+    if (level >= 3) return "Gyakorlott Beszélő";
+    if (level >= 2) return "Szorgalmas Tanuló";
+    return "Kezdő nyelvtanuló";
+}
+
 // 3. User Level & XP bar progression calculations
 function updateUserLevelState() {
     if (!userProgress.scores) userProgress.scores = {};
@@ -317,11 +338,7 @@ function updateUserLevelState() {
     
     userProgress.scores.level = newLevel;
     
-    if (newLevel > oldLevel) {
-        AudioSynth.playTone(880, 'sine', 0.2);
-        setTimeout(() => AudioSynth.playTone(1320, 'sine', 0.4), 150);
-        alert(`🎉 Szintet léptél! Új szinted: Level ${newLevel}! Gratulálunk!`);
-    }
+    handleLevelUpEffects(oldLevel, newLevel);
     
     const levelDisplay = document.getElementById("level-display");
     if (levelDisplay) levelDisplay.textContent = `Level ${newLevel}`;
@@ -334,11 +351,7 @@ function updateUserLevelState() {
     
     const xpTierLabel = document.getElementById("xp-tier-label");
     if (xpTierLabel) {
-        if (newLevel >= 5) xpTierLabel.textContent = "Angol Professzor";
-        else if (newLevel >= 4) xpTierLabel.textContent = "Haladó Angolos";
-        else if (newLevel >= 3) xpTierLabel.textContent = "Gyakorlott Beszélő";
-        else if (newLevel >= 2) xpTierLabel.textContent = "Szorgalmas Tanuló";
-        else xpTierLabel.textContent = "Kezdő nyelvtanuló";
+        xpTierLabel.textContent = getXPTierLabelText(newLevel);
     }
 }
 
@@ -614,7 +627,7 @@ function initSettingsUI() {
 
 // 7. Mobile Drawer toggler
 window.openMobileDrawer = function(type) {
-    // 1. Close all first
+    // 1. Close other drawers first
     const leftSidebar = document.querySelector(".dashboard-left-sidebar");
     const rightSidebar = document.querySelector(".dashboard-right-sidebar");
     const profileModal = document.getElementById("profile-modal");
@@ -625,18 +638,16 @@ window.openMobileDrawer = function(type) {
     if (profileModal && type !== 'profile') profileModal.classList.remove("is-active");
     if (questsModal && type !== 'quests') questsModal.classList.remove("is-active");
 
-    // 2. Open the requested one
-    if (type === 'nav' && leftSidebar) {
-        leftSidebar.classList.toggle("is-active");
-    } else if (type === 'stats' && rightSidebar) {
-        rightSidebar.classList.toggle("is-active");
-    } else if (type === 'profile' && profileModal) {
-        profileModal.classList.toggle("is-active");
-    } else if (type === 'quests') {
-        if(window.openQuestsModal) window.openQuestsModal();
-    } else if (type === 'home') {
-        if(window.closeWorkspace) window.closeWorkspace();
-    }
+    // 2. Dispatch toggle/open action for target drawer
+    const actions = {
+        nav: () => leftSidebar?.classList.toggle("is-active"),
+        stats: () => rightSidebar?.classList.toggle("is-active"),
+        profile: () => profileModal?.classList.toggle("is-active"),
+        quests: () => window.openQuestsModal?.(),
+        home: () => window.closeWorkspace?.()
+    };
+    
+    actions[type]?.();
 }
 
 // Keep old functions for backwards compatibility with closing buttons inside panels
@@ -849,6 +860,25 @@ function isSectionExamLocked(level, section) {
 }
 
 // Calculates the next logical lesson step based on completion state across ALL sections
+function findUncompletedInModule(level, secKey, moduleData) {
+    for (const subKey in moduleData.subsections) {
+        const isAccessible = isContentAccessible(level, secKey, subKey);
+        if (!isAccessible) continue;
+
+        const key = `${level}_${secKey}_${subKey}`;
+        if (!userProgress.completed[key]) {
+            return {
+                section: secKey,
+                key: subKey,
+                title: moduleData.subsections[subKey].title || subKey,
+                isExam: isExam(moduleData.subsections[subKey])
+            };
+        }
+    }
+    return null;
+}
+
+// Calculates the next logical lesson step based on completion state across ALL sections
 function getNextUncompletedLesson(level) {
     const sections = Object.keys(learningContent[level] || {});
     for (const secKey of sections) {
@@ -860,21 +890,8 @@ function getNextUncompletedLesson(level) {
             continue; // Skip this entire section!
         }
         
-        for (const subKey in moduleData.subsections) {
-            // Check if the user is even allowed to access this subsection
-            const isAccessible = isContentAccessible(level, secKey, subKey);
-            if (!isAccessible) continue; // Skip asking them to complete inaccessible lessons!
-
-            const key = `${level}_${secKey}_${subKey}`;
-            if (!userProgress.completed[key]) {
-                return {
-                    section: secKey,
-                    key: subKey,
-                    title: moduleData.subsections[subKey].title || subKey,
-                    isExam: isExam(moduleData.subsections[subKey])
-                };
-            }
-        }
+        const next = findUncompletedInModule(level, secKey, moduleData);
+        if (next) return next;
     }
     return null; // All sections in the level are completely finished
 }
@@ -1174,7 +1191,10 @@ function markSubsectionCompleted(level, section, subsection, score = null) {
 
 // Generates the completion button HTML based on completion state
 function getCompleteButtonHtml(level, section, subsection, requiresAttempt = false) {
-    const key = `${level}_${section}_${subsection}`;
+    const safeLevel = escapeHTML(level);
+    const safeSection = escapeHTML(section);
+    const safeSubsection = escapeHTML(subsection);
+    const key = `${safeLevel}_${safeSection}_${safeSubsection}`;
     const isCompleted = userProgress.completed[key];
     
     let disabledAttr = "";
@@ -1193,7 +1213,7 @@ function getCompleteButtonHtml(level, section, subsection, requiresAttempt = fal
     } else {
         return `
             <div class="completion-button-container">
-                <button class="btn-complete-section" ${disabledAttr} onclick="completeSubsectionAction('${level}', '${section}', '${subsection}', this)">
+                <button class="btn-complete-section" ${disabledAttr} onclick="completeSubsectionAction('${safeLevel}', '${safeSection}', '${safeSubsection}', this)">
                     <span>Teljesítettem (+5 pont)</span>
                 </button>
             </div>
@@ -1340,7 +1360,31 @@ function completeSubsectionAction(level, section, subsection, buttonEl) {
     // Stop the timer
     stopStopwatch();
 
-    // Reward points
+    // Reward points & update progress stats
+    updateCompletedProgress(level, section, subsection);
+    
+    // Trigger floating +5 points pop animation
+    const container = buttonEl.closest(".completion-button-container");
+    animateCompletionPoints(container);
+    
+    // Transform button to completed state
+    buttonEl.className = "btn-complete-section completed-badge";
+    buttonEl.disabled = true;
+    buttonEl.innerHTML = "Teljesítve ✓";
+    
+    // Potentially trigger a miniquiz on completion
+    if (canTriggerMiniQuiz()) {
+        setTimeout(() => {
+            triggerMiniQuiz(level, section, subsection);
+        }, 500);
+    }
+
+    // Render convenient "Next Lesson" button right next to it so user doesn't have to scroll up
+    renderNextLessonButton(container, level, section);
+}
+
+function updateCompletedProgress(level, section, subsection) {
+    const key = `${level}_${section}_${subsection}`;
     userProgress.points = (userProgress.points || 0) + 5;
     
     // Add to time spent & exercises count (saved within scores to avoid DB schema migrations)
@@ -1351,25 +1395,6 @@ function completeSubsectionAction(level, section, subsection, buttonEl) {
     // Mark as completed
     userProgress.completed[key] = true;
     
-    // Trigger floating +5 points pop animation
-    const container = buttonEl.closest(".completion-button-container");
-    if (container) {
-        const pop = document.createElement("div");
-        pop.className = "floating-points-pop";
-        pop.textContent = "+5 XP! 🎉";
-        container.appendChild(pop);
-        
-        // Remove pop element after animation completes
-        setTimeout(() => {
-            pop.remove();
-        }, 1200);
-    }
-    
-    // Transform button to completed state
-    buttonEl.className = "btn-complete-section completed-badge";
-    buttonEl.disabled = true;
-    buttonEl.innerHTML = "Teljesítve ✓";
-    
     // Save state and update UI
     saveUserProgress();
     
@@ -1377,63 +1402,74 @@ function completeSubsectionAction(level, section, subsection, buttonEl) {
     if (typeof updateQuestProgress === 'function') {
         updateQuestProgress('complete_lesson', 1);
     }
-    
-    // Potentially trigger a miniquiz on completion
-    if (canTriggerMiniQuiz()) {
-        setTimeout(() => {
-            triggerMiniQuiz(level, section, subsection);
-        }, 500);
-    }
-
-    // Render convenient "Next Lesson" button right next to it so user doesn't have to scroll up
-    if (container) {
-        const nextLessonInfo = findNextGuestAccessibleLesson(level, section);
-        if (nextLessonInfo) {
-            container.style.display = "flex";
-            container.style.gap = "1rem";
-            container.style.justifyContent = "center";
-            container.style.flexWrap = "wrap";
-            
-            const nextBtn = document.createElement("button");
-            nextBtn.className = "btn-complete-section";
-            nextBtn.style.background = "linear-gradient(135deg, var(--color-accent-in), var(--color-accent-on))";
-            nextBtn.style.color = "#000";
-            
-            if (nextLessonInfo.endOfGuestContent) {
-                nextBtn.innerHTML = `<span>Teljes Hozzáférés Feloldása</span>`;
-                nextBtn.onclick = () => {
-                    openPaywallModal();
-                };
-            } else {
-                nextBtn.innerHTML = `<span>Tovább: ${nextLessonInfo.title}</span> <span style="font-size: 1.2rem;">→</span>`;
-                nextBtn.onclick = () => {
-                    const targetLevel = nextLessonInfo.level;
-                    const targetSection = nextLessonInfo.section;
-                    const targetKey = nextLessonInfo.key;
-                    
-                    const accordion = document.querySelector(`.course-accordion[data-level="${targetLevel}"][data-section="${targetSection}"]`);
-                    if (accordion) accordion.open = true;
-
-                    const links = document.querySelectorAll(".subsection-link");
-                    links.forEach(l => l.classList.remove("active"));
-                    
-                    if (accordion) {
-                        const targetLink = accordion.querySelector(`.subsection-link[data-subsection="${targetKey}"]`);
-                        if (targetLink) targetLink.classList.add("active");
-                    }
-                    currentLevel = targetLevel;
-                    currentSection = targetSection;
-                    currentSubsection = targetKey;
-                    renderSubsection(targetLevel, targetSection, targetKey);
-                    updateProgressUI();
-                    
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                };
-            }
-            container.appendChild(nextBtn);
-        }
-    }
 }
+
+function animateCompletionPoints(container) {
+    if (!container) return;
+    const pop = document.createElement("div");
+    pop.className = "floating-points-pop";
+    pop.textContent = "+5 XP! 🎉";
+    container.appendChild(pop);
+    
+    // Remove pop element after animation completes
+    setTimeout(() => {
+        pop.remove();
+    }, 1200);
+}
+
+function handleNextLessonTransition(nextLessonInfo) {
+    const targetLevel = nextLessonInfo.level;
+    const targetSection = nextLessonInfo.section;
+    const targetKey = nextLessonInfo.key;
+    
+    const accordion = document.querySelector(`.course-accordion[data-level="${targetLevel}"][data-section="${targetSection}"]`);
+    if (accordion) accordion.open = true;
+
+    const links = document.querySelectorAll(".subsection-link");
+    links.forEach(l => l.classList.remove("active"));
+    
+    if (accordion) {
+        const targetLink = accordion.querySelector(`.subsection-link[data-subsection="${targetKey}"]`);
+        if (targetLink) targetLink.classList.add("active");
+    }
+    currentLevel = targetLevel;
+    currentSection = targetSection;
+    currentSubsection = targetKey;
+    renderSubsection(targetLevel, targetSection, targetKey);
+    updateProgressUI();
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderNextLessonButton(container, level, section) {
+    if (!container) return;
+    const nextLessonInfo = findNextGuestAccessibleLesson(level, section);
+    if (!nextLessonInfo) return;
+    
+    container.style.display = "flex";
+    container.style.gap = "1rem";
+    container.style.justifyContent = "center";
+    container.style.flexWrap = "wrap";
+    
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "btn-complete-section";
+    nextBtn.style.background = "linear-gradient(135deg, var(--color-accent-in), var(--color-accent-on))";
+    nextBtn.style.color = "#000";
+    
+    if (nextLessonInfo.endOfGuestContent) {
+        nextBtn.innerHTML = `<span>Teljes Hozzáférés Feloldása</span>`;
+        nextBtn.onclick = () => {
+            openPaywallModal();
+        };
+    } else {
+        nextBtn.innerHTML = `<span>Tovább: ${nextLessonInfo.title}</span> <span style="font-size: 1.2rem;">→</span>`;
+        nextBtn.onclick = () => {
+            handleNextLessonTransition(nextLessonInfo);
+        };
+    }
+    container.appendChild(nextBtn);
+}
+
 
 // Scans the sidebar links to display completion checkmarks and update the level completion meter
 async function updateProgressUI() {
@@ -3206,55 +3242,68 @@ let quizState = {
     subsection: null
 };
 
+function convertFillBlanks(items) {
+    return items.map(item => {
+        const answer = item.answer.split('/')[0];
+        let opts = ["am", "is", "are", "am not", "isn't", "aren't"];
+        if (!opts.includes(answer)) {
+            opts = [answer, "is", "are", "do"];
+        }
+        opts.sort(() => 0.5 - secureRandom());
+        opts = opts.slice(0, 4);
+        if (!opts.includes(answer)) {
+            opts[0] = answer;
+            opts.sort(() => 0.5 - secureRandom());
+        }
+        return {
+            q: item.sentence.replace(/_{3,}/, "___"),
+            opts: opts,
+            correctIdx: opts.indexOf(answer),
+            explain: item.hint ? "Tipp: " + item.hint + ". A helyes megoldás: " + answer : "A helyes megoldás: " + answer
+        };
+    });
+}
+
+function convertWordOrder(items) {
+    return items.map(item => {
+        if (item.scrambled !== undefined || item.correct !== undefined) {
+            console.warn(`[Schema Validation Warning] Legacy word-order format detected for item ID: ${item.id || 'unknown'}`);
+        }
+        const correct = item.correctAnswer || item.correct || "";
+        const scrambled = item.scrambledWords || item.scrambled || [];
+        return {
+            id: item.id || "",
+            hu: item.hu || "",
+            scrambledWords: scrambled,
+            correctAnswer: correct,
+            explain: 'A helyes szórend: ' + correct
+        };
+    });
+}
+
+function convertTrueFalse(items) {
+    return items.map(item => {
+        return {
+            q: 'Igaz vagy hamis? <br><br><strong>"' + item.question + '"</strong>',
+            opts: ["Igaz", "Hamis"],
+            correctIdx: item.answer === true ? 0 : 1,
+            explain: item.explanation
+        };
+    });
+}
+
 // Map old exercise formats to unified multiple choice questions
 function convertItemsToQuizQuestions(type, items) {
     if (type === 'fill_blanks') {
-        return items.map(item => {
-            const answer = item.answer.split('/')[0];
-            let opts = ["am", "is", "are", "am not", "isn't", "aren't"];
-            if (!opts.includes(answer)) {
-                opts = [answer, "is", "are", "do"];
-            }
-            opts.sort(() => 0.5 - secureRandom());
-            opts = opts.slice(0, 4);
-            if (!opts.includes(answer)) {
-                opts[0] = answer;
-                opts.sort(() => 0.5 - secureRandom());
-            }
-            return {
-                q: item.sentence.replace(/_{3,}/, "___"),
-                opts: opts,
-                correctIdx: opts.indexOf(answer),
-                explain: item.hint ? "Tipp: " + item.hint + ". A helyes megoldás: " + answer : "A helyes megoldás: " + answer
-            };
-        });
+        return convertFillBlanks(items);
     } else if (type === 'word_order') {
-        return items.map(item => {
-            if (item.scrambled !== undefined || item.correct !== undefined) {
-                console.warn(`[Schema Validation Warning] Legacy word-order format detected for item ID: ${item.id || 'unknown'}`);
-            }
-            const correct = item.correctAnswer || item.correct || "";
-            const scrambled = item.scrambledWords || item.scrambled || [];
-            return {
-                id: item.id || "",
-                hu: item.hu || "",
-                scrambledWords: scrambled,
-                correctAnswer: correct,
-                explain: 'A helyes szórend: ' + correct
-            };
-        });
+        return convertWordOrder(items);
     } else if (type === 'true_false') {
-        return items.map(item => {
-            return {
-                q: 'Igaz vagy hamis? <br><br><strong>"' + item.question + '"</strong>',
-                opts: ["Igaz", "Hamis"],
-                correctIdx: item.answer === true ? 0 : 1,
-                explain: item.explanation
-            };
-        });
+        return convertTrueFalse(items);
     }
     return [];
 }
+
 
 async function renderQuizCardTemplate(workspace, data) {
     const source = data.dataSource;
@@ -3323,24 +3372,53 @@ async function renderQuizCardTemplate(workspace, data) {
     renderQuizCardQuestion();
 }
 
-function renderQuizCardQuestion() {
-    const container = document.getElementById('quiz-card-container');
-    if (!container) return;
+function renderQuizCompletionState(container) {
+    let score = quizState.answers.filter(a => a.correct).length;
+    let isFlawless = score === quizState.questions.length;
     
-    const qData = quizState.questions[quizState.currentIdx];
+    // Mark subsection completed if they got at least 50%
+    let passed = score / quizState.questions.length >= 0.5;
     
-    const counter = document.getElementById('quiz-question-counter');
-    if (counter) counter.textContent = `Kérdés: ${quizState.currentIdx + 1}/${quizState.questions.length}`;
+    // Ensure userProgress is updated
+    if (passed) {
+        const key = `${quizState.level}_${quizState.section}_${quizState.subsection}`;
+        if (!userProgress.completed[key]) {
+            userProgress.completed[key] = new Date().toISOString();
+            saveUserProgress();
+            syncSidebarRoadmapNodes();
+        }
+        if (isFlawless && typeof updateQuestProgress === 'function') {
+            updateQuestProgress('perfect_quiz', 1);
+        }
+    }
+    
+    container.innerHTML = `
+        <div style="text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <span style="font-size: 4rem;">🎯</span>
+            <h3 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: bold;">Kvíz befejezve!</h3>
+            <div id="quiz-complete-score" style="font-size: 3rem; font-weight: bold;"></div>
+            <p id="quiz-complete-message" style="color: var(--color-text-muted); max-width: 400px; font-size: 1.1rem; line-height: 1.6;"></p>
+            <div id="quiz-complete-btn-container" style="margin-top: 2rem;"></div>
+        </div>
+    `;
+    
+    const scoreEl = document.getElementById("quiz-complete-score");
+    if (scoreEl) {
+        scoreEl.textContent = `${score} / ${quizState.questions.length}`;
+        scoreEl.style.color = isFlawless ? 'var(--color-success)' : 'var(--color-text-main)';
+    }
 
-    if (!qData) {
-        // Quiz complete
-        let score = quizState.answers.filter(a => a.correct).length;
-        let isFlawless = score === quizState.questions.length;
-        
-        // Mark subsection completed if they got at least 50%
-        let passed = score / quizState.questions.length >= 0.5;
-        
-        // Ensure userProgress is updated
+    const messageEl = document.getElementById("quiz-complete-message");
+    if (messageEl) {
+        messageEl.textContent = isFlawless 
+            ? 'Zseniális! Minden válaszod tökéletes lett.' 
+            : passed 
+                ? 'Szép munka! Folytathatod a következő leckével.' 
+                : 'Ezt még gyakorolni kell. Nézd át a hibákat és próbáld újra!';
+    }
+
+    const btnContainer = document.getElementById("quiz-complete-btn-container");
+    if (btnContainer) {
         if (passed) {
             const key = `${quizState.level}_${quizState.section}_${quizState.subsection}`;
             if (!userProgress.completed[key]) {
@@ -3381,8 +3459,8 @@ function renderQuizCardQuestion() {
             }
             messageEl.textContent = msg;
         }
-        return;
     }
+}
 
     if (quizState.type === 'word_order') {
         const shuffled = [...qData.scrambledWords].sort(() => secureRandom() - 0.5);
@@ -3395,34 +3473,29 @@ function renderQuizCardQuestion() {
                 Rakd sorba a mondatot: ${qData.hu ? `<strong style="color: var(--color-accent-in)">${escapeHTML(qData.hu)}</strong>` : ''}
             </div>
             
-            <div class="word-order-container" style="margin: 1.5rem 0;">
-                <div class="word-order-answer" id="quiz-answer-zone" style="min-height: 50px; padding: 0.8rem; border-radius: 12px; border: 2px dashed rgba(255,255,255,0.1); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: rgba(0,0,0,0.2); margin-bottom: 1rem; position: relative;">
-                    <span class="answer-placeholder" style="color: var(--color-text-muted); font-size: 0.9rem;">Kattints a szavakra a helyes sorrendben...</span>
-                </div>
-                
-                <div style="text-align: right; margin-bottom: 1rem;">
-                    <a href="#" onclick="resetQuizWordOrder(event)" style="color: var(--color-accent-in); font-size: 0.85rem; text-decoration: none; font-weight: 600;">🔄 Visszaállítás / Reset</a>
-                </div>
-
-                <div class="word-chips-source" id="quiz-chips-source" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 12px; min-height: 50px; align-items: center;">
-                    ${chipsHtml}
-                </div>
+            <div style="text-align: right; margin-bottom: 1rem;">
+                <a href="#" onclick="resetQuizWordOrder(event)" style="color: var(--color-accent-in); font-size: 0.85rem; text-decoration: none; font-weight: 600;">🔄 Visszaállítás / Reset</a>
             </div>
 
-            <div style="margin-top: 1.5rem; text-align: center;">
-                <button class="btn btn-primary" id="btn-check-word-order" onclick="checkQuizWordOrder()" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem;">Ellenőrzés</button>
+            <div class="word-chips-source" id="quiz-chips-source" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 12px; min-height: 50px; align-items: center;">
+                ${chipsHtml}
             </div>
+        </div>
 
-            <div id="quiz-explanation" style="display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; font-size: 1rem; line-height: 1.5; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
-                <strong style="color: var(--color-accent-in);" id="quiz-feedback-title">💡 Magyarázat:</strong> <span id="quiz-explanation-text"></span>
-                <div style="margin-top: 1.5rem; text-align: right;">
-                    <button class="btn btn-primary" onclick="nextQuizQuestion()">Tovább →</button>
-                </div>
+        <div style="margin-top: 1.5rem; text-align: center;">
+            <button class="btn btn-primary" id="btn-check-word-order" onclick="checkQuizWordOrder()" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem;">Ellenőrzés</button>
+        </div>
+
+        <div id="quiz-explanation" style="display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; font-size: 1rem; line-height: 1.5; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+            <strong style="color: var(--color-accent-in);" id="quiz-feedback-title">💡 Magyarázat:</strong> <span id="quiz-explanation-text"></span>
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <button class="btn btn-primary" onclick="nextQuizQuestion()">Tovább →</button>
             </div>
-        `;
-        return;
-    }
+        </div>
+    `;
+}
 
+function renderStandardQuizQuestion(container, qData) {
     const optsHtml = qData.opts.map((opt, i) => `
         <button class="quiz-opt-btn" onclick="submitQuizAnswer(this, ${i})">
             <span class="quiz-opt-badge">${String.fromCharCode(65 + i)}</span>
@@ -3441,6 +3514,29 @@ function renderQuizCardQuestion() {
         </div>
     `;
 }
+
+function renderQuizCardQuestion() {
+    const container = document.getElementById('quiz-card-container');
+    if (!container) return;
+    
+    const qData = quizState.questions[quizState.currentIdx];
+    
+    const counter = document.getElementById('quiz-question-counter');
+    if (counter) counter.textContent = `Kérdés: ${quizState.currentIdx + 1}/${quizState.questions.length}`;
+
+    if (!qData) {
+        renderQuizCompletionState(container);
+        return;
+    }
+
+    if (quizState.type === 'word_order') {
+        renderWordOrderQuizQuestion(container, qData);
+        return;
+    }
+
+    renderStandardQuizQuestion(container, qData);
+}
+
 
 window.submitQuizAnswer = function(btnEl, chosenIdx) {
     const buttons = document.querySelectorAll('.quiz-answers-grid button');
