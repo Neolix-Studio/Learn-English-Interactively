@@ -108,14 +108,20 @@ function validateSignupData($pdo, $email, $password, $username) {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return 'Érvénytelen e-mail cím formátum!';
     }
-    if (strlen($password) < 6) {
-        return 'A jelszónak legalább 6 karakterből kell állnia!';
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/', $password)) {
+        return 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.';
     }
     // Check if email already exists
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
     $stmt->execute([$email]);
     if ($stmt->fetch()) {
         return 'Ez az e-mail cím már regisztrálva van!';
+    }
+    // Check if username already exists
+    $stmtUser = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+    $stmtUser->execute([$username]);
+    if ($stmtUser->fetch()) {
+        return 'Ez a felhasználónév már foglalt!';
     }
     return null;
 }
@@ -412,8 +418,8 @@ function handleUpdatePassword($pdo, $data) {
         return;
     }
 
-    if (strlen($newPassword) < 6) {
-        echo json_encode(['error' => 'Az új jelszónak legalább 6 karakterből kell állnia!']);
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/', $newPassword)) {
+        echo json_encode(['error' => 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.']);
         return;
     }
 
@@ -515,8 +521,8 @@ function handleResetPassword($pdo, $data) {
         return;
     }
 
-    if (empty($newPassword) || strlen($newPassword) < 6) {
-        echo json_encode(['error' => 'Az új jelszónak legalább 6 karakterből kell állnia!']);
+    if (empty($newPassword) || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/', $newPassword)) {
+        echo json_encode(['error' => 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.']);
         return;
     }
 
