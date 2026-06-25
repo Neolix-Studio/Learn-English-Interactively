@@ -1092,19 +1092,19 @@ async function initUserProgress() {
 }
 
 function checkVerificationState() {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(globalThis.location.search);
     const token = urlParams.get('verify');
     
     if (token) {
         // Clear the URL parameter so it doesn't stay there
-        window.history.replaceState({}, document.title, window.location.pathname);
+        globalThis.history.replaceState({}, document.title, globalThis.location.pathname);
         
         fetch(`${API_URL}?action=verify_email&token=${token}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
                     alert("Sikeres email megerősítés! Köszönjük.");
-                    window.location.reload();
+                    globalThis.location.reload();
                 } else {
                     alert(data.error || "Hiba történt a megerősítés során.");
                 }

@@ -101,28 +101,25 @@ switch ($action) {
 // 1. Sign Up
 function validateSignupData($pdo, $email, $password, $username)
 {
+    $error = null;
     if (empty($email) || empty($password) || empty($username)) {
-        return 'Minden mező kitöltése kötelező (felhasználónév, e-mail, jelszó)!';
+        $error = 'Minden mező kitöltése kötelező (felhasználónév, e-mail, jelszó)!';
+    } elseif (mb_strlen($username) > 50) {
+        $error = 'A felhasználónév maximum 50 karakter hosszú lehet!';
+    } elseif (mb_strlen($email) > 100) {
+        $error = 'Az e-mail cím maximum 100 karakter hosszú lehet!';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Érvénytelen e-mail cím formátum!';
+    } elseif (strlen($password) < 6) {
+        $error = 'A jelszónak legalább 6 karakterből kell állnia!';
+    } else {
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        if ($stmt->fetch()) {
+            $error = 'Ez az e-mail cím már regisztrálva van!';
+        }
     }
-    if (mb_strlen($username) > 50) {
-        return 'A felhasználónév maximum 50 karakter hosszú lehet!';
-    }
-    if (mb_strlen($email) > 100) {
-        return 'Az e-mail cím maximum 100 karakter hosszú lehet!';
-    }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return 'Érvénytelen e-mail cím formátum!';
-    }
-    if (strlen($password) < 6) {
-        return 'A jelszónak legalább 6 karakterből kell állnia!';
-    }
-    // Check if email already exists
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    if ($stmt->fetch()) {
-        return 'Ez az e-mail cím már regisztrálva van!';
-    }
-    return null;
+    return $error;
 }
 
 function handleSignup($pdo, $data)
@@ -202,7 +199,12 @@ function handleSignup($pdo, $data)
 
 function handleVerifyEmail($pdo, $data)
 {
-    $token = isset($data['token']) ? trim($data['token']) : (isset($_GET['token']) ? trim($_GET['token']) : '');
+    $token = '';
+    if (isset($data['token'])) {
+        $token = trim($data['token']);
+    } elseif (isset($_GET['token'])) {
+        $token = trim($_GET['token']);
+    }
 
     if (empty($token)) {
         echo json_encode(['error' => 'Hiányzó megerősítő kód.']);
@@ -242,7 +244,7 @@ function handleLogin($pdo, $data)
 
     try {
         $stmt = $pdo->prepare("
-            SELECT u.id, u.email, u.password_hash, u.username, u.age_range, u.is_verified, s.role 
+            SELECT u.id, u.email, u.password_hash, u.username, u.age_range, u.is_verified, s.role
             FROM users u
             LEFT JOIN user_subscriptions s ON u.id = s.user_id
             WHERE u.email = ?
@@ -478,43 +480,40 @@ function handleUpdatePassword($pdo, $data)
 {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Munkamenet lejárt! Kérjük, jelentkezz be újra.']);
-        return;
-    }
+    } else {
+        $userId = $_SESSION['user_id'];
+        $currentPassword = isset($data['current_password']) ? $data['current_password'] : '';
+        $newPassword = isset($data['new_password']) ? $data['new_password'] : '';
 
-    $userId = $_SESSION['user_id'];
-    $currentPassword = isset($data['current_password']) ? $data['current_password'] : '';
-    $newPassword = isset($data['new_password']) ? $data['new_password'] : '';
-
-    if (empty($currentPassword) || empty($newPassword)) {
-        echo json_encode(['error' => 'A jelenlegi és az új jelszót is meg kell adni!']);
-        return;
-    }
-
-    if (strlen($newPassword) < 6) {
-        echo json_encode(['error' => 'Az új jelszónak legalább 6 karakterből kell állnia!']);
-        return;
-    }
-
-    try {
-        // Verify current password first
-        $stmt = $pdo->prepare("SELECT password_hash FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
-        $user = $stmt->fetch();
-
-        if (!$user || !password_verify($currentPassword, $user['password_hash'])) {
-            echo json_encode(['error' => 'A jelenlegi jelszó helytelen!']);
-            return;
+        $error = null;
+        if (empty($currentPassword) || empty($newPassword)) {
+            $error = 'A jelenlegi és az új jelszót is meg kell adni!';
+        } elseif (strlen($newPassword) < 6) {
+            $error = 'Az új jelszónak legalább 6 karakterből kell állnia!';
         }
 
-        // Update to new password
-        $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $stmtUpdate = $pdo->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
-        $stmtUpdate->execute([$newHash, $userId]);
+        if ($error) {
+            echo json_encode(['error' => $error]);
+        } else {
+            try {
+                $stmt = $pdo->prepare("SELECT password_hash FROM users WHERE id = ?");
+                $stmt->execute([$userId]);
+                $user = $stmt->fetch();
 
-        echo json_encode(['success' => true]);
-    } catch (Exception $e) {
-        error_log('Password update error: ' . $e->getMessage());
-        echo json_encode(['error' => 'Hiba a jelszó módosításakor. Kérjük, próbáld újra később.']);
+                if (!$user || !password_verify($currentPassword, $user['password_hash'])) {
+                    echo json_encode(['error' => 'A jelenlegi jelszó helytelen!']);
+                } else {
+                    $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
+                    $stmtUpdate = $pdo->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+                    $stmtUpdate->execute([$newHash, $userId]);
+
+                    echo json_encode(['success' => true, 'message' => 'A jelszó sikeresen megváltoztatva! Most már bejelentkezhetsz.']);
+                }
+            } catch (Exception $e) {
+                error_log('Update password error: ' . $e->getMessage());
+                echo json_encode(['error' => 'Hiba történt a jelszó módosítása során.']);
+            }
+        }
     }
 }
 

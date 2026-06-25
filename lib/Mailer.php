@@ -62,7 +62,7 @@ class Mailer {
     private function renderTemplate($templateName, $data = []) {
         $templatePath = __DIR__ . '/../emails/' . $templateName . '.php';
         if (!file_exists($templatePath)) {
-            throw new Exception("Email template not found: {$templateName}");
+            throw new RuntimeException("Email template not found: {$templateName}");
         }
 
         // Extract variables to be available in the template scope
@@ -70,10 +70,8 @@ class Mailer {
 
         // Capture template output
         ob_start();
-        include $templatePath;
-        $content = ob_get_clean();
-
-        return $content;
+        include_once $templatePath; // NOSONAR
+        return ob_get_clean();
     }
 
     /**
