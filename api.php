@@ -27,6 +27,10 @@ if (!file_exists(__DIR__ . '/db_config.php')) {
 }
 require_once __DIR__ . '/db_config.php';
 
+// Constants
+define('PASSWORD_REGEX', '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/');
+define('PASSWORD_ERR_MSG', 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.');
+
 // Initialize Database Connection
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
@@ -108,8 +112,8 @@ function validateSignupData($pdo, $email, $password, $username) {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return 'Érvénytelen e-mail cím formátum!';
     }
-    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/', $password)) {
-        return 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.';
+    if (!preg_match(PASSWORD_REGEX, $password)) {
+        return PASSWORD_ERR_MSG;
     }
     // Check if email already exists
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
@@ -418,8 +422,8 @@ function handleUpdatePassword($pdo, $data) {
         return;
     }
 
-    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/', $newPassword)) {
-        echo json_encode(['error' => 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.']);
+    if (!preg_match(PASSWORD_REGEX, $newPassword)) {
+        echo json_encode(['error' => PASSWORD_ERR_MSG]);
         return;
     }
 
@@ -521,8 +525,8 @@ function handleResetPassword($pdo, $data) {
         return;
     }
 
-    if (empty($newPassword) || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/', $newPassword)) {
-        echo json_encode(['error' => 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.']);
+    if (empty($newPassword) || !preg_match(PASSWORD_REGEX, $newPassword)) {
+        echo json_encode(['error' => PASSWORD_ERR_MSG]);
         return;
     }
 
