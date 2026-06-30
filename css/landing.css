@@ -43,7 +43,7 @@
     font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 700;
-    color: #000;
+    color: var(--color-text-main);
     background: var(--color-accent-in);
     padding: 1rem 2.5rem;
     border-radius: 50px;
@@ -113,7 +113,7 @@
     font-size: 1.1rem;
     padding: 0.3rem 0.8rem;
     border-radius: 8px;
-    color: #000;
+    color: var(--color-text-main);
 }
 
 .level-card h3 {
@@ -155,7 +155,7 @@
 
 .level-card:hover .btn-card {
     background: var(--color-text-main);
-    color: #000;
+    color: var(--color-text-main);
     border-color: var(--color-text-main);
 }
 
@@ -214,7 +214,7 @@
    ========================================================================== */
 .btn-close-modal {
     background: var(--color-accent-on);
-    color: #000;
+    color: var(--color-text-main);
     font-family: var(--font-heading);
     font-size: 1rem;
     font-weight: 700;
@@ -306,4 +306,300 @@
     color: var(--color-error);
     border-color: var(--color-error);
     transform: rotate(90deg);
+}
+
+/* MERGED FROM PROTOTYPE */
+/* ==========================================================================
+   LANDING PAGE PLAYFUL UI OVERRIDES
+   ========================================================================== */
+:root {
+    /* Override primary colors for more vibrant gamified feel */
+    --color-bg: #F3F4F6;
+    --color-surface: #FFFFFF;
+    --color-accent-in: #10B981; /* Duolingo-style Green */
+    --color-primary: #3B82F6; /* Friendly Blue */
+    --color-text-main: #1F2937;
+    --color-text-muted: #6B7280;
+    
+    /* Level Colors */
+    --level-a1: #10B981;
+    --level-a2: #3B82F6;
+    --level-b1: #F59E0B;
+    --level-b2: #8B5CF6;
+}
+
+body {
+    font-family: 'Nunito', sans-serif !important;
+    background: var(--color-bg) !important;
+    color: var(--color-text-main) !important;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.site-header {
+    background: var(--color-surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 2px solid #E5E7EB;
+}
+
+.nav-link {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 700 !important;
+    color: var(--color-text-muted) !important;
+}
+
+.nav-link:hover {
+    color: var(--color-primary) !important;
+}
+
+/* ==========================================================================
+   BUTTONS (GAMIFIED, TACTILE)
+   ========================================================================== */
+.btn-start, .btn-card, .btn-logout, .btn-primary {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    border-radius: 16px !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+    border: none !important;
+}
+
+.btn-start {
+    background: var(--color-accent-in) !important;
+    color: white !important;
+    box-shadow: 0 6px 0 #059669 !important; /* Darker green shadow */
+    padding: 1.2rem 2.5rem !important;
+    font-size: 1.2rem !important;
+}
+
+.btn-start:hover {
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 #059669 !important;
+}
+
+.btn-start:active {
+    transform: translateY(6px);
+    box-shadow: 0 0 0 #059669 !important;
+}
+
+.btn-logout {
+    background: var(--color-primary) !important;
+    color: white !important;
+    box-shadow: 0 4px 0 #2563EB !important;
+}
+
+.btn-logout:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #2563EB !important;
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero-section {
+    background: none !important; /* Remove old gradients */
+    padding: 4rem 1rem !important;
+    position: relative;
+    overflow: visible; /* CRITICAL: Allows Tyler to jump out of bounds without getting chopped in half */
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+    .hero-container {
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4rem 2rem;
+    }
+    
+    .hero-text-content {
+        flex: 1;
+        max-width: 600px;
+    }
+    
+    .hero-mascot-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+.hero-title {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 900 !important;
+    font-size: clamp(2.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+    color: var(--color-text-main) !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    letter-spacing: -1px;
+}
+
+/* Playful text highlight */
+.hero-title span {
+    color: var(--color-primary);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem !important;
+    color: var(--color-text-muted) !important;
+    margin-bottom: 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+.hero-mascot-wrapper svg {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.1));
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+}
+
+/* ==========================================================================
+   LEVEL CARDS (DUOLINGO STYLE)
+   ========================================================================== */
+.levels-section {
+    background: var(--color-bg-surface) !important;
+    padding: 4rem 1rem !important;
+}
+
+.section-title {
+    font-family: 'Nunito', sans-serif !important;
+    font-weight: 800 !important;
+    color: var(--color-text-main) !important;
+}
+
+.cards-grid {
+    gap: 2rem !important;
+}
+
+.level-card {
+    background: var(--color-bg-surface) !important;
+    border-radius: 24px !important;
+    border: 2px solid #E5E7EB !important;
+    box-shadow: 0 8px 0 #E5E7EB !important;
+    backdrop-filter: none !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.level-card:hover {
+    transform: translateY(2px) !important;
+    box-shadow: 0 6px 0 #E5E7EB !important;
+}
+
+/* Card Accents */
+.level-card.border-a1 { border-color: var(--level-a1) !important; box-shadow: 0 8px 0 var(--level-a1) !important; }
+.level-card.border-a2 { border-color: var(--level-a2) !important; box-shadow: 0 8px 0 var(--level-a2) !important; }
+.level-card.border-b1 { border-color: var(--level-b1) !important; box-shadow: 0 8px 0 var(--level-b1) !important; }
+.level-card.border-b2 { border-color: var(--level-b2) !important; box-shadow: 0 8px 0 var(--level-b2) !important; }
+
+.level-card.border-a1:hover { box-shadow: 0 6px 0 var(--level-a1) !important; }
+.level-card.border-a2:hover { box-shadow: 0 6px 0 var(--level-a2) !important; }
+.level-card.border-b1:hover { box-shadow: 0 6px 0 var(--level-b1) !important; }
+.level-card.border-b2:hover { box-shadow: 0 6px 0 var(--level-b2) !important; }
+
+.badge-a1 { background: var(--level-a1) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
+.badge-a2 { background: var(--level-a2) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
+.badge-b1 { background: var(--level-b1) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
+.badge-b2 { background: var(--level-b2) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
+
+.card-header h3 {
+    font-weight: 800 !important;
+    color: var(--color-text-main) !important;
+}
+
+.card-description {
+    color: var(--color-text-muted) !important;
+    font-weight: 600 !important;
+}
+
+.btn-card {
+    background: var(--color-bg-base) !important;
+    color: var(--color-text-main) !important;
+    box-shadow: 0 4px 0 #E5E7EB !important;
+}
+
+.level-card.border-a1 .btn-card { background: var(--level-a1) !important; color: white !important; box-shadow: 0 4px 0 #059669 !important; }
+.level-card.border-a2 .btn-card { background: var(--level-a2) !important; color: white !important; box-shadow: 0 4px 0 #2563EB !important; }
+.level-card.border-b1 .btn-card { background: var(--level-b1) !important; color: white !important; box-shadow: 0 4px 0 #D97706 !important; }
+.level-card.border-b2 .btn-card { background: var(--level-b2) !important; color: white !important; box-shadow: 0 4px 0 #6D28D9 !important; }
+
+.btn-card:active {
+    transform: translateY(4px);
+}
+.level-card.border-a1 .btn-card:active { box-shadow: 0 0 0 #059669 !important; }
+.level-card.border-a2 .btn-card:active { box-shadow: 0 0 0 #2563EB !important; }
+.level-card.border-b1 .btn-card:active { box-shadow: 0 0 0 #D97706 !important; }
+.level-card.border-b2 .btn-card:active { box-shadow: 0 0 0 #6D28D9 !important; }
+
+/* ==========================================================================
+   HOW IT WORKS SECTION
+   ========================================================================== */
+.how-it-works-section {
+    background: var(--color-bg-base) !important;
+}
+
+.step-item {
+    background: var(--color-bg-surface) !important;
+    border-radius: 24px !important;
+    border: 2px solid #E5E7EB !important;
+    box-shadow: 0 6px 0 #E5E7EB !important;
+    padding: 2rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.step-number {
+    display: none !important; /* Hide the old circle numbers */
+}
+
+.step-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.step-item h3 {
+    font-weight: 800 !important;
+    color: var(--color-text-main) !important;
+}
+
+.step-item p {
+    color: var(--color-text-muted) !important;
+    font-weight: 600 !important;
+}
+
+/* Footer Fixes for Landing Page */
+.site-footer,
+.site-footer p,
+.site-footer a,
+.site-footer .footer-text,
+.site-footer .footer-link {
+    color: var(--color-text-main) !important;
 }

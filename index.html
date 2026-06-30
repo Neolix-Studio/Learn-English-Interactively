@@ -7,11 +7,20 @@
     <!-- Relative paths link your MacBook project folder safe for websupport.sk -->
     <link rel="stylesheet" href="css/main.css?v=1.0.7">
     <link rel="stylesheet" href="css/landing.css?v=1.0.7">
+
+    <!-- Google Fonts: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Prototype Override CSS -->
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
     <!-- 1. GLOBAL STATIC HORIZONTAL TOP NAVBAR -->
-    <header class="site-header">
+    <header class="site-header" style="z-index: 9999;">
         <div class="header-container">
             <!-- Clicking the logo always returns them here to the main landing page -->
             <a href="index.html" class="logo" aria-label="Főoldal">
@@ -37,7 +46,21 @@
                     </ul>
                 </nav>
 
-                <div class="header-actions">
+                <div class="header-actions" style="display: flex; align-items: center;">
+                    <!-- Language Switcher to Gateway -->
+                    <a href="gateway.html" class="lang-switcher" title="Nyelv megváltoztatása" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #F3F4F6; margin-right: 15px; border: 1px solid #E5E7EB; cursor: pointer;">
+                        <svg viewBox="0 0 100 100" width="24" height="24">
+                            <clipPath id="circle-clip-nav">
+                                <circle cx="50" cy="50" r="50"/>
+                            </clipPath>
+                            <g clip-path="url(#circle-clip-nav)">
+                                <rect x="0" y="0" width="100" height="33.3" fill="#CE2939"/>
+                                <rect x="0" y="33.3" width="100" height="33.4" fill="#FFFFFF"/>
+                                <rect x="0" y="66.7" width="100" height="33.3" fill="#477050"/>
+                            </g>
+                        </svg>
+                    </a>
+                    
                     <span class="user-welcome" id="user-profile-btn" role="button" tabindex="0" title="Profil megtekintése" style="display: none; margin-right: 15px; color: var(--color-text-main); font-weight: 500; cursor: pointer; transition: color 0.3s;" onclick="window.location.href='dashboard.html?action=profile'"></span>
                     <a href="#login" class="btn btn-logout" id="nav-auth-btn">Bejelentkezés / Regisztráció</a>
                 </div>
@@ -47,12 +70,229 @@
 
     <main style="margin-top: 70px;">
         <!-- 2. HERO SECTION (Főcím és bevezetés) -->
-        <section class="hero-section">
+        <section class="hero-section" style="position: relative; z-index: 1000;">
+            
             <div class="hero-container">
-                <h1 class="hero-title hungarian-gradient-text">Tanulj angolul egyszerűen, a saját tempódban!</h1>
-                <p class="hero-subtitle">Magyar nyelvű nyelvtani magyarázatok, gyakorlati feladatok és szintfelmérő tesztek. Minden egy helyen, ami a magabiztos nyelvtudáshoz kell.</p>
-                <a href="#levels" class="btn-start">Kezdd el most ingyen</a>
-            </div>
+                <div class="hero-text-content">
+                    <h1 class="hero-title">Tanulj angolul <span>egyszerűen</span>, a saját tempódban!</h1>
+                    <p class="hero-subtitle">Magyar nyelvű nyelvtani magyarázatok, gyakorlati feladatok és szintfelmérő tesztek. Minden egy helyen, ami a magabiztos nyelvtudáshoz kell.</p>
+                    <a href="#levels" class="btn-start">Kezdd el most ingyen</a>
+                </div>
+                
+                
+                <div class="hero-mascot-wrapper" style="position: relative; z-index: 999;">
+                    <!-- Tyler Waving Mascot -->
+                    <div id="landing-tyler-container" style="position: relative; animation: runTranslate 2s ease-out forwards; z-index: 999;">
+                        <!-- Speech Bubble -->
+                        <div id="tyler-welcome-bubble" style="position: absolute; top: -20px; left: -80px; background: white; padding: 10px 20px; border-radius: 20px; border: 2px solid #E5E7EB; font-weight: 800; color: #1F2937; box-shadow: 0 4px 10px rgba(0,0,0,0.1); opacity: 0; animation: popIn 0.5s ease forwards 2.5s; z-index: 10;">
+                            Üdvözöllek!
+                            <div style="position: absolute; bottom: -8px; right: -10px; width: 20px; height: 20px; background: white; border-bottom: 2px solid #E5E7EB; border-right: 2px solid #E5E7EB; transform: rotate(45deg); z-index: -1;"></div>
+                        </div>
+
+                        <!-- Sprite Wrapper -->
+                        <div style="position: relative; width: 300px; height: 200px;" id="landing-tyler-svg">
+                            
+                            <!-- FRAME 1: Run Stride (Legs Tucked) -->
+                            <svg class="tyler-frame frame-run-1" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 100%; height: 100%; top: 30px;">
+                                <g>
+                                    <path d="M50,100 C50,60 140,60 160,100 Z" fill="#5a5e66" />
+                                    <!-- Front Leg Tucked -->
+                                    <path d="M120,90 C120,110 130,120 140,115" stroke="#5a5e66" stroke-width="15" stroke-linecap="round" fill="none" />
+                                    <!-- Back Leg Tucked -->
+                                    <path d="M60,90 C60,110 70,120 80,115" stroke="#5a5e66" stroke-width="15" stroke-linecap="round" fill="none" />
+                                    <!-- Tail -->
+                                    <path d="M40,90 Q20,100 10,80" stroke="#4a4d54" stroke-width="15" stroke-linecap="round" fill="none" />
+                                </g>
+                                <!-- Head Profile -->
+                                <g class="dog-head" transform="translate(130, 40)">
+                                    <circle cx="30" cy="30" r="30" fill="#6e737b" />
+                                    <path d="M50,20 C65,20 75,35 60,50 Z" fill="#f5f5f5" />
+                                    <ellipse cx="65" cy="25" rx="5" ry="3" fill="#111" />
+                                    <ellipse cx="40" cy="20" rx="4" ry="4" fill="#111" />
+                                    <path d="M10,0 C0,-10 -5,10 10,20 Z" fill="#5a5e66" />
+                                    <path d="M40,-5 C50,-20 60,0 50,10 Z" fill="#5a5e66" />
+                                </g>
+                            </svg>
+
+                            <!-- FRAME 2: Run Extended (Leaping) -->
+                            <svg class="tyler-frame frame-run-2" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 100%; height: 100%; top: 20px;">
+                                <g>
+                                    <path d="M40,100 C40,70 150,60 170,90 Z" fill="#5a5e66" />
+                                    <!-- Front Leg Extended -->
+                                    <path d="M130,80 L160,110" stroke="#5a5e66" stroke-width="15" stroke-linecap="round" fill="none" />
+                                    <!-- Back Leg Extended -->
+                                    <path d="M60,80 L20,110" stroke="#5a5e66" stroke-width="15" stroke-linecap="round" fill="none" />
+                                    <!-- Tail -->
+                                    <path d="M30,80 Q10,70 5,60" stroke="#4a4d54" stroke-width="15" stroke-linecap="round" fill="none" />
+                                </g>
+                                <!-- Head Profile -->
+                                <g class="dog-head" transform="translate(140, 30)">
+                                    <circle cx="30" cy="30" r="30" fill="#6e737b" />
+                                    <path d="M50,20 C65,20 75,35 60,50 Z" fill="#f5f5f5" />
+                                    <ellipse cx="65" cy="25" rx="5" ry="3" fill="#111" />
+                                    <ellipse cx="40" cy="20" rx="4" ry="4" fill="#111" />
+                                    <path d="M10,0 C0,-10 -5,10 10,20 Z" fill="#5a5e66" />
+                                    <path d="M40,-5 C50,-20 60,0 50,10 Z" fill="#5a5e66" />
+                                </g>
+                            </svg>
+
+                            <!-- FRAME 3: Skid / Transition -->
+                            <svg class="tyler-frame frame-skid" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 100%; height: 100%; top: 10px;">
+                                <g transform="rotate(-15) translate(0, 30)">
+                                    <path d="M50,100 C50,60 130,70 150,110 Z" fill="#5a5e66" />
+                                    <!-- Front Legs Bracing -->
+                                    <path d="M120,90 L140,130" stroke="#5a5e66" stroke-width="15" stroke-linecap="round" fill="none" />
+                                    <!-- Back Legs Sliding -->
+                                    <path d="M70,90 L50,130" stroke="#5a5e66" stroke-width="15" stroke-linecap="round" fill="none" />
+                                </g>
+                                <!-- Dust Clouds -->
+                                <circle cx="30" cy="140" r="10" fill="#E5E7EB" opacity="0.8" />
+                                <circle cx="10" cy="135" r="15" fill="#E5E7EB" opacity="0.6" />
+                                <circle cx="45" cy="130" r="8" fill="#E5E7EB" opacity="0.4" />
+                                
+                                <!-- Head Half-turned -->
+                                <g class="dog-head" transform="translate(110, 20) rotate(-10)">
+                                    <circle cx="40" cy="40" r="35" fill="#6e737b" />
+                                    <path d="M50,40 Q65,40 70,60 Q50,70 40,60 Z" fill="#f5f5f5" />
+                                    <ellipse cx="65" cy="50" rx="6" ry="4" fill="#111" />
+                                    <ellipse cx="40" cy="35" rx="5" ry="5" fill="#111" />
+                                    <ellipse cx="60" cy="35" rx="5" ry="5" fill="#111" />
+                                    <path d="M15,10 C5,0 0,20 15,30 Z" fill="#5a5e66" />
+                                    <path d="M60,0 C70,-15 80,5 70,15 Z" fill="#5a5e66" />
+                                </g>
+                            </svg>
+
+                            <!-- FRAME 4: Sit & Wave (Final) -->
+                            <svg class="tyler-frame frame-sit" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 100%; height: 100%; overflow: visible; top: 0;">
+                                <defs>
+                                    <linearGradient id="heroBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#7a7f87" />
+                                        <stop offset="100%" stop-color="#5a5e66" />
+                                    </linearGradient>
+                                </defs>
+                                <g class="body-bounce">
+                                    <path d="M50,190 C50,130 90,120 90,160 C90,180 70,200 50,190 Z" fill="#5a5e66" />
+                                    <path d="M150,190 C150,130 110,120 110,160 C110,180 130,200 150,190 Z" fill="#5a5e66" />
+                                    <ellipse cx="95" cy="195" rx="12" ry="6" fill="#f5f5f5" />
+                                    <ellipse cx="145" cy="195" rx="12" ry="6" fill="#4a4d54" />
+                                    <ellipse cx="85" cy="195" rx="10" ry="5" fill="#f5f5f5" />
+                                    <path d="M80,190 C80,100 160,100 160,190 Z" fill="url(#heroBodyGrad)" />
+                                    <path d="M95,190 C85,140 105,110 120,110 C135,110 155,140 145,190 Z" fill="#f5f5f5" />
+                                    <path d="M95,150 C110,140 130,140 145,150 Z" fill="url(#heroBodyGrad)" />
+                                    
+                                    <!-- Left Arm (Resting) -->
+                                    <path d="M45,115 C25,130 20,160 35,175 C50,190 60,160 60,140 Z" fill="#5a5e66" />
+                                    <circle cx="35" cy="175" r="10" fill="#f5f5f5" />
+                                </g>
+                                
+                                <!-- Head -->
+                                <g class="dog-head body-bounce" transform="translate(10, -5)">
+                                    <path class="ear-left" d="M45,70 C25,45 20,75 45,95 Z" fill="#5a5e66" />
+                                    <path class="ear-right" d="M175,70 C195,45 200,75 175,95 Z" fill="#5a5e66" />
+                                    <path d="M50,100 C50,45 170,45 170,100 C170,130 140,145 110,145 C80,145 50,130 50,100 Z" fill="#6e737b" />
+                                    <path d="M95,55 Q110,60 125,55" fill="none" stroke="#5a5e66" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M100,48 Q110,52 120,48" fill="none" stroke="#5a5e66" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M105,65 C105,100 95,120 95,120 L125,120 C125,120 115,100 115,65 Z" fill="#f5f5f5" />
+                                    <path d="M80,115 C80,100 140,100 140,115 C140,140 80,140 80,115 Z" fill="#6e737b" />
+                                    <path d="M98,110 C98,103 122,103 122,110 C122,120 98,120 98,110 Z" fill="#2b2b2b" />
+                                    <ellipse cx="104" cy="112" rx="2" ry="3" fill="#111" />
+                                    <ellipse cx="116" cy="112" rx="2" ry="3" fill="#111" />
+                                    <g class="eye">
+                                        <ellipse cx="78" cy="85" rx="8" ry="7" fill="#8b5a2b" />
+                                        <ellipse cx="78" cy="85" rx="5" ry="5" fill="#111" />
+                                        <circle cx="76" cy="83" r="2" fill="#fff" />
+                                        <ellipse cx="142" cy="85" rx="8" ry="7" fill="#8b5a2b" />
+                                        <ellipse cx="142" cy="85" rx="5" ry="5" fill="#111" />
+                                        <circle cx="140" cy="83" r="2" fill="#fff" />
+                                    </g>
+                                    <ellipse cx="60" cy="100" rx="12" ry="18" fill="#5a5e66" opacity="0.4"/>
+                                    <ellipse cx="160" cy="100" rx="12" ry="18" fill="#5a5e66" opacity="0.4"/>
+                                    <path class="mouth-smile" d="M95,135 Q110,145 125,135" fill="none" stroke="#2b2b2b" stroke-width="2.5" stroke-linecap="round" />
+                                </g>
+
+                                <!-- Waving Arm Fixed Coordinates (Attaches cleanly to Right Shoulder) -->
+                                <g class="body-bounce" transform="translate(160, 125) scale(-1, 1) rotate(45)" style="transform-origin: center; animation: waveArmRight 1s infinite alternate;">
+                                    <path d="M0,0 Q20,-30 40,0 L35,15 Q20,-10 5,15 Z" fill="#7a7f87" />
+                                    <circle cx="40" cy="0" r="12" fill="#f5f5f5" />
+                                    <circle cx="45" cy="-5" r="5" fill="#f5f5f5" />
+                                    <circle cx="35" cy="-8" r="5" fill="#f5f5f5" />
+                                    <circle cx="48" cy="2" r="5" fill="#f5f5f5" />
+                                </g>
+                            </svg>
+                        </div>
+
+                        <style>
+                            @keyframes runTranslate {
+                                0%   { transform: translate(-150vw, 300px); }
+                                70%  { transform: translate(-20vw, 300px); }
+                                85%  { transform: translate(10vw, -30px); }
+                                100% { transform: translate(0, 0); }
+                            }
+                            @keyframes waveArmRight {
+                                0% { transform: translate(160px, 125px) scale(-1, 1) rotate(15deg); }
+                                100% { transform: translate(160px, 125px) scale(-1, 1) rotate(80deg); }
+                            }
+                            @keyframes popIn {
+                                0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+                                70% { opacity: 1; transform: scale(1.1) translateY(0); }
+                                100% { opacity: 1; transform: scale(1) translateY(0); }
+                            }
+                            
+                            /* Base state - all hidden until JS takes over */
+                            .tyler-frame {
+                                display: none;
+                            }
+                            
+                            /* Idle floating for the final sit */
+                            #landing-tyler-svg {
+                                animation: float 4s ease-in-out infinite;
+                                animation-delay: 2s;
+                            }
+                        </style>
+                        
+                        <!-- Bulletproof JS Animation for Sprite Swapping -->
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const f1 = document.querySelector('.frame-run-1');
+                                const f2 = document.querySelector('.frame-run-2');
+                                const fk = document.querySelector('.frame-skid');
+                                const fs = document.querySelector('.frame-sit');
+                                
+                                if (!f1 || !f2 || !fk || !fs) return;
+                                
+                                let start = Date.now();
+                                
+                                // Start the animation loop
+                                let timer = setInterval(() => {
+                                    let elapsed = Date.now() - start;
+                                    
+                                    // Hide all frames
+                                    f1.style.display = 'none';
+                                    f2.style.display = 'none';
+                                    fk.style.display = 'none';
+                                    fs.style.display = 'none';
+
+                                    if (elapsed < 1600) {
+                                        // Running phase (0 - 1.6s) - Swap every 200ms
+                                        if (Math.floor(elapsed / 200) % 2 === 0) {
+                                            f1.style.display = 'block';
+                                        } else {
+                                            f2.style.display = 'block';
+                                        }
+                                    } else if (elapsed < 1900) {
+                                        // Skidding phase (1.6s - 1.9s)
+                                        fk.style.display = 'block';
+                                    } else {
+                                        // Sitting phase (1.9s onwards)
+                                        fs.style.display = 'block';
+                                        clearInterval(timer);
+                                    }
+                                }, 50); // check every 50ms for smooth transitions
+                            });
+                        </script>
+                    </div>
+                </div>
+
         </section>
 
                 <!-- 3. LEVEL SELECTION CARDS -->
@@ -116,19 +356,19 @@
             
             <div class="steps-grid">
                 <div class="step-item">
-                    <div class="step-number">1</div>
+                    <div class="step-icon"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div>
                     <h3>Magyar nyelvű elmélet</h3>
                     <p>Nem kell szótáraznod a szabályokat. Minden nyelvtani részt egyszerű, érthető magyar magyarázatokkal mutatunk be.</p>
                 </div>
 
                 <div class="step-item">
-                    <div class="step-number">2</div>
+                    <div class="step-icon"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
                     <h3>Sokszínű gyakorlás</h3>
                     <p>Olvasásértési feladatok, igaz/hamis tesztek és interaktív kvízek segítenek abban, hogy a gyakorlatban is rögzüljön a frissen szerzett tudás.</p>
                 </div>
 
                 <div class="step-item">
-                    <div class="step-number">3</div>
+                    <div class="step-icon"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg></div>
                     <h3>Szintzáró vizsgák</h3>
                     <p>Minden kisebb témakör után egy rövid kvíz vár, az adott szint végén pedig egy nagy összefoglaló vizsgával ellenőrizheted a tudásod.</p>
                 </div>
@@ -147,10 +387,10 @@
             <nav class="footer-nav" aria-label="Lábléc navigáció">
                 <ul class="footer-links">
                     <li><a href="#">Gyakran Ismételt Kérdések (GYIK)</a></li>
-                    <li><a href="privacy-policy.html">Adatkezelési Tájékoztató</a></li>
-                    <li><a href="terms.html">ÁSZF</a></li>
-                    <li><a href="impressum.html">Impresszum</a></li>
-                    <li><a href="contact.html">Kapcsolat</a></li>
+                    <li><a href="../../privacy-policy.html">Adatkezelési Tájékoztató</a></li>
+                    <li><a href="../../terms.html">ÁSZF</a></li>
+                    <li><a href="../../impressum.html">Impresszum</a></li>
+                    <li><a href="../../contact.html">Kapcsolat</a></li>
                 </ul>
             </nav>
         </div>
@@ -180,7 +420,7 @@
             <p style="color: var(--color-text-muted); line-height: 1.5; margin-bottom: 1.5rem;">
                 A fiókod sikeresen aktiválva lett, és az <strong>Örökös Prémium</strong> hozzáférés beállítva.
             </p>
-            <a href="dashboard.html" class="btn btn-primary" style="display: block; width: 100%; text-decoration: none;">Irány a Tanuló Felület</a>
+            <a href="../../dashboard.html" class="btn btn-primary" style="display: block; width: 100%; text-decoration: none;">Irány a Tanuló Felület</a>
         </div>
     </div>
 
@@ -205,12 +445,12 @@
                 <!-- Username field (only shown on registration) -->
                 <div class="form-group" id="group-username" style="display: none; flex-direction: column; gap: 0.4rem;">
                     <label for="auth-username" style="font-size: 0.85rem; color: var(--color-text-muted);">Felhasználónév</label>
-                    <input type="text" id="auth-username" placeholder="Pl. Péter" autocomplete="username" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
+                    <input type="text" id="auth-username" placeholder="Pl. Péter" autocomplete="username" style="background: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <!-- Age selector (only shown on registration) -->
                 <div class="form-group" id="group-age" style="display: none; flex-direction: column; gap: 0.4rem;">
                     <label for="auth-age" style="font-size: 0.85rem; color: var(--color-text-muted);">Életkor csoport</label>
-                    <select id="auth-age" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box; cursor: pointer; appearance: auto;">
+                    <select id="auth-age" style="background: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box; cursor: pointer; appearance: auto;">
                         <option value="" disabled selected>Válassz életkort...</option>
                         <option value="under_18">18 év alatti</option>
                         <option value="18_24">18 - 24 év</option>
@@ -222,17 +462,17 @@
                 </div>
                 <div class="form-group" style="display: flex; flex-direction: column; gap: 0.4rem;">
                     <label for="auth-email" style="font-size: 0.85rem; color: var(--color-text-muted);">E-mail cím</label>
-                    <input type="email" id="auth-email" placeholder="email@domain.com" required autocomplete="email" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
+                    <input type="email" id="auth-email" placeholder="email@domain.com" required autocomplete="email" style="background: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <div class="form-group" id="group-password" style="display: flex; flex-direction: column; gap: 0.4rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <label for="auth-password" style="font-size: 0.85rem; color: var(--color-text-muted);">Jelszó</label>
                         <a href="#" id="forgot-password-link" style="font-size: 0.8rem; color: var(--color-accent-in); text-decoration: none; transition: opacity 0.2s;">Elfelejtetted?</a>
                     </div>
-                    <input type="password" id="auth-password" placeholder="••••••••" required autocomplete="current-password" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
+                    <input type="password" id="auth-password" placeholder="••••••••" required autocomplete="current-password" style="background: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <div class="auth-error-message" id="auth-error" style="color: var(--color-error); font-size: 0.85rem; min-height: 20px; font-weight: 500;"></div>
-                <button type="submit" class="btn btn-submit-auth" id="btn-submit-auth" style="margin-top: 0.5rem; width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at)); color: #000; box-shadow: 0 4px 15px oklch(0.75 0.18 150 / 0.25);">Bejelentkezés</button>
+                <button type="submit" class="btn btn-submit-auth" id="btn-submit-auth" style="margin-top: 0.5rem; width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at)); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">Bejelentkezés</button>
                 <div id="forgot-password-back-container" style="display: none; text-align: center; margin-top: 0.5rem;">
                     <a href="#" id="forgot-password-back-link" style="font-size: 0.85rem; color: var(--color-text-muted); text-decoration: none; transition: color 0.2s;">Vissza a bejelentkezéshez</a>
                 </div>
@@ -250,14 +490,14 @@
                 <input type="hidden" id="reset-token-hidden">
                 <div class="form-group" style="display: flex; flex-direction: column; gap: 0.4rem;">
                     <label for="reset-password" style="font-size: 0.85rem; color: var(--color-text-muted);">Új jelszó</label>
-                    <input type="password" id="reset-password" placeholder="Legalább 6 karakter" required autocomplete="new-password" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
+                    <input type="password" id="reset-password" placeholder="Legalább 6 karakter" required autocomplete="new-password" style="background: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <div class="form-group" style="display: flex; flex-direction: column; gap: 0.4rem;">
                     <label for="reset-password-confirm" style="font-size: 0.85rem; color: var(--color-text-muted);">Új jelszó megerősítése</label>
-                    <input type="password" id="reset-password-confirm" placeholder="Ismételd meg a jelszót" required autocomplete="new-password" style="background: oklch(0.12 0.01 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
+                    <input type="password" id="reset-password-confirm" placeholder="Ismételd meg a jelszót" required autocomplete="new-password" style="background: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; color: var(--color-text-main); padding: 0.8rem 1rem; outline: none; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box;">
                 </div>
                 <div class="auth-error-message" id="reset-error" style="color: var(--color-error); font-size: 0.85rem; min-height: 20px; font-weight: 500;"></div>
-                <button type="submit" class="btn btn-submit-auth" style="width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at)); color: #000; box-shadow: 0 4px 15px oklch(0.75 0.18 150 / 0.25);">Jelszó mentése</button>
+                <button type="submit" class="btn btn-submit-auth" style="width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; background: linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at)); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">Jelszó mentése</button>
             </form>
             <button id="close-reset-modal-btn" class="btn-close-modal" style="margin-top: 1rem; width: 100%;">Bezárás</button>
         </div>

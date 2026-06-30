@@ -453,9 +453,9 @@ function updateStreakUI() {
         const shield = document.getElementById(`shield-${i}`);
         if (shield) {
             if (i <= shieldsCount) {
-                shield.style.color = "var(--color-accent-in)";
+                shield.style.color = "#3b82f6";
                 shield.style.opacity = "1";
-                shield.style.filter = "drop-shadow(0 0 3px var(--color-accent-in))";
+                shield.style.filter = "drop-shadow(0 0 3px #3b82f6)";
             } else {
                 shield.style.color = "var(--color-text-muted)";
                 shield.style.opacity = "0.4";
@@ -1648,7 +1648,7 @@ async function updateProgressUI() {
 // ==========================================================================
 function renderSidebar(levelName) {
     // We hijacked the old renderSidebar name so we don't break init() calls.
-    renderRoadmap(levelName);
+    // The roadmap is statically rendered in dashboard.html. We no longer generate it here.
 }
 
 const englishAlphabet = [
@@ -1720,161 +1720,6 @@ function speakLetter(letter) {
     }
 }
 
-function renderRoadmap(levelName) {
-    const container = document.getElementById("main-roadmap-container");
-    if (!container) return;
-    
-    container.innerHTML = "";
-    
-    const levelData = learningContent[levelName];
-    if (!levelData) return;
-    
-    if (levelName === "A1") {
-        let alphabetCardsHtml = "";
-        englishAlphabet.forEach(entry => {
-            alphabetCardsHtml += `
-                <div class="alphabet-card">
-                    <div class="alphabet-letter">${entry.letter.split(' ')[0]}</div>
-                    <div class="alphabet-phonetic">[${entry.phonetic}]</div>
-                    <button class="alphabet-audio-btn" onclick="playAlphabetSound('${entry.letter}', '${entry.audioUrl}')" aria-label="${entry.letter} kiejtése">🔊</button>
-                </div>
-            `;
-        });
-        
-        const alphabetHtml = `
-            <div class="alphabet-banner-card">
-                <div class="alphabet-banner-header" onclick="toggleAlphabetWidget()" style="cursor: pointer;">
-                    <div class="alphabet-banner-info">
-                        <span class="alphabet-banner-icon">🔤</span>
-                        <div>
-                            <h3 class="alphabet-banner-title">Angol Ábécé (English Alphabet)</h3>
-                            <p class="alphabet-banner-subtitle">Bármikor elérhető kiejtési segédlet hanggal</p>
-                        </div>
-                    </div>
-                    <button class="btn btn-secondary" id="toggle-alphabet-btn" onclick="event.stopPropagation(); toggleAlphabetWidget();">Megnyitás</button>
-                </div>
-                <div id="alphabet-grid-container" style="display: none;">
-                    <div class="alphabet-grid">
-                        ${alphabetCardsHtml}
-                    </div>
-                </div>
-            </div>
-        `;
-        container.insertAdjacentHTML("beforeend", alphabetHtml);
-    }
-    
-    // Generate the path dynamically
-    Object.keys(levelData).forEach((sectionKey, sectionIndex) => {
-        const sectionData = levelData[sectionKey];
-        const title = sectionData.title_hu || sectionData.title || `Lecke: ${sectionKey}`;
-        
-        let nodesHtml = "";
-        
-        let subKeys = [];
-        if (sectionData.subsections) {
-            subKeys = Object.keys(sectionData.subsections);
-        }
-        
-        const numNodes = subKeys.length || 1;
-        
-        subKeys.forEach((subKey, idx) => {
-            const subData = sectionData.subsections[subKey];
-            const isAccessible = isContentAccessible(levelName, sectionKey, subKey);
-            const progressKey = `${levelName}_${sectionKey}_${subKey}`;
-            const isCompleted = userProgress.completed[progressKey];
-            const isContentAccess = true;
-            const isLinearLocked = false;
-            
-            // In a viewBox of 300, center is 150.
-            // Amplitude 60 means nodes go from 90 to 210 in viewBox units (30% to 70% of width)
-            const xOffsetViewBox = Math.sin(idx * 0.8) * 60;
-            const nodeLeftPercent = (xOffsetViewBox / 300) * 100;
-            
-            let statusClass = "locked";
-            let lockHtml = `<div class="locked-icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; z-index: 10;">🔒</div>`;
-            
-            if (isAccessible) {
-                if (isCompleted) {
-                    statusClass = "completed";
-                    lockHtml = "";
-                } else {
-                    statusClass = "active";
-                    lockHtml = "";
-                }
-            }
-            
-            let iconHtml = subData.icon || "📝";
-            if (isExam(subData)) iconHtml = "🏆";
-            
-            // 2. Build the incremental SVG connector to the NEXT node
-            let connectorHtml = "";
-            if (idx < subKeys.length - 1) {
-                const nextXOffsetViewBox = Math.sin((idx + 1) * 0.8) * 60;
-                
-                // SVG coordinates in viewBox 0 0 300 120
-                const startX = 150 + xOffsetViewBox;
-                const startY = 60; // Bottom of current node (node is ~60px tall)
-                const endX = 150 + nextXOffsetViewBox;
-                const endY = 120; // Top of next node (padding-bottom 60px makes wrapper 120px tall)
-                
-                const controlY = startY + (endY - startY) / 2;
-                const pathData = `M ${startX},${startY} C ${startX},${controlY} ${endX},${controlY} ${endX},${endY}`;
-                
-                connectorHtml = `
-                    <svg class="roadmap-connector-svg" viewBox="0 0 300 120" preserveAspectRatio="none">
-                        <path class="roadmap-connector-path" d="${pathData}" vector-effect="non-scaling-stroke" />
-                    </svg>
-                `;
-            }
-            
-            // 3. Assemble the HTML for this node
-            nodesHtml += `
-                <div class="node-wrapper">
-                    ${connectorHtml}
-                    <div class="lesson-node ${statusClass}" style="left: ${nodeLeftPercent}%;" onclick="openRoadmapNode('${levelName}', '${sectionKey}', '${subKey}', ${isAccessible})">
-                        <div class="lesson-node-circle">${iconHtml}</div>
-                        ${lockHtml}
-                    </div>
-                </div>
-            `;
-        });
-        
-        const sectionHtml = `
-            <div class="lesson-section-box">
-                <h2 class="lesson-section-title">${escapeHTML(title)}</h2>
-                <p class="lesson-section-subtitle">${escapeHTML(sectionData.description || 'Teljesítsd az összes modult!')}</p>
-                <div class="lesson-nodes-container-flex">
-                    ${nodesHtml}
-                </div>
-            </div>
-        `;
-        
-        container.insertAdjacentHTML("beforeend", sectionHtml);
-    });
-    
-    setupHeroCardAndScroll(levelName);
-}
-
-function setupHeroCardAndScroll(levelName) {
-    const titleEl = document.getElementById("hero-card-title");
-    if (titleEl) {
-        const levelLabels = {
-            A1: 'A1 - Kezdő Szint',
-            A2: 'A2 - Alapfokú Szint',
-            B1: 'B1 - Középfokú Szint',
-            B2: 'B2 - Haladó Szint'
-        };
-        titleEl.textContent = levelLabels[levelName] || `${levelName} Szint`;
-    }
-    
-    // Auto-scroll the roadmap to the first active lesson node
-    setTimeout(() => {
-        const activeNode = document.querySelector(".lesson-node.active");
-        if (activeNode) {
-            activeNode.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-    }, 100);
-}
 
 window.openRoadmapNode = function(level, section, subsection, isAccessible) {
     if (!isAccessible) {
@@ -1901,41 +1746,47 @@ window.openRoadmapNode = function(level, section, subsection, isAccessible) {
     let overlay = document.getElementById("pre-lesson-modal");
     if (!overlay) {
         overlay = document.createElement("div");
-        overlay.className = "auth-modal-overlay";
+        overlay.className = "modal-overlay is-active";
         overlay.id = "pre-lesson-modal";
-        overlay.style.display = "flex";
         if(typeof syncShopButtonsUI === "function") syncShopButtonsUI();
         overlay.style.zIndex = "10000";
         document.body.appendChild(overlay);
     } else {
-        overlay.style.display = "flex";
+        overlay.classList.add("is-active");
         if(typeof syncShopButtonsUI === "function") syncShopButtonsUI();
     }
     
     overlay.innerHTML = `
-        <div class="auth-modal-card proto-card" style="text-align: center; max-width: 400px; width: 90%; animation: popIn 0.3s ease-out;">
+        <div class="modal-content glass-panel" style="text-align: center; max-width: 400px; width: 90%; animation: popIn 0.3s ease-out; padding: 2.5rem 2rem;">
             <div style="font-size: 4rem; margin-bottom: 1rem;">${iconHtml}</div>
-            <h2 style="color: var(--color-accent-in); margin-bottom: 0.5rem; font-size: 1.8rem;">${title}</h2>
-            <p style="margin-bottom: 2rem; color: var(--color-text-muted); font-size: 1.1rem;">${desc}</p>
+            <h2 style="color: var(--color-accent-in); margin-bottom: 1rem; font-size: 2rem; font-weight: 800;">${title}</h2>
+            <p style="margin-bottom: 2rem; color: var(--color-text-muted); font-size: 1.1rem; line-height: 1.5;">${desc}</p>
             
-            <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.2rem; padding: 1rem;" onclick="startLessonDirectly('${level}', '${section}', '${subsection}')">Indítás</button>
-            <button class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 1rem; border: none; background: transparent; color: var(--color-text-muted);" onclick="this.closest('.auth-modal-overlay').style.display='none'">Mégse</button>
+            <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.2rem; padding: 1rem; border-radius: 12px; margin-bottom: 1rem;" onclick="startLessonDirectly('${level}', '${section}', '${subsection}')">Indítás</button>
+            <button class="btn btn-secondary" style="width: 100%; justify-content: center; border: var(--glass-border); background: var(--color-bg-surface); color: var(--color-text-main); font-size: 1.2rem; padding: 1rem; border-radius: 12px;" onclick="this.closest('.modal-overlay').classList.remove('is-active')">Mégse</button>
         </div>
     `;
 };
 
 window.startLessonDirectly = function(level, section, subsection) {
     const modal = document.getElementById("pre-lesson-modal");
-    if (modal) modal.style.display = "none";
+    if (modal) modal.classList.remove("is-active");
     
     // Set globals
     currentLevel = level;
     currentSection = section;
     currentSubsection = subsection;
     
-    // Add sliding active class
-    const slider = document.getElementById("main-slider");
-    if (slider) slider.classList.add("step-active");
+    // New screen logic
+    const roadmapView = document.getElementById("roadmap-screen");
+    const gameScreen = document.getElementById("game-screen");
+    const app = document.getElementById("app");
+    if (roadmapView) roadmapView.classList.remove("active");
+    if (gameScreen) {
+        gameScreen.classList.add("active");
+        gameScreen.classList.remove("is-interactive-lesson"); // reset state
+    }
+    if (app) app.classList.add("library-active");
     
     // Render the workspace content
     renderSubsection(level, section, subsection);
@@ -1945,11 +1796,16 @@ window.startLessonDirectly = function(level, section, subsection) {
 };
 
 window.closeWorkspace = function() {
-    const slider = document.getElementById("main-slider");
-    if (slider) slider.classList.remove("step-active");
-    
+    // New screen logic
+    const roadmapView = document.getElementById("roadmap-screen");
+    const gameScreen = document.getElementById("game-screen");
+    const app = document.getElementById("app");
+    if (gameScreen) gameScreen.classList.remove("active");
+    if (roadmapView) roadmapView.classList.add("active");
+    if (app) app.classList.remove("library-active");
+
     // Reload roadmap to refresh completed colors
-    renderRoadmap(currentLevel);
+    // The roadmap is statically rendered, so we do not call renderRoadmap anymore
 };
 
 // 1. LISTEN TO SIDEBAR ACCORDION SUBSECTION LINKS
@@ -2127,8 +1983,9 @@ function switchGlobalLevel(levelName, startEmpty = false) {
 
     if (startEmpty) {
         currentSubsection = null;
-        const workspace = document.getElementById("workspace");
-        document.querySelector(".current-topic-title").textContent = "Üdvözlünk a Dashboardon!";
+        const workspace = document.getElementById("workspace") || document.getElementById("game-content");
+        const titleEl = document.querySelector(".current-topic-title");
+        if (titleEl) titleEl.textContent = "Üdvözlünk a Dashboardon!";
         
         // Ensure breadcrumbs reflect the general section without a specific sub-topic
         const breadcrumbs = document.querySelector(".breadcrumb-list");
@@ -2140,15 +1997,17 @@ function switchGlobalLevel(levelName, startEmpty = false) {
             `;
         }
 
-        workspace.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 400px; text-align: center; padding: 2rem;">
-                <div style="font-size: 4rem; margin-bottom: 1rem;">👋</div>
-                <h2 style="color: var(--color-text-main); margin-bottom: 1rem;">Válassz egy leckét a folytatáshoz!</h2>
-                <p style="color: var(--color-text-muted); max-width: 500px; line-height: 1.6;">
-                    A bal oldali menüben találod a tananyagokat. Kezdésként kattints a <strong>${ProgressManager.isGuest ? 'Szavak' : 'Magyarázat'}</strong> menüpontra az első modulban.
-                </p>
-            </div>
-        `;
+        if (workspace) {
+            workspace.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 400px; text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">👋</div>
+                    <h2 style="color: var(--color-text-main); margin-bottom: 1rem;">Válassz egy leckét a folytatáshoz!</h2>
+                    <p style="color: var(--color-text-muted); max-width: 500px; line-height: 1.6;">
+                        A bal oldali menüben találod a tananyagokat. Kezdésként kattints a <strong>${ProgressManager.isGuest ? 'Szavak' : 'Magyarázat'}</strong> menüpontra az első modulban.
+                    </p>
+                </div>
+            `;
+        }
     } else {
         currentSubsection = "explanation";
         const firstLink = document.querySelector('.subsection-link[data-subsection="explanation"]');
@@ -2163,7 +2022,7 @@ function switchGlobalLevel(levelName, startEmpty = false) {
 
 // 4. CORE SUBSECTION RENDERING MACHINERY
 function renderSubsection(level, section, subsection) {
-    const workspace = document.getElementById("workspace");
+    const workspace = document.getElementById("workspace") || document.getElementById("game-content");
     const moduleData = learningContent[level]?.[section];
 
     // Synchronize breadcrumbs position trail tracking strip text strings
@@ -2181,8 +2040,9 @@ function renderSubsection(level, section, subsection) {
     }
 
     if (!moduleData || !subsectionData) {
-        document.querySelector(".current-topic-title").textContent = "Tananyag Nem Található";
-        workspace.innerHTML = `<p class="error-text" style="color: var(--color-error); padding: 2rem;">Sajnáljuk, ehhez a részhez még nem töltöttek fel feladatokat.</p>`;
+        const titleEl = document.querySelector(".current-topic-title");
+        if (titleEl) titleEl.textContent = "Tananyag Nem Található";
+        if (workspace) workspace.innerHTML = `<p class="error-text" style="color: var(--color-error); padding: 2rem;">Sajnáljuk, ehhez a részhez még nem töltöttek fel feladatokat.</p>`;
         return;
     }
 
@@ -2196,7 +2056,8 @@ function renderSubsection(level, section, subsection) {
                 const safeData = moduleData?.subsections?.[safeSubsection];
                 if (safeData) {
                     currentSubsection = safeSubsection;
-                    document.querySelector(".current-topic-title").textContent = `${safeData.icon} ${safeData.title}`;
+                    const titleEl = document.querySelector(".current-topic-title");
+                    if (titleEl) titleEl.textContent = `${safeData.icon} ${safeData.title}`;
                     
                     // Sync sidebar active link
                     const links = document.querySelectorAll(".subsection-link");
@@ -2228,7 +2089,8 @@ function renderSubsection(level, section, subsection) {
         updateSuccessRateDisplay(false);
     }
 
-    document.querySelector(".current-topic-title").textContent = `${subsectionData.icon} ${subsectionData.title}`;
+    const topicTitleEl = document.querySelector(".current-topic-title");
+    if (topicTitleEl) topicTitleEl.textContent = `${subsectionData.icon} ${subsectionData.title}`;
 
     // Render different template based on subsection type
     switch (subsectionData.type) {
@@ -2241,7 +2103,13 @@ function renderSubsection(level, section, subsection) {
         case "fill_blanks":
         case "word_order":
         case "true_false":
-            renderQuizCardTemplate(workspace, subsectionData);
+        case "match_pairs":
+        case "dictation":
+            if (typeof startInteractiveLesson === 'function') {
+                startInteractiveLesson(workspace, subsectionData);
+            } else {
+                renderQuizCardTemplate(workspace, subsectionData);
+            }
             break;
         case "section_exam":
             renderSectionExamTemplate(workspace, subsectionData);
@@ -2284,7 +2152,7 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                         </div>
                     </div>
                     
-                    <div class="explanation-image-container" style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 30px oklch(0.12 0.01 260 / 0.5); border: 1px solid oklch(1 0 0 / 0.1);">
+                    <div class="explanation-image-container" style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: var(--glass-shadow); border: var(--glass-border);">
                         <img src="assets/images/tobe_verb_visual.png" alt="The Verb 'TO BE' - Simple Present" style="width: 100%; height: auto; display: block; object-fit: contain; cursor: pointer; transition: transform 0.2s ease;" onclick="openLightbox(this.src)" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     </div>
                 </article>
@@ -2554,16 +2422,10 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                 </div>
 
                 <!-- Next Hint -->
-                <div class="explanation-next-hint">
-                    <p>Ha megértetted a magyarázatot, lépj tovább a <strong>Szavak</strong> szekcióra! →</p>
-                </div>
-                <div id="explanation-completion-btn-container-to-be"></div>
+                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
             </div>
         `;
-        const btnContainer = document.getElementById("explanation-completion-btn-container-to-be");
-        if (btnContainer) {
-            btnContainer.innerHTML = getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, false);
-        }
+        
         initExplanationTabs();
     } else if (currentSection === "ToHave") {
         workspace.innerHTML = `
@@ -2863,16 +2725,9 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                 </div>
 
                 <!-- Next Hint -->
-                <div class="explanation-next-hint">
-                    <p>Ha megértetted a magyarázatot, lépj tovább a <strong>Szavak</strong> szekcióra! →</p>
-                </div>
-                <div id="explanation-completion-btn-container-to-have"></div>
+                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
             </div>
         `;
-        const btnContainer = document.getElementById("explanation-completion-btn-container-to-have");
-        if (btnContainer) {
-            btnContainer.innerHTML = getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, false);
-        }
         initExplanationTabs();
     } else {
         workspace.innerHTML = `
@@ -2883,10 +2738,7 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                         <p id="explanation-content-el"></p>
                     </div>
                 </article>
-                <div class="explanation-next-hint">
-                    <p>Ha megértetted a magyarázatot, lépj tovább a <strong>Szavak</strong> szekcióra! →</p>
-                </div>
-                ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, false)}
+                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
             </div>
         `;
         const titleEl = document.getElementById("explanation-title-el");
@@ -2937,8 +2789,8 @@ async function renderWordsTemplate(workspace, data, moduleData) {
         items = vocabCache[source];
     } else {
         try {
-            // Append version parameter to bust browser caches for static content updates
-            const response = await fetch(source + "?v=1.0.6");
+            // Fetch static content
+            const response = await fetch(source);
             if (!response.ok) throw new Error("HTTP error " + response.status);
             items = await response.json();
             vocabCache[source] = items;
@@ -2949,8 +2801,18 @@ async function renderWordsTemplate(workspace, data, moduleData) {
         }
     }
 
+    // Handle if the JSON was wrapped in { items: [...] }
+    if (items && !Array.isArray(items) && items.items) {
+        items = items.items;
+    }
+    
+    // Ensure it's an array
+    if (!Array.isArray(items)) {
+        items = [];
+    }
+
     if (items.length === 0) {
-        workspace.innerHTML = renderEmptyState("Szavak", "Ehhez a leckéhez hamarosan feltöltjük a szókincset.");
+        workspace.innerHTML = renderEmptyState("Szavak", "Ehhez a leckéhez hamarosan feltöltjük a szókincset. <br><br>Debug: source=" + source + ", type of items=" + typeof items + ", has items.length=" + (items?items.length:'none'));
         return;
     }
 
@@ -2999,7 +2861,7 @@ async function renderWordsTemplate(workspace, data, moduleData) {
                 </div>
 
             </section>
-            ${getCompleteButtonHtml(currentLevel, currentSection, currentSubsection, false)}
+            <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
         </div>
     `;
 
@@ -3476,7 +3338,7 @@ function renderQuizCompletionState(container) {
                 <a href="#" onclick="resetQuizWordOrder(event)" style="color: var(--color-accent-in); font-size: 0.85rem; text-decoration: none; font-weight: 600;">🔄 Visszaállítás / Reset</a>
             </div>
 
-            <div class="word-chips-source" id="quiz-chips-source" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 12px; min-height: 50px; align-items: center;">
+            <div class="word-chips-source" id="quiz-chips-source" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 1rem; background: var(--color-bg-surface); border: var(--glass-border); border-radius: 12px; min-height: 50px; align-items: center;">
                 ${chipsHtml}
             </div>
         </div>
@@ -3485,7 +3347,7 @@ function renderQuizCompletionState(container) {
             <button class="btn btn-primary" id="btn-check-word-order" onclick="checkQuizWordOrder()" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem;">Ellenőrzés</button>
         </div>
 
-        <div id="quiz-explanation" style="display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; font-size: 1rem; line-height: 1.5; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+        <div id="quiz-explanation" style="display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; font-size: 1rem; line-height: 1.5; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
             <strong style="color: var(--color-accent-in);" id="quiz-feedback-title">💡 Magyarázat:</strong> <span id="quiz-explanation-text"></span>
             <div style="margin-top: 1.5rem; text-align: right;">
                 <button class="btn btn-primary" onclick="nextQuizQuestion()">Tovább →</button>
@@ -3505,7 +3367,7 @@ function renderStandardQuizQuestion(container, qData) {
     container.innerHTML = `
         <div class="quiz-question-box">${qData.q}</div>
         <div class="quiz-answers-grid">${optsHtml}</div>
-        <div id="quiz-explanation" style="display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; font-size: 1rem; line-height: 1.5; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+        <div id="quiz-explanation" style="display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; font-size: 1rem; line-height: 1.5; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
             <strong style="color: var(--color-accent-in);">💡 Magyarázat:</strong> <span id="quiz-explanation-text"></span>
             <div style="margin-top: 1.5rem; text-align: right;">
                 <button class="btn btn-primary" onclick="nextQuizQuestion()">Tovább →</button>
@@ -4937,7 +4799,7 @@ window.openShopModal = function() {
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; text-align: left;">
                     
                     <!-- Cyberpunk -->
-                    <div class="shop-item" style="padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                    <div class="shop-item" style="padding: 1rem; border-radius: 12px; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎛️</div>
                         <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Cyberpunk Neon Téma</h3>
                         <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 1rem;">Neon színek és sötét kontrasztok.</p>
@@ -4948,7 +4810,7 @@ window.openShopModal = function() {
                     </div>
                     
                     <!-- Nature -->
-                    <div class="shop-item" style="padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                    <div class="shop-item" style="padding: 1rem; border-radius: 12px; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌿</div>
                         <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Természet Téma</h3>
                         <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 1rem;">Nyugtató zöld árnyalatok.</p>
@@ -4959,7 +4821,7 @@ window.openShopModal = function() {
                     </div>
                     
                     <!-- Shield -->
-                    <div class="shop-item" style="padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+                    <div class="shop-item" style="padding: 1rem; border-radius: 12px; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
                         <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
                         <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Streak Pajzs</h3>
                         <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 1rem;">Megvéd, ha kihagysz egy napot.</p>
@@ -5153,7 +5015,7 @@ function renderQuestModalContent() {
         }
         
         html += `
-            <div style="padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+            <div style="padding: 1rem; border-radius: 12px; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                     <div>
                         <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem;">${qData.title}</h3>
@@ -5162,7 +5024,7 @@ function renderQuestModalContent() {
                     ${buttonHtml}
                 </div>
                 <!-- Progress bar -->
-                <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-top: 0.5rem;">
+                <div style="width: 100%; height: 8px; background: var(--glass-border); border-radius: 4px; overflow: hidden; margin-top: 0.5rem;">
                     <div style="height: 100%; width: ${progressPercent}%; background: ${isCompleted ? 'var(--color-success)' : 'var(--color-accent-in)'}; transition: width 0.3s ease;"></div>
                 </div>
             </div>
