@@ -271,7 +271,7 @@ globalThis.returnWordToSource = function(e) {
 // CHECK ANSWER LOGIC
 // ----------------------------------------------------
 
-window.checkInteractiveAnswer = function() {
+globalThis.checkInteractiveAnswer = function() {
     if (interactiveState.isChecking) {
         // Next question
         interactiveState.currentIdx++;
@@ -439,7 +439,7 @@ function renderFillBlanksQuestion(container, q) {
     const huText = q.hu || "Válaszd ki a helyes szót a mondat kiegészítéséhez!";
     
     // Create sentence with blank
-    const blankId = Math.random().toString(36).substr(2, 9);
+    const blankId = globalThis.crypto.randomUUID();
     const sentenceText = q.sentence || q.question || "";
     const sentenceHtml = escapeHTML(sentenceText).replace(/_{3,}/, `<span class="fill-blank-target" id="fill-blank-${blankId}">___</span>`);
     
@@ -481,7 +481,7 @@ function renderFillBlanksQuestion(container, q) {
     container.innerHTML = html;
 }
 
-window.selectFillBlankOption = function(btn, optValue, blankId) {
+globalThis.selectFillBlankOption = function(btn, optValue, blankId) {
     playSoundEffect('pop');
     
     // Deselect others

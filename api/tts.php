@@ -22,7 +22,7 @@ if (empty($text)) {
 }
 
 // Generate a unique hash for this exact text to easily look it up in the database
-$textHash = md5($text);
+$textHash = hash('sha256', $text);
 
 // --- 3. DATABASE CONNECTION ---
 try {

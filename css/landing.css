@@ -37,34 +37,12 @@
     text-wrap: balance;
 }
 
-/* Central Neon Action Button */
-.btn-start {
-    margin-top: 1rem;
-    font-family: var(--font-heading);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-text-main);
-    background: var(--color-accent-in);
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    box-shadow: 0 0 20px oklch(0.75 0.15 250 / 0.4);
-    transition: all var(--transition-base);
-}
 
-.btn-start:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 35px var(--color-accent-in);
-    filter: brightness(1.1);
-}
 
 /* ==========================================================================
    2. LEVEL SELECTION CARDS (Glassmorphism & Neon Borders)
    ========================================================================== */
-.levels-section {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 5rem 2rem;
-}
+
 
 .section-title {
     font-size: clamp(1.8rem, 3vw, 2.8rem);
@@ -182,33 +160,6 @@
     gap: 1rem;
 }
 
-.step-number {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 800;
-    width: 50px;
-    height: 50px;
-    background: oklch(1 0 0 / 0.03);
-    border: var(--glass-border);
-    color: var(--color-accent-in);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    box-shadow: var(--glass-shadow);
-}
-
-.step-item h3 {
-    font-size: 1.25rem;
-    color: var(--color-text-main);
-}
-
-.step-item p {
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
-    max-width: 320px;
-}
-
 /* ==========================================================================
    4. WIP SYSTEM SPECIFIC UTILITIES
    ========================================================================== */
@@ -265,48 +216,9 @@
     color: var(--color-text-main) !important;
 }
 
-#auth-form select {
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    padding-right: 2.5rem !important;
-}
-
-#auth-form select option {
-    background: oklch(0.12 0.01 260);
-    color: var(--color-text-main);
-}
-
 /* ==========================================================================
    MODAL UI POLISH
    ========================================================================== */
-.btn-close-icon {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: oklch(1 0 0 / 0.05);
-    border: 1px solid oklch(1 0 0 / 0.1);
-    color: var(--color-text-main);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all var(--transition-base);
-}
-
-.btn-close-icon:hover {
-    background: oklch(0.65 0.2 25 / 0.2);
-    color: var(--color-error);
-    border-color: var(--color-error);
-    transform: rotate(90deg);
-}
 
 /* MERGED FROM PROTOTYPE */
 /* ==========================================================================
@@ -513,20 +425,6 @@ body {
 
 
 
-.card-header h3 {
-    font-weight: 800 !important;
-    color: var(--color-text-main) !important;
-}
-
-.card-description {
-    color: var(--color-text-muted) !important;
-    font-weight: 600 !important;
-}
-
-.btn-card {
-    background: var(--color-bg-base) !important;
-    color: var(--color-text-main) !important;
-    box-shadow: 0 4px 0 #E5E7EB !important;
 }
 
 .level-card.border-a1 .btn-card { background: var(--level-a1) !important; color: white !important; box-shadow: 0 4px 0 #059669 !important; }
