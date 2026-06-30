@@ -21,6 +21,12 @@ globalThis.speechSynthesis.onvoiceschanged = () => {
     ttsVoices = globalThis.speechSynthesis.getVoices();
 };
 
+function secureRandom() {
+    const array = new Uint32Array(1);
+    globalThis.crypto.getRandomValues(array);
+    return array[0] / (0xffffffff + 1);
+}
+
 function playTTS(text, lang = 'en-US') {
     if (!text) return;
     const utterance = new SpeechSynthesisUtterance(text);
@@ -30,9 +36,9 @@ function playTTS(text, lang = 'en-US') {
     if (engVoices.length > 0) {
         const premiumVoices = engVoices.filter(v => v.name.includes('Google') || v.name.includes('Premium') || v.name.includes('Samantha') || v.name.includes('Daniel'));
         if (premiumVoices.length > 0) {
-            utterance.voice = premiumVoices[Math.floor(Math.random() * premiumVoices.length)];
+            utterance.voice = premiumVoices[Math.floor(secureRandom() * premiumVoices.length)];
         } else {
-            utterance.voice = engVoices[Math.floor(Math.random() * engVoices.length)];
+            utterance.voice = engVoices[Math.floor(secureRandom() * engVoices.length)];
         }
     }
     
@@ -83,6 +89,7 @@ async function startInteractiveLesson(workspace, data) { // NOSONAR
                 data.items = fetched.items || [];
                 if (fetched.type) data.type = fetched.type;
             } catch (error) {
+                console.error("Error loading interactive lesson:", error);
                 workspace.innerHTML = `
                     <div style="text-align:center; padding: 2rem;">
                         <h2>Hiba történt</h2>
@@ -325,7 +332,7 @@ globalThis.checkInteractiveAnswer = function() { // NOSONAR
                 } else {
                     console.error("TTS Backend Error:", data.error, data.details);
                     // Fallback to robotic browser voice if PHP fails
-                    if ('speechSynthesis' in window) {
+                    if ('speechSynthesis' in globalThis) {
                         const utterance = new SpeechSynthesisUtterance(textToRead);
                         utterance.lang = 'en-US';
                         utterance.rate = 0.8;
@@ -425,7 +432,7 @@ function renderInteractiveFail() {
 // ----------------------------------------------------
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(secureRandom() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
@@ -468,7 +475,7 @@ function renderFillBlanksQuestion(container, q) {
     
     opts.forEach((opt, i) => {
         const safeOptHtml = escapeHTML(opt);
-        const safeOptJs = opt.replace(/'/g, "\\'");
+        const safeOptJs = opt.replaceAll("'", String.raw`\'`);
         html += `
             <button class="interactive-word-chip" style="width: 100%; max-width: 400px; margin: 0 auto; text-align: center; font-size: 1.2rem; padding: 1rem;" 
                 onclick="selectFillBlankOption(this, '${safeOptJs}', '${blankId}')">

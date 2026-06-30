@@ -60,7 +60,7 @@
     </div>
 
     <!-- Gutter Tyler 1 (Sitting Right) -->
-    <div class="mascot-container" style="position: absolute; right: -120px; top: 150px; z-index: 100; left: auto; bottom: auto;" onclick="this.classList.add('is-talking'); setTimeout(()=>this.classList.remove('is-talking'), 2000)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();">
+    <button class="mascot-container" style="background:none; border:none; padding:0; outline:none; cursor:pointer; position: absolute; right: -120px; top: 150px; z-index: 100; left: auto; bottom: auto;" onclick="this.classList.add('is-talking'); setTimeout(()=>this.classList.remove('is-talking'), 2000)">
         <div class="mascot-chat-bubble" style="left: -20px; right: auto;">Keep going!</div>
         <div class="mascot-svg" style="width: 120px; height: 120px; transform: scaleX(-1);">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
@@ -111,7 +111,7 @@
                 </g>
             </svg>
         </div>
-    </div>
+    </button>
 
     <!-- Gutter Tyler 2 (Laying Left) -->
     <div class="mascot-container" style="position: absolute; left: -140px; top: 600px; z-index: 100; bottom: auto;" onclick="this.classList.add('is-talking'); setTimeout(()=>this.classList.remove('is-talking'), 2000)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();">
@@ -142,7 +142,7 @@
                 </g>
             </svg>
         </div>
-    </div>
+    </button>
 
     <!-- Roadmap Screen -->
     <div id="roadmap-screen" class="screen active" style="padding: 0; justify-content: flex-start;">

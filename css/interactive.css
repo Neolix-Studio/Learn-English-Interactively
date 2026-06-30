@@ -174,7 +174,7 @@
 .match-pair-btn.error {
     animation: shake 0.4s;
     border-color: #ef4444;
-    color: #b91c1c; /* Darker red for contrast */
+    color: #991b1b; /* Darker red for contrast */
     background: rgba(239, 68, 68, 0.1);
 }
 
