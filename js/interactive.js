@@ -17,8 +17,8 @@ let interactiveState = {
 
 // Available TTS Voices
 let ttsVoices = [];
-window.speechSynthesis.onvoiceschanged = () => {
-    ttsVoices = window.speechSynthesis.getVoices();
+globalThis.speechSynthesis.onvoiceschanged = () => {
+    ttsVoices = globalThis.speechSynthesis.getVoices();
 };
 
 function playTTS(text, lang = 'en-US') {
@@ -37,7 +37,7 @@ function playTTS(text, lang = 'en-US') {
     }
     
     utterance.rate = 0.85; // Slightly slower for language learners
-    window.speechSynthesis.speak(utterance);
+    globalThis.speechSynthesis.speak(utterance);
 }
 
 // Play success/fail sound effects
@@ -59,11 +59,11 @@ function playSoundEffect(type) {
     }
 }
 
-async function startInteractiveLesson(workspace, data) {
+async function startInteractiveLesson(workspace, data) { // NOSONAR
     const source = data.dataSource;
     
     if (source && !data.items) {
-        if (vocabCache && vocabCache[source]) {
+        if (vocabCache?.[source]) {
             data.items = vocabCache[source].items || [];
             if (vocabCache[source].type) data.type = vocabCache[source].type; // Override type if present in json
         } else {
@@ -155,7 +155,6 @@ function renderInteractiveQuestion() {
     const footer = document.getElementById("interactive-footer");
     const checkBtn = document.getElementById("check-btn");
     const feedbackArea = document.getElementById("interactive-feedback-area");
-    const feedbackText = document.getElementById("interactive-feedback-text");
     
     if (!contentArea) return;
 
@@ -234,7 +233,7 @@ function renderWordOrderQuestion(container, q) {
     container.innerHTML = html;
 }
 
-window.moveWordToTarget = function(btn) {
+globalThis.moveWordToTarget = function(btn) {
     playSoundEffect('pop');
     const target = document.getElementById("wb-target");
     
@@ -271,7 +270,7 @@ globalThis.returnWordToSource = function(e) {
 // CHECK ANSWER LOGIC
 // ----------------------------------------------------
 
-globalThis.checkInteractiveAnswer = function() {
+globalThis.checkInteractiveAnswer = function() { // NOSONAR
     if (interactiveState.isChecking) {
         // Next question
         interactiveState.currentIdx++;
@@ -330,7 +329,7 @@ globalThis.checkInteractiveAnswer = function() {
                         const utterance = new SpeechSynthesisUtterance(textToRead);
                         utterance.lang = 'en-US';
                         utterance.rate = 0.8;
-                        window.speechSynthesis.speak(utterance);
+                        globalThis.speechSynthesis.speak(utterance);
                     }
                 }
             })
@@ -528,7 +527,7 @@ function renderTrueFalseQuestion(container, q) {
     container.innerHTML = html;
 }
 
-window.selectTrueFalse = function(btn, value) {
+globalThis.selectTrueFalse = function(btn, value) {
     playSoundEffect('pop');
     const buttons = btn.parentElement.querySelectorAll(".interactive-word-chip");
     buttons.forEach(b => {
@@ -667,7 +666,7 @@ function renderDictationQuestion(container, q) {
     setTimeout(() => playTTS(sentence), 500);
 }
 
-window.checkDictationInput = function(val) {
+globalThis.checkDictationInput = function(val) {
     interactiveState.currentAnswer = val.trim();
     document.getElementById("check-btn").disabled = interactiveState.currentAnswer.length === 0;
 };

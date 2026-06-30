@@ -179,5 +179,5 @@ body {
 
 .disabled-btn {
     background: #E5E7EB;
-    color: #9CA3AF;
+    color: #4B5563; /* Darker gray for contrast */
 }

@@ -1,6 +1,5 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
 
 // --- 1. CONFIGURATION ---
 // Put your Google Cloud API key here
@@ -8,10 +7,10 @@ header('Access-Control-Allow-Origin: *');
 $googleApiKey = getenv('GOOGLE_TTS_API_KEY') ?: 'YOUR_GOOGLE_CLOUD_API_KEY_HERE';
 
 // Put your WebSupport Database details here
-$dbHost = 'localhost'; // Usually localhost or a specific host provided by WebSupport
-$dbUser = 'your_db_username';
-$dbPass = 'your_db_password';
-$dbName = 'your_db_name';
+$dbHost = getenv('DB_HOST') ?: 'localhost';
+$dbUser = getenv('DB_USER') ?: 'root';
+$dbPass = getenv('DB_PASS') ?: '';
+$dbName = getenv('DB_NAME') ?: 'database';
 
 // --- 2. INPUT VALIDATION ---
 $text = isset($_GET['text']) ? trim($_GET['text']) : '';
