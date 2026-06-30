@@ -2422,7 +2422,7 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                 </div>
 
                 <!-- Next Hint -->
-                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
+                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background='var(--glass-bg-hover)'" onmouseout="this.style.background='var(--glass-bg)'">← Vissza az utazáshoz</button></div>
             </div>
         `;
         
@@ -2725,7 +2725,7 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                 </div>
 
                 <!-- Next Hint -->
-                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
+                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background='var(--glass-bg-hover)'" onmouseout="this.style.background='var(--glass-bg)'">← Vissza az utazáshoz</button></div>
             </div>
         `;
         initExplanationTabs();
@@ -2738,7 +2738,7 @@ function renderExplanationTemplate(workspace, data, moduleData) {
                         <p id="explanation-content-el"></p>
                     </div>
                 </article>
-                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
+                <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background='var(--glass-bg-hover)'" onmouseout="this.style.background='var(--glass-bg)'">← Vissza az utazáshoz</button></div>
             </div>
         `;
         const titleEl = document.getElementById("explanation-title-el");
@@ -2861,7 +2861,7 @@ async function renderWordsTemplate(workspace, data, moduleData) {
                 </div>
 
             </section>
-            <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background=\'var(--glass-bg-hover)\'" onmouseout="this.style.background=\'var(--glass-bg)\'">← Vissza az utazáshoz</button></div>
+            <div style="margin-top: 3rem; text-align: center;"><button class="btn" style="background: var(--glass-bg); border: var(--glass-border); color: var(--color-text); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onclick="closeWorkspace()" onmouseover="this.style.background='var(--glass-bg-hover)'" onmouseout="this.style.background='var(--glass-bg)'">← Vissza az utazáshoz</button></div>
         </div>
     `;
 

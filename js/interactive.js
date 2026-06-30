@@ -123,9 +123,9 @@ async function startInteractiveLesson(workspace, data) {
         hearts: 5,
         maxHearts: 5,
         correctAnswers: 0,
-        level: typeof currentLevel !== 'undefined' ? currentLevel : null,
-        section: typeof currentSection !== 'undefined' ? currentSection : null,
-        subsection: typeof currentSubsection !== 'undefined' ? currentSubsection : null,
+        level: typeof currentLevel === 'undefined' ? null : currentLevel,
+        section: typeof currentSection === 'undefined' ? null : currentSection,
+        subsection: typeof currentSubsection === 'undefined' ? null : currentSubsection,
         type: data.type,
         isChecking: false,
         selectedMatchPairs: []
@@ -155,7 +155,6 @@ function renderInteractiveQuestion() {
     const footer = document.getElementById("interactive-footer");
     const checkBtn = document.getElementById("check-btn");
     const feedbackArea = document.getElementById("interactive-feedback-area");
-    const feedbackIcon = document.getElementById("interactive-feedback-icon");
     const feedbackText = document.getElementById("interactive-feedback-text");
     
     if (!contentArea) return;
@@ -242,7 +241,7 @@ window.moveWordToTarget = function(btn) {
     const clone = document.createElement("button");
     clone.className = "interactive-word-chip";
     clone.textContent = btn.textContent;
-    clone.dataset.sourceId = Math.random().toString(36).substr(2, 9);
+    clone.dataset.sourceId = globalThis.crypto.randomUUID();
     btn.dataset.sourceId = clone.dataset.sourceId;
     
     target.appendChild(clone);
@@ -251,7 +250,7 @@ window.moveWordToTarget = function(btn) {
     document.getElementById("check-btn").disabled = false;
 };
 
-window.returnWordToSource = function(e) {
+globalThis.returnWordToSource = function(e) {
     if (e.target.classList.contains("interactive-word-chip")) {
         playSoundEffect('pop');
         const sourceId = e.target.dataset.sourceId;
@@ -556,8 +555,10 @@ function renderMatchPairsQuestion(container, q) {
     // Create flat list of words
     let words = [];
     pairs.forEach(p => {
-        words.push({ text: p.en, type: 'en', pairId: p.en });
-        words.push({ text: p.hu, type: 'hu', pairId: p.en });
+        words.push(
+            { text: p.en, type: 'en', pairId: p.en },
+            { text: p.hu, type: 'hu', pairId: p.en }
+        );
     });
     words = shuffleArray(words);
     
@@ -574,7 +575,7 @@ function renderMatchPairsQuestion(container, q) {
     container.innerHTML = html;
 }
 
-window.handleMatchPairClick = function(btn) {
+globalThis.handleMatchPairClick = function(btn) {
     // Ignore already matched or selected
     if (btn.classList.contains("matched") || btn.classList.contains("selected")) return;
     

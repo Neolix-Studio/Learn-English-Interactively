@@ -4,7 +4,8 @@ header('Access-Control-Allow-Origin: *');
 
 // --- 1. CONFIGURATION ---
 // Put your Google Cloud API key here
-$googleApiKey = 'AIzaSyARRkxwkyhGCHOdnAmJtVNgN4Xdxk4WjCE';
+// NEVER HARDCODE THIS IN PUBLIC REPOS. Use environment variables!
+$googleApiKey = getenv('GOOGLE_TTS_API_KEY') ?: 'YOUR_GOOGLE_CLOUD_API_KEY_HERE';
 
 // Put your WebSupport Database details here
 $dbHost = 'localhost'; // Usually localhost or a specific host provided by WebSupport

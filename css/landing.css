@@ -481,15 +481,7 @@ body {
     padding: 4rem 1rem !important;
 }
 
-.section-title {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 800 !important;
-    color: var(--color-text-main) !important;
-}
 
-.cards-grid {
-    gap: 2rem !important;
-}
 
 .level-card {
     background: var(--color-bg-surface) !important;
@@ -519,10 +511,7 @@ body {
 .level-card.border-b1:hover { box-shadow: 0 6px 0 var(--level-b1) !important; }
 .level-card.border-b2:hover { box-shadow: 0 6px 0 var(--level-b2) !important; }
 
-.badge-a1 { background: var(--level-a1) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
-.badge-a2 { background: var(--level-a2) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
-.badge-b1 { background: var(--level-b1) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
-.badge-b2 { background: var(--level-b2) !important; color: white !important; font-weight: 800 !important; font-family: 'Nunito', sans-serif !important;}
+
 
 .card-header h3 {
     font-weight: 800 !important;

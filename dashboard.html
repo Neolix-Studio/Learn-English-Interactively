@@ -154,14 +154,14 @@
                 <path id="active-path" d="M 50 40 Q 85 100, 75 160" stroke="#10B981" stroke-width="6" fill="none" stroke-linecap="round" />
             </svg>
             <div class="roadmap-nodes">
-                <div class="map-node library" style="left: 15%; top: 40px;" onclick="openRoadmapNode('A1', 'ToBe', 'explanation', true)"><span class="node-icon">📚</span><span class="node-label">Grammar</span></div>
-                <div class="map-node library" style="left: 85%; top: 40px;" onclick="openRoadmapNode('A1', 'ToBe', 'words', true)"><span class="node-icon">A-Z</span><span class="node-label">Words</span></div>
-                <div class="map-node gamified completed" id="node-1" data-target="game-screen" style="left: 50%; top: 40px;" onclick="openRoadmapNode('A1', 'ToBe', 'fillBlanks', true)"><span class="node-icon">⭐</span></div>
-                <div class="map-node gamified current" id="node-2" style="left: 75%; top: 160px;" onclick="openRoadmapNode('A1', 'ToBe', 'wordOrder', true)"><span class="node-icon">⭐</span></div>
-                <div class="map-node boss locked" id="node-3" style="left: 50%; top: 280px;" onclick="openRoadmapNode('A1', 'ToBe', 'trueFalse', false)"><span class="node-icon">💰</span></div>
-                <div class="map-node gamified locked" id="node-4" style="left: 25%; top: 400px;" onclick="openRoadmapNode('A1', 'ToBe', 'matchPairs', false)"><span class="node-icon">⭐</span></div>
-                <div class="map-node gamified locked" id="node-5" style="left: 50%; top: 520px;" onclick="openRoadmapNode('A1', 'ToBe', 'dictation', false)"><span class="node-icon">⭐</span></div>
-                <div class="map-node final-boss locked" id="node-6" style="left: 75%; top: 640px;" onclick="openRoadmapNode('A1', 'ToBe', 'sectionExam', false)"><span class="node-icon">👑</span></div>
+                <div class="map-node library" style="left: 15%; top: 40px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'explanation', true)"><span class="node-icon">📚</span><span class="node-label">Grammar</span></div>
+                <div class="map-node library" style="left: 85%; top: 40px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'words', true)"><span class="node-icon">A-Z</span><span class="node-label">Words</span></div>
+                <div class="map-node gamified completed" id="node-1" data-target="game-screen" style="left: 50%; top: 40px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'fillBlanks', true)"><span class="node-icon">⭐</span></div>
+                <div class="map-node gamified current" id="node-2" style="left: 75%; top: 160px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'wordOrder', true)"><span class="node-icon">⭐</span></div>
+                <div class="map-node boss locked" id="node-3" style="left: 50%; top: 280px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'trueFalse', false)"><span class="node-icon">💰</span></div>
+                <div class="map-node gamified locked" id="node-4" style="left: 25%; top: 400px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'matchPairs', false)"><span class="node-icon">⭐</span></div>
+                <div class="map-node gamified locked" id="node-5" style="left: 50%; top: 520px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'dictation', false)"><span class="node-icon">⭐</span></div>
+                <div class="map-node final-boss locked" id="node-6" style="left: 75%; top: 640px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToBe', 'sectionExam', false)"><span class="node-icon">👑</span></div>
             </div>
         </div>
 
@@ -173,12 +173,12 @@
                 <path id="active-path-2" d="M 50 40 Q 85 100, 75 160" stroke="#E5E7EB" stroke-width="6" fill="none" stroke-linecap="round" />
             </svg>
             <div class="roadmap-nodes">
-                <div class="map-node gamified locked" id="node-7" style="left: 50%; top: 40px;" onclick="openRoadmapNode('A1', 'ToHave', 'fillBlanks', false)"><span class="node-icon">⭐</span></div>
-                <div class="map-node gamified locked" id="node-8" style="left: 75%; top: 160px;" onclick="openRoadmapNode('A1', 'ToHave', 'wordOrder', false)"><span class="node-icon">⭐</span></div>
-                <div class="map-node boss locked" id="node-9" style="left: 50%; top: 280px;" onclick="openRoadmapNode('A1', 'ToHave', 'trueFalse', false)"><span class="node-icon">💰</span></div>
-                <div class="map-node gamified locked" id="node-10" style="left: 25%; top: 400px;" onclick="openRoadmapNode('A1', 'ToHave', 'matchPairs', false)"><span class="node-icon">⭐</span></div>
-                <div class="map-node gamified locked" id="node-11" style="left: 50%; top: 520px;" onclick="openRoadmapNode('A1', 'ToHave', 'dictation', false)"><span class="node-icon">⭐</span></div>
-                <div class="map-node final-boss locked" id="node-12" style="left: 75%; top: 640px;" onclick="openRoadmapNode('A1', 'ToHave', 'sectionExam', false)"><span class="node-icon">👑</span></div>
+                <div class="map-node gamified locked" id="node-7" style="left: 50%; top: 40px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToHave', 'fillBlanks', false)"><span class="node-icon">⭐</span></div>
+                <div class="map-node gamified locked" id="node-8" style="left: 75%; top: 160px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToHave', 'wordOrder', false)"><span class="node-icon">⭐</span></div>
+                <div class="map-node boss locked" id="node-9" style="left: 50%; top: 280px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToHave', 'trueFalse', false)"><span class="node-icon">💰</span></div>
+                <div class="map-node gamified locked" id="node-10" style="left: 25%; top: 400px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToHave', 'matchPairs', false)"><span class="node-icon">⭐</span></div>
+                <div class="map-node gamified locked" id="node-11" style="left: 50%; top: 520px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToHave', 'dictation', false)"><span class="node-icon">⭐</span></div>
+                <div class="map-node final-boss locked" id="node-12" style="left: 75%; top: 640px;"  role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();"onclick="openRoadmapNode('A1', 'ToHave', 'sectionExam', false)"><span class="node-icon">👑</span></div>
             </div>
         </div>
 
