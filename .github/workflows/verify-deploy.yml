@@ -103,11 +103,11 @@ jobs:
         id: vars
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            echo "server_dir=neolix.studio/web" >> $GITHUB_OUTPUT
-            echo "site_url=https://neolix.studio" >> $GITHUB_OUTPUT
+            echo "server_dir=lexipaws.eu/web" >> $GITHUB_OUTPUT
+            echo "site_url=https://lexipaws.eu" >> $GITHUB_OUTPUT
           else
-            echo "server_dir=neolix.studio/sub/develop" >> $GITHUB_OUTPUT
-            echo "site_url=https://develop.neolix.studio" >> $GITHUB_OUTPUT
+            echo "server_dir=lexipaws.eu/sub/develop" >> $GITHUB_OUTPUT
+            echo "site_url=https://develop.lexipaws.eu" >> $GITHUB_OUTPUT
           fi
 
       - name: Write Server Production DB Config

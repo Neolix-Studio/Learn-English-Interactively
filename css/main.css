@@ -8,16 +8,16 @@
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
 
-    /* OKLCH System Color Palette */
-    --color-bg-base: oklch(0.15 0.01 260);
-    --color-bg-surface: oklch(0.2 0.02 260 / 0.5);
-    --color-text-main: oklch(0.95 0.01 260);
-    --color-text-muted: oklch(0.7 0.02 260);
+    /* System Color Palette (Bright Gamified Theme) */
+    --color-bg-base: #F9FAFB;
+    --color-bg-surface: #FFFFFF;
+    --color-text-main: #111827;
+    --color-text-muted: #6B7280;
     
     /* Neon Accents */
-    --color-accent-in: oklch(0.75 0.15 250);
-    --color-accent-on: oklch(0.75 0.18 310);
-    --color-accent-at: oklch(0.8 0.18 150);
+    --color-accent-in: #3b82f6;
+    --color-accent-on: #60a5fa;
+    --color-accent-at: #2563eb;
     
     /* Statuses */
     --color-success: oklch(0.75 0.2 150);
@@ -25,8 +25,11 @@
 
     /* Animation & Glassmorphism Defaults */
     --transition-base: 0.3s ease;
-    --glass-border: 1px solid oklch(1 0 0 / 0.1);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --glass-border: 1px solid #E5E7EB;
+    --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --bg-gradient: radial-gradient(circle at top right, #e0e7ff 0%, transparent 40%),
+                   radial-gradient(circle at bottom left, #dbeafe 0%, transparent 40%),
+                   var(--color-bg-base);
 }
 
 /* ==========================================================================
@@ -39,11 +42,7 @@
 }
 
 body {
-    background-color: var(--color-bg-base);
-    /* Translucent Ambient Background Gradients */
-    background-image: 
-        radial-gradient(circle at 15% 50%, oklch(0.25 0.05 260 / 0.4), transparent 25%),
-        radial-gradient(circle at 85% 30%, oklch(0.25 0.05 310 / 0.4), transparent 25%);
+    background: var(--bg-gradient, var(--color-bg-base));
     background-attachment: fixed;
     color: var(--color-text-main);
     font-family: var(--font-body);
@@ -239,7 +238,7 @@ a {
 .btn-logout:hover {
     background: var(--color-error);
     border-color: var(--color-error);
-    color: #000;
+    color: var(--color-text-main);
     font-weight: 600;
     box-shadow: 0 0 12px var(--color-error);
 }
@@ -505,18 +504,30 @@ a {
 /* Gamification Themes */
 [data-theme="cyberpunk"] {
     --color-bg-base: oklch(0.12 0.05 320);
-    --color-bg-surface: oklch(0.15 0.08 320 / 0.7);
+    --color-bg-surface: oklch(0.18 0.08 320 / 0.7);
+    --color-text-main: #FFFFFF;
+    --color-text-muted: #9CA3AF;
     --color-accent-in: oklch(0.7 0.25 320);
     --color-accent-on: oklch(0.8 0.2 190);
     --color-accent-at: oklch(0.85 0.2 120);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --bg-gradient: radial-gradient(circle at top right, oklch(0.2 0.15 320 / 0.4), transparent 50%),
+                   radial-gradient(circle at bottom left, oklch(0.2 0.15 190 / 0.3), transparent 50%),
+                   var(--color-bg-base);
 }
 
 [data-theme="nature"] {
     --color-bg-base: oklch(0.15 0.05 140);
     --color-bg-surface: oklch(0.2 0.08 140 / 0.6);
+    --color-text-main: #FFFFFF;
+    --color-text-muted: #A3E635; /* slight green tint */
     --color-accent-in: oklch(0.75 0.2 140);
     --color-accent-on: oklch(0.8 0.15 100);
     --color-accent-at: oklch(0.7 0.15 60);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --bg-gradient: radial-gradient(circle at top left, oklch(0.25 0.1 140 / 0.4), transparent 60%),
+                   radial-gradient(circle at bottom right, oklch(0.2 0.1 100 / 0.3), transparent 60%),
+                   var(--color-bg-base);
 }
 
 /* Shared Legal & Information Page Layouts */
@@ -574,7 +585,7 @@ a {
     display: inline-block;
     font-family: var(--font-heading);
     font-weight: 600;
-    color: #000;
+    color: var(--color-text-main);
     background: var(--color-accent-in);
     padding: 0.75rem 2rem;
     border-radius: 50px;

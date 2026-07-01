@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If the domain is lexipaws.eu and the root (/) is requested, serve gateway.html
+    RewriteCond %{HTTP_HOST} ^(www\.)?lexipaws\.eu$ [NC]
+    RewriteRule ^$ gateway.html [L]
+
+    # For .hu and .sk, the default index.html will be served automatically by Apache
+</IfModule>

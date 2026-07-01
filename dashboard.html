@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanuló Felület - Online Angol Iskola</title>
     <link rel="stylesheet" href="css/main.css?v=1.1.2">
-    <link rel="stylesheet" href="css/dashboard.css?v=2.0.13">
-    <!-- DEFERRED CSS -->
-    <link rel="stylesheet" href="css/learning-materials.css?v=1.0.1" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/dashboard.css?v=1.1.23">
+    <link rel="stylesheet" href="css/interactive.css?v=1.0.0">
+
     
     <!-- DASHBOARD LOGIC -->
-    <script src="js/dashboard.js?v=1.1.12" defer></script>
+    
 </head>
 <body>
 
@@ -21,7 +21,7 @@
         <aside class="dashboard-left-sidebar" aria-label="Fő navigáció">
             <button class="mobile-close-stats-btn" onclick="toggleMobileNavDrawer(false)" style="margin-bottom: 1rem;">✕ Bezárás</button>
             <a href="index.html" class="logo" aria-label="Vissza a főoldalra" style="display: block; margin-bottom: 2.5rem; text-decoration: none;">
-                <span class="logo-text" style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(135deg, #fff, var(--color-accent-in)); -webkit-background-clip: text; color: transparent;">NeolixStudio</span>
+                <span class="logo-text" style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(135deg, #4F46E5, #9333EA); -webkit-background-clip: text; color: transparent;">NeolixStudio</span>
             </a>
             
             <nav class="main-nav" aria-label="Szintválasztó navigáció" style="margin-bottom: auto;">
@@ -48,84 +48,248 @@
             </div>
         </aside>
         
-        <div class="main-stage-track">
-        
-        
-        <!-- MAIN DISPLAY VIEWPORT & SLIDER -->
-        <div class="main-slider-wrapper" id="main-slider">
-            
-            <!-- VIEW 1: ROADMAP MAP -->
-            <div class="roadmap-view-panel" id="roadmap-panel" style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
-                <!-- Dynamic roadmap container where JS will inject SVG path and nodes -->
-                <div id="main-roadmap-container" class="main-roadmap-container" style="flex-grow: 1; scroll-behavior: smooth;">
-                    <!-- Loaded via JS -->
-                </div>
-            </div>
+        <div class="main-stage-track" style="display: flex; justify-content: center; align-items: flex-start; padding-top: 2rem; padding-bottom: 3rem;">
+    
+<div id="app">
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="hidden">
+        <div class="modal-content">
+            <h2 id="modal-title">...</h2>
+            <p id="modal-desc"></p>
+        </div>
+    </div>
 
-            
-            <!-- VIEW 2: WORKSPACE (Exercises) -->
-            <div class="workspace-view-panel" id="workspace-panel">
-                <button class="btn btn-secondary" onclick="closeWorkspace()" style="margin: 1.5rem 1.5rem 0 1.5rem; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: bold; font-size: 1rem; border: 1px solid var(--color-accent-in);">
-                    ← Vissza a térképhez
-                </button>
+    <!-- Gutter Tyler 1 (Sitting Right) -->
+    <button class="mascot-container" style="background:none; border:none; padding:0; outline:none; cursor:pointer; position: absolute; right: -120px; top: 150px; z-index: 100; left: auto; bottom: auto;" onclick="this.classList.add('is-talking'); setTimeout(()=>this.classList.remove('is-talking'), 2000)">
+        <div class="mascot-chat-bubble" style="left: -20px; right: auto;">Keep going!</div>
+        <div class="mascot-svg" style="width: 120px; height: 120px; transform: scaleX(-1);">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
+                <defs>
+                    <linearGradient id="bodyGradRight" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#7a7f87" />
+                        <stop offset="100%" stop-color="#5a5e66" />
+                    </linearGradient>
+                </defs>
+                <g class="breathe-y">
+                    <path d="M30,190 C30,130 70,120 70,160 C70,180 50,200 30,190 Z" fill="#5a5e66" />
+                    <path d="M170,190 C170,130 130,120 130,160 C130,180 150,200 170,190 Z" fill="#5a5e66" />
+                    <ellipse cx="75" cy="195" rx="12" ry="6" fill="#f5f5f5" />
+                    <ellipse cx="125" cy="195" rx="12" ry="6" fill="#4a4d54" />
+                    <ellipse cx="65" cy="195" rx="10" ry="5" fill="#f5f5f5" />
+                    <path d="M60,190 C60,100 140,100 140,190 Z" fill="url(#bodyGradRight)" />
+                    <path d="M75,190 C65,140 85,110 100,110 C115,110 135,140 125,190 Z" fill="#f5f5f5" />
+                    <path d="M75,150 C90,140 110,140 125,150 Z" fill="url(#bodyGradRight)" />
+                    <path d="M65,105 Q100,120 135,105 L130,115 Q100,130 70,115 Z" fill="#758151" />
+                    <rect x="85" y="113" width="15" height="12" rx="2" fill="#1a1a1a" />
+                    <ellipse cx="110" cy="120" rx="4" ry="6" fill="none" stroke="#silver" stroke-width="2" />
+                </g>
+                <g class="head-bob dog-head">
+                    <path class="ear-left" d="M35,70 C15,45 10,75 35,95 Z" fill="#5a5e66" />
+                    <path class="ear-right" d="M165,70 C185,45 190,75 165,95 Z" fill="#5a5e66" />
+                    <path d="M40,100 C40,45 160,45 160,100 C160,130 130,145 100,145 C70,145 40,130 40,100 Z" fill="#6e737b" />
+                    <path d="M85,55 Q100,60 115,55" fill="none" stroke="#5a5e66" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M90,48 Q100,52 110,48" fill="none" stroke="#5a5e66" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M95,65 C95,100 85,120 85,120 L115,120 C115,120 105,100 105,65 Z" fill="#f5f5f5" />
+                    <path d="M70,115 C70,100 130,100 130,115 C130,140 70,140 70,115 Z" fill="#6e737b" />
+                    <path d="M88,110 C88,103 112,103 112,110 C112,120 88,120 88,110 Z" fill="#2b2b2b" />
+                    <ellipse cx="94" cy="112" rx="2" ry="3" fill="#111" />
+                    <ellipse cx="106" cy="112" rx="2" ry="3" fill="#111" />
+                    <g class="eye">
+                        <ellipse cx="68" cy="85" rx="7" ry="6" fill="#8b5a2b" />
+                        <ellipse cx="68" cy="85" rx="4" ry="4" fill="#111" />
+                        <circle cx="66" cy="83" r="1.5" fill="#fff" />
+                        <ellipse cx="132" cy="85" rx="7" ry="6" fill="#8b5a2b" />
+                        <ellipse cx="132" cy="85" rx="4" ry="4" fill="#111" />
+                        <circle cx="130" cy="83" r="1.5" fill="#fff" />
+                    </g>
+                    <ellipse cx="50" cy="100" rx="10" ry="15" fill="#5a5e66" opacity="0.4"/>
+                    <ellipse cx="150" cy="100" rx="10" ry="15" fill="#5a5e66" opacity="0.4"/>
+                    <path d="M85,135 Q100,145 115,135" fill="none" stroke="#d4a3a3" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+                    <path class="mouth-smile" d="M85,135 Q100,145 115,135" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round" />
+                    <ellipse class="mouth-talk" cx="100" cy="138" rx="8" ry="6" fill="#4a2222" />
+                    <ellipse class="mouth-talk" cx="100" cy="141" rx="5" ry="3" fill="#e88b8b" />
+                </g>
+            </svg>
+        </div>
+    </button>
 
+    <!-- Gutter Tyler 2 (Laying Left) -->
+    <div class="mascot-container" style="position: absolute; left: -140px; top: 600px; z-index: 100; bottom: auto;" onclick="this.classList.add('is-talking'); setTimeout(()=>this.classList.remove('is-talking'), 2000)" role="button" tabindex="0" onkeypress="if(event.key==='Enter') this.click();">
+        <div class="mascot-chat-bubble">Woof!</div>
+        <div class="mascot-svg" style="width: 140px; height: 140px;">
+            <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
+                <g class="breathe-y">
+                    <path d="M40,110 C40,70 140,70 160,110 Z" fill="#5a5e66" />
+                    <path d="M140,110 C150,110 160,105 170,115 C160,120 150,120 140,110 Z" fill="#f5f5f5" />
+                    <ellipse cx="50" cy="115" rx="15" ry="5" fill="#f5f5f5" />
+                    <ellipse cx="70" cy="115" rx="15" ry="5" fill="#4a4d54" />
+                </g>
+                <g class="head-bob dog-head" transform="translate(-10, -20)">
+                    <path class="ear-left" d="M35,70 C15,45 10,75 35,95 Z" fill="#5a5e66" />
+                    <path class="ear-right" d="M165,70 C185,45 190,75 165,95 Z" fill="#5a5e66" />
+                    <path d="M40,100 C40,45 160,45 160,100 C160,130 130,145 100,145 C70,145 40,130 40,100 Z" fill="#6e737b" />
+                    <path d="M85,55 Q100,60 115,55" fill="none" stroke="#5a5e66" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M90,48 Q100,52 110,48" fill="none" stroke="#5a5e66" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M95,65 C95,100 85,120 85,120 L115,120 C115,120 105,100 105,65 Z" fill="#f5f5f5" />
+                    <path d="M70,115 C70,100 130,100 130,115 C130,140 70,140 70,115 Z" fill="#6e737b" />
+                    <path d="M88,110 C88,103 112,103 112,110 C112,120 88,120 88,110 Z" fill="#2b2b2b" />
+                    <ellipse cx="94" cy="112" rx="2" ry="3" fill="#111" />
+                    <ellipse cx="106" cy="112" rx="2" ry="3" fill="#111" />
+                    <g class="eye">
+                        <path d="M60,85 Q68,80 75,85" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" />
+                        <path d="M125,85 Q132,80 140,85" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" />
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </button>
 
-
-        <!-- B. MAIN DISPLAY VIEWPORT -->
-        <main class="dashboard-content">
-            
-            <!-- HERO RESUME CTA (Replaced with simple fancy header) -->
-            <div id="hero-card-container" style="width: 100%; margin-bottom: 2rem; padding: 0 1.5rem;">
-                <div class="fancy-dashboard-header" id="hero-card-title">A1 - A "Lenni" Ige</div>
-            </div>
-
-            <!-- Tracking Breadcrumb Navigation -->
-            <header class="content-context-header">
-                <nav aria-label="Breadcrumb">
-                    <ol class="breadcrumb-list">
-                        <li>A1 Kezdő</li>
-                        <li>Nyelvtan</li>
-                        <li aria-current="page">Verb To Be</li>
-                    </ol>
-                </nav>
-                <h1 class="current-topic-title">Töltés...</h1>
-            </header>
-
-            <!-- Metrics Counter Strip -->
-            <section class="metrics-grid" aria-label="Statisztikák">
-                
-                <div class="metric-card">
-                    <span class="metric-value" id="timer-display">00:00</span>
-                    <span class="metric-title">Ezzel töltött idő</span>
-                </div>
-                <div class="metric-card">
-                    <span class="metric-value" id="success-rate-display">0%</span>
-                    <span class="metric-title">Sikerességi ráta</span>
-                </div>
-            </section>
-
-            <!-- DYNAMIC TARGET CONTAINER (Where Javascript drops lessons/quizzes) -->
-            <section class="workspace-area" id="workspace">
-                <!-- Javascript will wipe this completely out and load content dynamically -->
-            </section>
-
-        
-                </main>
+    <!-- Roadmap Screen -->
+    <div id="roadmap-screen" class="screen active" style="padding: 0; justify-content: flex-start;">
+        <!-- LESSON 1 -->
+        <div class="lesson-separator"><span>Lesson 1: To Be</span></div>
+        <div class="roadmap-container">
+            <svg class="roadmap-path" viewBox="0 0 100 700" preserveAspectRatio="none" style="height: 700px;">
+                <path d="M 50 40 Q 85 100, 75 160 T 50 280 T 25 400 T 50 520 T 75 640" stroke="#E5E7EB" stroke-width="6" fill="none" stroke-linecap="round" />
+                <path id="active-path" d="M 50 40 Q 85 100, 75 160" stroke="#10B981" stroke-width="6" fill="none" stroke-linecap="round" />
+            </svg>
+            <div class="roadmap-nodes">
+                <button class="map-node library" style="left: 15%; top: 40px;" onclick="openRoadmapNode('A1', 'ToBe', 'explanation', true)"><span class="node-icon">📚</span><span class="node-label">Grammar</span></button>
+                <button class="map-node library" style="left: 85%; top: 40px;" onclick="openRoadmapNode('A1', 'ToBe', 'words', true)"><span class="node-icon">A-Z</span><span class="node-label">Words</span></button>
+                <button class="map-node gamified completed" id="node-1" data-target="game-screen" style="left: 50%; top: 40px;" onclick="openRoadmapNode('A1', 'ToBe', 'fillBlanks', true)"><span class="node-icon">⭐</span></button>
+                <button class="map-node gamified current" id="node-2" style="left: 75%; top: 160px;" onclick="openRoadmapNode('A1', 'ToBe', 'wordOrder', true)"><span class="node-icon">⭐</span></button>
+                <button class="map-node boss locked" id="node-3" style="left: 50%; top: 280px;" onclick="openRoadmapNode('A1', 'ToBe', 'trueFalse', false)"><span class="node-icon">💰</span></button>
+                <button class="map-node gamified locked" id="node-4" style="left: 25%; top: 400px;" onclick="openRoadmapNode('A1', 'ToBe', 'matchPairs', false)"><span class="node-icon">⭐</span></button>
+                <button class="map-node gamified locked" id="node-5" style="left: 50%; top: 520px;" onclick="openRoadmapNode('A1', 'ToBe', 'dictation', false)"><span class="node-icon">⭐</span></button>
+                <button class="map-node final-boss locked" id="node-6" style="left: 75%; top: 640px;" onclick="openRoadmapNode('A1', 'ToBe', 'sectionExam', false)"><span class="node-icon">👑</span></button>
             </div>
         </div>
-        </div> <!-- end main-stage-track -->
+
+        <!-- LESSON 2 -->
+        <div class="lesson-separator"><span>Lesson 2: Simple Present</span></div>
+        <div class="roadmap-container">
+            <svg class="roadmap-path" viewBox="0 0 100 700" preserveAspectRatio="none" style="height: 700px;">
+                <path d="M 50 40 Q 85 100, 75 160 T 50 280 T 25 400 T 50 520 T 75 640" stroke="#E5E7EB" stroke-width="6" fill="none" stroke-linecap="round" />
+                <path id="active-path-2" d="M 50 40 Q 85 100, 75 160" stroke="#E5E7EB" stroke-width="6" fill="none" stroke-linecap="round" />
+            </svg>
+            <div class="roadmap-nodes">
+                <button class="map-node gamified locked" id="node-7" style="left: 50%; top: 40px;" onclick="openRoadmapNode('A1', 'ToHave', 'fillBlanks', false)"><span class="node-icon">⭐</span></button>
+                <button class="map-node gamified locked" id="node-8" style="left: 75%; top: 160px;" onclick="openRoadmapNode('A1', 'ToHave', 'wordOrder', false)"><span class="node-icon">⭐</span></button>
+                <button class="map-node boss locked" id="node-9" style="left: 50%; top: 280px;" onclick="openRoadmapNode('A1', 'ToHave', 'trueFalse', false)"><span class="node-icon">💰</span></button>
+                <button class="map-node gamified locked" id="node-10" style="left: 25%; top: 400px;" onclick="openRoadmapNode('A1', 'ToHave', 'matchPairs', false)"><span class="node-icon">⭐</span></button>
+                <button class="map-node gamified locked" id="node-11" style="left: 50%; top: 520px;" onclick="openRoadmapNode('A1', 'ToHave', 'dictation', false)"><span class="node-icon">⭐</span></button>
+                <button class="map-node final-boss locked" id="node-12" style="left: 75%; top: 640px;" onclick="openRoadmapNode('A1', 'ToHave', 'sectionExam', false)"><span class="node-icon">👑</span></button>
+            </div>
+        </div>
+
+        <!-- LESSON 3 -->
+        <div class="lesson-separator"><span>Lesson 3: Vocabulary</span></div>
+        <div class="roadmap-container">
+            <svg class="roadmap-path" viewBox="0 0 100 700" preserveAspectRatio="none" style="height: 700px;">
+                <path d="M 50 40 Q 85 100, 75 160 T 50 280 T 25 400 T 50 520 T 75 640" stroke="#E5E7EB" stroke-width="6" fill="none" stroke-linecap="round" />
+                <path id="active-path-3" d="M 50 40 Q 85 100, 75 160" stroke="#E5E7EB" stroke-width="6" fill="none" stroke-linecap="round" />
+            </svg>
+            <div class="roadmap-nodes">
+                <button class="map-node gamified locked" id="node-13" style="left: 50%; top: 40px;"><span class="node-icon">⭐</span></button>
+                <button class="map-node gamified locked" id="node-14" style="left: 75%; top: 160px;"><span class="node-icon">⭐</span></button>
+                <button class="map-node boss locked" id="node-15" style="left: 50%; top: 280px;"><span class="node-icon">💰</span></button>
+                <button class="map-node gamified locked" id="node-16" style="left: 25%; top: 400px;"><span class="node-icon">⭐</span></button>
+                <button class="map-node gamified locked" id="node-17" style="left: 50%; top: 520px;"><span class="node-icon">⭐</span></button>
+                <button class="map-node final-boss locked" id="node-18" style="left: 75%; top: 640px;"><span class="node-icon">👑</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen (Interactive Lesson Player) -->
+    <div id="game-screen" class="screen interactive-player-screen">
+        <div class="interactive-top-bar">
+            <button class="interactive-close-btn" onclick="closeWorkspace()" aria-label="Bezárás">✕</button>
+            <div class="interactive-progress-wrapper">
+                <div class="interactive-progress-fill" id="interactive-progress-fill"></div>
+            </div>
+            <div class="interactive-hearts" id="interactive-hearts" title="Életek">
+                <span class="heart-icon">❤️</span> <span id="heart-count">5</span>
+            </div>
+        </div>
+        <div class="game-content" id="game-content"></div>
+        <div class="game-footer" id="interactive-footer">
+            <div class="interactive-feedback-area" id="interactive-feedback-area">
+                <div id="interactive-feedback-icon"></div>
+                <div id="interactive-feedback-text"></div>
+            </div>
+            <button class="btn check-btn" id="check-btn" onclick="checkInteractiveAnswer()">Ellenőrzés</button>
+        </div>
+    </div>
+
+    <!-- Boss Screen -->
+    <div id="boss-screen" class="screen">
+        <div class="boss-health-bar"><div class="boss-health-fill" id="boss-health-fill"></div></div>
+        <div class="boss-character" id="boss-character">👹</div>
+        <div class="game-content" id="boss-content"></div>
+        <div class="game-footer">
+            <button class="btn check-btn" id="boss-check-btn" onclick="checkBossAnswer()">Támadás!</button>
+        </div>
+    </div>
+
+    <!-- (Removed app.js as it was a prototype leftover) -->
+</div>
+
+</div> <!-- end main-stage-track -->
     
         <!-- C. STATS & CONTROL PANEL RIGHT SIDEBAR -->
         <aside class="dashboard-right-sidebar" aria-label="Statisztikák és Beállítások panel">
             <div style="display: flex; flex-direction: column; gap: 0.2rem;">
+
+            <!-- TOP STATS BAR -->
+            <div class="top-stats-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background: #ffffff; border-bottom: 2px solid #E5E7EB; margin-bottom: 0.3rem;">
+                <!-- Flag Icon -->
+                <div class="stat-icon-group" title="US/Hungarian" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--color-text-main);">
+                    <svg width="36" height="36" viewBox="0 0 100 100" style="border-radius: 50%; overflow: hidden; border: 2px solid #E5E7EB;">
+                        <defs><clipPath id="us-clip"><polygon points="0,0 100,0 0,100" /></clipPath><clipPath id="hu-clip"><polygon points="100,0 100,100 0,100" /></clipPath></defs>
+                        <g clip-path="url(#us-clip)">
+                            <rect x="0" y="0" width="100" height="14" fill="#B22234"/><rect x="0" y="14" width="100" height="14" fill="#fff"/><rect x="0" y="28" width="100" height="14" fill="#B22234"/><rect x="0" y="42" width="100" height="14" fill="#fff"/><rect x="0" y="56" width="100" height="14" fill="#B22234"/><rect x="0" y="70" width="100" height="14" fill="#fff"/><rect x="0" y="84" width="100" height="16" fill="#B22234"/>
+                            <rect x="0" y="0" width="50" height="50" fill="#3C3B6E"/>
+                            <circle cx="12" cy="12" r="3.5" fill="#fff"/><circle cx="38" cy="12" r="3.5" fill="#fff"/><circle cx="25" cy="25" r="3.5" fill="#fff"/><circle cx="12" cy="38" r="3.5" fill="#fff"/><circle cx="38" cy="38" r="3.5" fill="#fff"/>
+                        </g>
+                        <g clip-path="url(#hu-clip)">
+                            <rect x="0" y="0" width="100" height="33.3" fill="#CE2939"/><rect x="0" y="33.3" width="100" height="33.3" fill="#fff"/><rect x="0" y="66.6" width="100" height="33.4" fill="#436F4D"/>
+                        </g>
+                        <line x1="0" y1="100" x2="100" y2="0" stroke="#E5E7EB" stroke-width="3"/>
+                    </svg>
+                    <span>ENG</span>
+                </div>
+                <!-- Fire Streak -->
+                <div class="stat-icon-group" title="Napi Széria" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: #FF9800;">
+                    <svg width="28" height="28" viewBox="0 0 100 100">
+                        <path d="M50,10 C50,10 20,40 20,70 C20,86.5 33.5,100 50,100 C66.5,100 80,86.5 80,70 C80,40 50,10 50,10 Z" fill="#FF9800"/>
+                        <path d="M50,40 C50,40 35,60 35,75 C35,83.3 41.7,90 50,90 C58.3,90 65,83.3 65,75 C65,60 50,40 50,40 Z" fill="#FFC107"/>
+                    </svg>
+                    <span>12</span>
+                </div>
+                <!-- Dog Treat Currency -->
+                <div class="stat-icon-group" title="Jutalom Falatok" style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: #8D6E63;">
+                    <!-- Dog Biscuit / Cracker Icon -->
+                    <svg width="28" height="28" viewBox="0 0 100 100" style="margin-right: 4px; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));">
+                        <g transform="rotate(-30 50 50)">
+                            <path d="M25 40 C15 40 15 25 25 25 C32 25 35 30 35 35 L65 35 C65 30 68 25 75 25 C85 25 85 40 75 40 C70 40 68 45 68 50 C68 55 70 60 75 60 C85 60 85 75 75 75 C68 75 65 70 65 65 L35 65 C35 70 32 75 25 75 C15 75 15 60 25 60 C30 60 32 55 32 50 C32 45 30 40 25 40 Z" fill="#FDE68A" stroke="#D97706" stroke-width="4" stroke-linejoin="round"/>
+                            <!-- Cracker holes -->
+                            <circle cx="40" cy="50" r="2.5" fill="#D97706" opacity="0.6"/>
+                            <circle cx="50" cy="50" r="2.5" fill="#D97706" opacity="0.6"/>
+                            <circle cx="60" cy="50" r="2.5" fill="#D97706" opacity="0.6"/>
+                        </g>
+                    </svg>
+                    <span>450</span>
+                </div>
+            </div>
+
                 <button class="mobile-close-stats-btn" onclick="toggleMobileStatsDrawer(false)">✕ Bezárás</button>
                 <!-- XP és Szint progresszió -->
                 <div class="stats-widget">
                     <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                        <span style="font-size: 0.9rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Személyes Szint:</span>
+                        <span style="font-size: 0.9rem; color: var(--color-text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Személyes Szint:</span>
                         <span id="level-display" style="font-size: 1.5rem; font-weight: bold; color: var(--color-accent-in);">Level 1</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; color: var(--color-text-muted);">
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; color: var(--color-text-main); font-weight: 700;">
                         <span>XP: <strong id="xp-display" style="color: var(--color-text-main);">0</strong> / <span id="xp-max">100</span></span>
                         <span id="xp-tier-label">Kezdő nyelvtanuló</span>
                     </div>
@@ -138,17 +302,17 @@
 
                 <!-- Active Streak fire widget -->
                 <div class="stats-widget">
-                    <h3 style="font-size: 0.9rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Napi Széria</h3>
+                    <h3 style="font-size: 0.9rem; color: var(--color-text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Napi Széria</h3>
                     <div class="streak-fire-widget" style="display: flex; align-items: center; gap: 0.75rem; background: oklch(0.65 0.2 25 / 0.1); border: 1px solid oklch(0.65 0.2 25 / 0.2); border-radius: 12px; padding: 0.6rem 1rem; margin-bottom: 0.5rem;">
                         <svg class="streak-fire" width="28" height="28" fill="none" stroke="oklch(0.65 0.2 25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
                         <div>
                             <div style="font-weight: bold; font-size: 1.2rem;"><span id="streak-counter">0</span> Nap</div>
-                            <div style="font-size: 0.75rem; color: var(--color-text-muted);">Aktivitási napok száma</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-main); font-weight: 600;">Aktivitási napok száma</div>
                         </div>
                     </div>
                     
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
-                        <span style="font-size: 0.85rem; color: var(--color-text-muted);">Streak pajzsok:</span>
+                        <span style="font-size: 0.85rem; color: var(--color-text-main); font-weight: 700;">Streak pajzsok:</span>
                         <div class="shields-list" style="display: flex; gap: 0.3rem;">
                             <span id="shield-1" class="shield-icon" style="font-size: 1.1rem; color: var(--color-text-muted); opacity: 0.4; transition: all 0.3s;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
                             <span id="shield-2" class="shield-icon" style="font-size: 1.1rem; color: var(--color-text-muted); opacity: 0.4; transition: all 0.3s;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
@@ -166,7 +330,7 @@
                         
                         <!-- Top 2 Items only, rest in Modal -->
                         <!-- Cyberpunk Theme -->
-                        <div class="shop-item" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem; border-radius: 8px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04);">
+                        <div class="shop-item" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem; border-radius: 8px; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
                             <div style="display: flex; align-items: center; gap: 0.6rem;">
                                 <span style="font-size: 1.2rem;">🎛️</span>
                                 <div>
@@ -178,7 +342,7 @@
                         </div>
                         
                         <!-- Streak Shield purchase -->
-                        <div class="shop-item" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem; border-radius: 8px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04);">
+                        <div class="shop-item" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem; border-radius: 8px; background: var(--color-bg-surface); border: var(--glass-border); box-shadow: var(--glass-shadow);">
                             <div style="display: flex; align-items: center; gap: 0.6rem;">
                                 <span style="font-size: 1.2rem;">🛡️</span>
                                 <div>
@@ -369,7 +533,9 @@
 
     <!-- Script assets -->
     <script src="js/config.js?v=1.0.9"></script>
-    <script src="js/data.js?v=1.0.9"></script>
+    <script src="js/data.js?v=1.0.8"></script>
+    <script src="js/dashboard.js?v=1.4.10"></script>
+    <script src="js/interactive.js?v=1.0.0"></script>
     <script src="js/nav.js?v=1.0.9"></script>
 </body>
 </html>
