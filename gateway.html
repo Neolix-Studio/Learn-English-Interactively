@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeolixStudio - Choose Your Language</title>
+    <!-- Google Fonts: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/gateway.css">
+</head>
+<body>
+
+    <main class="gateway-container">
+        <!-- Mascot Animation -->
+        <div class="mascot-wrapper">
+            <svg viewBox="0 0 200 200" width="180" height="180" class="floating-mascot">
+                <!-- Simple Tyler Head peaking down -->
+                <g transform="translate(10, 20)">
+                    <path class="ear-left" d="M45,70 C25,45 20,75 45,95 Z" fill="#5a5e66" />
+                    <path class="ear-right" d="M175,70 C195,45 200,75 175,95 Z" fill="#5a5e66" />
+                    <path d="M50,100 C50,45 170,45 170,100 C170,130 140,145 110,145 C80,145 50,130 50,100 Z" fill="#6e737b" />
+                    <path d="M105,65 C105,100 95,120 95,120 L125,120 C125,120 115,100 115,65 Z" fill="#f5f5f5" />
+                    <path d="M80,115 C80,100 140,100 140,115 C140,140 80,140 80,115 Z" fill="#6e737b" />
+                    <path d="M98,110 C98,103 122,103 122,110 C122,120 98,120 98,110 Z" fill="#2b2b2b" />
+                    
+                    <g class="eye">
+                        <ellipse cx="78" cy="85" rx="8" ry="7" fill="#8b5a2b" />
+                        <ellipse cx="78" cy="85" rx="5" ry="5" fill="#111" />
+                        <circle cx="76" cy="83" r="2" fill="#fff" />
+                        
+                        <ellipse cx="142" cy="85" rx="8" ry="7" fill="#8b5a2b" />
+                        <ellipse cx="142" cy="85" rx="5" ry="5" fill="#111" />
+                        <circle cx="140" cy="83" r="2" fill="#fff" />
+                    </g>
+                    <path class="mouth-smile" d="M95,135 Q110,145 125,135" fill="none" stroke="#2b2b2b" stroke-width="2.5" stroke-linecap="round" />
+                </g>
+            </svg>
+        </div>
+
+        <h1 class="gateway-title">
+            Válaszd ki a nyelved<br>
+            <span class="subtitle">Vyber si svoj jazyk</span>
+        </h1>
+
+        <div class="cards-grid">
+            <!-- Active Hungarian Card -->
+            <a href="https://lexipaws.hu" class="language-card active-card" onclick="setLanguage('hu')">
+                <div class="flag-icon">
+                    <!-- Custom SVG Hungarian Flag icon (round) -->
+                    <svg viewBox="0 0 100 100" width="80" height="80">
+                        <clipPath id="circle-clip">
+                            <circle cx="50" cy="50" r="50"/>
+                        </clipPath>
+                        <g clip-path="url(#circle-clip)">
+                            <rect x="0" y="0" width="100" height="33.3" fill="#CE2939"/>
+                            <rect x="0" y="33.3" width="100" height="33.4" fill="#FFFFFF"/>
+                            <rect x="0" y="66.7" width="100" height="33.3" fill="#477050"/>
+                        </g>
+                        <circle cx="50" cy="50" r="50" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>Magyar</h2>
+                <p>Tanulj angolul magyarul</p>
+                <div class="select-btn">Kiválasztás</div>
+            </a>
+
+            <!-- Active Slovak Card -->
+            <a href="https://lexipaws.sk" class="language-card active-card" onclick="setLanguage('sk')">
+                <div class="flag-icon">
+                    <!-- Custom SVG Slovak Flag icon (round) -->
+                    <svg viewBox="0 0 100 100" width="80" height="80">
+                        <clipPath id="sk-clip">
+                            <circle cx="50" cy="50" r="50"/>
+                        </clipPath>
+                        <g clip-path="url(#sk-clip)">
+                            <rect x="0" y="0" width="100" height="33.3" fill="#FFFFFF"/>
+                            <rect x="0" y="33.3" width="100" height="33.4" fill="#0B4EA2"/>
+                            <rect x="0" y="66.7" width="100" height="33.3" fill="#EE1C25"/>
+                            <!-- Simplified Coat of Arms -->
+                            <path d="M 30,25 Q 40,25 40,40 L 40,55 Q 30,65 20,55 L 20,40 Q 20,25 30,25 Z" fill="#EE1C25" stroke="#FFFFFF" stroke-width="2"/>
+                            <path d="M 23,50 L 30,35 L 37,50 Z" fill="#FFFFFF"/>
+                            <rect x="28" y="38" width="4" height="15" fill="#FFFFFF"/>
+                            <rect x="23" y="43" width="14" height="4" fill="#FFFFFF"/>
+                        </g>
+                        <circle cx="50" cy="50" r="50" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>Slovenský</h2>
+                <p>Učte sa anglicky po slovensky</p>
+                <div class="select-btn">Výber</div>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        function setLanguage(lang) {
+            localStorage.setItem('neolix_language', lang);
+        }
+    </script>
+</body>
+</html>

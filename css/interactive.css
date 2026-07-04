@@ -1,0 +1,264 @@
+/* Interactive Lesson Player Styles */
+.interactive-player-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--color-bg-body);
+}
+
+#game-screen:not(.is-interactive-lesson) .interactive-top-bar,
+#game-screen:not(.is-interactive-lesson) #interactive-footer {
+    display: none !important;
+}
+
+.interactive-top-bar {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    gap: 1rem;
+}
+
+.interactive-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: transform 0.2s;
+}
+.interactive-close-btn:hover {
+    transform: scale(1.1);
+    color: var(--color-text-main);
+}
+
+.interactive-progress-wrapper {
+    flex-grow: 1;
+    height: 16px;
+    background: var(--color-bg-surface);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: var(--glass-border);
+}
+
+.interactive-progress-fill {
+    height: 100%;
+    background: var(--color-accent-in);
+    width: 0%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px;
+    box-shadow: 0 0 10px var(--color-accent-in);
+}
+
+.interactive-hearts {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ef4444; /* Heart red */
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.heart-icon {
+    animation: heartbeat 1.5s infinite alternate;
+}
+@keyframes heartbeat {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+.interactive-feedback-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+.interactive-feedback-area.visible {
+    opacity: 1;
+}
+.interactive-feedback-area.correct {
+    color: var(--color-success);
+}
+.interactive-feedback-area.wrong {
+    color: #ef4444;
+}
+
+/* Redesign footer for Interactive Player */
+#interactive-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--color-bg-surface);
+    border-top: var(--glass-border);
+    transition: background-color 0.3s;
+}
+#interactive-footer.state-correct {
+    background: rgba(16, 185, 129, 0.1);
+    border-top-color: var(--color-success);
+}
+#interactive-footer.state-wrong {
+    background: rgba(239, 68, 68, 0.1);
+    border-top-color: #ef4444;
+}
+
+#check-btn {
+    min-width: 150px;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 12px;
+    background-color: var(--color-accent-in);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+#check-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+#check-btn:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.interactive-question-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 800px;
+    margin: 2rem auto 0;
+    width: 100%;
+    padding: 2rem;
+}
+
+/* Match Pairs Styles */
+.match-pairs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.match-pair-btn {
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: var(--glass-border);
+    background: var(--color-bg-surface);
+    color: var(--color-text-main);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+}
+.match-pair-btn:hover {
+    background: var(--glass-border);
+    transform: translateY(-2px);
+}
+.match-pair-btn.selected {
+    border-color: var(--color-accent-in);
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--color-accent-in);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+.match-pair-btn.matched {
+    visibility: hidden;
+    pointer-events: none;
+}
+.match-pair-btn.error {
+    animation: shake 0.4s;
+    border-color: #ef4444;
+    color: #991b1b; /* Darker red for contrast */
+    background: rgba(239, 68, 68, 0.1);
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+/* Dictation Styles */
+.dictation-container {
+    text-align: center;
+}
+.btn-play-audio {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--color-accent-in);
+    color: white;
+    font-size: 2rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+}
+.btn-play-audio:hover {
+    transform: scale(1.1);
+}
+.dictation-input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-radius: 12px;
+    border: 2px solid var(--glass-border);
+    background: rgba(0,0,0,0.2);
+    color: var(--color-text-main);
+    text-align: center;
+    margin-top: 1rem;
+}
+.dictation-input:focus {
+    outline: none;
+    border-color: var(--color-accent-in);
+}
+
+/* Word Bank Styles for Word Order */
+.word-bank-target {
+    min-height: 60px;
+    border-bottom: 2px solid var(--color-text-muted);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 0;
+}
+.word-bank-source {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+.interactive-word-chip {
+    padding: 0.8rem 1.2rem;
+    font-size: 1.1rem;
+    background: var(--color-bg-surface);
+    border: var(--glass-border);
+    border-radius: 12px;
+    color: var(--color-text-main);
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-weight: 600;
+}
+.interactive-word-chip:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent-in);
+}
+.interactive-word-chip.used {
+    background: var(--color-bg-surface);
+    color: transparent;
+    border-color: transparent;
+    pointer-events: none;
+    box-shadow: none;
+}
