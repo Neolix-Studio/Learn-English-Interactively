@@ -1,8 +1,6 @@
 /* ==========================================================================
    1. FONTS & COLOR SYSTEM SETUP
    ========================================================================== */
-@import url('https://googleapis.com');
-
 :root {
     /* Fonts definitions */
     --font-heading: 'Outfit', sans-serif;

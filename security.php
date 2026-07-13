@@ -19,6 +19,21 @@ function security_start_session(): void {
     ]);
 }
 
+function security_allowed_origins(): array {
+    return [
+        'https://dev.lexipaws.eu',
+        'https://lexipaws.eu',
+        'https://www.lexipaws.eu',
+        'https://lexipaws.hu',
+        'https://lexipaws.sk',
+        'https://neolix.studio',
+        'http://localhost',
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'http://localhost:8080'
+    ];
+}
+
 function security_get_csrf_token(): string {
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
