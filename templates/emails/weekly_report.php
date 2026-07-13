@@ -42,7 +42,7 @@ return function($data) {
                 <p>Si pripravený/á na výzvy ďalšieho týždňa? Prihlás sa a pokračuj v učení!</p>
             ",
             'buttonText' => "Ďalšia lekcia",
-            'buttonLink' => "https://lexipaws.sk/dashboard"
+            'buttonLink' => lexipawsAppUrl('dashboard')
         ];
     } else {
         $greetingMessage = "Szép munka volt a héten!";
@@ -77,7 +77,7 @@ return function($data) {
                 <p>Készen állsz a következő hét kihívásaira? Lépj be, és folytasd a tanulást!</p>
             ",
             'buttonText' => "Következő lecke",
-            'buttonLink' => "https://lexipaws.hu/dashboard"
+            'buttonLink' => lexipawsAppUrl('dashboard')
         ];
     }
 };

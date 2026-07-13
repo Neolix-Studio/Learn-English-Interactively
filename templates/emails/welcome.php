@@ -13,7 +13,7 @@ return function($data) {
                 <p>Začni so svojou prvou lekciou ešte dnes a vybuduj si svoju sériu učenia (streak)!</p>
             ",
             'buttonText' => "Začať učiť sa!",
-            'buttonLink' => "https://lexipaws.sk/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     } else {
         return [
@@ -25,7 +25,7 @@ return function($data) {
                 <p>Kezdd el az első leckét még ma, és építsd fel a tanulási sorozatodat (streak)!</p>
             ",
             'buttonText' => "Irány a tanulás!",
-            'buttonLink' => "https://lexipaws.hu/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     }
 };
