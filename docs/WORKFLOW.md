@@ -12,7 +12,23 @@ This is the recommended workflow for the migrated React/PHP Lexipaws app.
 
 Important: GitHub `main` currently contains the old app. The local Mac branch contains the migrated app. Do not merge this local branch into `main` until production is intentionally prepared and reviewed.
 
-Current GitHub audit note: as of 2026-07-13, the remote repository only has `main`; `dev` must be recreated before PRs can target staging.
+Current GitHub state: as of 2026-07-13, the remote repository has a protected `dev` branch that deploys to staging. Use `dev` as the base for all active work.
+
+## Protected Branch Rules
+
+Both `dev` and `main` are protected in GitHub.
+
+- Pull requests are required before merging.
+- At least one approving review is required.
+- Stale approvals are dismissed after new commits.
+- Conversations must be resolved before merge.
+- Admins are included in the rule.
+- Force pushes and branch deletion are blocked.
+- Required checks:
+  - `Verify (CI)`
+  - `Analyze Code`
+
+`Verify (CI)` is the pre-merge validation job. The deployment job runs after a merge/push to `dev` or `main`, so it is verified after the branch update rather than as a PR-required check.
 
 ## Local Development
 
@@ -59,6 +75,8 @@ find . -name "*.php" -not -path "./libs/*" -not -path "./node_modules/*" -print0
 9. Open PR from `dev` to `main`.
 10. Merge into `main` to deploy production.
 
+Do not push directly to `dev` or `main`. The branches are protected so this should be blocked by GitHub, but treat it as a team rule too.
+
 ## Junior Developer Workflow
 
 For JSON/curriculum tasks:
@@ -68,6 +86,7 @@ For JSON/curriculum tasks:
    - `data/hu/`
    - `data/sk/`
    - `src/locales/`
+   - `src/data/` when assigned
 3. Do not edit PHP, deployment workflows, or database migrations unless assigned.
 4. Keep lesson JSON valid and deterministic.
 5. Open PR into `dev`.
@@ -95,7 +114,7 @@ The Cypress workflow is currently manual only because Cypress config/tests exist
 ## GitHub Actions Notes
 
 - `verify-deploy.yml` is the main CI/CD pipeline.
-- `codeql-analysis.yml` scans JavaScript/TypeScript and PHP on `main`, `dev`, and scheduled weekly runs.
+- `codeql-analysis.yml` scans JavaScript/TypeScript on `main`, `dev`, and scheduled weekly runs. GitHub CodeQL does not support PHP in the current runner, so PHP security coverage should be handled through PHP-specific tooling.
 - `sonar-sync.yml` syncs SonarCloud findings through `scripts/sync_sonar_issues.js`.
 - `cypress.yml` is kept manual until Cypress is reintroduced.
 
@@ -121,4 +140,13 @@ Current hardened deployment expects:
 
 Because `dev` and `main` deploy automatically, never push large migration work directly to either branch. Use PRs only.
 
-For the current migration, first push the local app to a new remote branch such as `migration/react-php-app`, open a PR into `dev`, and review the deploy package before merging.
+The migrated app now exists on remote `dev`. Production remains separate until a reviewed PR from `dev` to `main` is intentionally merged.
+
+## PHP Security Follow-Up
+
+Before subscription and payment work, add a dedicated PHP security lane. Recommended next steps:
+
+- Add Composer only if/when PHP dependencies justify it.
+- Add PHPStan or Psalm for static analysis.
+- Add endpoint-focused tests for authentication, CSRF, rate limiting, migration tokens, and payment webhook validation.
+- Keep payment provider secrets in GitHub Actions secrets only.
