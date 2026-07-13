@@ -17,7 +17,7 @@ return function($data) {
                 <p>Sme na teba veľmi hrdí, len tak ďalej!</p>
             ",
             'buttonText' => "Poďme na ďalší cieľ",
-            'buttonLink' => "https://lexipaws.sk/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     } else {
         return [
@@ -32,7 +32,7 @@ return function($data) {
                 <p>Nagyon büszkék vagyunk rád, csak így tovább!</p>
             ",
             'buttonText' => "Nézzük a következő célt",
-            'buttonLink' => "https://lexipaws.hu/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     }
 };

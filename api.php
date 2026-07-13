@@ -5,7 +5,18 @@ ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
 security_start_session();
 
 // CORS Configuration
-$allowed_origins = security_allowed_origins();
+$allowed_origins = [
+    'https://dev.lexipaws.eu',
+    'https://lexipaws.eu',
+    'https://www.lexipaws.eu',
+    'https://lexipaws.hu',
+    'https://lexipaws.sk',
+    'https://neolix.studio',
+    'http://localhost',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:8080'
+];
 
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 if (in_array($origin, $allowed_origins)) {
@@ -40,6 +51,7 @@ require_once __DIR__ . '/mailer.php';
 // Constants
 define('PASSWORD_REGEX', '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/');
 define('PASSWORD_ERR_MSG', 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.');
+define('APP_ALLOWED_HOSTS', ['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'neolix.studio', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
 
 // Initialize Database Connection
 try {
@@ -181,6 +193,34 @@ switch ($action) {
 
 // --- API ACTIONS HANDLERS ---
 
+function getAppBaseUrl(): string {
+    $configured = getenv('APP_BASE_URL');
+    if (!$configured && defined('APP_BASE_URL')) {
+        $configured = APP_BASE_URL;
+    }
+
+    if ($configured) {
+        $parts = parse_url($configured);
+        $scheme = $parts['scheme'] ?? '';
+        $host = $parts['host'] ?? '';
+        if (in_array($scheme, ['https', 'http'], true) && in_array($host, APP_ALLOWED_HOSTS, true)) {
+            return rtrim($configured, '/');
+        }
+    }
+
+    $host = $_SERVER['HTTP_HOST'] ?? 'lexipaws.eu';
+    if (!in_array($host, APP_ALLOWED_HOSTS, true)) {
+        $host = 'lexipaws.eu';
+    }
+
+    $scheme = str_starts_with($host, 'localhost') ? 'http' : 'https';
+    return $scheme . '://' . $host;
+}
+
+function hashPasswordResetToken(string $token): string {
+    return hash('sha256', $token);
+}
+
 // 1. Sign Up
 function validateSignupData(PDO $pdo, string $email, string $password, string $username) {
     if (empty($email) || empty($password) || empty($username)) {
@@ -289,7 +329,7 @@ function handleSignup(PDO $pdo, array $data) {
             $pdo->rollBack();
         }
         error_log('Registration error: ' . $e->getMessage());
-        echo json_encode(['error' => 'Hiba: ' . $e->getMessage()]);
+        echo json_encode(['error' => 'Hiba történt a regisztráció során. Kérjük, próbáld újra később.']);
     }
 }
 
@@ -890,17 +930,17 @@ function handleForgotPassword(PDO $pdo, array $data) {
 
         // Generate token and expiry (1 hour)
         $token = bin2hex(random_bytes(32));
+        $tokenHash = hashPasswordResetToken($token);
         $expiry = date('Y-m-d H:i:s', time() + 3600);
 
-        // Update database with token
+        // Store only a token hash. The raw token exists only in the email link.
         $stmtUpdate = $pdo->prepare("UPDATE users SET reset_token = ?, reset_expires = ? WHERE id = ?");
-        $stmtUpdate->execute([$token, $expiry, $user['id']]);
+        $stmtUpdate->execute([$tokenHash, $expiry, $user['id']]);
 
-        // Construct reset link
-        $allowedHosts = ['neolix.studio'];
-        $host = isset($_SERVER['HTTP_HOST']) && in_array($_SERVER['HTTP_HOST'], $allowedHosts, true) ? $_SERVER['HTTP_HOST'] : 'neolix.studio';
-        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-        $resetLink = $protocol . "://" . $host . "/index.html?action=reset_password&token=" . $token;
+        $resetLink = getAppBaseUrl() . "/index.html?" . http_build_query([
+            'action' => 'reset_password',
+            'token' => $token
+        ]);
 
         // Email details
         $to = $email;
@@ -920,10 +960,16 @@ function handleForgotPassword(PDO $pdo, array $data) {
 
 // 8. Execute Reset Password via Token
 function handleResetPassword(PDO $pdo, array $data) {
+    if (!security_rate_limit('reset_password_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 10, 900)) {
+        http_response_code(429);
+        echo json_encode(['error' => 'Túl sok jelszó-visszaállítási próbálkozás. Kérjük, próbáld újra később.']);
+        return;
+    }
+
     $token = isset($data['token']) ? trim($data['token']) : '';
     $newPassword = isset($data['password']) ? $data['password'] : ($data['new_password'] ?? '');
 
-    if (empty($token)) {
+    if (!preg_match('/^[a-f0-9]{64}$/i', $token)) {
         echo json_encode(['error' => 'Hiányzó vagy érvénytelen visszaállítási token!']);
         return;
     }
@@ -935,8 +981,9 @@ function handleResetPassword(PDO $pdo, array $data) {
 
     try {
         // Find token and check expiry
+        $tokenHash = hashPasswordResetToken($token);
         $stmt = $pdo->prepare("SELECT id FROM users WHERE reset_token = ? AND reset_expires > NOW()");
-        $stmt->execute([$token]);
+        $stmt->execute([$tokenHash]);
         $user = $stmt->fetch();
 
         if (!$user) {
