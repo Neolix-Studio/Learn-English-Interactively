@@ -13,7 +13,7 @@ return function($data) {
                 <p>Vráť sa a sprav si jednu rýchlu lekciu ešte dnes.</p>
             ",
             'buttonText' => "Pokračovať v učení",
-            'buttonLink' => "https://lexipaws.sk/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     } else {
         return [
@@ -25,7 +25,7 @@ return function($data) {
                 <p>Gyere vissza, és csinálj meg egy gyors leckét még ma.</p>
             ",
             'buttonText' => "Folytatom a tanulást",
-            'buttonLink' => "https://lexipaws.hu/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     }
 };

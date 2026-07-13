@@ -14,7 +14,7 @@ return function($data) {
                 <p>Vráť sa dnes na krátku lekciu, aby si nestratil/a tempo!</p>
             ",
             'buttonText' => "Pokračovať v učení",
-            'buttonLink' => "https://lexipaws.sk/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     } else {
         return [
@@ -26,7 +26,7 @@ return function($data) {
                 <p>Gyere vissza ma egy rövid leckére, nehogy elveszítsd a lendületet!</p>
             ",
             'buttonText' => "Tovább tanulok",
-            'buttonLink' => "https://lexipaws.hu/"
+            'buttonLink' => lexipawsAppUrl()
         ];
     }
 };

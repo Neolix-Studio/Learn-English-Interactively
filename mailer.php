@@ -9,6 +9,47 @@ require_once __DIR__ . '/libs/PHPMailer/src/Exception.php';
 require_once __DIR__ . '/libs/PHPMailer/src/PHPMailer.php';
 require_once __DIR__ . '/libs/PHPMailer/src/SMTP.php';
 
+function lexipawsEmailAllowedHosts() {
+    return ['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'neolix.studio', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080'];
+}
+
+function lexipawsEmailBaseUrl() {
+    $fallback = 'http://localhost:5173';
+
+    if (defined('APP_BASE_URL')) {
+        $configuredUrl = rtrim((string)APP_BASE_URL, '/');
+        $parts = parse_url($configuredUrl);
+
+        if (
+            is_array($parts)
+            && in_array($parts['scheme'] ?? '', ['http', 'https'], true)
+            && !empty($parts['host'])
+            && in_array($parts['host'], lexipawsEmailAllowedHosts(), true)
+        ) {
+            return $configuredUrl;
+        }
+    }
+
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    if (in_array($host, lexipawsEmailAllowedHosts(), true)) {
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        return $scheme . '://' . $host;
+    }
+
+    return $fallback;
+}
+
+function lexipawsAppUrl($path = '') {
+    $baseUrl = lexipawsEmailBaseUrl();
+    $path = ltrim((string)$path, '/');
+
+    if ($path === '') {
+        return $baseUrl . '/';
+    }
+
+    return $baseUrl . '/' . $path;
+}
+
 /**
  * Sends an HTML email using the templates/email_template.php
  * 

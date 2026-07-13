@@ -19,6 +19,7 @@ define('GOOGLE_TTS_API_KEY', ${esc(process.env.GOOGLE_TTS_API_KEY)});
 define('SLACK_WEBHOOK_URL', ${esc(process.env.SLACK_WEBHOOK_URL)});
 define('CRON_SECRET', ${esc(process.env.CRON_SECRET)});
 define('MAINTENANCE_TOKEN', ${esc(process.env.MAINTENANCE_TOKEN)});
+define('APP_BASE_URL', ${esc(process.env.APP_BASE_URL)});
 	`;
 
 const outputPath = process.env.DB_CONFIG_PATH || 'db_config.php';

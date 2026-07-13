@@ -56,8 +56,8 @@ Stores authentication records and account metadata:
 * `password_hash` (`VARCHAR(255) NOT NULL`): BCRYPT password hash.
 * `username` (`VARCHAR(50) NOT NULL`): User display name.
 * `age_range` (`VARCHAR(20) DEFAULT 'unknown'`): Marketing/demographic range.
-* `reset_token` (`VARCHAR(64) NULL`): Password reset identification token.
-* `reset_expires` (`DATETIME NULL`): Expiry timestamp for the reset token.
+* `reset_token` (`VARCHAR(64) NULL`): SHA-256 hash of the password reset token.
+* `reset_expires` (`DATETIME NULL`): Expiry timestamp for the password reset token.
 * `created_at` (`TIMESTAMP DEFAULT CURRENT_TIMESTAMP`): Registration date.
 
 ### 3.2. `user_progress` Table
