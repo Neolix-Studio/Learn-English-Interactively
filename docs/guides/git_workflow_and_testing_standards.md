@@ -37,6 +37,13 @@ Always perform development tasks using a dedicated feature branch. Follow these 
 3. **CRITICAL STEP**: On the GitHub PR page, make sure the destination target is set correctly:
    * **base**: `dev` $\leftarrow$ **compare**: `feature/your-branch-name`
 4. Title the PR clearly, write a short description of what was changed, and submit the PR.
+5. Wait for the required checks:
+   * `Verify (CI)`
+   * `Analyze Code`
+6. Ask for review. At least one approval is required before merge.
+7. Merge only after checks pass and conversations are resolved.
+
+Protected branch rule: do not push directly to `dev` or `main`. All changes must go through a PR.
 
 ---
 
@@ -52,9 +59,56 @@ The workflow for promoting code to the production environment consists of two st
 1. **Feature/Fix Branch to `dev`**: Where active code reviews, automated scans, and manual QA validation happen.
 2. **`dev` to `main`**: A standard pull request to release fully vetted, stable code into production.
 
+Current deployment mapping:
+
+* Merging to `dev` deploys `https://dev.lexipaws.eu`.
+* Merging to `main` deploys `https://lexipaws.eu`.
+* Production releases should only happen from a reviewed `dev` to `main` PR.
+
 ---
 
-## Part 3: Automated Testing Matrix
+## Part 3: Content-Only Workflow For Junior Tasks
+
+Use this path for lesson, translation, and curriculum data work.
+
+### Branch Naming
+
+Use:
+
+* `content/add-a1-food-vocab`
+* `content/fix-sk-lesson-json`
+* `content/update-hu-translations`
+
+### Usually Safe To Edit
+
+* `data/hu/`
+* `data/sk/`
+* `src/locales/`
+* `src/data/` when specifically assigned
+* Markdown docs under `docs/` when the task is documentation only
+
+### Ask Before Editing
+
+* PHP files such as `api.php`, `security.php`, `migrate.php`, `mailer.php`
+* `.github/workflows/`
+* `scripts/`
+* database migrations
+* `.htaccess`
+* authentication, CSRF, TTS, or payment-related files
+
+### Content PR Checklist
+
+Before opening the PR:
+
+* Confirm JSON files are valid.
+* Confirm file names and folder structure match the existing pattern.
+* Do not include `.DS_Store`, screenshots, `release/`, `dist/`, or local config files.
+* Run `npm run validate:json` if Node is available locally.
+* If unsure, open the PR anyway and let CI validate it.
+
+---
+
+## Part 4: Automated Testing Matrix
 
 To ensure development velocity is not stalled by unnecessary testing overhead, use this matrix to decide what requires automated tests.
 
