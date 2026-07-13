@@ -127,6 +127,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           MAINTENANCE_TOKEN: ${{ secrets.MAINTENANCE_TOKEN }}
+          APP_BASE_URL: ${{ steps.vars.outputs.site_url }}
           DB_CONFIG_PATH: release/db_config.php
         run: |
           npm ci || npm install
