@@ -5,15 +5,7 @@ ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
 security_start_session();
 
 // CORS Configuration
-$allowed_origins = [
-    'https://lexipaws.eu',
-    'https://lexipaws.hu',
-    'https://lexipaws.sk',
-    'https://neolix.studio',
-    'http://localhost',
-    'http://localhost:3000',
-    'http://localhost:8080'
-];
+$allowed_origins = security_allowed_origins();
 
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 if (in_array($origin, $allowed_origins)) {
