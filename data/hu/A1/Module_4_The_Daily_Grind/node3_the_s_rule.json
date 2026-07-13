@@ -1,0 +1,906 @@
+{
+    "title": "Az 'S' szabály",
+    "type": "multi_level_node",
+    "targetWords": [
+        "eats",
+        "drinks",
+        "sleeps",
+        "works",
+        "reads",
+        "plays"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "eats",
+                "drinks"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "eszik (ő)",
+                    "correctAnswer": "eats",
+                    "options": [
+                        {
+                            "id": "eats",
+                            "text": "eats",
+                            "correct": true
+                        },
+                        {
+                            "id": "drinks",
+                            "text": "drinks",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_d44782eb"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "iszik (ő)",
+                    "correctAnswer": "drinks",
+                    "options": [
+                        {
+                            "id": "eats",
+                            "text": "eats",
+                            "correct": false
+                        },
+                        {
+                            "id": "drinks",
+                            "text": "drinks",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_55580e58"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) eszik.",
+                    "correctAnswer": "He eats.",
+                    "scrambledWords": [
+                        "He",
+                        "eats.",
+                        "eat.",
+                        "She"
+                    ],
+                    "id": "item_33b75956"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) iszik.",
+                    "correctAnswer": "She drinks.",
+                    "scrambledWords": [
+                        "She",
+                        "drinks.",
+                        "drink.",
+                        "He"
+                    ],
+                    "id": "item_80aa68fc"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) kávét iszik.",
+                    "sentence": "He ____ coffee.",
+                    "answer": "drinks",
+                    "options": [
+                        "drinks",
+                        "drink",
+                        "eats",
+                        "eat"
+                    ],
+                    "id": "item_6e6e0ee5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya eszik.",
+                    "correctAnswer": "The dog eats.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "eats.",
+                        "eat."
+                    ],
+                    "id": "item_9390ecb0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én eszem és ő (nő) eszik.",
+                    "sentence": "I eat and she ____.",
+                    "answer": "eats",
+                    "options": [
+                        "eats",
+                        "eat",
+                        "drinks",
+                        "drink"
+                    ],
+                    "id": "item_99c53842"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) vizet iszik reggel.",
+                    "correctAnswer": "He drinks water in the morning.",
+                    "scrambledWords": [
+                        "He",
+                        "drinks",
+                        "water",
+                        "in",
+                        "the",
+                        "morning.",
+                        "drink"
+                    ],
+                    "id": "item_427dd258"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem eszik.",
+                    "sentence": "My brother ____.",
+                    "answer": "eats",
+                    "options": [
+                        "eats",
+                        "eat",
+                        "drink",
+                        "drinks"
+                    ],
+                    "id": "item_6dc39b7c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám kávét iszik.",
+                    "correctAnswer": "My mother drinks coffee.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "drinks",
+                        "coffee.",
+                        "drink"
+                    ],
+                    "id": "item_d39480f9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lánytestvéred eszik a konyhában.",
+                    "correctAnswer": "Your sister eats in the kitchen.",
+                    "scrambledWords": [
+                        "Your",
+                        "sister",
+                        "eats",
+                        "in",
+                        "the",
+                        "kitchen.",
+                        "eat"
+                    ],
+                    "id": "item_f6e8ea5c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi iszunk és ő (férfi) iszik.",
+                    "sentence": "We drink and he ____.",
+                    "answer": "drinks",
+                    "options": [
+                        "drinks",
+                        "drink",
+                        "eats",
+                        "eat"
+                    ],
+                    "id": "item_3ac5c14a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom eszik a konyhában.",
+                    "correctAnswer": "My friend eats in the kitchen.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "eats",
+                        "in",
+                        "the",
+                        "kitchen.",
+                        "eat"
+                    ],
+                    "id": "item_d3d49b33"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya vizet iszik.",
+                    "sentence": "The dog ____ water.",
+                    "answer": "drinks",
+                    "options": [
+                        "drinks",
+                        "drink",
+                        "eats",
+                        "eat"
+                    ],
+                    "id": "item_215751bd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) eszik reggel.",
+                    "correctAnswer": "She eats in the morning.",
+                    "scrambledWords": [
+                        "She",
+                        "eats",
+                        "in",
+                        "the",
+                        "morning.",
+                        "eat"
+                    ],
+                    "id": "item_0a8061c0"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "sleeps",
+                "works"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "alszik (ő)",
+                    "correctAnswer": "sleeps",
+                    "options": [
+                        {
+                            "id": "sleeps",
+                            "text": "sleeps",
+                            "correct": true
+                        },
+                        {
+                            "id": "works",
+                            "text": "works",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_117238b6"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "dolgozik (ő)",
+                    "correctAnswer": "works",
+                    "options": [
+                        {
+                            "id": "sleeps",
+                            "text": "sleeps",
+                            "correct": false
+                        },
+                        {
+                            "id": "works",
+                            "text": "works",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_f12d5310"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) alszik.",
+                    "correctAnswer": "She sleeps.",
+                    "scrambledWords": [
+                        "She",
+                        "sleeps.",
+                        "sleep.",
+                        "He"
+                    ],
+                    "id": "item_564b7f58"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám dolgozik.",
+                    "correctAnswer": "My father works.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "works.",
+                        "work."
+                    ],
+                    "id": "item_231b2c4f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya az ágy alatt alszik.",
+                    "sentence": "The dog ____ under the bed.",
+                    "answer": "sleeps",
+                    "options": [
+                        "sleeps",
+                        "sleep",
+                        "works",
+                        "work"
+                    ],
+                    "id": "item_85f3d237"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem hétfőn dolgozik.",
+                    "correctAnswer": "My brother works on Monday.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "works",
+                        "on",
+                        "Monday.",
+                        "work"
+                    ],
+                    "id": "item_6a02cd47"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én dolgozom és ő (férfi) dolgozik.",
+                    "sentence": "I work and he ____.",
+                    "answer": "works",
+                    "options": [
+                        "works",
+                        "work",
+                        "sleeps",
+                        "sleep"
+                    ],
+                    "id": "item_edd6cf27"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám éjszaka alszik.",
+                    "correctAnswer": "My mother sleeps at night.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "sleeps",
+                        "at",
+                        "night.",
+                        "sleep"
+                    ],
+                    "id": "item_376cf180"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A tanár dolgozik a szobában.",
+                    "correctAnswer": "The teacher works in the room.",
+                    "scrambledWords": [
+                        "The",
+                        "teacher",
+                        "works",
+                        "in",
+                        "the",
+                        "room.",
+                        "work"
+                    ],
+                    "id": "item_c3db13f2"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te alszol és a kutya alszik.",
+                    "sentence": "You sleep and the dog ____.",
+                    "answer": "sleeps",
+                    "options": [
+                        "sleeps",
+                        "sleep",
+                        "works",
+                        "work"
+                    ],
+                    "id": "item_ccda2111"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom a hálószobában alszik.",
+                    "correctAnswer": "My friend sleeps in the bedroom.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "sleeps",
+                        "in",
+                        "the",
+                        "bedroom.",
+                        "sleep"
+                    ],
+                    "id": "item_2f084b58"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A rendőr éjszaka dolgozik.",
+                    "sentence": "The policeman ____ at night.",
+                    "answer": "works",
+                    "options": [
+                        "works",
+                        "work",
+                        "sleeps",
+                        "sleep"
+                    ],
+                    "id": "item_b584f254"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) dolgozik és ő (nő) alszik.",
+                    "correctAnswer": "He works and she sleeps.",
+                    "scrambledWords": [
+                        "He",
+                        "works",
+                        "and",
+                        "she",
+                        "sleeps.",
+                        "work"
+                    ],
+                    "id": "item_69f0bdb6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A macska (It) a széken alszik.",
+                    "correctAnswer": "It sleeps on the chair.",
+                    "scrambledWords": [
+                        "It",
+                        "sleeps",
+                        "on",
+                        "the",
+                        "chair.",
+                        "sleep"
+                    ],
+                    "id": "item_3964dfb0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az orvos a konyhában dolgozik.",
+                    "sentence": "The doctor ____ in the kitchen.",
+                    "answer": "works",
+                    "options": [
+                        "works",
+                        "work",
+                        "eats",
+                        "sleeps"
+                    ],
+                    "id": "item_441d2dce"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "reads",
+                "plays"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "olvas (ő)",
+                    "correctAnswer": "reads",
+                    "options": [
+                        {
+                            "id": "reads",
+                            "text": "reads",
+                            "correct": true
+                        },
+                        {
+                            "id": "plays",
+                            "text": "plays",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_f18f79b7"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "játszik (ő)",
+                    "correctAnswer": "plays",
+                    "options": [
+                        {
+                            "id": "reads",
+                            "text": "reads",
+                            "correct": false
+                        },
+                        {
+                            "id": "plays",
+                            "text": "plays",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_2085fb09"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) olvas egy könyvet.",
+                    "correctAnswer": "She reads a book.",
+                    "scrambledWords": [
+                        "She",
+                        "reads",
+                        "a",
+                        "book.",
+                        "read"
+                    ],
+                    "id": "item_f51aaef9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya játszik.",
+                    "correctAnswer": "The dog plays.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "plays.",
+                        "play."
+                    ],
+                    "id": "item_de899e2e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fiú olvas.",
+                    "sentence": "The boy ____.",
+                    "answer": "reads",
+                    "options": [
+                        "reads",
+                        "read",
+                        "plays",
+                        "play"
+                    ],
+                    "id": "item_380922ba"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem hétvégén játszik.",
+                    "correctAnswer": "My brother plays on the weekend.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "plays",
+                        "on",
+                        "the",
+                        "weekend.",
+                        "play"
+                    ],
+                    "id": "item_c0198a86"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők játszanak és ő (férfi) játszik.",
+                    "sentence": "They play and he ____.",
+                    "answer": "plays",
+                    "options": [
+                        "plays",
+                        "play",
+                        "reads",
+                        "read"
+                    ],
+                    "id": "item_36fb1fb3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lány a hálószobában olvas.",
+                    "correctAnswer": "The girl reads in the bedroom.",
+                    "scrambledWords": [
+                        "The",
+                        "girl",
+                        "reads",
+                        "in",
+                        "the",
+                        "bedroom.",
+                        "read"
+                    ],
+                    "id": "item_50ec4443"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) a barátommal játszik.",
+                    "correctAnswer": "She plays with my friend.",
+                    "scrambledWords": [
+                        "She",
+                        "plays",
+                        "with",
+                        "my",
+                        "friend.",
+                        "play"
+                    ],
+                    "id": "item_33e819f9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A tanár olvas.",
+                    "sentence": "The teacher ____.",
+                    "answer": "reads",
+                    "options": [
+                        "reads",
+                        "read",
+                        "plays",
+                        "play"
+                    ],
+                    "id": "item_966a76ff"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya a konyhában játszik.",
+                    "correctAnswer": "The dog plays in the kitchen.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "plays",
+                        "in",
+                        "the",
+                        "kitchen.",
+                        "play"
+                    ],
+                    "id": "item_63e5bfdc"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az anyám éjszaka olvas.",
+                    "sentence": "My mother ____ at night.",
+                    "answer": "reads",
+                    "options": [
+                        "reads",
+                        "read",
+                        "plays",
+                        "play"
+                    ],
+                    "id": "item_9ee3f18d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) olvas, a kutya játszik.",
+                    "correctAnswer": "He reads, the dog plays.",
+                    "scrambledWords": [
+                        "He",
+                        "reads,",
+                        "the",
+                        "dog",
+                        "plays.",
+                        "read,",
+                        "play."
+                    ],
+                    "id": "item_ee4415e5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fiú játszik az asztal alatt.",
+                    "correctAnswer": "The boy plays under the table.",
+                    "scrambledWords": [
+                        "The",
+                        "boy",
+                        "plays",
+                        "under",
+                        "the",
+                        "table.",
+                        "play"
+                    ],
+                    "id": "item_966abce2"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A lánytestvérem a szobában olvas.",
+                    "sentence": "My sister ____ in the room.",
+                    "answer": "reads",
+                    "options": [
+                        "reads",
+                        "read",
+                        "plays",
+                        "play"
+                    ],
+                    "id": "item_8c033743"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Az apám dolgozik, az anyám olvas.",
+                    "correctAnswer": "My father works, my mother reads.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "works,",
+                        "my",
+                        "mother",
+                        "reads.",
+                        "work,",
+                        "read."
+                    ],
+                    "id": "item_1fcdef83"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya az ágyon alszik.",
+                    "sentence": "The dog ____ on the bed.",
+                    "answer": "sleeps",
+                    "options": [
+                        "sleeps",
+                        "sleep",
+                        "plays",
+                        "play"
+                    ],
+                    "id": "item_f89794f6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) reggel kávét iszik.",
+                    "correctAnswer": "He drinks coffee in the morning.",
+                    "scrambledWords": [
+                        "He",
+                        "drinks",
+                        "coffee",
+                        "in",
+                        "the",
+                        "morning.",
+                        "drink"
+                    ],
+                    "id": "item_9efe6ee4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem játszik és a lánytestvérem eszik.",
+                    "correctAnswer": "My brother plays and my sister eats.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "plays",
+                        "and",
+                        "my",
+                        "sister",
+                        "eats.",
+                        "play"
+                    ],
+                    "id": "item_7e39db84"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én olvasok és ő (nő) olvas.",
+                    "sentence": "I read and she ____.",
+                    "answer": "reads",
+                    "options": [
+                        "reads",
+                        "read",
+                        "works",
+                        "work"
+                    ],
+                    "id": "item_46f62ecd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A rendőr éjszaka dolgozik.",
+                    "correctAnswer": "The policeman works at night.",
+                    "scrambledWords": [
+                        "The",
+                        "policeman",
+                        "works",
+                        "at",
+                        "night.",
+                        "work"
+                    ],
+                    "id": "item_1b64b972"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A tanár a könyvet olvassa.",
+                    "sentence": "The teacher ____ the book.",
+                    "answer": "reads",
+                    "options": [
+                        "reads",
+                        "read",
+                        "plays",
+                        "play"
+                    ],
+                    "id": "item_0664f958"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) hétvégén dolgozik a házban.",
+                    "correctAnswer": "She works on the weekend in the house.",
+                    "scrambledWords": [
+                        "She",
+                        "works",
+                        "on",
+                        "the",
+                        "weekend",
+                        "in",
+                        "the",
+                        "house.",
+                        "work"
+                    ],
+                    "id": "item_67dace2b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi iszunk, a kutya iszik.",
+                    "correctAnswer": "We drink, the dog drinks.",
+                    "scrambledWords": [
+                        "We",
+                        "drink,",
+                        "the",
+                        "dog",
+                        "drinks.",
+                        "drink."
+                    ],
+                    "id": "item_8b7a6ed0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám a konyhában eszik.",
+                    "sentence": "My father ____ in the kitchen.",
+                    "answer": "eats",
+                    "options": [
+                        "eats",
+                        "eat",
+                        "sleeps",
+                        "sleep"
+                    ],
+                    "id": "item_45a29c15"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők játszanak és a fiú játszik.",
+                    "correctAnswer": "They play and the boy plays.",
+                    "scrambledWords": [
+                        "They",
+                        "play",
+                        "and",
+                        "the",
+                        "boy",
+                        "plays.",
+                        "play."
+                    ],
+                    "id": "item_450d50a8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom a hálószobában alszik.",
+                    "correctAnswer": "My friend sleeps in the bedroom.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "sleeps",
+                        "in",
+                        "the",
+                        "bedroom.",
+                        "sleep"
+                    ],
+                    "id": "item_c9f61729"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) pénteken dolgozik.",
+                    "sentence": "He ____ on Friday.",
+                    "answer": "works",
+                    "options": [
+                        "works",
+                        "work",
+                        "eats",
+                        "eat"
+                    ],
+                    "id": "item_a3ff2067"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám hétvégén könyvet olvas.",
+                    "correctAnswer": "My mother reads a book on the weekend.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "reads",
+                        "a",
+                        "book",
+                        "on",
+                        "the",
+                        "weekend.",
+                        "read"
+                    ],
+                    "id": "item_ea5dfd7f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én dolgozom, te alszol, és ő (férfi) játszik.",
+                    "correctAnswer": "I work, you sleep, and he plays.",
+                    "scrambledWords": [
+                        "I",
+                        "work,",
+                        "you",
+                        "sleep,",
+                        "and",
+                        "he",
+                        "plays.",
+                        "play."
+                    ],
+                    "id": "item_cb5c60e8"
+                }
+            ]
+        }
+    ]
+}

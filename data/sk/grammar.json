@@ -1,0 +1,97 @@
+{
+  "Module_1": {
+    "title": "A Létige (Am, Is, Are) és a Többesszám",
+    "content": [
+      {
+        "heading": "A legfontosabb szabály",
+        "text": "Az angol nyelv sosem hagyja ki az igét!\nMagyarul mondhatod, hogy \"Én fáradt\", de angolul kötelező használni a \"létigét\" (lenni): \"I am tired.\" (Én vagyok fáradt). Ugyanez igaz kérdéseknél is: \"Boldog vagy?\" -> \"Are you happy?\".\n• Tanuld meg a párokat: I am (én vagyok), You are (te vagy), He/She/It is (ő/az van)."
+      },
+      {
+        "heading": "Többesszám",
+        "text": "Ha valamiből egynél több van, az angol a legtöbb esetben egyszerűen egy \"s\" betűt tesz a szó végére.\n• Egy kávé = One coffee\n• Két kávé = Two coffees"
+      },
+      {
+        "heading": "Egy vagy A/Az? (Névelők)",
+        "text": "Ha megnevezel valamit, ami megszámlálható, az angol szereti jelezni, hogy \"egy\" darabról van szó. Használd az \"a\" szócskát (egy).\n• He is a boy. = Ő (egy) fiú.\nHa egy konkrét dologról beszélsz, használd a \"the\" (a/az) szócskát.\n• The dog is happy. = A kutya boldog."
+      }
+    ]
+  },
+  "Module_2": {
+    "title": "Birtoklás (My, Your, Have) és Mutatószavak",
+    "content": [
+      {
+        "heading": "Enyém vagy Én? Ne keverd össze!",
+        "text": "Gyakori hiba, hogy a magyarok felcserélik a személyt a birtokossal.\n• I = Én, de My = Enyém / Az én... (My mother = Az én anyám).\n• You = Te, de Your = Tiéd / A te... (Your brother = A te fivéred)."
+      },
+      {
+        "heading": "Nekem van (Have)",
+        "text": "A magyarban azt mondjuk: \"Nekem van egy kutyám\". Az angol nem ismeri a \"nekem\" szót ebben a formában. Ők úgy gondolkodnak: \"Én birtokolok egy kutyát\".\n• I have a bag. = Én birtokolok egy táskát (Nekem van egy táskám)."
+      },
+      {
+        "heading": "Ez és Az (This / That)",
+        "text": "Amikor rámutatsz dolgokra, az angol két szót használ attól függően, milyen messze van a dolog.\n• This: Ez (ami itt van a közeledben). \"This is a book.\"\n• That: Az (ami távolabb van). \"That is a car.\""
+      }
+    ]
+  },
+  "Module_3": {
+    "title": "Helyhatározók (In, On, Under, Next to)",
+    "content": [
+      {
+        "heading": "Hogyan mondjuk, hogy -ban, -ben, -on, -en?",
+        "text": "A magyar nyelv a szavak végére ragasztja a helyhatározókat (házban, asztalon). Az angol nyelv ehelyett apró szavakat, úgynevezett elöljárószavakat használ, amiket mindig a főnév elé tesz!\nÍgy használd őket:\n• In (Bent / -ban, -ben): In the house = A házban\n• On (Rajta / -on, -en, -ön): On the table = Az asztalon\n• Under (Alatt): Under the bed = Az ágy alatt\n• Next to (Mellett): Next to the car = Az autó mellett"
+      }
+    ]
+  },
+  "Module_4": {
+    "title": "A Jelenidő és az 'S' Szabály",
+    "content": [
+      {
+        "heading": "A bűvös 'S' betű",
+        "text": "Ha általános cselekvésekről beszélünk (mit csinálsz minden nap), az angol ige a legtöbb esetben nem változik (I play, You play, We play). Kivéve egyetlen esetben!\nHa He (ő, férfi), She (ő, nő) vagy It (az) a cselekvő, az ige végére mindig egy \"s\" betűt kell tenned!\n• I eat. -> He eats.\n• You read. -> She reads."
+      },
+      {
+        "heading": "A Segédigék (Do / Does / Don't / Doesn't)",
+        "text": "Az angolok nem szeretik csak úgy odatenni a \"nem\" szót egy cselekvés elé. Kérdezni és tagadni csak \"segédigékkel\" lehet!\n• Tagadásnál használd a don't szót (I don't work). Ha He/She/It a cselekvő, használd a doesn't szót!\n• A legfontosabb csapda: Ha a mondatban benne van a does vagy a doesn't, az ellopja az 'S' betűt a főigéről!\n• Helytelen: He doesn't sleeps.\n• Helyes: He doesn't sleep."
+      }
+    ]
+  },
+  "Module_5": {
+    "title": "Két Ige Kapcsolata és a \"Can\" (Tud)",
+    "content": [
+      {
+        "heading": "Az összekötő híd (To)",
+        "text": "A magyarban azt mondjuk: \"Szeretek aludni\". Az angolban, ha két igét teszel egymás mellé (szeret + aludni), egy \"to\" szócskát kell tenned közéjük hídként.\n• Helytelen: I like sleep.\n• Helyes: I like to sleep."
+      },
+      {
+        "heading": "A Szuperképesség (Can)",
+        "text": "A can (tud, képes rá) egy különleges \"szuper-ige\", ami felrúg minden eddigi szabályt! 1. Sosem kap \"s\" betűt: He can run (NEM: He cans run). 2. Sosem kell utána a \"to\" híd: I can swim (NEM: I can to swim). 3. Nincs szüksége a Do/Does segédigékre kérdésnél vagy tagadásnál. Csak cseréld fel a szavakat: Can you jump? (NEM: Do you can jump?)."
+      }
+    ]
+  },
+  "Module_6": {
+    "title": "Éppen Most (Folyamatos Jelen)",
+    "content": [
+      {
+        "heading": "Mit csinálsz MOST? (-ING)",
+        "text": "A magyar nyelv nem tesz különbséget aközött, hogy mit csinálsz általában, és mit csinálsz éppen most. Az angol viszont igen! Ha valami pont most, ebben a pillanatban történik, kötelező használni a létigét (am/is/are) ÉS az ige végére egy \"-ing\" ragot kell tenned.\n• Minden nap: I read every day. (Olvasok minden nap.)\n• Éppen most: I am reading now. (Éppen most olvasok.)"
+      },
+      {
+        "heading": "Milyen színű? (A jelzők helye)",
+        "text": "Az angolban a színek és tulajdonságok – akárcsak a magyarban – mindig a dolog elé kerülnek.\n• A red shirt = Egy piros ing.\nFigyelj a többesszámra! A nadrág (pants) angolul többesszámban van, ezért nem kap \"a/an\" (egy) névelőt: Blue pants (Kék nadrág)."
+      }
+    ]
+  },
+  "Module_7": {
+    "title": "Időutazás a Múltba (Past Simple)",
+    "content": [
+      {
+        "heading": "A Múlt Idő (Volt, Csinálta)",
+        "text": "Ha a múltba utazunk (pl. tegnap), az angol nyelv nagyon egyszerűvé válik: az igék múlt idejű alakja minden személynél (I, you, he, we, they) pontosan ugyanaz! Nincs többé 's' szabály!\n• A létige múlt ideje: was (én voltam, ő volt) és were (te voltál, mi voltunk, ők voltak).\n• Általános igék: Csak tegyél egy \"-ed\" ragot a végére: play -> played (játszott).\n• Rendhagyó igék: Néhány szót egyszerűen meg kell jegyezni, mert máshogy változnak: go -> went (ment), eat -> ate (evett)."
+      },
+      {
+        "heading": "A Múlt Tolvaja (Did / Didn't)",
+        "text": "Ahogy a jelenben a Do/Does segített, a múltban a Did (kérdésnél) és a Didn't (tagadásnál) lesz a barátod.\n• Vigyázat, csapda! Amint a did vagy didn't belép a mondatba, \"ellopja\" a múlt időt, így a cselekvést jelentő főige visszaváltozik a normál, jelen idejű alakjára!\n• Helytelen: I didn't played.\n• Helyes: I didn't play.\n• Helytelen: Did you went?\n• Helyes: Did you go?"
+      }
+    ]
+  }
+}

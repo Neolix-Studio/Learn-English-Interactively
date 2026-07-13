@@ -1,0 +1,502 @@
+{
+    "title": "Megcsináltam!",
+    "type": "multi_level_node",
+    "targetWords": [
+        "played",
+        "cooked",
+        "worked",
+        "walked"
+    ],
+    "dictionary": {
+        "played": "játszott (minden személyben: én játszottam, ő játszott stb.)",
+        "cooked": "főzött (minden személyben)",
+        "worked": "dolgozott (minden személyben)",
+        "walked": "sétált (minden személyben)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "played",
+                "cooked"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "játszott",
+                    "correctAnswer": "played",
+                    "options": [
+                        { "id": "played", "text": "played", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='30' fill='#e74c3c'/><path d='M30 40 Q50 20 70 40' stroke='#fff' stroke-width='3' fill='none'/><path d='M30 60 Q50 80 70 60' stroke='#fff' stroke-width='3' fill='none'/><text x='50' y='55' font-size='18' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>+ED</text></svg>" },
+                        { "id": "cooked", "text": "cooked", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='50' width='40' height='30' rx='5' fill='#7f8c8d'/><rect x='20' y='55' width='10' height='5' fill='#34495e'/><path d='M40 50 Q45 30 50 50 M50 50 Q55 30 60 50' stroke='#bdc3c7' stroke-width='3' fill='none'/><text x='50' y='72' font-size='14' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>+ED</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "főzött",
+                    "correctAnswer": "cooked",
+                    "options": [
+                        { "id": "played", "text": "played", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='30' fill='#e74c3c'/><path d='M30 40 Q50 20 70 40' stroke='#fff' stroke-width='3' fill='none'/><path d='M30 60 Q50 80 70 60' stroke='#fff' stroke-width='3' fill='none'/><text x='50' y='55' font-size='18' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>+ED</text></svg>" },
+                        { "id": "cooked", "text": "cooked", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='50' width='40' height='30' rx='5' fill='#7f8c8d'/><rect x='20' y='55' width='10' height='5' fill='#34495e'/><path d='M40 50 Q45 30 50 50 M50 50 Q55 30 60 50' stroke='#bdc3c7' stroke-width='3' fill='none'/><text x='50' y='72' font-size='14' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>+ED</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én játszottam tegnap.",
+                    "correctAnswer": "I played yesterday.",
+                    "scrambledWords": ["I", "played", "yesterday.", "play", "playing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (férfi) főzött tegnap.",
+                    "correctAnswer": "He cooked yesterday.",
+                    "scrambledWords": ["He", "cooked", "yesterday.", "cooks", "cook"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi játszottunk a kutyával.",
+                    "sentence": "We ____ with the dog.",
+                    "answer": "played",
+                    "options": ["played", "play", "plays", "playing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te főztél a konyhában.",
+                    "correctAnswer": "You cooked in the kitchen.",
+                    "scrambledWords": ["You", "cooked", "in", "the", "kitchen.", "cook", "cooking"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) játszott tegnap.",
+                    "sentence": "She ____ yesterday.",
+                    "answer": "played",
+                    "options": ["played", "plays", "play", "is playing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők tegnap főztek.",
+                    "correctAnswer": "They cooked yesterday.",
+                    "scrambledWords": ["They", "cooked", "yesterday.", "cook", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem játszott a szobában.",
+                    "correctAnswer": "My brother played in the room.",
+                    "scrambledWords": ["My", "brother", "played", "in", "the", "room.", "plays"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az anyám tegnap főzött.",
+                    "sentence": "My mother ____ yesterday.",
+                    "answer": "cooked",
+                    "options": ["cooked", "cooks", "cook", "cooking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én játszottam és ő (férfi) főzött.",
+                    "correctAnswer": "I played and he cooked.",
+                    "scrambledWords": ["I", "played", "and", "he", "cooked.", "play", "cooks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya tegnap játszott.",
+                    "correctAnswer": "The dog played yesterday.",
+                    "scrambledWords": ["The", "dog", "played", "yesterday.", "plays"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én levest főztem tegnap.",
+                    "sentence": "I ____ soup yesterday.",
+                    "answer": "cooked",
+                    "options": ["cooked", "cook", "am cooking", "cooks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi levest főztünk.",
+                    "correctAnswer": "We cooked soup.",
+                    "scrambledWords": ["We", "cooked", "soup.", "cook", "cooking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők tegnap játszottak a házban.",
+                    "correctAnswer": "They played in the house yesterday.",
+                    "scrambledWords": ["They", "played", "in", "the", "house", "yesterday.", "play"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "worked",
+                "walked"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "dolgozott",
+                    "correctAnswer": "worked",
+                    "options": [
+                        { "id": "worked", "text": "worked", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='40' width='50' height='40' rx='3' fill='#e67e22'/><path d='M40 40 L40 30 Q50 20 60 30 L60 40' stroke='#d35400' stroke-width='4' fill='none'/><text x='50' y='65' font-size='16' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>+ED</text></svg>" },
+                        { "id": "walked", "text": "walked", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M50 20 L50 60 M50 60 L35 90 M50 60 L65 90' stroke='#27ae60' stroke-width='6' stroke-linecap='round' fill='none'/><text x='75' y='50' font-size='16' font-family='Arial' font-weight='bold' fill='#27ae60'>+ED</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "sétált",
+                    "correctAnswer": "walked",
+                    "options": [
+                        { "id": "worked", "text": "worked", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='40' width='50' height='40' rx='3' fill='#e67e22'/><path d='M40 40 L40 30 Q50 20 60 30 L60 40' stroke='#d35400' stroke-width='4' fill='none'/><text x='50' y='65' font-size='16' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>+ED</text></svg>" },
+                        { "id": "walked", "text": "walked", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M50 20 L50 60 M50 60 L35 90 M50 60 L65 90' stroke='#27ae60' stroke-width='6' stroke-linecap='round' fill='none'/><text x='75' y='50' font-size='16' font-family='Arial' font-weight='bold' fill='#27ae60'>+ED</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én dolgoztam tegnap.",
+                    "correctAnswer": "I worked yesterday.",
+                    "scrambledWords": ["I", "worked", "yesterday.", "work", "am"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) sétált a kutyával.",
+                    "correctAnswer": "She walked with the dog.",
+                    "scrambledWords": ["She", "walked", "with", "the", "dog.", "walks"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi tegnap dolgoztunk.",
+                    "sentence": "We ____ yesterday.",
+                    "answer": "worked",
+                    "options": ["worked", "work", "are working", "works"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te sétáltál a ház mellett.",
+                    "correctAnswer": "You walked next to the house.",
+                    "scrambledWords": ["You", "walked", "next", "to", "the", "house.", "walk"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők dolgoztak a konyhában.",
+                    "sentence": "They ____ in the kitchen.",
+                    "answer": "worked",
+                    "options": ["worked", "work", "working", "works"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A rendőr tegnap sétált.",
+                    "correctAnswer": "The policeman walked yesterday.",
+                    "scrambledWords": ["The", "policeman", "walked", "yesterday.", "walks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám dolgozott.",
+                    "correctAnswer": "My father worked.",
+                    "scrambledWords": ["My", "father", "worked.", "work", "is"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én tegnap sétáltam.",
+                    "sentence": "I ____ yesterday.",
+                    "answer": "walked",
+                    "options": ["walked", "walk", "walks", "am walking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) sétált és én dolgoztam.",
+                    "correctAnswer": "He walked and I worked.",
+                    "scrambledWords": ["He", "walked", "and", "I", "worked.", "walk", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tanár tegnap dolgozott.",
+                    "correctAnswer": "The teacher worked yesterday.",
+                    "scrambledWords": ["The", "teacher", "worked", "yesterday.", "works"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi sétáltunk a házban.",
+                    "sentence": "We ____ in the house.",
+                    "answer": "walked",
+                    "options": ["walked", "walk", "walking", "works"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te dolgoztál a szobában tegnap.",
+                    "correctAnswer": "You worked in the room yesterday.",
+                    "scrambledWords": ["You", "worked", "in", "the", "room", "yesterday.", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom sétált a kutyával.",
+                    "correctAnswer": "My friend walked with the dog.",
+                    "scrambledWords": ["My", "friend", "walked", "with", "the", "dog.", "walks"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én dolgoztam, te sétáltál.",
+                    "correctAnswer": "I worked, you walked.",
+                    "scrambledWords": ["I", "worked,", "you", "walked.", "work,", "walk."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) főzött és ő (férfi) játszott.",
+                    "correctAnswer": "She cooked and he played.",
+                    "scrambledWords": ["She", "cooked", "and", "he", "played.", "cooks", "plays"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya sétált az asztal alatt.",
+                    "sentence": "The dog ____ under the table.",
+                    "answer": "walked",
+                    "options": ["walked", "walks", "walk", "working"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi tegnap dolgoztunk és játszottunk.",
+                    "correctAnswer": "We worked and played yesterday.",
+                    "scrambledWords": ["We", "worked", "and", "played", "yesterday.", "work", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők húst főztek tegnap.",
+                    "sentence": "They ____ meat yesterday.",
+                    "answer": "cooked",
+                    "options": ["cooked", "cook", "cooks", "cooking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem sétált a házban.",
+                    "correctAnswer": "My brother walked in the house.",
+                    "scrambledWords": ["My", "brother", "walked", "in", "the", "house.", "walks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te játszottál a szobában tegnap.",
+                    "correctAnswer": "You played in the room yesterday.",
+                    "scrambledWords": ["You", "played", "in", "the", "room", "yesterday.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az anyám tegnap dolgozott.",
+                    "sentence": "My mother ____ yesterday.",
+                    "answer": "worked",
+                    "options": ["worked", "works", "work", "working"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én levest főztem tegnap.",
+                    "correctAnswer": "I cooked soup yesterday.",
+                    "scrambledWords": ["I", "cooked", "soup", "yesterday.", "cook"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők sétáltak a kutya mellett.",
+                    "correctAnswer": "They walked next to the dog.",
+                    "scrambledWords": ["They", "walked", "next", "to", "the", "dog.", "walk"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) játszott a kutyával.",
+                    "sentence": "He ____ with the dog.",
+                    "answer": "played",
+                    "options": ["played", "plays", "play", "playing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tanár tegnap sétált és dolgozott.",
+                    "correctAnswer": "The teacher walked and worked yesterday.",
+                    "scrambledWords": ["The", "teacher", "walked", "and", "worked", "yesterday.", "walks", "works"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi tegnap főztünk a konyhában.",
+                    "sentence": "We ____ in the kitchen yesterday.",
+                    "answer": "cooked",
+                    "options": ["cooked", "cook", "cooks", "cooking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én tegnap játszottam az ágyon.",
+                    "correctAnswer": "I played on the bed yesterday.",
+                    "scrambledWords": ["I", "played", "on", "the", "bed", "yesterday.", "play"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) dolgozott a konyhában.",
+                    "correctAnswer": "She worked in the kitchen.",
+                    "scrambledWords": ["She", "worked", "in", "the", "kitchen.", "works"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én minden nap dolgozom, de tegnap játszottam.",
+                    "correctAnswer": "I work every day, but yesterday I played.",
+                    "scrambledWords": ["I", "work", "every", "day,", "but", "yesterday", "I", "played.", "worked"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) ma játszik, de tegnap dolgozott.",
+                    "sentence": "He is playing today, but yesterday he ____.",
+                    "answer": "worked",
+                    "options": ["worked", "works", "work", "working"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te minden nap főzöl, de tegnap sétáltál.",
+                    "correctAnswer": "You cook every day, but yesterday you walked.",
+                    "scrambledWords": ["You", "cook", "every", "day,", "but", "yesterday", "you", "walked.", "walk"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi ma játszunk, de tegnap dolgoztunk.",
+                    "correctAnswer": "We are playing today, but yesterday we worked.",
+                    "scrambledWords": ["We", "are", "playing", "today,", "but", "yesterday", "we", "worked.", "work"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) tegnap levest főzött.",
+                    "sentence": "She ____ soup yesterday.",
+                    "answer": "cooked",
+                    "options": ["cooked", "cooks", "cook", "cooking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya minden nap alszik, de tegnap sétált.",
+                    "correctAnswer": "The dog sleeps every day, but yesterday it walked.",
+                    "scrambledWords": ["The", "dog", "sleeps", "every", "day,", "but", "yesterday", "it", "walked.", "walks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők ma dolgoznak, de tegnap játszottak.",
+                    "correctAnswer": "They are working today, but yesterday they played.",
+                    "scrambledWords": ["They", "are", "working", "today,", "but", "yesterday", "they", "played.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám tegnap húst főzött.",
+                    "sentence": "My father ____ meat yesterday.",
+                    "answer": "cooked",
+                    "options": ["cooked", "cooks", "cook", "cooking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én sétáltam a kutyával tegnap.",
+                    "correctAnswer": "I walked with the dog yesterday.",
+                    "scrambledWords": ["I", "walked", "with", "the", "dog", "yesterday.", "walk"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te tegnap itt voltál és játszottál!",
+                    "correctAnswer": "You were here yesterday and you played!",
+                    "scrambledWords": ["You", "were", "here", "yesterday", "and", "you", "played!", "play!"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem tegnap dolgozott a szobában.",
+                    "sentence": "My brother ____ in the room yesterday.",
+                    "answer": "worked",
+                    "options": ["worked", "works", "work", "working"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) itt volt tegnap és főzött.",
+                    "correctAnswer": "She was here yesterday and she cooked.",
+                    "scrambledWords": ["She", "was", "here", "yesterday", "and", "she", "cooked.", "cooks."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi ott voltunk és sétáltunk.",
+                    "correctAnswer": "We were there and we walked.",
+                    "scrambledWords": ["We", "were", "there", "and", "we", "walked.", "walk."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők tegnap játszottak a szobában.",
+                    "sentence": "They ____ in the room yesterday.",
+                    "answer": "played",
+                    "options": ["played", "play", "plays", "playing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én minden nap sétálok, de tegnap dolgoztam.",
+                    "correctAnswer": "I walk every day, but yesterday I worked.",
+                    "scrambledWords": ["I", "walk", "every", "day,", "but", "yesterday", "I", "worked.", "work."]
+                }
+            ]
+        }
+    ]
+}

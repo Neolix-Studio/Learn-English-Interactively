@@ -1,0 +1,661 @@
+{
+  "id": "cons_sh_zh",
+  "type": "character_lesson",
+  "title": "CONS SH ZH",
+  "characters": [
+    "ʃ",
+    "ʒ"
+  ],
+  "lessons": [
+    {
+      "id": "cons_sh_zh_level_1",
+      "title": "Szint 1",
+      "items": [
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "dilution",
+          "word2": "delusion",
+          "isSame": false
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "shoe",
+          "word2": "shoe",
+          "isSame": true
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "shoe",
+              "audioUrl": null
+            },
+            {
+              "text": "measure",
+              "audioUrl": null
+            },
+            {
+              "text": "dilution",
+              "audioUrl": null
+            },
+            {
+              "text": "delusion",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "dilution",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "delusion",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "dilution",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "delusion",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "shoe",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "measure",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "shoe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "measure",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "shoe",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "measure",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_sh_zh_level_2",
+      "title": "Szint 2",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "pressure",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "pleasure",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "pressure",
+              "audioUrl": null
+            },
+            {
+              "text": "pleasure",
+              "audioUrl": null
+            },
+            {
+              "text": "fission",
+              "audioUrl": null
+            },
+            {
+              "text": "vision",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "pressure",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "pleasure",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "fission",
+          "word2": "vision",
+          "isSame": false
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "pressure",
+          "word2": "pleasure",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "fission",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "vision",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "fission",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "vision",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "pressure",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "pleasure",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_sh_zh_level_3",
+      "title": "Szint 3",
+      "items": [
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "glacier",
+              "audioUrl": null
+            },
+            {
+              "text": "glazier",
+              "audioUrl": null
+            },
+            {
+              "text": "assure",
+              "audioUrl": null
+            },
+            {
+              "text": "azure",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "glacier",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "glazier",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "assure",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "azure",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "glacier",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "glazier",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "assure",
+          "word2": "azure",
+          "isSame": false
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "glacier",
+          "word2": "glazier",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "assure",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "azure",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "assure",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "glazier",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_sh_zh_level_4",
+      "title": "Szint 4",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "mesh",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "measure",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "ruche",
+          "word2": "rouge",
+          "isSame": false
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "ruche",
+              "audioUrl": null
+            },
+            {
+              "text": "rouge",
+              "audioUrl": null
+            },
+            {
+              "text": "mesh",
+              "audioUrl": null
+            },
+            {
+              "text": "measure",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "mesh",
+          "word2": "mesh",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "ruche",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "rouge",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "mesh",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "measure",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "ruche",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "rouge",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "measure",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "rouge",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_sh_zh_level_5",
+      "title": "Szint 5",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bash",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "beige",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bash",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "beige",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "crash",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "massage",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "bash",
+              "audioUrl": null
+            },
+            {
+              "text": "beige",
+              "audioUrl": null
+            },
+            {
+              "text": "crash",
+              "audioUrl": null
+            },
+            {
+              "text": "massage",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "bash",
+          "word2": "beige",
+          "isSame": false
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "crash",
+          "word2": "crash",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "crash",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "massage",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "bash",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "beige",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    }
+  ]
+}

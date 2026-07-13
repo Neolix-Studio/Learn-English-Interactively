@@ -1,0 +1,924 @@
+{
+    "title": "Kérdezz és tagadj!",
+    "type": "multi_level_node",
+    "targetWords": [
+        "did",
+        "didn't"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "didn't"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nem (múlt időben: didn't)",
+                    "correctAnswer": "didn't",
+                    "options": [
+                        {
+                            "id": "didn't",
+                            "text": "didn't",
+                            "correct": true
+                        },
+                        {
+                            "id": "don't",
+                            "text": "don't",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_7a032517"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem dolgoztam tegnap.",
+                    "correctAnswer": "I didn't work yesterday.",
+                    "scrambledWords": [
+                        "I",
+                        "didn't",
+                        "work",
+                        "yesterday.",
+                        "worked",
+                        "don't"
+                    ],
+                    "id": "item_10972f27"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) nem ment oda.",
+                    "correctAnswer": "He didn't go there.",
+                    "scrambledWords": [
+                        "He",
+                        "didn't",
+                        "go",
+                        "there.",
+                        "went",
+                        "doesn't"
+                    ],
+                    "id": "item_1fe087ca"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te nem ettél pizzát.",
+                    "sentence": "You ____ eat pizza.",
+                    "answer": "didn't",
+                    "options": [
+                        "didn't",
+                        "don't",
+                        "ate",
+                        "haven't"
+                    ],
+                    "id": "item_bb289fb9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi nem játszottunk tegnap.",
+                    "correctAnswer": "We didn't play yesterday.",
+                    "scrambledWords": [
+                        "We",
+                        "didn't",
+                        "play",
+                        "yesterday.",
+                        "played"
+                    ],
+                    "id": "item_37021a20"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) nem főzött levest.",
+                    "sentence": "She didn't ____ soup.",
+                    "answer": "cook",
+                    "options": [
+                        "cook",
+                        "cooked",
+                        "cooks",
+                        "cooking"
+                    ],
+                    "id": "item_64706c34"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem ittak vizet.",
+                    "correctAnswer": "They didn't drink water.",
+                    "scrambledWords": [
+                        "They",
+                        "didn't",
+                        "drink",
+                        "water.",
+                        "drank"
+                    ],
+                    "id": "item_daad9702"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem aludtam a szobában.",
+                    "correctAnswer": "I didn't sleep in the room.",
+                    "scrambledWords": [
+                        "I",
+                        "didn't",
+                        "sleep",
+                        "in",
+                        "the",
+                        "room.",
+                        "slept"
+                    ],
+                    "id": "item_ac3901e3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te nem olvastál tegnap.",
+                    "sentence": "You didn't ____ yesterday.",
+                    "answer": "read",
+                    "options": [
+                        "read",
+                        "readed",
+                        "reading",
+                        "don't"
+                    ],
+                    "id": "item_769098fa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya nem sétált.",
+                    "correctAnswer": "The dog didn't walk.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "didn't",
+                        "walk.",
+                        "walked"
+                    ],
+                    "id": "item_24047ea8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám nem dolgozott tegnap.",
+                    "correctAnswer": "My father didn't work yesterday.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "didn't",
+                        "work",
+                        "yesterday.",
+                        "worked"
+                    ],
+                    "id": "item_43b9a1dd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi nem ettünk húst.",
+                    "sentence": "We ____ eat meat.",
+                    "answer": "didn't",
+                    "options": [
+                        "didn't",
+                        "don't",
+                        "ate",
+                        "not"
+                    ],
+                    "id": "item_93ad3f3e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) nem olvasott egy könyvet.",
+                    "correctAnswer": "He didn't read a book.",
+                    "scrambledWords": [
+                        "He",
+                        "didn't",
+                        "read",
+                        "a",
+                        "book.",
+                        "reads"
+                    ],
+                    "id": "item_57173421"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem főztek a konyhában.",
+                    "correctAnswer": "They didn't cook in the kitchen.",
+                    "scrambledWords": [
+                        "They",
+                        "didn't",
+                        "cook",
+                        "in",
+                        "the",
+                        "kitchen.",
+                        "cooked"
+                    ],
+                    "id": "item_685c2483"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én nem kávét ittam.",
+                    "sentence": "I didn't ____ coffee.",
+                    "answer": "drink",
+                    "options": [
+                        "drink",
+                        "drank",
+                        "drinks",
+                        "drinking"
+                    ],
+                    "id": "item_5e7f1839"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "did"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "múlt idejű kérdés (did)",
+                    "correctAnswer": "did",
+                    "options": [
+                        {
+                            "id": "did",
+                            "text": "did",
+                            "correct": true
+                        },
+                        {
+                            "id": "do",
+                            "text": "do",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_8433e8b2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Dolgoztál tegnap?",
+                    "correctAnswer": "Did you work yesterday?",
+                    "scrambledWords": [
+                        "Did",
+                        "you",
+                        "work",
+                        "yesterday?",
+                        "worked?",
+                        "Do"
+                    ],
+                    "id": "item_9c35e0af"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) odament?",
+                    "correctAnswer": "Did he go there?",
+                    "scrambledWords": [
+                        "Did",
+                        "he",
+                        "go",
+                        "there?",
+                        "went?",
+                        "Does"
+                    ],
+                    "id": "item_4942031d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ettél pizzát?",
+                    "sentence": "____ you eat pizza?",
+                    "answer": "Did",
+                    "options": [
+                        "Did",
+                        "Do",
+                        "Are",
+                        "Have"
+                    ],
+                    "id": "item_50c53b8c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők játszottak tegnap?",
+                    "correctAnswer": "Did they play yesterday?",
+                    "scrambledWords": [
+                        "Did",
+                        "they",
+                        "play",
+                        "yesterday?",
+                        "played?"
+                    ],
+                    "id": "item_981de85b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Főzött ő (nő) levest?",
+                    "sentence": "Did she ____ soup?",
+                    "answer": "cook",
+                    "options": [
+                        "cook",
+                        "cooked",
+                        "cooks",
+                        "cooking"
+                    ],
+                    "id": "item_ece765e7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ittak vizet?",
+                    "correctAnswer": "Did they drink water?",
+                    "scrambledWords": [
+                        "Did",
+                        "they",
+                        "drink",
+                        "water?",
+                        "drank?"
+                    ],
+                    "id": "item_ef93f3fc"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Aludtál a hálószobában?",
+                    "correctAnswer": "Did you sleep in the bedroom?",
+                    "scrambledWords": [
+                        "Did",
+                        "you",
+                        "sleep",
+                        "in",
+                        "the",
+                        "bedroom?",
+                        "slept"
+                    ],
+                    "id": "item_347710a8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Olvastatok tegnap?",
+                    "sentence": "____ you read yesterday?",
+                    "answer": "Did",
+                    "options": [
+                        "Did",
+                        "Do",
+                        "Are",
+                        "Were"
+                    ],
+                    "id": "item_b4458d98"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Sétált a kutya?",
+                    "correctAnswer": "Did the dog walk?",
+                    "scrambledWords": [
+                        "Did",
+                        "the",
+                        "dog",
+                        "walk?",
+                        "walked?"
+                    ],
+                    "id": "item_79256050"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Dolgozott az apád?",
+                    "correctAnswer": "Did your father work?",
+                    "scrambledWords": [
+                        "Did",
+                        "your",
+                        "father",
+                        "work?",
+                        "worked?",
+                        "Does"
+                    ],
+                    "id": "item_dc9f98ad"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ettetek húst tegnap?",
+                    "sentence": "Did you ____ meat yesterday?",
+                    "answer": "eat",
+                    "options": [
+                        "eat",
+                        "ate",
+                        "eats",
+                        "eating"
+                    ],
+                    "id": "item_d53b7a49"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Olvassott ő (nő) egy könyvet?",
+                    "correctAnswer": "Did she read a book?",
+                    "scrambledWords": [
+                        "Did",
+                        "she",
+                        "read",
+                        "a",
+                        "book?",
+                        "reads"
+                    ],
+                    "id": "item_f0a6a175"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ittál kávét reggel?",
+                    "sentence": "____ you drink coffee in the morning?",
+                    "answer": "Did",
+                    "options": [
+                        "Did",
+                        "Do",
+                        "Were",
+                        "Are"
+                    ],
+                    "id": "item_e1d15f75"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Főztek a konyhában?",
+                    "correctAnswer": "Did they cook in the kitchen?",
+                    "scrambledWords": [
+                        "Did",
+                        "they",
+                        "cook",
+                        "in",
+                        "the",
+                        "kitchen?",
+                        "cooked"
+                    ],
+                    "id": "item_a39edb64"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Dolgoztál tegnap? Nem, nem dolgoztam.",
+                    "correctAnswer": "Did you work yesterday? No, I didn't work.",
+                    "scrambledWords": [
+                        "Did",
+                        "you",
+                        "work",
+                        "yesterday?",
+                        "No,",
+                        "I",
+                        "didn't",
+                        "work.",
+                        "worked."
+                    ],
+                    "id": "item_9229dd0a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) odament? Nem, ő nem ment oda.",
+                    "correctAnswer": "Did he go there? No, he didn't go.",
+                    "scrambledWords": [
+                        "Did",
+                        "he",
+                        "go",
+                        "there?",
+                        "No,",
+                        "he",
+                        "didn't",
+                        "go.",
+                        "went"
+                    ],
+                    "id": "item_96f41c7b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ettél csokoládét? Nem, nem ettem.",
+                    "sentence": "Did you eat chocolate? No, I ____ eat.",
+                    "answer": "didn't",
+                    "options": [
+                        "didn't",
+                        "don't",
+                        "ate",
+                        "not"
+                    ],
+                    "id": "item_b265129d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Főzött az anyád levest? Igen, főzött.",
+                    "correctAnswer": "Did your mother cook soup? Yes, she cooked.",
+                    "scrambledWords": [
+                        "Did",
+                        "your",
+                        "mother",
+                        "cook",
+                        "soup?",
+                        "Yes,",
+                        "she",
+                        "cooked."
+                    ],
+                    "id": "item_bd8e1f6b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Aludtál tegnap?",
+                    "sentence": "Did you ____ yesterday?",
+                    "answer": "sleep",
+                    "options": [
+                        "sleep",
+                        "slept",
+                        "sleeps",
+                        "sleeping"
+                    ],
+                    "id": "item_d79a57a1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem olvastam, én játszottam tegnap.",
+                    "correctAnswer": "I didn't read, I played yesterday.",
+                    "scrambledWords": [
+                        "I",
+                        "didn't",
+                        "read,",
+                        "I",
+                        "played",
+                        "yesterday.",
+                        "readed"
+                    ],
+                    "id": "item_8e3a0d65"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ittak kávét? Nem, nem ittak.",
+                    "sentence": "Did they drink coffee? No, they ____ drink.",
+                    "answer": "didn't",
+                    "options": [
+                        "didn't",
+                        "don't",
+                        "drank",
+                        "aren't"
+                    ],
+                    "id": "item_aea9d48c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Sétáltál a fivéremmel? Igen, sétáltam.",
+                    "correctAnswer": "Did you walk with my brother? Yes, I walked.",
+                    "scrambledWords": [
+                        "Did",
+                        "you",
+                        "walk",
+                        "with",
+                        "my",
+                        "brother?",
+                        "Yes,",
+                        "I",
+                        "walked."
+                    ],
+                    "id": "item_3fb96aea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom nem dolgozott, ő aludt.",
+                    "correctAnswer": "My friend didn't work, he slept.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "didn't",
+                        "work,",
+                        "he",
+                        "slept.",
+                        "worked,",
+                        "sleeped"
+                    ],
+                    "id": "item_fd3548ce"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Dolgoztak tegnap?",
+                    "sentence": "____ they work yesterday?",
+                    "answer": "Did",
+                    "options": [
+                        "Did",
+                        "Do",
+                        "Are",
+                        "Were"
+                    ],
+                    "id": "item_82a3fd24"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Olvastál egy könyvet? Nem, nem olvastam.",
+                    "correctAnswer": "Did you read a book? No, I didn't read.",
+                    "scrambledWords": [
+                        "Did",
+                        "you",
+                        "read",
+                        "a",
+                        "book?",
+                        "No,",
+                        "I",
+                        "didn't",
+                        "read."
+                    ],
+                    "id": "item_26a7e3a2"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) nem játszott a konyhában.",
+                    "sentence": "She didn't ____ in the kitchen.",
+                    "answer": "play",
+                    "options": [
+                        "play",
+                        "played",
+                        "plays",
+                        "playing"
+                    ],
+                    "id": "item_cb2fd4ff"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya evett húst? Igen, evett.",
+                    "correctAnswer": "Did the dog eat meat? Yes, it ate.",
+                    "scrambledWords": [
+                        "Did",
+                        "the",
+                        "dog",
+                        "eat",
+                        "meat?",
+                        "Yes,",
+                        "it",
+                        "ate.",
+                        "eated"
+                    ],
+                    "id": "item_7bb443c3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi nem mentünk oda tegnap.",
+                    "correctAnswer": "We didn't go there yesterday.",
+                    "scrambledWords": [
+                        "We",
+                        "didn't",
+                        "go",
+                        "there",
+                        "yesterday.",
+                        "went"
+                    ],
+                    "id": "item_aa21d313"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők nem sétáltak a ház mellett.",
+                    "sentence": "They didn't ____ next to the house.",
+                    "answer": "walk",
+                    "options": [
+                        "walk",
+                        "walked",
+                        "walks",
+                        "walking"
+                    ],
+                    "id": "item_9202f9a6"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Te tegnap itt voltál? Nem, én nem voltam itt.",
+                    "correctAnswer": "Were you here yesterday? No, I wasn't here.",
+                    "scrambledWords": [
+                        "Were",
+                        "you",
+                        "here",
+                        "yesterday?",
+                        "No,",
+                        "I",
+                        "wasn't",
+                        "here.",
+                        "Did",
+                        "didn't"
+                    ],
+                    "id": "item_e311053c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Dolgoztál ma? Nem, tegnap dolgoztam.",
+                    "sentence": "Are you working today? No, I ____ yesterday.",
+                    "answer": "worked",
+                    "options": [
+                        "worked",
+                        "work",
+                        "working",
+                        "did work"
+                    ],
+                    "id": "item_e439dff6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem főztem levest tegnap, én pizzát ettem.",
+                    "correctAnswer": "I didn't cook soup yesterday, I ate pizza.",
+                    "scrambledWords": [
+                        "I",
+                        "didn't",
+                        "cook",
+                        "soup",
+                        "yesterday,",
+                        "I",
+                        "ate",
+                        "pizza.",
+                        "cooked",
+                        "eated"
+                    ],
+                    "id": "item_cef0f82b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tudsz úszni? Tegnap úsztam, de ma nem tudok!",
+                    "correctAnswer": "Can you swim? I swam yesterday, but today I can't!",
+                    "scrambledWords": [
+                        "Can",
+                        "you",
+                        "swim?",
+                        "I",
+                        "swam",
+                        "yesterday,",
+                        "but",
+                        "today",
+                        "I",
+                        "can't!"
+                    ],
+                    "id": "item_c9e0ce33"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) nem aludt az ágyon tegnap.",
+                    "sentence": "He didn't ____ on the bed yesterday.",
+                    "answer": "sleep",
+                    "options": [
+                        "sleep",
+                        "slept",
+                        "sleeps",
+                        "sleeping"
+                    ],
+                    "id": "item_772eef6b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi minden nap kávét iszunk, de tegnap nem ittunk.",
+                    "correctAnswer": "We drink coffee every day, but yesterday we didn't drink.",
+                    "scrambledWords": [
+                        "We",
+                        "drink",
+                        "coffee",
+                        "every",
+                        "day,",
+                        "but",
+                        "yesterday",
+                        "we",
+                        "didn't",
+                        "drink.",
+                        "drank"
+                    ],
+                    "id": "item_2a2535d6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők tegnap ott voltak? Nem, nem voltak ott.",
+                    "correctAnswer": "Were they there yesterday? No, they weren't there.",
+                    "scrambledWords": [
+                        "Were",
+                        "they",
+                        "there",
+                        "yesterday?",
+                        "No,",
+                        "they",
+                        "weren't",
+                        "there.",
+                        "Did",
+                        "didn't"
+                    ],
+                    "id": "item_f87fdf71"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Sétáltál reggel? Igen, sétáltam.",
+                    "sentence": "____ you walk in the morning? Yes, I walked.",
+                    "answer": "Did",
+                    "options": [
+                        "Did",
+                        "Do",
+                        "Were",
+                        "Are"
+                    ],
+                    "id": "item_b7d8562c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apád egy fekete inget viselt tegnap?",
+                    "correctAnswer": "Did your father wear a black shirt yesterday?",
+                    "scrambledWords": [
+                        "Did",
+                        "your",
+                        "father",
+                        "wear",
+                        "a",
+                        "black",
+                        "shirt",
+                        "yesterday?",
+                        "wore"
+                    ],
+                    "id": "item_5157d68d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) nem olvasott könyvet, ő zenét hallgatott (játszott).",
+                    "correctAnswer": "She didn't read a book, she played.",
+                    "scrambledWords": [
+                        "She",
+                        "didn't",
+                        "read",
+                        "a",
+                        "book,",
+                        "she",
+                        "played.",
+                        "readed"
+                    ],
+                    "id": "item_27fa9122"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi nem mentünk a házba.",
+                    "sentence": "We didn't ____ into the house.",
+                    "answer": "go",
+                    "options": [
+                        "go",
+                        "went",
+                        "goes",
+                        "going"
+                    ],
+                    "id": "item_1d7a4973"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csináltál tegnap? Én a fivéremmel játszottam.",
+                    "correctAnswer": "What did you do yesterday? I played with my brother.",
+                    "scrambledWords": [
+                        "What",
+                        "did",
+                        "you",
+                        "do",
+                        "yesterday?",
+                        "I",
+                        "played",
+                        "with",
+                        "my",
+                        "brother."
+                    ],
+                    "id": "item_3d6d8016"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem ettek húst tegnap, levest ettek.",
+                    "correctAnswer": "They didn't eat meat yesterday, they ate soup.",
+                    "scrambledWords": [
+                        "They",
+                        "didn't",
+                        "eat",
+                        "meat",
+                        "yesterday,",
+                        "they",
+                        "ate",
+                        "soup."
+                    ],
+                    "id": "item_9aa10009"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tudsz angolul beszélni? Tegnap beszéltem!",
+                    "sentence": "Can you speak English? I ____ yesterday!",
+                    "answer": "spoke",
+                    "options": [
+                        "spoke",
+                        "speak",
+                        "speaks",
+                        "did spoke"
+                    ],
+                    "id": "item_cdb4307e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te dolgoztál, én aludtam, és ő (férfi) nem csinált semmit (nem csinált).",
+                    "correctAnswer": "You worked, I slept, and he didn't do anything.",
+                    "scrambledWords": [
+                        "You",
+                        "worked,",
+                        "I",
+                        "slept,",
+                        "and",
+                        "he",
+                        "didn't",
+                        "do",
+                        "anything.",
+                        "work,",
+                        "sleeped"
+                    ],
+                    "id": "item_29dca1a0"
+                }
+            ]
+        }
+    ]
+}

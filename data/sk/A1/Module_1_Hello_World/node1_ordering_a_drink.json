@@ -1,0 +1,644 @@
+{
+    "title": "Első találkozások",
+    "type": "multi_level_node",
+    "targetWords": [
+        "coffee",
+        "tea",
+        "please",
+        "thanks",
+        "milk",
+        "water",
+        "yes",
+        "no",
+        "hello",
+        "goodbye",
+        "and"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "coffee",
+                "tea",
+                "please",
+                "thanks"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "kávé",
+                    "correctAnswer": "coffee",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": true
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": false
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": false
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_38bbf52a"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "tea",
+                    "correctAnswer": "tea",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": false
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": true
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": false
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_106e2913"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávét, kérem.",
+                    "correctAnswer": "Coffee, please.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "tea,",
+                        "hello",
+                        "please.",
+                        "or"
+                    ],
+                    "id": "item_2a1975f0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Teát, kérem.",
+                    "correctAnswer": "Tea, please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "Tea,",
+                        "please.",
+                        "hello",
+                        "thanks."
+                    ],
+                    "id": "item_6b383af7"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Kérem",
+                    "sentence": "Coffee, ____.",
+                    "answer": "please",
+                    "options": [
+                        "please",
+                        "thanks",
+                        "tea",
+                        "coffee"
+                    ],
+                    "id": "item_0d4c4eb3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Köszönöm.",
+                    "correctAnswer": "Thanks.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "Tea",
+                        "please",
+                        "Thanks."
+                    ],
+                    "id": "item_40ae678b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Kávét, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Coffee",
+                    "options": [
+                        "Coffee",
+                        "Tea",
+                        "please",
+                        "water"
+                    ],
+                    "id": "item_84cd4df0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Teát, köszönöm.",
+                    "correctAnswer": "Tea, thanks.",
+                    "scrambledWords": [
+                        "Thanks.",
+                        "Coffee,",
+                        "Tea,",
+                        "please",
+                        "and"
+                    ],
+                    "id": "item_4ef4ef5e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Teát, kérem.",
+                    "sentence": "____, please.",
+                    "answer": "Tea",
+                    "options": [
+                        "Coffee",
+                        "Tea",
+                        "thanks",
+                        "water"
+                    ],
+                    "id": "item_f0ecf214"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávét, kérem. Köszönöm.",
+                    "correctAnswer": "Coffee, please. Thanks.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "Tea",
+                        "please.",
+                        "Thanks.",
+                        "hello"
+                    ],
+                    "id": "item_7b99b641"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "milk",
+                "water",
+                "yes",
+                "no"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "tej",
+                    "correctAnswer": "milk",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": false
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": false
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": true
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_263403ac"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "víz",
+                    "correctAnswer": "water",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": false
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": false
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": false
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_d7a3f9b5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen.",
+                    "correctAnswer": "Yes.",
+                    "scrambledWords": [
+                        "No.",
+                        "Yes.",
+                        "Please",
+                        "Thanks",
+                        "Tea"
+                    ],
+                    "id": "item_d4fb4d1a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem.",
+                    "correctAnswer": "No.",
+                    "scrambledWords": [
+                        "Yes.",
+                        "No.",
+                        "Coffee",
+                        "Thanks.",
+                        "Water"
+                    ],
+                    "id": "item_3d6092ec"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, kérem.",
+                    "correctAnswer": "Yes, please.",
+                    "scrambledWords": [
+                        "No,",
+                        "Yes,",
+                        "please.",
+                        "thanks",
+                        "coffee"
+                    ],
+                    "id": "item_6bcce3b2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, köszönöm.",
+                    "correctAnswer": "No, thanks.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "thanks.",
+                        "please",
+                        "water"
+                    ],
+                    "id": "item_4698e4ad"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Vizet, kérem.",
+                    "sentence": "____, please.",
+                    "answer": "Water",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Tea"
+                    ],
+                    "id": "item_936bdb91"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tejet, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Milk",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Yes"
+                    ],
+                    "id": "item_f0118bbd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, vizet kérem.",
+                    "correctAnswer": "Yes, water please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "water",
+                        "milk",
+                        "please."
+                    ],
+                    "id": "item_93e43435"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tejet nem, köszönöm.",
+                    "correctAnswer": "No, milk, thanks.",
+                    "scrambledWords": [
+                        "No,",
+                        "Yes,",
+                        "milk,",
+                        "thanks.",
+                        "water,"
+                    ],
+                    "id": "item_e5019606"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "hello",
+                "goodbye",
+                "and"
+            ],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Szia.",
+                    "correctAnswer": "Hello.",
+                    "scrambledWords": [
+                        "Goodbye.",
+                        "Hello.",
+                        "Yes.",
+                        "No."
+                    ],
+                    "id": "item_3f370458"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Viszlát.",
+                    "correctAnswer": "Goodbye.",
+                    "scrambledWords": [
+                        "Goodbye.",
+                        "Hello.",
+                        "Thanks.",
+                        "Please."
+                    ],
+                    "id": "item_10502262"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, kávét kérek.",
+                    "correctAnswer": "Hello, coffee please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "Goodbye,",
+                        "coffee",
+                        "tea",
+                        "please."
+                    ],
+                    "id": "item_c3e30080"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávé és tea.",
+                    "correctAnswer": "Coffee and tea.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "water",
+                        "and",
+                        "hello",
+                        "tea."
+                    ],
+                    "id": "item_353dbd68"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Víz és tej.",
+                    "sentence": "Water ____ milk.",
+                    "answer": "and",
+                    "options": [
+                        "and",
+                        "yes",
+                        "no",
+                        "hello"
+                    ],
+                    "id": "item_f589d0ff"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, vizet és kávét, kérek.",
+                    "correctAnswer": "Hello, water and coffee, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "water",
+                        "and",
+                        "coffee,",
+                        "please."
+                    ],
+                    "id": "item_04b80b87"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Viszlát, köszönöm.",
+                    "correctAnswer": "Goodbye, thanks.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "Hello,",
+                        "thanks.",
+                        "please."
+                    ],
+                    "id": "item_e1ab8eef"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tejet és vizet, kérek.",
+                    "sentence": "Milk and ____, please.",
+                    "answer": "water",
+                    "options": [
+                        "water",
+                        "coffee",
+                        "tea",
+                        "hello"
+                    ],
+                    "id": "item_6a76dbf5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, teát és tejet, kérek.",
+                    "correctAnswer": "Hello, tea and milk, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "tea",
+                        "and",
+                        "milk,",
+                        "please."
+                    ],
+                    "id": "item_9175c8c4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, kávé és víz, köszönöm.",
+                    "correctAnswer": "Yes, coffee and water, thanks.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "coffee",
+                        "and",
+                        "water,",
+                        "thanks."
+                    ],
+                    "id": "item_56f6129c"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Kávét és tejet, kérek.",
+                    "correctAnswer": "Coffee and milk, please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "and",
+                        "milk,",
+                        "please.",
+                        "water"
+                    ],
+                    "id": "item_cce41449"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nem, kávét és vizet, köszönöm.",
+                    "sentence": "No, coffee and water, ____.",
+                    "answer": "thanks",
+                    "options": [
+                        "thanks",
+                        "please",
+                        "yes",
+                        "no"
+                    ],
+                    "id": "item_ae1a5f01"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, tejet és vizet, kérek.",
+                    "correctAnswer": "Hello, milk and water, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "milk",
+                        "and",
+                        "water,",
+                        "please.",
+                        "thanks"
+                    ],
+                    "id": "item_3ea7fbb0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Viszlát, kávé és tea.",
+                    "correctAnswer": "Goodbye, coffee and tea.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "coffee",
+                        "and",
+                        "tea.",
+                        "hello"
+                    ],
+                    "id": "item_b53dd9dc"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, teát és kávét, kérek.",
+                    "correctAnswer": "Yes, tea and coffee please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "tea",
+                        "and",
+                        "coffee",
+                        "please.",
+                        "milk"
+                    ],
+                    "id": "item_b17ad3b6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Vizet nem, köszönöm. Viszlát.",
+                    "correctAnswer": "No, water, thanks. Goodbye.",
+                    "scrambledWords": [
+                        "No,",
+                        "water,",
+                        "thanks.",
+                        "Goodbye.",
+                        "Yes,"
+                    ],
+                    "id": "item_6cb1555d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, kávét és vizet, kérek.",
+                    "correctAnswer": "Hello, coffee and water, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "coffee",
+                        "and",
+                        "water,",
+                        "please."
+                    ],
+                    "id": "item_3c989ab4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávét, tejet és vizet, köszönöm.",
+                    "correctAnswer": "Coffee, milk and water, thanks.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "milk",
+                        "and",
+                        "water,",
+                        "thanks.",
+                        "hello"
+                    ],
+                    "id": "item_ec0c8c6a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia! Igen, teát kérlek.",
+                    "correctAnswer": "Hello! Yes, tea please.",
+                    "scrambledWords": [
+                        "Hello!",
+                        "Yes,",
+                        "tea",
+                        "please.",
+                        "No,"
+                    ],
+                    "id": "item_19e06dd1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávét és teát és tejet és vizet, kérek!",
+                    "correctAnswer": "Coffee and tea and milk and water, please!",
+                    "scrambledWords": [
+                        "Coffee",
+                        "and",
+                        "tea",
+                        "and",
+                        "milk",
+                        "and",
+                        "water,",
+                        "please!"
+                    ],
+                    "id": "item_62922ee8"
+                }
+            ]
+        }
+    ]
+}

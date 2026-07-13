@@ -1,0 +1,511 @@
+{
+    "title": "Öltözködés",
+    "type": "multi_level_node",
+    "targetWords": [
+        "wearing",
+        "shirt",
+        "pants",
+        "red",
+        "blue",
+        "black"
+    ],
+    "dictionary": {
+        "wearing": "visel / hord (éppen most)",
+        "shirt": "ing",
+        "pants": "nadrág",
+        "red": "piros",
+        "blue": "kék",
+        "black": "fekete"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "wearing",
+                "shirt",
+                "red"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ing",
+                    "correctAnswer": "shirt",
+                    "options": [
+                        { "id": "shirt", "text": "shirt", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 20 L70 20 L85 45 L70 50 L70 90 L30 90 L30 50 L15 45 Z' fill='#3498db'/><path d='M40 20 L50 35 L60 20' stroke='#ecf0f1' stroke-width='3' fill='none'/><line x1='50' y1='35' x2='50' y2='90' stroke='#2980b9' stroke-width='2'/></svg>" },
+                        { "id": "pants", "text": "pants", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 20 L70 20 L75 90 L55 90 L50 40 L45 90 L25 90 Z' fill='#2c3e50'/><line x1='30' y1='25' x2='70' y2='25' stroke='#34495e' stroke-width='4'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "piros",
+                    "correctAnswer": "red",
+                    "options": [
+                        { "id": "red", "text": "red", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' fill='#e74c3c'/></svg>" },
+                        { "id": "blue", "text": "blue", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' fill='#3498db'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én egy inget viselek.",
+                    "correctAnswer": "I am wearing a shirt.",
+                    "scrambledWords": ["I", "am", "wearing", "a", "shirt.", "wear"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Egy piros ing.",
+                    "correctAnswer": "A red shirt.",
+                    "scrambledWords": ["A", "red", "shirt.", "blue"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) egy inget visel.",
+                    "sentence": "He is ____ a shirt.",
+                    "answer": "wearing",
+                    "options": ["wearing", "wear", "wears", "doing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én egy piros inget viselek.",
+                    "correctAnswer": "I am wearing a red shirt.",
+                    "scrambledWords": ["I", "am", "wearing", "a", "red", "shirt.", "wear"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) egy piros inget visel most.",
+                    "correctAnswer": "She is wearing a red shirt now.",
+                    "scrambledWords": ["She", "is", "wearing", "a", "red", "shirt", "now.", "wear"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi egy piros inget viselünk.",
+                    "sentence": "We are wearing a ____ shirt.",
+                    "answer": "red",
+                    "options": ["red", "wearing", "now", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mit viselsz most?",
+                    "correctAnswer": "What are you wearing now?",
+                    "scrambledWords": ["What", "are", "you", "wearing", "now?", "wear"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te egy piros inget viselsz.",
+                    "correctAnswer": "You are wearing a red shirt.",
+                    "scrambledWords": ["You", "are", "wearing", "a", "red", "shirt.", "wear"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A tanár egy piros inget visel.",
+                    "sentence": "The teacher ____ wearing a red shirt.",
+                    "answer": "is",
+                    "options": ["is", "are", "am", "does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők piros inget viselnek.",
+                    "correctAnswer": "They are wearing a red shirt.",
+                    "scrambledWords": ["They", "are", "wearing", "a", "red", "shirt.", "wear"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám egy inget visel.",
+                    "correctAnswer": "My father is wearing a shirt.",
+                    "scrambledWords": ["My", "father", "is", "wearing", "a", "shirt.", "wears"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Egy piros ing.",
+                    "sentence": "A ____ shirt.",
+                    "answer": "red",
+                    "options": ["red", "wearing", "now", "blue"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mit csinálsz? Egy piros inget viselek.",
+                    "correctAnswer": "What are you doing? I am wearing a red shirt.",
+                    "scrambledWords": ["What", "are", "you", "doing?", "I", "am", "wearing", "a", "red", "shirt."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "pants",
+                "blue"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nadrág",
+                    "correctAnswer": "pants",
+                    "options": [
+                        { "id": "pants", "text": "pants", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 20 L70 20 L75 90 L55 90 L50 40 L45 90 L25 90 Z' fill='#2c3e50'/><line x1='30' y1='25' x2='70' y2='25' stroke='#34495e' stroke-width='4'/></svg>" },
+                        { "id": "shirt", "text": "shirt", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 20 L70 20 L85 45 L70 50 L70 90 L30 90 L30 50 L15 45 Z' fill='#3498db'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "kék",
+                    "correctAnswer": "blue",
+                    "options": [
+                        { "id": "red", "text": "red", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' fill='#e74c3c'/></svg>" },
+                        { "id": "blue", "text": "blue", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' fill='#3498db'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én nadrágot viselek.",
+                    "correctAnswer": "I am wearing pants.",
+                    "scrambledWords": ["I", "am", "wearing", "pants.", "a"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Kék nadrág.",
+                    "correctAnswer": "Blue pants.",
+                    "scrambledWords": ["Blue", "pants.", "red", "a"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) kék nadrágot visel.",
+                    "sentence": "She is wearing ____ pants.",
+                    "answer": "blue",
+                    "options": ["blue", "red", "a", "wearing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te kék inget viselsz.",
+                    "correctAnswer": "You are wearing a blue shirt.",
+                    "scrambledWords": ["You", "are", "wearing", "a", "blue", "shirt.", "pants."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi nadrágot viselünk.",
+                    "sentence": "We are ____ pants.",
+                    "answer": "wearing",
+                    "options": ["wearing", "wear", "wears", "a"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők kék nadrágot viselnek most.",
+                    "correctAnswer": "They are wearing blue pants now.",
+                    "scrambledWords": ["They", "are", "wearing", "blue", "pants", "now.", "wear"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Egy piros ing és kék nadrág.",
+                    "correctAnswer": "A red shirt and blue pants.",
+                    "scrambledWords": ["A", "red", "shirt", "and", "blue", "pants."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én kék nadrágot viselek.",
+                    "sentence": "I am wearing blue ____.",
+                    "answer": "pants",
+                    "options": ["pants", "shirt", "wearing", "red"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem kék inget visel.",
+                    "correctAnswer": "My brother is wearing a blue shirt.",
+                    "scrambledWords": ["My", "brother", "is", "wearing", "a", "blue", "shirt.", "pants."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te piros nadrágot viselsz.",
+                    "correctAnswer": "You are wearing red pants.",
+                    "scrambledWords": ["You", "are", "wearing", "red", "pants.", "a"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A tanár kék nadrágot visel.",
+                    "sentence": "The teacher is wearing ____ pants.",
+                    "answer": "blue",
+                    "options": ["blue", "a blue", "red", "wearing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mit visel ő (férfi)?",
+                    "correctAnswer": "What is he wearing?",
+                    "scrambledWords": ["What", "is", "he", "wearing?", "wear?"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) kék nadrágot visel.",
+                    "correctAnswer": "He is wearing blue pants.",
+                    "scrambledWords": ["He", "is", "wearing", "blue", "pants.", "a"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "black"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fekete",
+                    "correctAnswer": "black",
+                    "options": [
+                        { "id": "black", "text": "black", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' fill='#2c3e50'/></svg>" },
+                        { "id": "blue", "text": "blue", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' fill='#3498db'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Fekete nadrág.",
+                    "correctAnswer": "Black pants.",
+                    "scrambledWords": ["Black", "pants.", "red", "a"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Egy fekete ing.",
+                    "correctAnswer": "A black shirt.",
+                    "scrambledWords": ["A", "black", "shirt.", "blue"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én fekete nadrágot viselek.",
+                    "sentence": "I am wearing ____ pants.",
+                    "answer": "black",
+                    "options": ["black", "a black", "red", "wearing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) egy fekete inget visel.",
+                    "correctAnswer": "She is wearing a black shirt.",
+                    "scrambledWords": ["She", "is", "wearing", "a", "black", "shirt.", "pants."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te kék nadrágot és egy fekete inget viselsz.",
+                    "correctAnswer": "You are wearing blue pants and a black shirt.",
+                    "scrambledWords": ["You", "are", "wearing", "blue", "pants", "and", "a", "black", "shirt."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A rendőr fekete nadrágot visel.",
+                    "sentence": "The policeman is wearing black ____.",
+                    "answer": "pants",
+                    "options": ["pants", "shirt", "a pants", "wearing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi fekete nadrágot viselünk most.",
+                    "correctAnswer": "We are wearing black pants now.",
+                    "scrambledWords": ["We", "are", "wearing", "black", "pants", "now.", "wear"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők piros inget és fekete nadrágot viselnek.",
+                    "correctAnswer": "They are wearing a red shirt and black pants.",
+                    "scrambledWords": ["They", "are", "wearing", "a", "red", "shirt", "and", "black", "pants."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám egy fekete inget visel.",
+                    "sentence": "My father is wearing a ____ shirt.",
+                    "answer": "black",
+                    "options": ["black", "blue", "red", "now"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom egy kék inget és fekete nadrágot visel.",
+                    "correctAnswer": "My friend is wearing a blue shirt and black pants.",
+                    "scrambledWords": ["My", "friend", "is", "wearing", "a", "blue", "shirt", "and", "black", "pants."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mit visel a tanár?",
+                    "correctAnswer": "What is the teacher wearing?",
+                    "scrambledWords": ["What", "is", "the", "teacher", "wearing?", "wear?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én fekete inget viselek most.",
+                    "sentence": "I am wearing a black shirt ____.",
+                    "answer": "now",
+                    "options": ["now", "wearing", "blue", "doing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te fekete nadrágot viselsz az ágyon.",
+                    "correctAnswer": "You are wearing black pants on the bed.",
+                    "scrambledWords": ["You", "are", "wearing", "black", "pants", "on", "the", "bed."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) egy fekete inget visel a konyhában.",
+                    "correctAnswer": "He is wearing a black shirt in the kitchen.",
+                    "scrambledWords": ["He", "is", "wearing", "a", "black", "shirt", "in", "the", "kitchen."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én dolgozom és egy fekete inget viselek.",
+                    "correctAnswer": "I am working and I am wearing a black shirt.",
+                    "scrambledWords": ["I", "am", "working", "and", "I", "am", "wearing", "a", "black", "shirt."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) kék nadrágot visel most.",
+                    "sentence": "She is wearing ____ pants now.",
+                    "answer": "blue",
+                    "options": ["blue", "a blue", "red", "black"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya a kék nadrágon alszik.",
+                    "correctAnswer": "The dog is sleeping on the blue pants.",
+                    "scrambledWords": ["The", "dog", "is", "sleeping", "on", "the", "blue", "pants.", "sleeps"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mit csinálsz? Én egy piros inget viselek.",
+                    "correctAnswer": "What are you doing? I am wearing a red shirt.",
+                    "scrambledWords": ["What", "are", "you", "doing?", "I", "am", "wearing", "a", "red", "shirt."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az anyám a konyhában olvas most.",
+                    "sentence": "My mother is ____ in the kitchen now.",
+                    "answer": "reading",
+                    "options": ["reading", "read", "reads", "wearing"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi fekete nadrágot és kék inget viselünk.",
+                    "correctAnswer": "We are wearing black pants and a blue shirt.",
+                    "scrambledWords": ["We", "are", "wearing", "black", "pants", "and", "a", "blue", "shirt."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) egy piros inget visel és ő játszik.",
+                    "correctAnswer": "He is wearing a red shirt and he is playing.",
+                    "scrambledWords": ["He", "is", "wearing", "a", "red", "shirt", "and", "he", "is", "playing.", "plays."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te mit viselsz?",
+                    "sentence": "What are you ____?",
+                    "answer": "wearing",
+                    "options": ["wearing", "wear", "doing", "working"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők a kék nadrágot viselik a szobában.",
+                    "correctAnswer": "They are wearing the blue pants in the room.",
+                    "scrambledWords": ["They", "are", "wearing", "the", "blue", "pants", "in", "the", "room."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom alszik, ő fekete nadrágot visel.",
+                    "correctAnswer": "My friend is sleeping, he is wearing black pants.",
+                    "scrambledWords": ["My", "friend", "is", "sleeping,", "he", "is", "wearing", "black", "pants."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem egy fekete inget visel.",
+                    "sentence": "My brother is wearing ____ black shirt.",
+                    "answer": "a",
+                    "options": ["a", "the", "an", "is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én egy piros inget viselek és pizzát eszem most.",
+                    "correctAnswer": "I am wearing a red shirt and eating pizza now.",
+                    "scrambledWords": ["I", "am", "wearing", "a", "red", "shirt", "and", "eating", "pizza", "now."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te kék inget és piros nadrágot viselsz?",
+                    "correctAnswer": "Are you wearing a blue shirt and red pants?",
+                    "scrambledWords": ["Are", "you", "wearing", "a", "blue", "shirt", "and", "red", "pants?", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) kávét iszik most.",
+                    "sentence": "She is ____ coffee now.",
+                    "answer": "drinking",
+                    "options": ["drinking", "drink", "wearing", "working"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mit visel az apád? Egy fekete inget.",
+                    "correctAnswer": "What is your father wearing? A black shirt.",
+                    "scrambledWords": ["What", "is", "your", "father", "wearing?", "A", "black", "shirt.", "wear?"]
+                }
+            ]
+        }
+    ]
+}

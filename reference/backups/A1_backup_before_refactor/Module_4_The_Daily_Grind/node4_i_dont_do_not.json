@@ -1,0 +1,502 @@
+{
+    "title": "Nem csinálom!",
+    "type": "multi_level_node",
+    "targetWords": [
+        "do not",
+        "don't",
+        "does not",
+        "doesn't"
+    ],
+    "dictionary": {
+        "do not": "nem (cselekvés tagadása: én/te/mi/ők)",
+        "don't": "nem (rövidítve: én/te/mi/ők)",
+        "does not": "nem (cselekvés tagadása: ő/az)",
+        "doesn't": "nem (rövidítve: ő/az)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "do not",
+                "don't"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nem (do not)",
+                    "correctAnswer": "do not",
+                    "options": [
+                        { "id": "do not", "text": "do not", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#e74c3c' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#e74c3c' stroke-width='10'/><text x='50' y='95' font-size='15' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>DO NOT</text></svg>" },
+                        { "id": "don't", "text": "don't", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#c0392b' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#c0392b' stroke-width='10'/><text x='50' y='95' font-size='15' font-family='Arial' font-weight='bold' fill='#c0392b' text-anchor='middle'>DON'T</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "nem (don't)",
+                    "correctAnswer": "don't",
+                    "options": [
+                        { "id": "do not", "text": "do not", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#e74c3c' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#e74c3c' stroke-width='10'/><text x='50' y='95' font-size='15' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>DO NOT</text></svg>" },
+                        { "id": "don't", "text": "don't", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#c0392b' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#c0392b' stroke-width='10'/><text x='50' y='95' font-size='15' font-family='Arial' font-weight='bold' fill='#c0392b' text-anchor='middle'>DON'T</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én nem eszem.",
+                    "correctAnswer": "I do not eat.",
+                    "scrambledWords": ["I", "do", "not", "eat.", "am"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én nem iszom.",
+                    "correctAnswer": "I don't drink.",
+                    "scrambledWords": ["I", "don't", "drink.", "no"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te nem dolgozol.",
+                    "sentence": "You ____ work.",
+                    "answer": "don't",
+                    "options": ["don't", "no", "not", "am"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi nem alszunk.",
+                    "correctAnswer": "We do not sleep.",
+                    "scrambledWords": ["We", "do", "not", "sleep.", "no"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők nem játszanak.",
+                    "sentence": "They ____ play.",
+                    "answer": "do not",
+                    "options": ["do not", "no", "are", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem olvasok a konyhában.",
+                    "correctAnswer": "I don't read in the kitchen.",
+                    "scrambledWords": ["I", "don't", "read", "in", "the", "kitchen.", "no"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te nem dolgozol hétvégén.",
+                    "correctAnswer": "You do not work on the weekend.",
+                    "scrambledWords": ["You", "do", "not", "work", "on", "the", "weekend.", "no"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi nem eszünk reggel.",
+                    "sentence": "We ____ eat in the morning.",
+                    "answer": "don't",
+                    "options": ["don't", "no", "not", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők nem isznak kávét.",
+                    "correctAnswer": "They don't drink coffee.",
+                    "scrambledWords": ["They", "don't", "drink", "coffee.", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én eszem, de én nem iszom.",
+                    "correctAnswer": "I eat and I don't drink.",
+                    "scrambledWords": ["I", "eat", "and", "I", "don't", "drink.", "no"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én nem játszom a kutyával.",
+                    "sentence": "I ____ play with the dog.",
+                    "answer": "do not",
+                    "options": ["do not", "no", "am", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi nem alszunk hétfőn.",
+                    "correctAnswer": "We don't sleep on Monday.",
+                    "scrambledWords": ["We", "don't", "sleep", "on", "Monday.", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te nem olvasol éjszaka.",
+                    "correctAnswer": "You do not read at night.",
+                    "scrambledWords": ["You", "do", "not", "read", "at", "night.", "no"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "does not",
+                "doesn't"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nem (does not)",
+                    "correctAnswer": "does not",
+                    "options": [
+                        { "id": "does not", "text": "does not", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#f39c12' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#f39c12' stroke-width='10'/><text x='50' y='95' font-size='13' font-family='Arial' font-weight='bold' fill='#f39c12' text-anchor='middle'>DOES NOT</text></svg>" },
+                        { "id": "doesn't", "text": "doesn't", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#d35400' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#d35400' stroke-width='10'/><text x='50' y='95' font-size='15' font-family='Arial' font-weight='bold' fill='#d35400' text-anchor='middle'>DOESN'T</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "nem (doesn't)",
+                    "correctAnswer": "doesn't",
+                    "options": [
+                        { "id": "does not", "text": "does not", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#f39c12' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#f39c12' stroke-width='10'/><text x='50' y='95' font-size='13' font-family='Arial' font-weight='bold' fill='#f39c12' text-anchor='middle'>DOES NOT</text></svg>" },
+                        { "id": "doesn't", "text": "doesn't", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#d35400' stroke-width='10' fill='none'/><line x1='25' y1='25' x2='75' y2='75' stroke='#d35400' stroke-width='10'/><text x='50' y='95' font-size='15' font-family='Arial' font-weight='bold' fill='#d35400' text-anchor='middle'>DOESN'T</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (férfi) nem eszik.",
+                    "correctAnswer": "He does not eat.",
+                    "scrambledWords": ["He", "does", "not", "eat.", "eats."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) nem iszik.",
+                    "correctAnswer": "She doesn't drink.",
+                    "scrambledWords": ["She", "doesn't", "drink.", "drinks."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem nem dolgozik.",
+                    "sentence": "My brother ____ work.",
+                    "answer": "doesn't",
+                    "options": ["doesn't", "don't", "no", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya nem alszik.",
+                    "correctAnswer": "The dog does not sleep.",
+                    "scrambledWords": ["The", "dog", "does", "not", "sleep.", "sleeps."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az anyám nem játszik.",
+                    "sentence": "My mother doesn't ____.",
+                    "answer": "play",
+                    "options": ["play", "plays", "playing", "no"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) nem olvas a hálószobában.",
+                    "correctAnswer": "He doesn't read in the bedroom.",
+                    "scrambledWords": ["He", "doesn't", "read", "in", "the", "bedroom.", "reads"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tanár nem dolgozik hétvégén.",
+                    "correctAnswer": "The teacher does not work on the weekend.",
+                    "scrambledWords": ["The", "teacher", "does", "not", "work", "on", "the", "weekend.", "works"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A barátom nem eszik.",
+                    "sentence": "My friend ____ eat.",
+                    "answer": "does not",
+                    "options": ["does not", "do not", "no", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem iszik kávét reggel.",
+                    "correctAnswer": "She doesn't drink coffee in the morning.",
+                    "scrambledWords": ["She", "doesn't", "drink", "coffee", "in", "the", "morning.", "drinks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya nem eszik az asztalon.",
+                    "correctAnswer": "The dog does not eat on the table.",
+                    "scrambledWords": ["The", "dog", "does", "not", "eat", "on", "the", "table.", "eats"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) nem dolgozik.",
+                    "sentence": "He doesn't ____.",
+                    "answer": "work",
+                    "options": ["work", "works", "working", "no"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lánytestvérem nem alszik éjszaka.",
+                    "correctAnswer": "My sister doesn't sleep at night.",
+                    "scrambledWords": ["My", "sister", "doesn't", "sleep", "at", "night.", "sleeps"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám nem olvas hétfőn.",
+                    "correctAnswer": "My father does not read on Monday.",
+                    "scrambledWords": ["My", "father", "does", "not", "read", "on", "Monday.", "reads"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem dolgozom és ő (férfi) nem alszik.",
+                    "correctAnswer": "I don't work and he doesn't sleep.",
+                    "scrambledWords": ["I", "don't", "work", "and", "he", "doesn't", "sleep.", "sleeps."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te nem olvasol.",
+                    "sentence": "You ____ read.",
+                    "answer": "don't",
+                    "options": ["don't", "doesn't", "no", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám iszik, de ő nem eszik. (Az anyám iszik, és ő nem eszik)",
+                    "correctAnswer": "My mother drinks and she doesn't eat.",
+                    "scrambledWords": ["My", "mother", "drinks", "and", "she", "doesn't", "eat.", "eats."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya nem játszik.",
+                    "sentence": "The dog ____ play.",
+                    "answer": "does not",
+                    "options": ["does not", "do not", "no", "plays"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi nem dolgozunk pénteken.",
+                    "correctAnswer": "We don't work on Friday.",
+                    "scrambledWords": ["We", "don't", "work", "on", "Friday.", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők nem isznak vizet.",
+                    "correctAnswer": "They do not drink water.",
+                    "scrambledWords": ["They", "do", "not", "drink", "water.", "does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem nem alszik.",
+                    "sentence": "My brother doesn't ____.",
+                    "answer": "sleep",
+                    "options": ["sleep", "sleeps", "don't", "sleeping"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én játszom, és te nem játszol.",
+                    "correctAnswer": "I play and you don't play.",
+                    "scrambledWords": ["I", "play", "and", "you", "don't", "play.", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem olvas a konyhában.",
+                    "correctAnswer": "She does not read in the kitchen.",
+                    "scrambledWords": ["She", "does", "not", "read", "in", "the", "kitchen.", "reads"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) nem eszik.",
+                    "sentence": "He ____ eat.",
+                    "answer": "doesn't",
+                    "options": ["doesn't", "don't", "no", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom nem dolgozik a házban.",
+                    "correctAnswer": "My friend doesn't work in the house.",
+                    "scrambledWords": ["My", "friend", "doesn't", "work", "in", "the", "house.", "works"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem alszom az asztal alatt.",
+                    "correctAnswer": "I do not sleep under the table.",
+                    "scrambledWords": ["I", "do", "not", "sleep", "under", "the", "table.", "does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi nem olvasunk.",
+                    "sentence": "We ____ read.",
+                    "answer": "don't",
+                    "options": ["don't", "doesn't", "no", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tanár nem játszik a szobában.",
+                    "correctAnswer": "The teacher doesn't play in the room.",
+                    "scrambledWords": ["The", "teacher", "doesn't", "play", "in", "the", "room.", "plays"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te eszel, és ő (férfi) nem eszik.",
+                    "correctAnswer": "You eat and he does not eat.",
+                    "scrambledWords": ["You", "eat", "and", "he", "does", "not", "eat.", "eats."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem dolgozom hétfőn.",
+                    "correctAnswer": "I don't work on Monday.",
+                    "scrambledWords": ["I", "don't", "work", "on", "Monday.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A rendőr nem alszik éjszaka.",
+                    "sentence": "The policeman ____ sleep at night.",
+                    "answer": "doesn't",
+                    "options": ["doesn't", "don't", "no", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem iszik kávét és nem eszik.",
+                    "correctAnswer": "She doesn't drink coffee and she doesn't eat.",
+                    "scrambledWords": ["She", "doesn't", "drink", "coffee", "and", "she", "doesn't", "eat.", "drinks", "eats."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya nem alszik az ágyon.",
+                    "correctAnswer": "The dog does not sleep on the bed.",
+                    "scrambledWords": ["The", "dog", "does", "not", "sleep", "on", "the", "bed.", "sleeps"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők nem játszanak hétvégén.",
+                    "sentence": "They ____ play on the weekend.",
+                    "answer": "do not",
+                    "options": ["do not", "does not", "no", "plays"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem dolgozik, és én nem dolgozom.",
+                    "correctAnswer": "My brother works and I don't work.",
+                    "scrambledWords": ["My", "brother", "works", "and", "I", "don't", "work.", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te olvasol reggel, és ő (nő) nem olvas.",
+                    "correctAnswer": "You read in the morning and she doesn't read.",
+                    "scrambledWords": ["You", "read", "in", "the", "morning", "and", "she", "doesn't", "read.", "reads."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A barátom nem eszik a hálószobában.",
+                    "sentence": "My friend doesn't ____ in the bedroom.",
+                    "answer": "eat",
+                    "options": ["eat", "eats", "don't", "eating"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám nem dolgozik pénteken.",
+                    "correctAnswer": "My father does not work on Friday.",
+                    "scrambledWords": ["My", "father", "does", "not", "work", "on", "Friday.", "works"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi nem iszunk vizet, mi kávét iszunk.",
+                    "correctAnswer": "We don't drink water, we drink coffee.",
+                    "scrambledWords": ["We", "don't", "drink", "water,", "we", "drink", "coffee.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én alszom, és a kutya nem alszik.",
+                    "sentence": "I sleep and the dog ____ sleep.",
+                    "answer": "doesn't",
+                    "options": ["doesn't", "don't", "no", "sleeps"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tűzoltó nem játszik az autó mellett.",
+                    "correctAnswer": "The fireman does not play next to the car.",
+                    "scrambledWords": ["The", "fireman", "does", "not", "play", "next", "to", "the", "car.", "plays"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem olvasok a könyvben. (Én nem olvasok a könyvből)",
+                    "correctAnswer": "I don't read in the book.",
+                    "scrambledWords": ["I", "don't", "read", "in", "the", "book.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) nem eszik az asztalon.",
+                    "sentence": "He ____ eat on the table.",
+                    "answer": "does not",
+                    "options": ["does not", "do not", "no", "eats"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A család nem alszik éjszaka.",
+                    "correctAnswer": "The family doesn't sleep at night.",
+                    "scrambledWords": ["The", "family", "doesn't", "sleep", "at", "night.", "sleeps", "don't"]
+                }
+            ]
+        }
+    ]
+}

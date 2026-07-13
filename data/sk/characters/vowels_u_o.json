@@ -1,0 +1,661 @@
+{
+  "id": "vowels_u_o",
+  "type": "character_lesson",
+  "title": "VOWELS U O",
+  "characters": [
+    "ʌ",
+    "ɑ"
+  ],
+  "lessons": [
+    {
+      "id": "vowels_u_o_level_1",
+      "title": "Szint 1",
+      "items": [
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "but",
+              "audioUrl": null
+            },
+            {
+              "text": "hot",
+              "audioUrl": null
+            },
+            {
+              "text": "cup",
+              "audioUrl": null
+            },
+            {
+              "text": "cop",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "but",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "hot",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "but",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "hot",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "cup",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "cop",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "cup",
+          "word2": "cup",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "cup",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "cop",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "but",
+          "word2": "but",
+          "isSame": true
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "cop",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "but",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "vowels_u_o_level_2",
+      "title": "Szint 2",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "duck",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "dock",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "nut",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "not",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "nut",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "not",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "duck",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "dock",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "duck",
+          "word2": "dock",
+          "isSame": false
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "duck",
+              "audioUrl": null
+            },
+            {
+              "text": "dock",
+              "audioUrl": null
+            },
+            {
+              "text": "nut",
+              "audioUrl": null
+            },
+            {
+              "text": "not",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "nut",
+          "word2": "not",
+          "isSame": false
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "duck",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "dock",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "vowels_u_o_level_3",
+      "title": "Szint 3",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "hut",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "hot",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "hut",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "hot",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "hut",
+          "word2": "hut",
+          "isSame": true
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "rub",
+          "word2": "rob",
+          "isSame": false
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "hut",
+              "audioUrl": null
+            },
+            {
+              "text": "hot",
+              "audioUrl": null
+            },
+            {
+              "text": "rub",
+              "audioUrl": null
+            },
+            {
+              "text": "rob",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rub",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "rob",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rub",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "rob",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "rob",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "hot",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "vowels_u_o_level_4",
+      "title": "Szint 4",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "cut",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "cot",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bug",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "bog",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "bug",
+          "word2": "bug",
+          "isSame": true
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "cut",
+          "word2": "cot",
+          "isSame": false
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "cut",
+              "audioUrl": null
+            },
+            {
+              "text": "cot",
+              "audioUrl": null
+            },
+            {
+              "text": "bug",
+              "audioUrl": null
+            },
+            {
+              "text": "bog",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bug",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "bog",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "cut",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "cot",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "bog",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "cut",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "vowels_u_o_level_5",
+      "title": "Szint 5",
+      "items": [
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "mutt",
+          "word2": "mot",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "mutt",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "mot",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sung",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "song",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "sung",
+              "audioUrl": null
+            },
+            {
+              "text": "song",
+              "audioUrl": null
+            },
+            {
+              "text": "mutt",
+              "audioUrl": null
+            },
+            {
+              "text": "mot",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "mutt",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "mot",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sung",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "song",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "sung",
+          "word2": "song",
+          "isSame": false
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "song",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "mot",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    }
+  ]
+}

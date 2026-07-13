@@ -1,0 +1,926 @@
+{
+    "title": "Mi ez?",
+    "type": "multi_level_node",
+    "targetWords": [
+        "this",
+        "that",
+        "what",
+        "book",
+        "phone",
+        "pen",
+        "car",
+        "house"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "this",
+                "book",
+                "phone"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "könyv",
+                    "correctAnswer": "book",
+                    "options": [
+                        {
+                            "id": "book",
+                            "text": "book",
+                            "correct": true
+                        },
+                        {
+                            "id": "phone",
+                            "text": "phone",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_2d247182"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "telefon",
+                    "correctAnswer": "phone",
+                    "options": [
+                        {
+                            "id": "book",
+                            "text": "book",
+                            "correct": false
+                        },
+                        {
+                            "id": "phone",
+                            "text": "phone",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_97dad3a0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy könyv.",
+                    "correctAnswer": "This is a book.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "book.",
+                        "phone.",
+                        "That"
+                    ],
+                    "id": "item_1879a534"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy telefon.",
+                    "correctAnswer": "This is a phone.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "phone.",
+                        "book."
+                    ],
+                    "id": "item_aa304e17"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy könyv.",
+                    "sentence": "____ is a book.",
+                    "answer": "This",
+                    "options": [
+                        "This",
+                        "A",
+                        "Is",
+                        "My"
+                    ],
+                    "id": "item_f97b2bab"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy könyv?",
+                    "correctAnswer": "Is this a book?",
+                    "scrambledWords": [
+                        "Is",
+                        "this",
+                        "a",
+                        "book?",
+                        "phone?"
+                    ],
+                    "id": "item_2bdcc890"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy telefon?",
+                    "sentence": "Is this ____ phone?",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "the",
+                        "my",
+                        "is"
+                    ],
+                    "id": "item_32d7a028"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ez egy telefon.",
+                    "correctAnswer": "Yes, this is a phone.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "this",
+                        "is",
+                        "a",
+                        "phone.",
+                        "book."
+                    ],
+                    "id": "item_7dc7c8c9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, ez egy könyv.",
+                    "correctAnswer": "No, this is a book.",
+                    "scrambledWords": [
+                        "No,",
+                        "this",
+                        "is",
+                        "a",
+                        "book.",
+                        "phone."
+                    ],
+                    "id": "item_984157ee"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy könyv?",
+                    "sentence": "____ this a book?",
+                    "answer": "Is",
+                    "options": [
+                        "Is",
+                        "Are",
+                        "This",
+                        "A"
+                    ],
+                    "id": "item_74b78bfb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én telefonom.",
+                    "correctAnswer": "This is my phone.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "phone.",
+                        "book.",
+                        "a"
+                    ],
+                    "id": "item_5927ef58"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez az én könyvem.",
+                    "sentence": "This is my ____.",
+                    "answer": "book",
+                    "options": [
+                        "book",
+                        "phone",
+                        "a",
+                        "is"
+                    ],
+                    "id": "item_b4c3685a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez a te telefonod?",
+                    "correctAnswer": "Is this your phone?",
+                    "scrambledWords": [
+                        "Is",
+                        "this",
+                        "your",
+                        "phone?",
+                        "my"
+                    ],
+                    "id": "item_5c70148b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ez az én telefonom.",
+                    "correctAnswer": "Yes, this is my phone.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "this",
+                        "is",
+                        "my",
+                        "phone.",
+                        "your"
+                    ],
+                    "id": "item_456058ac"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez a könyv és ez a telefon.",
+                    "correctAnswer": "This is the book and this is the phone.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "the",
+                        "book",
+                        "and",
+                        "this",
+                        "is",
+                        "the",
+                        "phone."
+                    ],
+                    "id": "item_122b348a"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "that",
+                "pen",
+                "car"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "toll",
+                    "correctAnswer": "pen",
+                    "options": [
+                        {
+                            "id": "pen",
+                            "text": "pen",
+                            "correct": true
+                        },
+                        {
+                            "id": "car",
+                            "text": "car",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_7584db47"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "autó",
+                    "correctAnswer": "car",
+                    "options": [
+                        {
+                            "id": "pen",
+                            "text": "pen",
+                            "correct": false
+                        },
+                        {
+                            "id": "car",
+                            "text": "car",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_504775d1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy toll.",
+                    "correctAnswer": "That is a pen.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "a",
+                        "pen.",
+                        "This"
+                    ],
+                    "id": "item_5b304bec"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy autó.",
+                    "correctAnswer": "That is a car.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "a",
+                        "car.",
+                        "pen."
+                    ],
+                    "id": "item_2fd718cc"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az egy toll.",
+                    "sentence": "____ is a pen.",
+                    "answer": "That",
+                    "options": [
+                        "That",
+                        "This",
+                        "Is",
+                        "A"
+                    ],
+                    "id": "item_cfbc169c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy autó?",
+                    "correctAnswer": "Is that a car?",
+                    "scrambledWords": [
+                        "Is",
+                        "that",
+                        "a",
+                        "car?",
+                        "pen?"
+                    ],
+                    "id": "item_fb3b13c3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az egy toll?",
+                    "sentence": "Is that ____ pen?",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "the",
+                        "my",
+                        "is"
+                    ],
+                    "id": "item_870ec805"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, az egy autó.",
+                    "correctAnswer": "Yes, that is a car.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "that",
+                        "is",
+                        "a",
+                        "car.",
+                        "pen."
+                    ],
+                    "id": "item_6e6bde8e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, az egy toll.",
+                    "correctAnswer": "No, that is a pen.",
+                    "scrambledWords": [
+                        "No,",
+                        "that",
+                        "is",
+                        "a",
+                        "pen.",
+                        "car."
+                    ],
+                    "id": "item_cdee7d5a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az egy autó?",
+                    "sentence": "____ that a car?",
+                    "answer": "Is",
+                    "options": [
+                        "Is",
+                        "Are",
+                        "That",
+                        "This"
+                    ],
+                    "id": "item_5c9320b8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az az én tollam.",
+                    "correctAnswer": "That is my pen.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "my",
+                        "pen.",
+                        "car.",
+                        "a"
+                    ],
+                    "id": "item_07d30759"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az a te autód?",
+                    "correctAnswer": "Is that your car?",
+                    "scrambledWords": [
+                        "Is",
+                        "that",
+                        "your",
+                        "car?",
+                        "my"
+                    ],
+                    "id": "item_c3c98152"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy könyv és az egy toll.",
+                    "sentence": "This is a book and ____ is a pen.",
+                    "answer": "that",
+                    "options": [
+                        "that",
+                        "this",
+                        "it",
+                        "is"
+                    ],
+                    "id": "item_e15929fd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy jó autó.",
+                    "correctAnswer": "That is a good car.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "a",
+                        "good",
+                        "car.",
+                        "bad"
+                    ],
+                    "id": "item_85c06f17"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, az az én autóm.",
+                    "correctAnswer": "Yes, that is my car.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "that",
+                        "is",
+                        "my",
+                        "car.",
+                        "your"
+                    ],
+                    "id": "item_acc3804c"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "house",
+                "what"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ház",
+                    "correctAnswer": "house",
+                    "options": [
+                        {
+                            "id": "house",
+                            "text": "house",
+                            "correct": true
+                        },
+                        {
+                            "id": "car",
+                            "text": "car",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_436b74b7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez?",
+                    "correctAnswer": "What is this?",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "that?"
+                    ],
+                    "id": "item_0b158eaa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi az?",
+                    "correctAnswer": "What is that?",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "that?",
+                        "this?"
+                    ],
+                    "id": "item_c9cd9426"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi ez?",
+                    "sentence": "____ is this?",
+                    "answer": "What",
+                    "options": [
+                        "What",
+                        "How",
+                        "Is",
+                        "That"
+                    ],
+                    "id": "item_e3e841c6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy ház.",
+                    "correctAnswer": "This is a house.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "house.",
+                        "car."
+                    ],
+                    "id": "item_131631ca"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy ház.",
+                    "correctAnswer": "That is a house.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "a",
+                        "house.",
+                        "This"
+                    ],
+                    "id": "item_ea19a83f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi az?",
+                    "sentence": "What ____ that?",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "are",
+                        "am",
+                        "a"
+                    ],
+                    "id": "item_e0ea0ea5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez? Ez egy ház.",
+                    "correctAnswer": "What is this? This is a house.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "This",
+                        "is",
+                        "a",
+                        "house."
+                    ],
+                    "id": "item_f9bc2911"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi az? Az egy toll.",
+                    "correctAnswer": "What is that? That is a pen.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "that?",
+                        "That",
+                        "is",
+                        "a",
+                        "pen."
+                    ],
+                    "id": "item_f5ccf16f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az a te házad?",
+                    "correctAnswer": "Is that your house?",
+                    "scrambledWords": [
+                        "Is",
+                        "that",
+                        "your",
+                        "house?",
+                        "my"
+                    ],
+                    "id": "item_e8690e60"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi az? Az egy autó.",
+                    "sentence": "____ is that? That is a car.",
+                    "answer": "What",
+                    "options": [
+                        "What",
+                        "How",
+                        "This",
+                        "A"
+                    ],
+                    "id": "item_f82e8739"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én házam.",
+                    "correctAnswer": "This is my house.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "house.",
+                        "your",
+                        "a"
+                    ],
+                    "id": "item_9ac6f23e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ez az én házam.",
+                    "correctAnswer": "Yes, this is my house.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "this",
+                        "is",
+                        "my",
+                        "house.",
+                        "that"
+                    ],
+                    "id": "item_df966ae8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, az egy ház.",
+                    "correctAnswer": "No, that is a house.",
+                    "scrambledWords": [
+                        "No,",
+                        "that",
+                        "is",
+                        "a",
+                        "house.",
+                        "car."
+                    ],
+                    "id": "item_c3564d31"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez? Ez az én telefonom.",
+                    "correctAnswer": "What is this? This is my phone.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "This",
+                        "is",
+                        "my",
+                        "phone."
+                    ],
+                    "id": "item_4da78223"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez? Ez egy könyv.",
+                    "correctAnswer": "What is this? This is a book.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "This",
+                        "is",
+                        "a",
+                        "book.",
+                        "That"
+                    ],
+                    "id": "item_b2cfd1cd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi az? Az egy jó autó.",
+                    "sentence": "What is that? That is a ____ car.",
+                    "answer": "good",
+                    "options": [
+                        "good",
+                        "bad",
+                        "happy",
+                        "house"
+                    ],
+                    "id": "item_2119bdd5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az a te autód? Nem, az a házam.",
+                    "correctAnswer": "Is that your car? No, that is my house.",
+                    "scrambledWords": [
+                        "Is",
+                        "that",
+                        "your",
+                        "car?",
+                        "No,",
+                        "that",
+                        "is",
+                        "my",
+                        "house."
+                    ],
+                    "id": "item_e87c007c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy toll és az egy könyv.",
+                    "correctAnswer": "This is a pen and that is a book.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "pen",
+                        "and",
+                        "that",
+                        "is",
+                        "a",
+                        "book."
+                    ],
+                    "id": "item_b32871f9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szia, mi ez? Ez a te telefonod?",
+                    "sentence": "Hello, ____ is this? Is this your phone?",
+                    "answer": "what",
+                    "options": [
+                        "what",
+                        "how",
+                        "that",
+                        "a"
+                    ],
+                    "id": "item_3b7e7402"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez? Ez az én autóm és az a házam.",
+                    "correctAnswer": "What is this? This is my car and that is my house.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "This",
+                        "is",
+                        "my",
+                        "car",
+                        "and",
+                        "that",
+                        "is",
+                        "my",
+                        "house."
+                    ],
+                    "id": "item_75c55df6"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Igen, az egy toll és ez egy telefon.",
+                    "sentence": "Yes, that is a pen and this ____ a phone.",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "are",
+                        "a",
+                        "my"
+                    ],
+                    "id": "item_b1e9367e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez a te könyved? Igen, ez az én könyvem.",
+                    "correctAnswer": "Is this your book? Yes, this is my book.",
+                    "scrambledWords": [
+                        "Is",
+                        "this",
+                        "your",
+                        "book?",
+                        "Yes,",
+                        "this",
+                        "is",
+                        "my",
+                        "book."
+                    ],
+                    "id": "item_594226f3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi az? Az egy toll? Nem, ez egy telefon.",
+                    "correctAnswer": "What is that? Is that a pen? No, this is a phone.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "that?",
+                        "Is",
+                        "that",
+                        "a",
+                        "pen?",
+                        "No,",
+                        "this",
+                        "is",
+                        "a",
+                        "phone."
+                    ],
+                    "id": "item_6c96cc08"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az apám autója. (Ez az apám autó.)",
+                    "correctAnswer": "This is my father and that is a car.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "father",
+                        "and",
+                        "that",
+                        "is",
+                        "a",
+                        "car."
+                    ],
+                    "id": "item_fc9d3fbd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi ez?",
+                    "sentence": "____ is this?",
+                    "answer": "What",
+                    "options": [
+                        "What",
+                        "Is",
+                        "A",
+                        "That"
+                    ],
+                    "id": "item_f997b29d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az az én házam és ez a te autód.",
+                    "correctAnswer": "That is my house and this is your car.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "my",
+                        "house",
+                        "and",
+                        "this",
+                        "is",
+                        "your",
+                        "car."
+                    ],
+                    "id": "item_8d213847"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy jó könyv. Mi az?",
+                    "correctAnswer": "This is a good book. What is that?",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "good",
+                        "book.",
+                        "What",
+                        "is",
+                        "that?"
+                    ],
+                    "id": "item_1b8f629c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az egy telefon?",
+                    "sentence": "____ that a phone?",
+                    "answer": "Is",
+                    "options": [
+                        "Is",
+                        "Are",
+                        "What",
+                        "A"
+                    ],
+                    "id": "item_313b02a0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ez a telefonom és az az én tollam.",
+                    "correctAnswer": "Yes, this is my phone and that is my pen.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "this",
+                        "is",
+                        "my",
+                        "phone",
+                        "and",
+                        "that",
+                        "is",
+                        "my",
+                        "pen."
+                    ],
+                    "id": "item_2e958489"
+                }
+            ]
+        }
+    ]
+}

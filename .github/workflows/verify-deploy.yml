@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - develop
+      - dev
   pull_request:
     branches:
       - main
-      - develop
+      - dev
 
 jobs:
   verify:
@@ -48,13 +48,13 @@ jobs:
           find . -name "*.php" -not -path "*/vendor/*" | xargs -n 1 php -l
 
       - name: Run ESLint (JS warnings)
-        run: npm run lint:js
-
-      - name: Run Stylelint (CSS warnings)
-        run: npm run lint:css
+        run: npm run lint
 
       - name: Run JSON Data Validator
         run: npm run validate:json
+
+      - name: Build React App
+        run: npm run build
 
       - name: Write Temporary Sandbox DB Config
         run: |
@@ -90,7 +90,7 @@ jobs:
   deploy:
     name: Deploy (CD)
     needs: verify
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     runs-on: ubuntu-latest
 
     steps:
@@ -99,6 +99,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Set Environment Variables
         id: vars
         run: |
@@ -106,8 +111,8 @@ jobs:
             echo "server_dir=lexipaws.eu/web" >> $GITHUB_OUTPUT
             echo "site_url=https://lexipaws.eu" >> $GITHUB_OUTPUT
           else
-            echo "server_dir=lexipaws.eu/sub/develop" >> $GITHUB_OUTPUT
-            echo "site_url=https://develop.lexipaws.eu" >> $GITHUB_OUTPUT
+            echo "server_dir=lexipaws.eu/sub/dev" >> $GITHUB_OUTPUT
+            echo "site_url=https://dev.lexipaws.eu" >> $GITHUB_OUTPUT
           fi
 
       - name: Write Server Production DB Config
@@ -117,7 +122,15 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
-        run: node js/write_db_config.js
+          GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          MAINTENANCE_TOKEN: ${{ secrets.MAINTENANCE_TOKEN }}
+          DB_CONFIG_PATH: release/db_config.php
+        run: |
+          npm ci || npm install
+          npm run package:release
+          node scripts/write_db_config.js
 
       - name: Deploy files via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -127,20 +140,11 @@ jobs:
           password: ${{ secrets.WEBSUPPORT_FTP_PASSWORD }}
           port: 21
           protocol: ftps
-          local-dir: ./
+          local-dir: ./release/
           server-dir: ${{ steps.vars.outputs.server_dir }}/
           exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            package-lock.json
-            package.json
-            eslint.config.js
-            .stylelintrc.json
-            js/validate_json.js
-            js/write_db_config.js
-            js/sync_sonar_issues.js
-            .github/**
+            logs/**
+            *.log
 
       - name: Run Remote Migrations
         env:

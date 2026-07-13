@@ -1,0 +1,662 @@
+{
+    "title": "Italok",
+    "type": "multi_level_node",
+    "targetWords": [
+        "coffee",
+        "tea",
+        "please",
+        "thanks",
+        "milk",
+        "water",
+        "yes",
+        "no",
+        "hello",
+        "goodbye",
+        "and",
+        "sugar",
+        "lemon",
+        "orange juice",
+        "apple juice",
+        "juice",
+        "orange",
+        "apple",
+        "without",
+        "with"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "sugar",
+                "lemon",
+                "orange",
+                "apple"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "sugar",
+                    "correctAnswer": "sugar",
+                    "options": [
+                        {
+                            "id": "sugar",
+                            "text": "sugar",
+                            "correct": true
+                        },
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": false
+                        },
+                        {
+                            "id": "orange",
+                            "text": "orange",
+                            "correct": false
+                        },
+                        {
+                            "id": "apple",
+                            "text": "apple",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_07ca2983"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "orange",
+                    "correctAnswer": "orange",
+                    "options": [
+                        {
+                            "id": "sugar",
+                            "text": "sugar",
+                            "correct": false
+                        },
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": false
+                        },
+                        {
+                            "id": "orange",
+                            "text": "orange",
+                            "correct": true
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_15d3f2dd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Narancslét, kérem.",
+                    "correctAnswer": "Orange juice, please.",
+                    "scrambledWords": [
+                        "Orange juice,",
+                        "tea,",
+                        "hello",
+                        "please."
+                    ],
+                    "id": "item_814b0ea5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávét cukorral, kérem.",
+                    "correctAnswer": "Coffee with sugar please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "Tea,",
+                        "please.",
+                        "with",
+                        "sugar."
+                    ],
+                    "id": "item_b9baf9ee"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Kérem",
+                    "sentence": "Coffee, ____.",
+                    "answer": "please",
+                    "options": [
+                        "please",
+                        "thanks",
+                        "tea",
+                        "coffee"
+                    ],
+                    "id": "item_0309e137"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Alma.",
+                    "correctAnswer": "Apple.",
+                    "scrambledWords": [
+                        "Water,",
+                        "Apple",
+                        "Sugar",
+                        "Apple juice."
+                    ],
+                    "id": "item_c242f7e6"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Narancslé, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Orange juice",
+                    "options": [
+                        "Apple juice",
+                        "Orange juice",
+                        "Orange",
+                        "Water"
+                    ],
+                    "id": "item_ba81035b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Almalevet, köszönöm.",
+                    "correctAnswer": "Apple juice, thanks.",
+                    "scrambledWords": [
+                        "Thanks.",
+                        "Sugar,",
+                        "and",
+                        "Apple juice."
+                    ],
+                    "id": "item_5ade769d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Citrom.",
+                    "sentence": "____, please.",
+                    "answer": "Lemon",
+                    "options": [
+                        "Coffee",
+                        "Tea",
+                        "thanks",
+                        "Lemon"
+                    ],
+                    "id": "item_cbc646fd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávét cukorral és tejjel, kérem. Köszönöm.",
+                    "correctAnswer": "Coffee with sugar and milk please. Thanks.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "milk,",
+                        "please.",
+                        "Thanks.",
+                        "and",
+                        "Sugar",
+                        "with"
+                    ],
+                    "id": "item_644afc92"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "milk",
+                "water",
+                "yes",
+                "no"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "lemon",
+                    "correctAnswer": "lemon",
+                    "options": [
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": true
+                        },
+                        {
+                            "id": "apple",
+                            "text": "apple",
+                            "correct": false
+                        },
+                        {
+                            "id": "orange juice",
+                            "text": "orange juice",
+                            "correct": false
+                        },
+                        {
+                            "id": "apple juice",
+                            "text": "apple juice",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_4f4813d3"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "apple",
+                    "correctAnswer": "apple",
+                    "options": [
+                        {
+                            "id": "apple",
+                            "text": "apple",
+                            "correct": true
+                        },
+                        {
+                            "id": "orange",
+                            "text": "orange",
+                            "correct": false
+                        },
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": false
+                        },
+                        {
+                            "id": "apple juice",
+                            "text": "apple juice",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_e708fcdd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Almalé.",
+                    "correctAnswer": "Apple juice.",
+                    "scrambledWords": [
+                        "Apple juice.",
+                        "Orange juice.",
+                        "Lemon.",
+                        "Thanks."
+                    ],
+                    "id": "item_c1d3c2b1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Citrom",
+                    "correctAnswer": "lemon",
+                    "scrambledWords": [
+                        "Apple",
+                        "Orange",
+                        "Lemon",
+                        "Milk"
+                    ],
+                    "id": "item_6ec85b1b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Narancsot, kérem.",
+                    "correctAnswer": "Orange, please.",
+                    "scrambledWords": [
+                        "Orange,",
+                        "Apple juice.",
+                        "Please.",
+                        "Thanks.",
+                        "Coffee."
+                    ],
+                    "id": "item_f8c577d4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, kávét és narancslevet kérek.",
+                    "correctAnswer": "Yes, coffee and orange juice please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "coffee",
+                        "and",
+                        "orange juice",
+                        "please."
+                    ],
+                    "id": "item_9e8b93c6"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Almalét, kérem.",
+                    "sentence": "____, please.",
+                    "answer": "Apple juice",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Apple juice"
+                    ],
+                    "id": "item_b98d2837"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tejet, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Milk",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Yes"
+                    ],
+                    "id": "item_85fa7aa6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, vizet kávéval kérek.",
+                    "correctAnswer": "Yes, water with coffee please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "water",
+                        "with",
+                        "coffee",
+                        "please."
+                    ],
+                    "id": "item_bbf08e15"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tejet nem, köszönöm.",
+                    "correctAnswer": "No, milk, thanks.",
+                    "scrambledWords": [
+                        "No,",
+                        "Yes,",
+                        "milk,",
+                        "thanks.",
+                        "water,"
+                    ],
+                    "id": "item_bdafaff7"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "hello",
+                "goodbye",
+                "and",
+                "with",
+                "without"
+            ],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "|val.",
+                    "correctAnswer": "with",
+                    "scrambledWords": [
+                        "without",
+                        "with",
+                        "Yes.",
+                        "No."
+                    ],
+                    "id": "item_8b8c5678"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "nélkül.",
+                    "correctAnswer": "without",
+                    "scrambledWords": [
+                        "without",
+                        "with",
+                        "Thanks.",
+                        "Please."
+                    ],
+                    "id": "item_5ede9541"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, kávét tejjel kérek.",
+                    "correctAnswer": "Hello, coffee with milk please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "milk",
+                        "coffee",
+                        "with",
+                        "please."
+                    ],
+                    "id": "item_25fcbbde"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kávét kérek cukorral és narancslével.",
+                    "correctAnswer": "Coffee with sugar and orange juice please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "sugar",
+                        "and",
+                        "please",
+                        "orange juice.",
+                        "with"
+                    ],
+                    "id": "item_8b306908"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Narancslé kávéval.",
+                    "sentence": "Orange juice ____ coffee.",
+                    "answer": "with",
+                    "options": [
+                        "without",
+                        "with",
+                        "no",
+                        "hello"
+                    ],
+                    "id": "item_3881ad8c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, almalé kávé nélkül, kérek.",
+                    "correctAnswer": "Hello, apple juice without coffee, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "apple juice",
+                        "without",
+                        "coffee",
+                        "please",
+                        "with",
+                        "and"
+                    ],
+                    "id": "item_9d9c35db"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Viszlát, köszönöm.",
+                    "correctAnswer": "Goodbye, thanks.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "Hello,",
+                        "thanks.",
+                        "please."
+                    ],
+                    "id": "item_3fbf975e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tejet és vizet, kérek.",
+                    "sentence": "Milk and ____, please.",
+                    "answer": "water",
+                    "options": [
+                        "water",
+                        "coffee",
+                        "tea",
+                        "hello"
+                    ],
+                    "id": "item_7ae626db"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, citromot és vizet, kérek.",
+                    "correctAnswer": "Hello, lemon and water, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "lemon",
+                        "and",
+                        "water",
+                        "please",
+                        "without",
+                        "with"
+                    ],
+                    "id": "item_846f6a00"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, kávé és víz, köszönöm.",
+                    "correctAnswer": "Yes, coffee and water, thanks.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "coffee",
+                        "and",
+                        "water,",
+                        "thanks."
+                    ],
+                    "id": "item_8ddf22e8"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Kávét és tejet, kérek.",
+                    "correctAnswer": "Coffee and milk, please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "and",
+                        "milk,",
+                        "please.",
+                        "water"
+                    ],
+                    "id": "item_eb5a2fc9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nem, kávét és vizet, köszönöm.",
+                    "sentence": "No, coffee and water, ____.",
+                    "answer": "thanks",
+                    "options": [
+                        "thanks",
+                        "please",
+                        "yes",
+                        "no"
+                    ],
+                    "id": "item_3e1f6168"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, kávét vízzel és almalét kérek.",
+                    "correctAnswer": "Hello, coffee with water and apple juice please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "coffee",
+                        "and",
+                        "water",
+                        "please.",
+                        "thanks",
+                        "with",
+                        "apple juice"
+                    ],
+                    "id": "item_aa7fdca2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Köszönöm, viszlát.",
+                    "correctAnswer": "Thank you, goodbye.",
+                    "scrambledWords": [
+                        "Thank you",
+                        "Goodbye.",
+                        "and",
+                        "orange",
+                        "hello"
+                    ],
+                    "id": "item_6d2e69cd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, narancslét és citromot, kérek.",
+                    "correctAnswer": "Yes, orange juice and lemon please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "orange juice",
+                        "and",
+                        "lemon",
+                        "please.",
+                        "coffee"
+                    ],
+                    "id": "item_f8b8e2a9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Vizet nem, köszönöm. Viszlát.",
+                    "correctAnswer": "No, water, thanks. Goodbye.",
+                    "scrambledWords": [
+                        "No,",
+                        "water,",
+                        "thanks.",
+                        "Goodbye.",
+                        "Yes,"
+                    ],
+                    "id": "item_c79b1ac6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, almalét és kávét, kérek.",
+                    "correctAnswer": "Hello, apple juice and coffee, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "apple juice",
+                        "and",
+                        "coffee,",
+                        "please.",
+                        "water"
+                    ],
+                    "id": "item_c8c2dfca"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Narancslét és almalét kávéval, kérek, köszönöm.",
+                    "correctAnswer": "Orange juice and apple juice with coffee please, thanks.",
+                    "scrambledWords": [
+                        "Orange juice",
+                        "apple juice",
+                        "and",
+                        "coffee",
+                        "thanks.",
+                        "hello",
+                        "with",
+                        "please"
+                    ],
+                    "id": "item_3a148e43"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia! Igen, citromot kérlek.",
+                    "correctAnswer": "Hello! Yes, lemon please.",
+                    "scrambledWords": [
+                        "Hello!",
+                        "Yes,",
+                        "lemon",
+                        "please.",
+                        "No,"
+                    ],
+                    "id": "item_1fe6a411"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Citromot és vizet, kérek, köszönöm.",
+                    "correctAnswer": "Lemon and water please, thanks.",
+                    "scrambledWords": [
+                        "Lemon",
+                        "and",
+                        "water",
+                        "please",
+                        "thanks",
+                        "water,",
+                        "please!"
+                    ],
+                    "id": "item_21b4ec2e"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,318 @@
+{
+    "title": "Hogy vagy?",
+    "type": "multi_level_node",
+    "targetWords": [
+        "how",
+        "are",
+        "you",
+        "good",
+        "bad",
+        "happy",
+        "sad",
+        "tired",
+        "I",
+        "am",
+        "yes",
+        "no"
+    ],
+    "dictionary": {
+        "how": "hogy / hogyan",
+        "are": "vagy / vagytok",
+        "you": "te / ti",
+        "good": "jó / jól",
+        "bad": "rossz / rosszul",
+        "happy": "boldog",
+        "sad": "szomorú",
+        "tired": "fáradt",
+        "I": "én",
+        "am": "vagyok",
+        "yes": "igen",
+        "no": "nem"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "how",
+                "good",
+                "bad"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "jó (jól)",
+                    "correctAnswer": "good",
+                    "options": [
+                        { "id": "good", "text": "good", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#98fb98'/><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='6' stroke-linecap='round' fill='none'/><circle cx='35' cy='40' r='5' fill='#333'/><circle cx='65' cy='40' r='5' fill='#333'/></svg>" },
+                        { "id": "bad", "text": "bad", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#ff9999'/><path d='M30 70 Q50 50 70 70' stroke='#333' stroke-width='6' stroke-linecap='round' fill='none'/><circle cx='35' cy='40' r='5' fill='#333'/><circle cx='65' cy='40' r='5' fill='#333'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "rossz (rosszul)",
+                    "correctAnswer": "bad",
+                    "options": [
+                        { "id": "good", "text": "good", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#98fb98'/><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='6' stroke-linecap='round' fill='none'/><circle cx='35' cy='40' r='5' fill='#333'/><circle cx='65' cy='40' r='5' fill='#333'/></svg>" },
+                        { "id": "bad", "text": "bad", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#ff9999'/><path d='M30 70 Q50 50 70 70' stroke='#333' stroke-width='6' stroke-linecap='round' fill='none'/><circle cx='35' cy='40' r='5' fill='#333'/><circle cx='65' cy='40' r='5' fill='#333'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Hogy vagy?",
+                    "correctAnswer": "How are you?",
+                    "scrambledWords": ["How", "are", "you?", "am", "I"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Jól vagyok.",
+                    "correctAnswer": "I am good.",
+                    "scrambledWords": ["I", "am", "good.", "are", "you"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hogy vagy?",
+                    "sentence": "____ are you?",
+                    "answer": "How",
+                    "options": ["How", "Are", "You", "Good"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, hogy vagy?",
+                    "correctAnswer": "Hello, how are you?",
+                    "scrambledWords": ["Hello,", "how", "are", "you?", "good"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Rosszul vagyok.",
+                    "sentence": "I am ____.",
+                    "answer": "bad",
+                    "options": ["bad", "good", "how", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Jól vagyok, köszönöm.",
+                    "correctAnswer": "I am good, thanks.",
+                    "scrambledWords": ["I", "am", "good,", "thanks.", "bad"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "happy",
+                "sad"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "boldog",
+                    "correctAnswer": "happy",
+                    "options": [
+                        { "id": "happy", "text": "happy", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#ffd700'/><path d='M30 40 Q35 30 40 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M60 40 Q65 30 70 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='5' stroke-linecap='round'/></svg>" },
+                        { "id": "sad", "text": "sad", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#87cefa'/><path d='M30 40 Q35 30 40 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M60 40 Q65 30 70 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M30 75 Q50 55 70 75' stroke='#333' stroke-width='5' stroke-linecap='round'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "szomorú",
+                    "correctAnswer": "sad",
+                    "options": [
+                        { "id": "happy", "text": "happy", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#ffd700'/><path d='M30 40 Q35 30 40 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M60 40 Q65 30 70 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='5' stroke-linecap='round'/></svg>" },
+                        { "id": "sad", "text": "sad", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#87cefa'/><path d='M30 40 Q35 30 40 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M60 40 Q65 30 70 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M30 75 Q50 55 70 75' stroke='#333' stroke-width='5' stroke-linecap='round'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én boldog vagyok.",
+                    "correctAnswer": "I am happy.",
+                    "scrambledWords": ["I", "am", "happy.", "sad.", "you"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Boldog vagy?",
+                    "correctAnswer": "Are you happy?",
+                    "scrambledWords": ["Are", "you", "happy?", "You", "are"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szomorú vagy?",
+                    "sentence": "____ you sad?",
+                    "answer": "Are",
+                    "options": ["Are", "Am", "How", "I"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, boldog vagyok.",
+                    "correctAnswer": "Yes, I am happy.",
+                    "scrambledWords": ["Yes,", "I", "am", "happy.", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te szomorú vagy.",
+                    "correctAnswer": "You are sad.",
+                    "scrambledWords": ["You", "are", "sad.", "Are", "you"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Nem, szomorú vagyok.",
+                    "sentence": "No, I am ____.",
+                    "answer": "sad",
+                    "options": ["sad", "happy", "good", "how"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "tired"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fáradt",
+                    "correctAnswer": "tired",
+                    "options": [
+                        { "id": "tired", "text": "tired", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#d3d3d3'/><path d='M30 45 L45 45 M60 45 L75 45' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M40 70 Q50 60 60 70' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='75' y='30' font-size='20' font-family='Arial' fill='#333'>z</text><text x='85' y='15' font-size='15' font-family='Arial' fill='#333'>z</text></svg>" },
+                        { "id": "happy", "text": "happy", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='45' fill='#ffd700'/><path d='M30 40 Q35 30 40 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M60 40 Q65 30 70 40' stroke='#333' stroke-width='4' stroke-linecap='round'/><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='5' stroke-linecap='round'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Fáradt vagyok.",
+                    "correctAnswer": "I am tired.",
+                    "scrambledWords": ["I", "am", "tired.", "sad.", "you"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Fáradt vagy?",
+                    "correctAnswer": "Are you tired?",
+                    "scrambledWords": ["Are", "you", "tired?", "You", "are"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Igen, fáradt vagyok.",
+                    "sentence": "Yes, I ____ tired.",
+                    "answer": "am",
+                    "options": ["am", "are", "how", "good"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hogy vagy? Fáradt vagy?",
+                    "correctAnswer": "How are you? Are you tired?",
+                    "scrambledWords": ["How", "are", "you?", "Are", "you", "tired?"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Nem, én jól vagyok.",
+                    "correctAnswer": "No, I am good.",
+                    "scrambledWords": ["No,", "I", "am", "good.", "bad."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Fáradt vagy?",
+                    "sentence": "____ you tired?",
+                    "answer": "Are",
+                    "options": ["Are", "Am", "How", "Yes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Boldog és fáradt vagyok.",
+                    "correctAnswer": "I am happy and tired.",
+                    "scrambledWords": ["I", "am", "happy", "and", "tired.", "sad"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, hogy vagy? Fáradt vagy?",
+                    "correctAnswer": "Hello, how are you? Are you tired?",
+                    "scrambledWords": ["Hello,", "how", "are", "you?", "Are", "you", "tired?", "am"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Nem, én boldog vagyok.",
+                    "sentence": "No, I am ____.",
+                    "answer": "happy",
+                    "options": ["happy", "how", "are", "you"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, rosszul vagyok és fáradt vagyok.",
+                    "correctAnswer": "Yes, I am bad and I am tired.",
+                    "scrambledWords": ["Yes,", "I", "am", "bad", "and", "I", "am", "tired.", "good"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Boldog vagy és én szomorú vagyok.",
+                    "correctAnswer": "You are happy and I am sad.",
+                    "scrambledWords": ["You", "are", "happy", "and", "I", "am", "sad.", "tired"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hogy vagy? Jól vagy?",
+                    "sentence": "How are you? ____ you good?",
+                    "answer": "Are",
+                    "options": ["Are", "Am", "I", "How"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Viszlát, fáradt vagyok.",
+                    "correctAnswer": "Goodbye, I am tired.",
+                    "scrambledWords": ["Goodbye,", "I", "am", "tired.", "sad."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A nevem... és boldog vagyok.",
+                    "correctAnswer": "My name is... and I am happy.",
+                    "scrambledWords": ["My", "name", "is...", "and", "I", "am", "happy.", "tired"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Két kávét, kérem. Fáradt vagyok!",
+                    "correctAnswer": "Two coffees, please. I am tired!",
+                    "scrambledWords": ["Two", "coffees,", "please.", "I", "am", "tired!", "sad!"]
+                }
+            ]
+        }
+    ]
+}

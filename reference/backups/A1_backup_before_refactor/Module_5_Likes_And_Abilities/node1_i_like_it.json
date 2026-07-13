@@ -1,0 +1,517 @@
+{
+    "title": "Szeretem!",
+    "type": "multi_level_node",
+    "targetWords": [
+        "like",
+        "love",
+        "hate",
+        "pizza",
+        "chocolate",
+        "meat",
+        "soup"
+    ],
+    "dictionary": {
+        "like": "szeret / kedvel",
+        "love": "imád / nagyon szeret",
+        "hate": "utál",
+        "pizza": "pizza",
+        "chocolate": "csokoládé",
+        "meat": "hús",
+        "soup": "leves"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "like",
+                "pizza",
+                "soup"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "pizza",
+                    "correctAnswer": "pizza",
+                    "options": [
+                        { "id": "pizza", "text": "pizza", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M10 90 L50 10 L90 90 Z' fill='#f1c40f'/><circle cx='50' cy='50' r='8' fill='#e74c3c'/><circle cx='40' cy='70' r='8' fill='#e74c3c'/><circle cx='65' cy='75' r='8' fill='#e74c3c'/><path d='M10 90 Q50 95 90 90' stroke='#e67e22' stroke-width='5' fill='none'/></svg>" },
+                        { "id": "soup", "text": "soup", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 60 Q50 90 80 60 Z' fill='#e67e22'/><ellipse cx='50' cy='60' rx='30' ry='10' fill='#d35400'/><path d='M40 40 Q45 20 50 40' stroke='#ecf0f1' stroke-width='4' stroke-linecap='round' fill='none'/><path d='M60 45 Q65 25 70 45' stroke='#ecf0f1' stroke-width='4' stroke-linecap='round' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "leves",
+                    "correctAnswer": "soup",
+                    "options": [
+                        { "id": "pizza", "text": "pizza", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M10 90 L50 10 L90 90 Z' fill='#f1c40f'/><circle cx='50' cy='50' r='8' fill='#e74c3c'/><circle cx='40' cy='70' r='8' fill='#e74c3c'/><circle cx='65' cy='75' r='8' fill='#e74c3c'/><path d='M10 90 Q50 95 90 90' stroke='#e67e22' stroke-width='5' fill='none'/></svg>" },
+                        { "id": "soup", "text": "soup", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 60 Q50 90 80 60 Z' fill='#e67e22'/><ellipse cx='50' cy='60' rx='30' ry='10' fill='#d35400'/><path d='M40 40 Q45 20 50 40' stroke='#ecf0f1' stroke-width='4' stroke-linecap='round' fill='none'/><path d='M60 45 Q65 25 70 45' stroke='#ecf0f1' stroke-width='4' stroke-linecap='round' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én szeretem a pizzát.",
+                    "correctAnswer": "I like pizza.",
+                    "scrambledWords": ["I", "like", "pizza.", "soup.", "You"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te szereted a levest.",
+                    "correctAnswer": "You like soup.",
+                    "scrambledWords": ["You", "like", "soup.", "pizza.", "I"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én szeretem a pizzát.",
+                    "sentence": "I ____ pizza.",
+                    "answer": "like",
+                    "options": ["like", "likes", "eat", "drink"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi szeretjük a pizzát.",
+                    "correctAnswer": "We like pizza.",
+                    "scrambledWords": ["We", "like", "pizza.", "soup."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szereted a levest?",
+                    "correctAnswer": "Do you like soup?",
+                    "scrambledWords": ["Do", "you", "like", "soup?", "Does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szereted a pizzát?",
+                    "sentence": "____ you like pizza?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "Is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem szeretem a levest.",
+                    "correctAnswer": "I do not like soup.",
+                    "scrambledWords": ["I", "do", "not", "like", "soup.", "pizza."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én nem szeretem a pizzát.",
+                    "sentence": "I ____ like pizza.",
+                    "answer": "don't",
+                    "options": ["don't", "no", "not", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők szeretik a levest.",
+                    "correctAnswer": "They like soup.",
+                    "scrambledWords": ["They", "like", "soup.", "pizza."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én pizzát eszem és szeretem a levest.",
+                    "correctAnswer": "I eat pizza and I like soup.",
+                    "scrambledWords": ["I", "eat", "pizza", "and", "I", "like", "soup."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szeretik a levest?",
+                    "sentence": "Do they ____ soup?",
+                    "answer": "like",
+                    "options": ["like", "likes", "eat", "play"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, én szeretem a pizzát.",
+                    "correctAnswer": "Yes, I like pizza.",
+                    "scrambledWords": ["Yes,", "I", "like", "pizza.", "soup."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Nem, én nem szeretem a levest.",
+                    "correctAnswer": "No, I don't like soup.",
+                    "scrambledWords": ["No,", "I", "don't", "like", "soup.", "doesn't"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "love",
+                "chocolate"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "imád (nagyon szeret)",
+                    "correctAnswer": "love",
+                    "options": [
+                        { "id": "love", "text": "love", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M50 85 L20 55 A 20 20 0 0 1 50 30 A 20 20 0 0 1 80 55 Z' fill='#e74c3c'/></svg>" },
+                        { "id": "like", "text": "like", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#2ecc71' stroke-width='8' stroke-linecap='round' fill='none'/><circle cx='35' cy='40' r='5' fill='#2ecc71'/><circle cx='65' cy='40' r='5' fill='#2ecc71'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "csokoládé",
+                    "correctAnswer": "chocolate",
+                    "options": [
+                        { "id": "pizza", "text": "pizza", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M10 90 L50 10 L90 90 Z' fill='#f1c40f'/><circle cx='50' cy='50' r='8' fill='#e74c3c'/><circle cx='40' cy='70' r='8' fill='#e74c3c'/><circle cx='65' cy='75' r='8' fill='#e74c3c'/></svg>" },
+                        { "id": "chocolate", "text": "chocolate", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='20' width='50' height='60' rx='5' fill='#3e2723'/><line x1='50' y1='20' x2='50' y2='80' stroke='#4e342e' stroke-width='4'/><line x1='25' y1='40' x2='75' y2='40' stroke='#4e342e' stroke-width='4'/><line x1='25' y1='60' x2='75' y2='60' stroke='#4e342e' stroke-width='4'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) szereti a csokoládét.",
+                    "correctAnswer": "She likes chocolate.",
+                    "scrambledWords": ["She", "likes", "chocolate.", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én imádom a csokoládét.",
+                    "correctAnswer": "I love chocolate.",
+                    "scrambledWords": ["I", "love", "chocolate.", "soup."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) szereti a pizzát.",
+                    "sentence": "He ____ pizza.",
+                    "answer": "likes",
+                    "options": ["likes", "like", "loves", "love"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) imádja a levest.",
+                    "correctAnswer": "He loves soup.",
+                    "scrambledWords": ["He", "loves", "soup.", "love"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem szereti a pizzát.",
+                    "correctAnswer": "She doesn't like pizza.",
+                    "scrambledWords": ["She", "doesn't", "like", "pizza.", "likes"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem szereti a csokoládét.",
+                    "sentence": "She doesn't ____ chocolate.",
+                    "answer": "like",
+                    "options": ["like", "likes", "love", "loves"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szereti ő (férfi) a csokoládét?",
+                    "correctAnswer": "Does he like chocolate?",
+                    "scrambledWords": ["Does", "he", "like", "chocolate?", "likes"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szereti ő (nő) a pizzát?",
+                    "sentence": "____ she like pizza?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya szereti a levest.",
+                    "correctAnswer": "The dog likes soup.",
+                    "scrambledWords": ["The", "dog", "likes", "soup.", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám imádja a csokoládét.",
+                    "correctAnswer": "My father loves chocolate.",
+                    "scrambledWords": ["My", "father", "loves", "chocolate.", "love"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem imádja a csokoládét.",
+                    "sentence": "My brother ____ chocolate.",
+                    "answer": "loves",
+                    "options": ["loves", "love", "likes", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, ő (nő) szereti a pizzát.",
+                    "correctAnswer": "Yes, she likes pizza.",
+                    "scrambledWords": ["Yes,", "she", "likes", "pizza.", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) szereti a levest és imádja a csokoládét.",
+                    "correctAnswer": "He likes soup and he loves chocolate.",
+                    "scrambledWords": ["He", "likes", "soup", "and", "he", "loves", "chocolate."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "hate",
+                "meat"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "utál",
+                    "correctAnswer": "hate",
+                    "options": [
+                        { "id": "hate", "text": "hate", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' fill='#e74c3c'/><line x1='30' y1='30' x2='45' y2='45' stroke='#333' stroke-width='5'/><line x1='45' y1='30' x2='30' y2='45' stroke='#333' stroke-width='5'/><line x1='55' y1='30' x2='70' y2='45' stroke='#333' stroke-width='5'/><line x1='70' y1='30' x2='55' y2='45' stroke='#333' stroke-width='5'/><path d='M35 75 Q50 60 65 75' stroke='#333' stroke-width='5' fill='none'/></svg>" },
+                        { "id": "love", "text": "love", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M50 85 L20 55 A 20 20 0 0 1 50 30 A 20 20 0 0 1 80 55 Z' fill='#e74c3c'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "hús",
+                    "correctAnswer": "meat",
+                    "options": [
+                        { "id": "chocolate", "text": "chocolate", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='20' width='50' height='60' rx='5' fill='#3e2723'/><line x1='50' y1='20' x2='50' y2='80' stroke='#4e342e' stroke-width='4'/></svg>" },
+                        { "id": "meat", "text": "meat", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 50 Q30 30 50 30 T80 50 Q70 70 50 70 T20 50 Z' fill='#c0392b'/><path d='M40 50 Q50 50 60 40' stroke='#ecf0f1' stroke-width='3' fill='none'/><circle cx='50' cy='50' r='8' fill='#ecf0f1'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én utálom a húst.",
+                    "correctAnswer": "I hate meat.",
+                    "scrambledWords": ["I", "hate", "meat.", "hates"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) utálja a húst.",
+                    "correctAnswer": "She hates meat.",
+                    "scrambledWords": ["She", "hates", "meat.", "hate"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya imádja a húst.",
+                    "sentence": "The dog ____ meat.",
+                    "answer": "loves",
+                    "options": ["loves", "love", "hates", "hate"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te utálod a levest?",
+                    "correctAnswer": "Do you hate soup?",
+                    "scrambledWords": ["Do", "you", "hate", "soup?", "Does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) utálja a húst?",
+                    "sentence": "Does he ____ meat?",
+                    "answer": "hate",
+                    "options": ["hate", "hates", "like", "likes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom nem szereti a húst.",
+                    "correctAnswer": "My friend doesn't like meat.",
+                    "scrambledWords": ["My", "friend", "doesn't", "like", "meat.", "likes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi utáljuk a csokoládét.",
+                    "correctAnswer": "We hate chocolate.",
+                    "scrambledWords": ["We", "hate", "chocolate.", "hates"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők utálják a húst.",
+                    "sentence": "They ____ meat.",
+                    "answer": "hate",
+                    "options": ["hate", "hates", "loves", "love"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én imádom a pizzát és te utálod a pizzát.",
+                    "correctAnswer": "I love pizza and you hate pizza.",
+                    "scrambledWords": ["I", "love", "pizza", "and", "you", "hate", "pizza."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya szereti a húst?",
+                    "correctAnswer": "Does the dog like meat?",
+                    "scrambledWords": ["Does", "the", "dog", "like", "meat?", "likes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, a kutya imádja a húst.",
+                    "correctAnswer": "Yes, the dog loves meat.",
+                    "scrambledWords": ["Yes,", "the", "dog", "loves", "meat.", "love"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én utálom a húst.",
+                    "sentence": "I hate ____.",
+                    "answer": "meat",
+                    "options": ["meat", "soup", "pizza", "chocolate"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők nem szeretik a levest és utálják a húst.",
+                    "correctAnswer": "They don't like soup and they hate meat.",
+                    "scrambledWords": ["They", "don't", "like", "soup", "and", "they", "hate", "meat."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én szeretem a pizzát és ő (nő) szereti a levest.",
+                    "correctAnswer": "I like pizza and she likes soup.",
+                    "scrambledWords": ["I", "like", "pizza", "and", "she", "likes", "soup.", "like"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szereted a csokoládét?",
+                    "sentence": "____ you like chocolate?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "Is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) utálja a húst és én nem szeretem a húst.",
+                    "correctAnswer": "He hates meat and I don't like meat.",
+                    "scrambledWords": ["He", "hates", "meat", "and", "I", "don't", "like", "meat."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A lánytestvéred szereti a levest?",
+                    "sentence": "Does your sister ____ soup?",
+                    "answer": "like",
+                    "options": ["like", "likes", "love", "loves"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem imádja a csokoládét, ő (férfi) nem utálja a csokoládét.",
+                    "correctAnswer": "My brother loves chocolate, he doesn't hate chocolate.",
+                    "scrambledWords": ["My", "brother", "loves", "chocolate,", "he", "doesn't", "hate", "chocolate.", "hates"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szereted a húst? Nem, utálom a húst.",
+                    "correctAnswer": "Do you like meat? No, I hate meat.",
+                    "scrambledWords": ["Do", "you", "like", "meat?", "No,", "I", "hate", "meat."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem szereti a levest.",
+                    "sentence": "She ____ like soup.",
+                    "answer": "doesn't",
+                    "options": ["doesn't", "don't", "no", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi szeretjük a csokoládét és ők utálják a csokoládét.",
+                    "correctAnswer": "We like chocolate and they hate chocolate.",
+                    "scrambledWords": ["We", "like", "chocolate", "and", "they", "hate", "chocolate.", "likes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám szereti a levest és az apám imádja a húst.",
+                    "correctAnswer": "My mother likes soup and my father loves meat.",
+                    "scrambledWords": ["My", "mother", "likes", "soup", "and", "my", "father", "loves", "meat."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya nem szereti a csokoládét!",
+                    "sentence": "The dog doesn't ____ chocolate!",
+                    "answer": "like",
+                    "options": ["like", "likes", "love", "loves"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én pizzát eszem, én imádom a pizzát.",
+                    "correctAnswer": "I eat pizza, I love pizza.",
+                    "scrambledWords": ["I", "eat", "pizza,", "I", "love", "pizza.", "loves"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) kávét iszik, ő szereti a kávét.",
+                    "correctAnswer": "She drinks coffee, she likes coffee.",
+                    "scrambledWords": ["She", "drinks", "coffee,", "she", "likes", "coffee.", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te utálod a levest? Igen, én utálom a levest.",
+                    "correctAnswer": "Do you hate soup? Yes, I hate soup.",
+                    "scrambledWords": ["Do", "you", "hate", "soup?", "Yes,", "I", "hate", "soup.", "Does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám imádja a húst.",
+                    "sentence": "My father ____ meat.",
+                    "answer": "loves",
+                    "options": ["loves", "love", "likes", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én imádom a csokoládét, te szereted a pizzát és ő utálja a levest.",
+                    "correctAnswer": "I love chocolate, you like pizza and he hates soup.",
+                    "scrambledWords": ["I", "love", "chocolate,", "you", "like", "pizza", "and", "he", "hates", "soup."]
+                }
+            ]
+        }
+    ]
+}

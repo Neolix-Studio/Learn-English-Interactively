@@ -1,0 +1,1022 @@
+{
+  "id": "cons_th_s_f",
+  "type": "character_lesson",
+  "title": "CONS TH S F",
+  "characters": [
+    "θ",
+    "s",
+    "f"
+  ],
+  "lessons": [
+    {
+      "id": "cons_th_s_f_level_1",
+      "title": "Szint 1",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "think",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sink",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "fink",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "think",
+          "word2": "think",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "think",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "sink",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fink",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "thick",
+          "word2": "thick",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thick",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sick",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fick",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thick",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "sick",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fick",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thick",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sick",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "fick",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "think",
+              "audioUrl": null
+            },
+            {
+              "text": "sink",
+              "audioUrl": null
+            },
+            {
+              "text": "fink",
+              "audioUrl": null
+            },
+            {
+              "text": "thick",
+              "audioUrl": null
+            },
+            {
+              "text": "sick",
+              "audioUrl": null
+            },
+            {
+              "text": "fick",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "think",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sink",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fink",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "fink",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "fick",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_s_f_level_2",
+      "title": "Szint 2",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thought",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "sought",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fought",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thought",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sought",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "fought",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thin",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sin",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "fin",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "thought",
+              "audioUrl": null
+            },
+            {
+              "text": "sought",
+              "audioUrl": null
+            },
+            {
+              "text": "fought",
+              "audioUrl": null
+            },
+            {
+              "text": "thin",
+              "audioUrl": null
+            },
+            {
+              "text": "sin",
+              "audioUrl": null
+            },
+            {
+              "text": "fin",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thin",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fin",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thin",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "sin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fin",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thought",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sought",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fought",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "thin",
+          "word2": "thin",
+          "isSame": true
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "thought",
+          "word2": "thought",
+          "isSame": true
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "fin",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "thin",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_s_f_level_3",
+      "title": "Szint 3",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "math",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "mass",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "maf",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "path",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "pass",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "paf",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "math",
+          "word2": "mass",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "math",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "mass",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "maf",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "path",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "pass",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "paf",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "math",
+              "audioUrl": null
+            },
+            {
+              "text": "mass",
+              "audioUrl": null
+            },
+            {
+              "text": "maf",
+              "audioUrl": null
+            },
+            {
+              "text": "path",
+              "audioUrl": null
+            },
+            {
+              "text": "pass",
+              "audioUrl": null
+            },
+            {
+              "text": "paf",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "path",
+          "word2": "pass",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "path",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "pass",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "paf",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "math",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "mass",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "maf",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "path",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "maf",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_s_f_level_4",
+      "title": "Szint 4",
+      "items": [
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "thumb",
+          "word2": "some",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thumb",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "some",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fum",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "theme",
+              "audioUrl": null
+            },
+            {
+              "text": "seem",
+              "audioUrl": null
+            },
+            {
+              "text": "feem",
+              "audioUrl": null
+            },
+            {
+              "text": "thumb",
+              "audioUrl": null
+            },
+            {
+              "text": "some",
+              "audioUrl": null
+            },
+            {
+              "text": "fum",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thumb",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "some",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "fum",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thumb",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "some",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "fum",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "theme",
+          "word2": "theme",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "theme",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "seem",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "feem",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "theme",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "seem",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "feem",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "theme",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "seem",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "feem",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "seem",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "theme",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_s_f_level_5",
+      "title": "Szint 5",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thaw",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "saw",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "faw",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "third",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "surd",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "furd",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thaw",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "saw",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "faw",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "thaw",
+          "word2": "saw",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "third",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "surd",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "furd",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "third",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "surd",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "furd",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "third",
+          "word2": "third",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "thaw",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "saw",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "faw",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "thaw",
+              "audioUrl": null
+            },
+            {
+              "text": "saw",
+              "audioUrl": null
+            },
+            {
+              "text": "faw",
+              "audioUrl": null
+            },
+            {
+              "text": "third",
+              "audioUrl": null
+            },
+            {
+              "text": "surd",
+              "audioUrl": null
+            },
+            {
+              "text": "furd",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "thaw",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "faw",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    }
+  ]
+}

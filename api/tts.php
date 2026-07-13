@@ -1,16 +1,26 @@
 <?php
 header('Content-Type: application/json');
+require_once __DIR__ . '/../security.php';
+security_start_session();
+
+// Suppress PHP warnings from breaking the JSON output
+ini_set('display_errors', 0);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING & ~E_NOTICE);
+
+// Include WebSupport Database details from db_config.php
+require_once __DIR__ . '/../db_config.php';
+$dbHost = DB_HOST;
+$dbUser = DB_USER;
+$dbPass = DB_PASS;
+$dbName = DB_NAME;
 
 // --- 1. CONFIGURATION ---
-// Put your Google Cloud API key here
-// NEVER HARDCODE THIS IN PUBLIC REPOS. Use environment variables!
-$googleApiKey = getenv('GOOGLE_TTS_API_KEY') ?: 'YOUR_GOOGLE_CLOUD_API_KEY_HERE';
-
-// Put your WebSupport Database details here
-$dbHost = getenv('DB_HOST') ?: 'localhost';
-$dbUser = getenv('DB_USER') ?: 'root';
-$dbPass = getenv('DB_PASS') ?: '';
-$dbName = getenv('DB_NAME') ?: 'database';
+$googleApiKey = getenv('GOOGLE_TTS_API_KEY') ?: (defined('GOOGLE_TTS_API_KEY') ? GOOGLE_TTS_API_KEY : '');
+if (!$googleApiKey) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Text-to-speech service is not configured.']);
+    exit;
+}
 
 // --- 2. INPUT VALIDATION ---
 $text = isset($_GET['text']) ? trim($_GET['text']) : '';
@@ -20,8 +30,14 @@ if (empty($text)) {
     exit;
 }
 
-// Generate a unique hash for this exact text to easily look it up in the database
-$textHash = hash('sha256', $text);
+if (mb_strlen($text) > 300) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Text is too long.']);
+    exit;
+}
+
+// Generate a unique hash (MD5 creates a 32-character string which avoids 'Data too long' SQL errors)
+$textHash = md5($text);
 
 // --- 3. DATABASE CONNECTION ---
 try {
@@ -33,6 +49,14 @@ try {
 }
 
 // --- 4. CHECK CACHE IN DATABASE ---
+// Ensure the cache table exists
+$pdo->exec("CREATE TABLE IF NOT EXISTS tts_cache (
+    text_hash VARCHAR(32) PRIMARY KEY,
+    text TEXT NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)");
+
 // We check if we already generated this exact text before.
 $stmt = $pdo->prepare("SELECT filename FROM tts_cache WHERE text_hash = :hash LIMIT 1");
 $stmt->execute(['hash' => $textHash]);
@@ -45,6 +69,12 @@ if ($row && !empty($row['filename'])) {
         echo json_encode(['success' => true, 'url' => $fileUrl, 'cached' => true]);
         exit;
     }
+}
+
+if (!security_rate_limit('tts_' . ($_SERVER['REMOTE_ADDR'] ?? session_id()), 30, 3600)) {
+    http_response_code(429);
+    echo json_encode(['error' => 'Too many text-to-speech requests. Please try again later.']);
+    exit;
 }
 
 // --- 5. CALL GOOGLE CLOUD TTS API ---
@@ -73,7 +103,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
+// curl_close is deprecated in PHP 8.5+ and no longer needed
 
 if ($httpCode !== 200) {
     echo json_encode(['error' => 'Google TTS API failed', 'details' => json_decode($response)]);

@@ -1,0 +1,518 @@
+{
+    "title": "Számok és Mennyiségek",
+    "type": "multi_level_node",
+    "targetWords": [
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "coffees",
+        "teas",
+        "please",
+        "thanks",
+        "and"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "one",
+                "two",
+                "coffees"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "egy",
+                    "correctAnswer": "one",
+                    "options": [
+                        {
+                            "id": "one",
+                            "text": "one",
+                            "correct": true
+                        },
+                        {
+                            "id": "two",
+                            "text": "two",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_76056fc5"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "kettő",
+                    "correctAnswer": "two",
+                    "options": [
+                        {
+                            "id": "one",
+                            "text": "one",
+                            "correct": false
+                        },
+                        {
+                            "id": "two",
+                            "text": "two",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_1bd4976e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Egy kávét, kérem.",
+                    "correctAnswer": "One coffee, please.",
+                    "scrambledWords": [
+                        "One",
+                        "coffee,",
+                        "tea,",
+                        "two",
+                        "please."
+                    ],
+                    "id": "item_1f370f1b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Két kávét, kérem.",
+                    "correctAnswer": "Two coffees, please.",
+                    "scrambledWords": [
+                        "Two",
+                        "coffees,",
+                        "coffee,",
+                        "please.",
+                        "one"
+                    ],
+                    "id": "item_e2397473"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Egy kávé és két tea.",
+                    "sentence": "____ coffee and two teas.",
+                    "answer": "One",
+                    "options": [
+                        "One",
+                        "Two",
+                        "Three",
+                        "Four"
+                    ],
+                    "id": "item_aeda9313"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, két kávét, köszönöm.",
+                    "correctAnswer": "Yes, two coffees, thanks.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "two",
+                        "coffees,",
+                        "thanks.",
+                        "coffee,"
+                    ],
+                    "id": "item_43facef4"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Két kávét, kérem.",
+                    "sentence": "Two ____, please.",
+                    "answer": "coffees",
+                    "options": [
+                        "coffee",
+                        "coffees",
+                        "tea",
+                        "teas"
+                    ],
+                    "id": "item_ff269692"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, egy kávét és két teát kérek.",
+                    "correctAnswer": "Hello, one coffee and two teas please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "one",
+                        "coffee",
+                        "and",
+                        "two",
+                        "teas",
+                        "please."
+                    ],
+                    "id": "item_75fecca4"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "three",
+                "four",
+                "teas"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "három",
+                    "correctAnswer": "three",
+                    "options": [
+                        {
+                            "id": "three",
+                            "text": "three",
+                            "correct": true
+                        },
+                        {
+                            "id": "four",
+                            "text": "four",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_e00cb972"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "négy",
+                    "correctAnswer": "four",
+                    "options": [
+                        {
+                            "id": "two",
+                            "text": "two",
+                            "correct": false
+                        },
+                        {
+                            "id": "four",
+                            "text": "four",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_800cd6f6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Három teát, kérem.",
+                    "correctAnswer": "Three teas, please.",
+                    "scrambledWords": [
+                        "Three",
+                        "teas,",
+                        "tea,",
+                        "four",
+                        "please."
+                    ],
+                    "id": "item_fef71b4e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Négy kávét, köszönöm.",
+                    "correctAnswer": "Four coffees, thanks.",
+                    "scrambledWords": [
+                        "Four",
+                        "coffees,",
+                        "coffee,",
+                        "thanks.",
+                        "three"
+                    ],
+                    "id": "item_20b51784"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Két tea és három kávé.",
+                    "sentence": "Two teas and ____ coffees.",
+                    "answer": "three",
+                    "options": [
+                        "one",
+                        "two",
+                        "three",
+                        "four"
+                    ],
+                    "id": "item_cb52acfa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, három teát tejjel kérek.",
+                    "correctAnswer": "Hello, three teas with milk please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "three",
+                        "teas",
+                        "with",
+                        "milk",
+                        "please."
+                    ],
+                    "id": "item_2e4ccb0f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Négy teát citrommal.",
+                    "sentence": "Four teas ____ lemon.",
+                    "answer": "with",
+                    "options": [
+                        "with",
+                        "without",
+                        "and",
+                        "please"
+                    ],
+                    "id": "item_6ea1f5e0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Egy kávét és négy teát kérek.",
+                    "correctAnswer": "One coffee and four teas please.",
+                    "scrambledWords": [
+                        "One",
+                        "coffee",
+                        "and",
+                        "four",
+                        "teas",
+                        "please."
+                    ],
+                    "id": "item_234e1ea5"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "five"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "öt",
+                    "correctAnswer": "five",
+                    "options": [
+                        {
+                            "id": "four",
+                            "text": "four",
+                            "correct": false
+                        },
+                        {
+                            "id": "five",
+                            "text": "five",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_4d0f06e1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Öt kávét, kérem.",
+                    "correctAnswer": "Five coffees, please.",
+                    "scrambledWords": [
+                        "Five",
+                        "coffees,",
+                        "coffee,",
+                        "please.",
+                        "four"
+                    ],
+                    "id": "item_8d61aa57"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Három kávét és öt teát.",
+                    "correctAnswer": "Three coffees and five teas.",
+                    "scrambledWords": [
+                        "Three",
+                        "coffees",
+                        "and",
+                        "five",
+                        "teas.",
+                        "two"
+                    ],
+                    "id": "item_5116753b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Öt tea cukorral.",
+                    "sentence": "____ teas with sugar.",
+                    "answer": "Five",
+                    "options": [
+                        "One",
+                        "Two",
+                        "Four",
+                        "Five"
+                    ],
+                    "id": "item_987c9e77"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Két kávét és öt teát kérek, köszönöm.",
+                    "correctAnswer": "Two coffees and five teas please, thanks.",
+                    "scrambledWords": [
+                        "Two",
+                        "coffees",
+                        "and",
+                        "five",
+                        "teas",
+                        "please,",
+                        "thanks."
+                    ],
+                    "id": "item_b5017568"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Egy, kettő, három, négy, öt.",
+                    "correctAnswer": "One, two, three, four, five.",
+                    "scrambledWords": [
+                        "One,",
+                        "two,",
+                        "three,",
+                        "four,",
+                        "five.",
+                        "six"
+                    ],
+                    "id": "item_d55c74fd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Öt vizet, kérem.",
+                    "sentence": "Five ____, please.",
+                    "answer": "waters",
+                    "options": [
+                        "water",
+                        "waters",
+                        "milk",
+                        "coffee"
+                    ],
+                    "id": "item_e343d6d5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, öt kávét tejjel, köszönöm.",
+                    "correctAnswer": "No, five coffees with milk, thanks.",
+                    "scrambledWords": [
+                        "No,",
+                        "five",
+                        "coffees",
+                        "with",
+                        "milk,",
+                        "thanks."
+                    ],
+                    "id": "item_c1569c27"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Három kávét és egy teát kérek.",
+                    "correctAnswer": "Three coffees and one tea please.",
+                    "scrambledWords": [
+                        "Three",
+                        "coffees",
+                        "and",
+                        "one",
+                        "tea",
+                        "please.",
+                        "teas"
+                    ],
+                    "id": "item_0ef828cf"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Négy kávét tejjel és cukorral, köszönöm.",
+                    "sentence": "Four ____ with milk and sugar, thanks.",
+                    "answer": "coffees",
+                    "options": [
+                        "coffee",
+                        "coffees",
+                        "tea",
+                        "teas"
+                    ],
+                    "id": "item_6aba3e5a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Öt teát citrommal, kérem.",
+                    "correctAnswer": "Five teas with lemon, please.",
+                    "scrambledWords": [
+                        "Five",
+                        "teas",
+                        "with",
+                        "lemon,",
+                        "please.",
+                        "four"
+                    ],
+                    "id": "item_8b2db48f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, két almalevet és öt kávét kérek.",
+                    "correctAnswer": "Hello, two apple juices and five coffees please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "two",
+                        "apple juices",
+                        "and",
+                        "five",
+                        "coffees",
+                        "please."
+                    ],
+                    "id": "item_a34fe180"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Egy kávé és négy narancslé.",
+                    "correctAnswer": "One coffee and four orange juices.",
+                    "scrambledWords": [
+                        "One",
+                        "coffee",
+                        "and",
+                        "four",
+                        "orange juices.",
+                        "five"
+                    ],
+                    "id": "item_fb623ba9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Két teát tej nélkül, köszönöm.",
+                    "correctAnswer": "Two teas without milk, thanks.",
+                    "scrambledWords": [
+                        "Two",
+                        "teas",
+                        "without",
+                        "milk,",
+                        "thanks.",
+                        "with"
+                    ],
+                    "id": "item_521135d0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Három vizet citrommal, kérem.",
+                    "sentence": "Three waters with ____, please.",
+                    "answer": "lemon",
+                    "options": [
+                        "lemon",
+                        "milk",
+                        "sugar",
+                        "coffee"
+                    ],
+                    "id": "item_1fc9b214"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Öt kávét cukorral és két teát tejjel kérek!",
+                    "correctAnswer": "Five coffees with sugar and two teas with milk please!",
+                    "scrambledWords": [
+                        "Five",
+                        "coffees",
+                        "with",
+                        "sugar",
+                        "and",
+                        "two",
+                        "teas",
+                        "with",
+                        "milk",
+                        "please!"
+                    ],
+                    "id": "item_29858193"
+                }
+            ]
+        }
+    ]
+}

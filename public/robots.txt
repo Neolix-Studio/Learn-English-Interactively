@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /welcome/
+Disallow: /lesson/
+Disallow: /profile
+Disallow: /practice
+Disallow: /leaderboard
+Disallow: /characters
+
+Sitemap: https://lexipaws.eu/sitemap.xml

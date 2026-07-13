@@ -1,0 +1,509 @@
+{
+    "title": "Hol van?",
+    "type": "multi_level_node",
+    "targetWords": [
+        "where",
+        "in",
+        "on",
+        "under",
+        "next to",
+        "the"
+    ],
+    "dictionary": {
+        "where": "hol",
+        "in": "bent / -ban / -ben",
+        "on": "rajta / -on / -en / -ön",
+        "under": "alatt",
+        "next to": "mellett"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "where",
+                "in"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "hol?",
+                    "correctAnswer": "where",
+                    "options": [
+                        { "id": "where", "text": "where", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50' y='75' font-size='60' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>?</text></svg>" },
+                        { "id": "in", "text": "in", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='25' width='50' height='50' stroke='#34495e' stroke-width='6' fill='none'/><circle cx='50' cy='50' r='12' fill='#e74c3c'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "bent (-ban / -ben)",
+                    "correctAnswer": "in",
+                    "options": [
+                        { "id": "where", "text": "where", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50' y='75' font-size='60' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>?</text></svg>" },
+                        { "id": "in", "text": "in", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='25' width='50' height='50' stroke='#34495e' stroke-width='6' fill='none'/><circle cx='50' cy='50' r='12' fill='#e74c3c'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Hol van a könyv?",
+                    "correctAnswer": "Where is the book?",
+                    "scrambledWords": ["Where", "is", "the", "book?", "phone?"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Hol van az autóm?",
+                    "correctAnswer": "Where is my car?",
+                    "scrambledWords": ["Where", "is", "my", "car?", "the"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hol van a kulcs?",
+                    "sentence": "____ is the key?",
+                    "answer": "Where",
+                    "options": ["Where", "What", "How", "In"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "A táskában.",
+                    "correctAnswer": "In the bag.",
+                    "scrambledWords": ["In", "the", "bag.", "Where"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kulcs a táskában van.",
+                    "correctAnswer": "The key is in the bag.",
+                    "scrambledWords": ["The", "key", "is", "in", "the", "bag.", "my"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A könyv a szobában van.",
+                    "sentence": "The book is ____ the room.",
+                    "answer": "in",
+                    "options": ["in", "a", "is", "where"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hol van a telefonom?",
+                    "correctAnswer": "Where is my phone?",
+                    "scrambledWords": ["Where", "is", "my", "phone?", "in", "bag."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A telefonod a táskában van.",
+                    "correctAnswer": "Your phone is in the bag.",
+                    "scrambledWords": ["Your", "phone", "is", "in", "the", "bag.", "where"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A konyhában van.",
+                    "sentence": "It is in the ____.",
+                    "answer": "kitchen",
+                    "options": ["kitchen", "bag", "table", "where"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem a hálószobában van.",
+                    "correctAnswer": "My brother is in the bedroom.",
+                    "scrambledWords": ["My", "brother", "is", "in", "the", "bedroom.", "sister"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hol vagy?",
+                    "correctAnswer": "Where are you?",
+                    "scrambledWords": ["Where", "are", "you?", "is", "I"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A szobában vagyok.",
+                    "correctAnswer": "I am in the room.",
+                    "scrambledWords": ["I", "am", "in", "the", "room.", "my"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hol van az apám?",
+                    "sentence": "____ is my father?",
+                    "answer": "Where",
+                    "options": ["Where", "What", "In", "How"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "on",
+                "under"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "rajta (-on / -en / -ön)",
+                    "correctAnswer": "on",
+                    "options": [
+                        { "id": "on", "text": "on", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='60' width='50' height='20' fill='#34495e'/><circle cx='50' cy='45' r='15' fill='#e74c3c'/></svg>" },
+                        { "id": "under", "text": "under", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='20' fill='#34495e'/><circle cx='50' cy='70' r='15' fill='#e74c3c'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "alatt",
+                    "correctAnswer": "under",
+                    "options": [
+                        { "id": "on", "text": "on", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='60' width='50' height='20' fill='#34495e'/><circle cx='50' cy='45' r='15' fill='#e74c3c'/></svg>" },
+                        { "id": "under", "text": "under", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='20' fill='#34495e'/><circle cx='50' cy='70' r='15' fill='#e74c3c'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Az asztalon.",
+                    "correctAnswer": "On the table.",
+                    "scrambledWords": ["On", "the", "table.", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A könyv az asztalon van.",
+                    "correctAnswer": "The book is on the table.",
+                    "scrambledWords": ["The", "book", "is", "on", "the", "table.", "under"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A toll az asztalon van.",
+                    "sentence": "The pen is ____ the table.",
+                    "answer": "on",
+                    "options": ["on", "in", "where", "a"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "A szék alatt.",
+                    "correctAnswer": "Under the chair.",
+                    "scrambledWords": ["Under", "the", "chair.", "on"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A táska a szék alatt van.",
+                    "correctAnswer": "The bag is under the chair.",
+                    "scrambledWords": ["The", "bag", "is", "under", "the", "chair."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kulcs az ágy alatt van.",
+                    "sentence": "The key is ____ the bed.",
+                    "answer": "under",
+                    "options": ["under", "on", "in", "the"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hol van a telefon? Az asztalon.",
+                    "correctAnswer": "Where is the phone? On the table.",
+                    "scrambledWords": ["Where", "is", "the", "phone?", "On", "the", "table."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A könyv az ágyon van.",
+                    "correctAnswer": "The book is on the bed.",
+                    "scrambledWords": ["The", "book", "is", "on", "the", "bed.", "under"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hol van a táskám?",
+                    "sentence": "____ is my bag?",
+                    "answer": "Where",
+                    "options": ["Where", "What", "How", "On"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az asztal a szobában van.",
+                    "correctAnswer": "The table is in the room.",
+                    "scrambledWords": ["The", "table", "is", "in", "the", "room."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya az asztal alatt van.",
+                    "correctAnswer": "The dog is under the table.",
+                    "scrambledWords": ["The", "dog", "is", "under", "the", "table.", "on"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya az ágyon van.",
+                    "sentence": "The dog is ____ the bed.",
+                    "answer": "on",
+                    "options": ["on", "under", "in", "where"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A toll a könyv alatt van.",
+                    "correctAnswer": "The pen is under the book.",
+                    "scrambledWords": ["The", "pen", "is", "under", "the", "book.", "in"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "next to"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "mellett",
+                    "correctAnswer": "next to",
+                    "options": [
+                        { "id": "next to", "text": "next to", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='35' width='30' height='30' fill='#34495e'/><circle cx='70' cy='50' r='12' fill='#e74c3c'/></svg>" },
+                        { "id": "in", "text": "in", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='25' width='50' height='50' stroke='#34495e' stroke-width='6' fill='none'/><circle cx='50' cy='50' r='12' fill='#e74c3c'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Az asztal mellett.",
+                    "correctAnswer": "Next to the table.",
+                    "scrambledWords": ["Next", "to", "the", "table.", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A szék az asztal mellett van.",
+                    "correctAnswer": "The chair is next to the table.",
+                    "scrambledWords": ["The", "chair", "is", "next", "to", "the", "table.", "on"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A táska a szék mellett van.",
+                    "sentence": "The bag is ____ to the chair.",
+                    "answer": "next",
+                    "options": ["next", "on", "in", "under"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hol van a kutya? Az ágy mellett.",
+                    "correctAnswer": "Where is the dog? Next to the bed.",
+                    "scrambledWords": ["Where", "is", "the", "dog?", "Next", "to", "the", "bed."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A telefonom a könyv mellett van.",
+                    "correctAnswer": "My phone is next to the book.",
+                    "scrambledWords": ["My", "phone", "is", "next", "to", "the", "book.", "in"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám az autó mellett van.",
+                    "sentence": "My father is next ____ the car.",
+                    "answer": "to",
+                    "options": ["to", "the", "on", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A hálószoba a konyha mellett van.",
+                    "correctAnswer": "The bedroom is next to the kitchen.",
+                    "scrambledWords": ["The", "bedroom", "is", "next", "to", "the", "kitchen."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kulcs a telefon mellett van az asztalon.",
+                    "correctAnswer": "The key is next to the phone on the table.",
+                    "scrambledWords": ["The", "key", "is", "next", "to", "the", "phone", "on", "the", "table."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hol van a szék?",
+                    "sentence": "____ is the chair?",
+                    "answer": "Where",
+                    "options": ["Where", "What", "How", "Next"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A szék az ágy mellett van a hálószobában.",
+                    "correctAnswer": "The chair is next to the bed in the bedroom.",
+                    "scrambledWords": ["The", "chair", "is", "next", "to", "the", "bed", "in", "the", "bedroom."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom a fivérem mellett van.",
+                    "correctAnswer": "My friend is next to my brother.",
+                    "scrambledWords": ["My", "friend", "is", "next", "to", "my", "brother.", "sister."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya az asztal mellett van.",
+                    "sentence": "The dog is next ____ the table.",
+                    "answer": "to",
+                    "options": ["to", "on", "in", "under"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én a fivérem mellett vagyok.",
+                    "correctAnswer": "I am next to my brother.",
+                    "scrambledWords": ["I", "am", "next", "to", "my", "brother.", "is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az autó a ház mellett van.",
+                    "correctAnswer": "The car is next to the house.",
+                    "scrambledWords": ["The", "car", "is", "next", "to", "the", "house.", "in"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hol van a kulcsom? A táskában van.",
+                    "correctAnswer": "Where is my key? It is in the bag.",
+                    "scrambledWords": ["Where", "is", "my", "key?", "It", "is", "in", "the", "bag."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A könyv az asztalon van a konyhában.",
+                    "sentence": "The book is ____ the table in the kitchen.",
+                    "answer": "on",
+                    "options": ["on", "in", "under", "next"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya az ágy alatt van a hálószobában.",
+                    "correctAnswer": "The dog is under the bed in the bedroom.",
+                    "scrambledWords": ["The", "dog", "is", "under", "the", "bed", "in", "the", "bedroom."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hol van az anyám? Az autó mellett van.",
+                    "correctAnswer": "Where is my mother? She is next to the car.",
+                    "scrambledWords": ["Where", "is", "my", "mother?", "She", "is", "next", "to", "the", "car."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A toll a könyv alatt van.",
+                    "sentence": "The pen is ____ the book.",
+                    "answer": "under",
+                    "options": ["under", "on", "in", "to"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A szék az asztal mellett van a szobában.",
+                    "correctAnswer": "The chair is next to the table in the room.",
+                    "scrambledWords": ["The", "chair", "is", "next", "to", "the", "table", "in", "the", "room."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A telefonom a könyvön van.",
+                    "correctAnswer": "My phone is on the book.",
+                    "scrambledWords": ["My", "phone", "is", "on", "the", "book.", "in"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hol van a táskád? Az asztal alatt.",
+                    "sentence": "____ is your bag? Under the table.",
+                    "answer": "Where",
+                    "options": ["Where", "What", "How", "In"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám a konyhában van, az asztal mellett.",
+                    "correctAnswer": "My father is in the kitchen, next to the table.",
+                    "scrambledWords": ["My", "father", "is", "in", "the", "kitchen,", "next", "to", "the", "table."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A pénzem a táskámban van.",
+                    "correctAnswer": "My money is in my bag.",
+                    "scrambledWords": ["My", "money", "is", "in", "my", "bag.", "under"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A jegy a telefon mellett van.",
+                    "sentence": "The ticket is next ____ the phone.",
+                    "answer": "to",
+                    "options": ["to", "on", "in", "under"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya a házban van.",
+                    "correctAnswer": "The dog is in the house.",
+                    "scrambledWords": ["The", "dog", "is", "in", "the", "house.", "on"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én a hálószobában vagyok és az ágyon vagyok.",
+                    "correctAnswer": "I am in the bedroom and I am on the bed.",
+                    "scrambledWords": ["I", "am", "in", "the", "bedroom", "and", "I", "am", "on", "the", "bed."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fiú a lány mellett van.",
+                    "sentence": "The boy is ____ to the girl.",
+                    "answer": "next",
+                    "options": ["next", "on", "under", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hol van a pénzem? A könyv alatt van!",
+                    "correctAnswer": "Where is my money? It is under the book!",
+                    "scrambledWords": ["Where", "is", "my", "money?", "It", "is", "under", "the", "book!", "on"]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,505 @@
+{
+    "title": "Szeretek csinálni...",
+    "type": "multi_level_node",
+    "targetWords": [
+        "to",
+        "run",
+        "cook",
+        "dance",
+        "swim"
+    ],
+    "dictionary": {
+        "to": "főnévi igenevet képző szó (pl. to run = futni)",
+        "run": "fut (futni)",
+        "cook": "főz (főzni)",
+        "dance": "táncol (táncolni)",
+        "swim": "úszik (úszni)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "to",
+                "run",
+                "cook"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fut (futni)",
+                    "correctAnswer": "run",
+                    "options": [
+                        { "id": "run", "text": "run", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='30' r='10' fill='#2980b9'/><path d='M50 40 L50 60 L35 75 M50 60 L60 80 M35 50 L65 40' stroke='#3498db' stroke-width='6' stroke-linecap='round' fill='none'/><path d='M70 65 L80 65 M75 55 L85 55' stroke='#bdc3c7' stroke-width='3' stroke-linecap='round'/></svg>" },
+                        { "id": "cook", "text": "cook", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='50' width='40' height='30' rx='5' fill='#7f8c8d'/><rect x='20' y='55' width='10' height='5' fill='#34495e'/><path d='M40 50 Q45 30 50 50 M50 50 Q55 30 60 50' stroke='#bdc3c7' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "főz (főzni)",
+                    "correctAnswer": "cook",
+                    "options": [
+                        { "id": "run", "text": "run", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='30' r='10' fill='#2980b9'/><path d='M50 40 L50 60 L35 75 M50 60 L60 80 M35 50 L65 40' stroke='#3498db' stroke-width='6' stroke-linecap='round' fill='none'/><path d='M70 65 L80 65 M75 55 L85 55' stroke='#bdc3c7' stroke-width='3' stroke-linecap='round'/></svg>" },
+                        { "id": "cook", "text": "cook", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='50' width='40' height='30' rx='5' fill='#7f8c8d'/><rect x='20' y='55' width='10' height='5' fill='#34495e'/><path d='M40 50 Q45 30 50 50 M50 50 Q55 30 60 50' stroke='#bdc3c7' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én szeretek futni.",
+                    "correctAnswer": "I like to run.",
+                    "scrambledWords": ["I", "like", "to", "run.", "cook."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Te szeretsz főzni.",
+                    "correctAnswer": "You like to cook.",
+                    "scrambledWords": ["You", "like", "to", "cook.", "run."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) szeret futni.",
+                    "sentence": "She likes ____ run.",
+                    "answer": "to",
+                    "options": ["to", "in", "on", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én szeretek főzni.",
+                    "correctAnswer": "I like to cook.",
+                    "scrambledWords": ["I", "like", "to", "cook.", "likes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi szeretünk futni.",
+                    "correctAnswer": "We like to run.",
+                    "scrambledWords": ["We", "like", "to", "run.", "likes"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szeretsz futni?",
+                    "sentence": "Do you like ____ run?",
+                    "answer": "to",
+                    "options": ["to", "the", "a", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők nem szeretnek főzni.",
+                    "correctAnswer": "They don't like to cook.",
+                    "scrambledWords": ["They", "don't", "like", "to", "cook.", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) szeret futni.",
+                    "correctAnswer": "He likes to run.",
+                    "scrambledWords": ["He", "likes", "to", "run.", "like"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én szeretek főzni.",
+                    "sentence": "I like to ____.",
+                    "answer": "cook",
+                    "options": ["cook", "cooks", "run", "runs"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szeret ő (nő) futni?",
+                    "correctAnswer": "Does she like to run?",
+                    "scrambledWords": ["Does", "she", "like", "to", "run?", "likes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, én szeretek futni.",
+                    "correctAnswer": "Yes, I like to run.",
+                    "scrambledWords": ["Yes,", "I", "like", "to", "run.", "runs."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) szeret főzni?",
+                    "sentence": "Does he like to ____?",
+                    "answer": "cook",
+                    "options": ["cook", "cooks", "run", "runs"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te nem szeretsz futni.",
+                    "correctAnswer": "You do not like to run.",
+                    "scrambledWords": ["You", "do", "not", "like", "to", "run.", "likes"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "dance",
+                "swim"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "táncol (táncolni)",
+                    "correctAnswer": "dance",
+                    "options": [
+                        { "id": "dance", "text": "dance", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='40' cy='30' r='8' fill='#9b59b6'/><circle cx='60' cy='35' r='8' fill='#e67e22'/><path d='M40 38 L45 60 L35 80 M45 60 L55 80 M40 45 L25 35 M45 45 L60 40' stroke='#8e44ad' stroke-width='4' stroke-linecap='round' fill='none'/><path d='M60 43 L55 65 L65 85 M55 65 L45 85 M60 50 L75 40' stroke='#d35400' stroke-width='4' stroke-linecap='round' fill='none'/></svg>" },
+                        { "id": "swim", "text": "swim", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M10 70 Q30 50 50 70 T90 70' stroke='#3498db' stroke-width='6' fill='none'/><circle cx='50' cy='45' r='10' fill='#f1c40f'/><path d='M25 60 L45 50 L65 60' stroke='#e67e22' stroke-width='5' stroke-linecap='round' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "úszik (úszni)",
+                    "correctAnswer": "swim",
+                    "options": [
+                        { "id": "dance", "text": "dance", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='40' cy='30' r='8' fill='#9b59b6'/><circle cx='60' cy='35' r='8' fill='#e67e22'/><path d='M40 38 L45 60 L35 80 M45 60 L55 80 M40 45 L25 35 M45 45 L60 40' stroke='#8e44ad' stroke-width='4' stroke-linecap='round' fill='none'/><path d='M60 43 L55 65 L65 85 M55 65 L45 85 M60 50 L75 40' stroke='#d35400' stroke-width='4' stroke-linecap='round' fill='none'/></svg>" },
+                        { "id": "swim", "text": "swim", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M10 70 Q30 50 50 70 T90 70' stroke='#3498db' stroke-width='6' fill='none'/><circle cx='50' cy='45' r='10' fill='#f1c40f'/><path d='M25 60 L45 50 L65 60' stroke='#e67e22' stroke-width='5' stroke-linecap='round' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én szeretek táncolni.",
+                    "correctAnswer": "I like to dance.",
+                    "scrambledWords": ["I", "like", "to", "dance.", "swim."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Te szeretsz úszni.",
+                    "correctAnswer": "You like to swim.",
+                    "scrambledWords": ["You", "like", "to", "swim.", "dance."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi szeretünk táncolni.",
+                    "sentence": "We like ____ dance.",
+                    "answer": "to",
+                    "options": ["to", "in", "on", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) imád táncolni.",
+                    "correctAnswer": "She loves to dance.",
+                    "scrambledWords": ["She", "loves", "to", "dance.", "love"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) utál úszni.",
+                    "correctAnswer": "He hates to swim.",
+                    "scrambledWords": ["He", "hates", "to", "swim.", "hate"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők imádnak úszni.",
+                    "sentence": "They ____ to swim.",
+                    "answer": "love",
+                    "options": ["love", "loves", "like", "hate"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szeretsz táncolni?",
+                    "correctAnswer": "Do you like to dance?",
+                    "scrambledWords": ["Do", "you", "like", "to", "dance?", "Does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem szeretek úszni.",
+                    "correctAnswer": "I don't like to swim.",
+                    "scrambledWords": ["I", "don't", "like", "to", "swim.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szeret ő (férfi) úszni?",
+                    "sentence": "Does he like to ____?",
+                    "answer": "swim",
+                    "options": ["swim", "swims", "dance", "dances"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom szeret táncolni.",
+                    "correctAnswer": "My friend likes to dance.",
+                    "scrambledWords": ["My", "friend", "likes", "to", "dance.", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem utál táncolni.",
+                    "correctAnswer": "My brother hates to dance.",
+                    "scrambledWords": ["My", "brother", "hates", "to", "dance.", "hate"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te szeretsz úszni?",
+                    "sentence": "____ you like to swim?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "Is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya szeret úszni.",
+                    "correctAnswer": "The dog likes to swim.",
+                    "scrambledWords": ["The", "dog", "likes", "to", "swim.", "like"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én szeretek aludni.",
+                    "correctAnswer": "I like to sleep.",
+                    "scrambledWords": ["I", "like", "to", "sleep.", "sleeps."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te szeretsz olvasni.",
+                    "correctAnswer": "You like to read.",
+                    "scrambledWords": ["You", "like", "to", "read.", "reads."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) szeret enni.",
+                    "sentence": "She likes to ____.",
+                    "answer": "eat",
+                    "options": ["eat", "eats", "eating", "do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi szeretünk játszani.",
+                    "correctAnswer": "We like to play.",
+                    "scrambledWords": ["We", "like", "to", "play.", "plays."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) imád aludni.",
+                    "sentence": "He loves ____ sleep.",
+                    "answer": "to",
+                    "options": ["to", "on", "in", "the"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szeretsz olvasni?",
+                    "correctAnswer": "Do you like to read?",
+                    "scrambledWords": ["Do", "you", "like", "to", "read?", "Does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők utálnak dolgozni.",
+                    "correctAnswer": "They hate to work.",
+                    "scrambledWords": ["They", "hate", "to", "work.", "hates"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szeret ő (nő) játszani?",
+                    "sentence": "Does she like to ____?",
+                    "answer": "play",
+                    "options": ["play", "plays", "run", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya szeret aludni.",
+                    "correctAnswer": "The dog likes to sleep.",
+                    "scrambledWords": ["The", "dog", "likes", "to", "sleep.", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én szeretek pizzát enni.",
+                    "correctAnswer": "I like to eat pizza.",
+                    "scrambledWords": ["I", "like", "to", "eat", "pizza.", "eats"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én imádok kávét inni.",
+                    "sentence": "I love to ____ coffee.",
+                    "answer": "drink",
+                    "options": ["drink", "drinks", "eat", "eats"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) szeret a konyhában főzni.",
+                    "correctAnswer": "She likes to cook in the kitchen.",
+                    "scrambledWords": ["She", "likes", "to", "cook", "in", "the", "kitchen."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te szeretsz a kutyával játszani.",
+                    "correctAnswer": "You like to play with the dog.",
+                    "scrambledWords": ["You", "like", "to", "play", "with", "the", "dog."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi szeretünk a szobában táncolni.",
+                    "sentence": "We like to dance in the ____.",
+                    "answer": "room",
+                    "options": ["room", "table", "chair", "bed"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem utál dolgozni.",
+                    "correctAnswer": "My brother hates to work.",
+                    "scrambledWords": ["My", "brother", "hates", "to", "work.", "hate"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szeretsz futni? Igen, szeretek futni.",
+                    "correctAnswer": "Do you like to run? Yes, I like to run.",
+                    "scrambledWords": ["Do", "you", "like", "to", "run?", "Yes,", "I", "like", "to", "run."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) szeret főzni, és én utálok főzni.",
+                    "sentence": "He likes to cook and I ____ to cook.",
+                    "answer": "hate",
+                    "options": ["hate", "hates", "love", "like"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szeret ő (nő) táncolni? Nem, ő utál táncolni.",
+                    "correctAnswer": "Does she like to dance? No, she hates to dance.",
+                    "scrambledWords": ["Does", "she", "like", "to", "dance?", "No,", "she", "hates", "to", "dance."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én szeretek olvasni és te szeretsz aludni.",
+                    "correctAnswer": "I like to read and you like to sleep.",
+                    "scrambledWords": ["I", "like", "to", "read", "and", "you", "like", "to", "sleep."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya szeret a vízben úszni?",
+                    "sentence": "Does the dog like to swim in the ____?",
+                    "answer": "water",
+                    "options": ["water", "house", "room", "table"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi szeretünk pizzát enni hétvégén.",
+                    "correctAnswer": "We like to eat pizza on the weekend.",
+                    "scrambledWords": ["We", "like", "to", "eat", "pizza", "on", "the", "weekend."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők nem szeretnek dolgozni reggel.",
+                    "correctAnswer": "They don't like to work in the morning.",
+                    "scrambledWords": ["They", "don't", "like", "to", "work", "in", "the", "morning.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te szeretsz éjszaka olvasni?",
+                    "sentence": "Do you like to read ____ night?",
+                    "answer": "at",
+                    "options": ["at", "in", "on", "the"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám szeret főzni, és az apám szeret enni.",
+                    "correctAnswer": "My mother likes to cook and my father likes to eat.",
+                    "scrambledWords": ["My", "mother", "likes", "to", "cook", "and", "my", "father", "likes", "to", "eat."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szeret a fivéred táncolni?",
+                    "correctAnswer": "Does your brother like to dance?",
+                    "scrambledWords": ["Does", "your", "brother", "like", "to", "dance?", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én imádok futni reggel.",
+                    "sentence": "I love ____ run in the morning.",
+                    "answer": "to",
+                    "options": ["to", "in", "on", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem szeret úszni.",
+                    "correctAnswer": "She doesn't like to swim.",
+                    "scrambledWords": ["She", "doesn't", "like", "to", "swim.", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom utál dolgozni és szeret aludni.",
+                    "correctAnswer": "My friend hates to work and likes to sleep.",
+                    "scrambledWords": ["My", "friend", "hates", "to", "work", "and", "likes", "to", "sleep.", "hate"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Szeret ő (férfi) a kutyával játszani?",
+                    "sentence": "Does he like to play ____ the dog?",
+                    "answer": "with",
+                    "options": ["with", "in", "on", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én szeretek a szobámban olvasni.",
+                    "correctAnswer": "I like to read in my room.",
+                    "scrambledWords": ["I", "like", "to", "read", "in", "my", "room.", "reads"]
+                }
+            ]
+        }
+    ]
+}

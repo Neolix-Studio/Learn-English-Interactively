@@ -1,0 +1,1022 @@
+{
+  "id": "cons_m_n_ng",
+  "type": "character_lesson",
+  "title": "CONS M N NG",
+  "characters": [
+    "m",
+    "n",
+    "ŋ"
+  ],
+  "lessons": [
+    {
+      "id": "cons_m_n_ng_level_1",
+      "title": "Szint 1",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sum",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "sun",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "sung",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "sum",
+              "audioUrl": null
+            },
+            {
+              "text": "sun",
+              "audioUrl": null
+            },
+            {
+              "text": "sung",
+              "audioUrl": null
+            },
+            {
+              "text": "ram",
+              "audioUrl": null
+            },
+            {
+              "text": "ran",
+              "audioUrl": null
+            },
+            {
+              "text": "rang",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "ram",
+          "word2": "ram",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sum",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sun",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "sung",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "ram",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "ran",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "rang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sum",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sun",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "sung",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "ram",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "ran",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "rang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "ram",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "ran",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "rang",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "sum",
+          "word2": "sun",
+          "isSame": false
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "ram",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "sum",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_m_n_ng_level_2",
+      "title": "Szint 2",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sim",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "sing",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bam",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "ban",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "bang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sim",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "sin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "sing",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "bam",
+          "word2": "ban",
+          "isSame": false
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "sim",
+              "audioUrl": null
+            },
+            {
+              "text": "sin",
+              "audioUrl": null
+            },
+            {
+              "text": "sing",
+              "audioUrl": null
+            },
+            {
+              "text": "bam",
+              "audioUrl": null
+            },
+            {
+              "text": "ban",
+              "audioUrl": null
+            },
+            {
+              "text": "bang",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "sim",
+          "word2": "sin",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "sim",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sin",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "sing",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bam",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "ban",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "bang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bam",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "ban",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "bang",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "ban",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "sin",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_m_n_ng_level_3",
+      "title": "Szint 3",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rum",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "run",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "rung",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "clam",
+          "word2": "clan",
+          "isSame": false
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "clam",
+              "audioUrl": null
+            },
+            {
+              "text": "clan",
+              "audioUrl": null
+            },
+            {
+              "text": "clang",
+              "audioUrl": null
+            },
+            {
+              "text": "rum",
+              "audioUrl": null
+            },
+            {
+              "text": "run",
+              "audioUrl": null
+            },
+            {
+              "text": "rung",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rum",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "run",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "rung",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "clam",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "clan",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "clang",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rum",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "run",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "rung",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "rum",
+          "word2": "run",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "clam",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "clan",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "clang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "clam",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "clan",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "clang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "clan",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "rung",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_m_n_ng_level_4",
+      "title": "Szint 4",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rim",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "rin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "ring",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "rim",
+          "word2": "rin",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rim",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "rin",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "ring",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "dam",
+          "word2": "dam",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "dam",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "dan",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "dang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "dam",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "dan",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "dang",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "rim",
+              "audioUrl": null
+            },
+            {
+              "text": "rin",
+              "audioUrl": null
+            },
+            {
+              "text": "ring",
+              "audioUrl": null
+            },
+            {
+              "text": "dam",
+              "audioUrl": null
+            },
+            {
+              "text": "dan",
+              "audioUrl": null
+            },
+            {
+              "text": "dang",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "dam",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "dan",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "dang",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "rim",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "rin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "ring",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "rim",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "dang",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_m_n_ng_level_5",
+      "title": "Szint 5",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "grim",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "grin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "gring",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "plum",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "plun",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "plung",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "plum",
+          "word2": "plun",
+          "isSame": false
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "plum",
+              "audioUrl": null
+            },
+            {
+              "text": "plun",
+              "audioUrl": null
+            },
+            {
+              "text": "plung",
+              "audioUrl": null
+            },
+            {
+              "text": "grim",
+              "audioUrl": null
+            },
+            {
+              "text": "grin",
+              "audioUrl": null
+            },
+            {
+              "text": "gring",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "grim",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "grin",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "gring",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "plum",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "plun",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "plung",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "grim",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "grin",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "gring",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "plum",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "plun",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "plung",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "grim",
+          "word2": "grim",
+          "isSame": true
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "gring",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "plung",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    }
+  ]
+}

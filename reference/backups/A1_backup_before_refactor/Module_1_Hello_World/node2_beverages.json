@@ -1,0 +1,700 @@
+{
+    "title": "Italok",
+    "type": "multi_level_node",
+    "targetWords": [
+        "coffee",
+        "tea",
+        "please",
+        "thanks",
+        "milk",
+        "water",
+        "yes",
+        "no",
+        "hello",
+        "goodbye",
+        "and",
+        "sugar",
+        "lemon",
+        "orange juice",
+        "apple juice",
+        "juice",
+        "orange",
+        "apple",
+        "without",
+        "with"
+    ],
+    "dictionary": {
+        "coffee": "coffee",
+        "tea": "tea",
+        "please": "kérem",
+        "thanks": "köszönöm",
+        "milk": "tej",
+        "water": "víz",
+        "yes": "igen",
+        "no": "nem",
+        "hello": "szia",
+        "goodbye": "viszlát",
+        "and": "és",
+        "sugar": "cukor",
+        "lemon": "citrom",
+        "orange juice": "narancslé",
+        "apple juice": "almalé",
+        "juice": "lé",
+        "orange": "narancs",
+        "apple": "alma",
+        "without": "nélkül",
+        "with": "(-val/-vel)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "sugar",
+                "lemon",
+                "orange",
+                "apple"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "sugar",
+                    "correctAnswer": "sugar",
+                    "options": [
+                        {
+                            "id": "sugar",
+                            "text": "sugar",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "orange",
+                            "text": "orange",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>MILK</text></svg>"
+                        },
+                        {
+                            "id": "apple",
+                            "text": "apple",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "orange",
+                    "correctAnswer": "orange",
+                    "options": [
+                        {
+                            "id": "sugar",
+                            "text": "sugar",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "orange",
+                            "text": "orange",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>MILK</text></svg>"
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Narancslét, kérem.",
+                    "correctAnswer": "Orange juice, please.",
+                    "scrambledWords": [
+                        "Orange juice,",
+                        "tea,",
+                        "hello",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét cukorral, kérem.",
+                    "correctAnswer": "Coffee with sugar please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "Tea,",
+                        "please.",
+                        "with",
+                        "sugar."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": true,
+                    "hu": "Kérem",
+                    "sentence": "Coffee, ____.",
+                    "answer": "please",
+                    "options": [
+                        "please",
+                        "thanks",
+                        "tea",
+                        "coffee"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Alma.",
+                    "correctAnswer": "Apple.",
+                    "scrambledWords": [
+                        "Water,",
+                        "Apple",
+                        "Sugar",
+                        "Apple juice."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Narancslé, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Orange juice",
+                    "options": [
+                        "Apple juice",
+                        "Orange juice",
+                        "Orange",
+                        "Water"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Almalevet, köszönöm.",
+                    "correctAnswer": "Apple juice, thanks.",
+                    "scrambledWords": [
+                        "Thanks.",
+                        "Sugar,",
+                        "and",
+                        "Apple juice."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": true,
+                    "hu": "Citrom.",
+                    "sentence": "____, please.",
+                    "answer": "Lemon",
+                    "options": [
+                        "Coffee",
+                        "Tea",
+                        "thanks",
+                        "Lemon"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét cukorral és tejjel, kérem. Köszönöm.",
+                    "correctAnswer": "Coffee with sugar and milk please. Thanks.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "milk,",
+                        "please.",
+                        "Thanks.",
+                        "and",
+                        "Sugar",
+                        "with"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "milk",
+                "water",
+                "yes",
+                "no"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "lemon",
+                    "correctAnswer": "lemon",
+                    "options": [
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "apple",
+                            "text": "apple",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "orange juice",
+                            "text": "orange juice",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>ORANGE JUICE</text></svg>"
+                        },
+                        {
+                            "id": "apple juice",
+                            "text": "apple juice",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": false
+                },
+                {
+                    "type": "image_choice",
+                    "word": "apple",
+                    "correctAnswer": "apple",
+                    "options": [
+                        {
+                            "id": "apple",
+                            "text": "apple",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "orange",
+                            "text": "orange",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "lemon",
+                            "text": "lemon",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>LEMON</text></svg>"
+                        },
+                        {
+                            "id": "apple juice",
+                            "text": "apple juice",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": false
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Almalé.",
+                    "correctAnswer": "Apple juice.",
+                    "scrambledWords": [
+                        "Apple juice.",
+                        "Orange juice.",
+                        "Lemon.",
+                        "Thanks."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Lemon",
+                    "correctAnswer": "Lemon",
+                    "scrambledWords": [
+                        "Apple",
+                        "Orange",
+                        "Lemon",
+                        "Milk"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Narancsot, kérem.",
+                    "correctAnswer": "Orange juice, please.",
+                    "scrambledWords": [
+                        "Orange juice.",
+                        "Apple juice.",
+                        "Please.",
+                        "Thanks.",
+                        "Coffee."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, kávét és narancslevet kérek.",
+                    "correctAnswer": "Yes, coffee and orange juice please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "coffee",
+                        "and",
+                        "orange juice",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Almalét, kérem.",
+                    "sentence": "____, please.",
+                    "answer": "Apple juice",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Apple juice"
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Tejet, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Milk",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Yes"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, vizet kávéval kérek.",
+                    "correctAnswer": "Yes, water with coffee please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "water",
+                        "with",
+                        "coffee",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Tejet nem, köszönöm.",
+                    "correctAnswer": "No, milk, thanks.",
+                    "scrambledWords": [
+                        "No,",
+                        "Yes,",
+                        "milk,",
+                        "thanks.",
+                        "water,"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "hello",
+                "goodbye",
+                "and",
+                "with",
+                "without"
+            ],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "|val.",
+                    "correctAnswer": "with",
+                    "scrambledWords": [
+                        "without",
+                        "with",
+                        "Yes.",
+                        "No."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "nélkül.",
+                    "correctAnswer": "without",
+                    "scrambledWords": [
+                        "without",
+                        "with",
+                        "Thanks.",
+                        "Please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, kávét tejjel kérek.",
+                    "correctAnswer": "Hello, coffee with milk please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "milk",
+                        "coffee",
+                        "with",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét kérek cukorral és narancslével.",
+                    "correctAnswer": "Coffee with sugar and orange juice please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "sugar",
+                        "and",
+                        "please",
+                        "orange juice.",
+                        "with"
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Narancslé kávéval.",
+                    "sentence": "Orange juice ____ coffee.",
+                    "answer": "with",
+                    "options": [
+                        "without",
+                        "with",
+                        "no",
+                        "hello"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, almalé kávé nélkül, kérek.",
+                    "correctAnswer": "Hello, apple juice without coffee, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "apple juice",
+                        "without",
+                        "coffee",
+                        "please",
+                        "with",
+                        "and"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Viszlát, köszönöm.",
+                    "correctAnswer": "Goodbye, thanks.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "Hello,",
+                        "thanks.",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Tejet és vizet, kérek.",
+                    "sentence": "Milk and ____, please.",
+                    "answer": "water",
+                    "options": [
+                        "water",
+                        "coffee",
+                        "tea",
+                        "hello"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, citromot és vizet, kérek.",
+                    "correctAnswer": "Hello, lemon and water, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "lemon",
+                        "and",
+                        "water",
+                        "please",
+                        "without",
+                        "with"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, kávé és víz, köszönöm.",
+                    "correctAnswer": "Yes, coffee and water, thanks.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "coffee",
+                        "and",
+                        "water,",
+                        "thanks."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét és tejet, kérek.",
+                    "correctAnswer": "Coffee and milk, please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "and",
+                        "milk,",
+                        "please.",
+                        "water"
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Nem, kávét és vizet, köszönöm.",
+                    "sentence": "No, coffee and water, ____.",
+                    "answer": "thanks",
+                    "options": [
+                        "thanks",
+                        "please",
+                        "yes",
+                        "no"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, kávét vízzel és almalét kérek.",
+                    "correctAnswer": "Hello, coffee with water and apple juice please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "coffee",
+                        "and",
+                        "water",
+                        "please.",
+                        "thanks",
+                        "with",
+                        "apple juice"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Köszönöm, viszlát.",
+                    "correctAnswer": "Thank you, goodbye.",
+                    "scrambledWords": [
+                        "Thank you",
+                        "Goodbye.",
+                        "and",
+                        "orange",
+                        "hello"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, teát és kávét, kérek.",
+                    "correctAnswer": "Yes, orange juice and lemon please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "orange juice",
+                        "and",
+                        "lemon",
+                        "please.",
+                        "coffee"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Vizet nem, köszönöm. Viszlát.",
+                    "correctAnswer": "No, water, thanks. Goodbye.",
+                    "scrambledWords": [
+                        "No,",
+                        "water,",
+                        "thanks.",
+                        "Goodbye.",
+                        "Yes,"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, almalét és kávét, kérek.",
+                    "correctAnswer": "Hello, apple juice and coffee, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "apple juice",
+                        "and",
+                        "coffee,",
+                        "please.",
+                        "water"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Narancslét és almalét kávéval, kérek, köszönöm.",
+                    "correctAnswer": "Orange juice and apple juice with coffee please, thanks.",
+                    "scrambledWords": [
+                        "Orange juice",
+                        "apple juice",
+                        "and",
+                        "coffee",
+                        "thanks.",
+                        "hello",
+                        "with",
+                        "please"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia! Igen, citromot kérlek.",
+                    "correctAnswer": "Hello! Yes, lemon please.",
+                    "scrambledWords": [
+                        "Hello!",
+                        "Yes,",
+                        "lemon",
+                        "please.",
+                        "No,"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Citromot és vizet, kérek, köszönöm.",
+                    "correctAnswer": "Lemon and water please, thanks.",
+                    "scrambledWords": [
+                        "Lemon",
+                        "and",
+                        "water",
+                        "please",
+                        "thanks",
+                        "water,",
+                        "please!"
+                    ]
+                }
+            ]
+        }
+    ]
+}

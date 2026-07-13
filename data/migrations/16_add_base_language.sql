@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN IF NOT EXISTS base_language VARCHAR(5) DEFAULT 'hu';

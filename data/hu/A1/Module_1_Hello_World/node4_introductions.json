@@ -1,0 +1,499 @@
+{
+    "title": "Ki beszél?",
+    "type": "multi_level_node",
+    "targetWords": [
+        "I",
+        "am",
+        "you",
+        "are",
+        "my",
+        "name",
+        "is",
+        "nice",
+        "to",
+        "meet"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "I",
+                "am",
+                "you",
+                "are"
+            ],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én vagyok.",
+                    "correctAnswer": "I am.",
+                    "scrambledWords": [
+                        "I",
+                        "am.",
+                        "You",
+                        "are."
+                    ],
+                    "id": "item_7f9a5d0b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te vagy.",
+                    "correctAnswer": "You are.",
+                    "scrambledWords": [
+                        "You",
+                        "are.",
+                        "I",
+                        "am."
+                    ],
+                    "id": "item_f0393878"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én vagyok.",
+                    "sentence": "I ____.",
+                    "answer": "am",
+                    "options": [
+                        "am",
+                        "are",
+                        "is",
+                        "you"
+                    ],
+                    "id": "item_f5611b2c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te vagy.",
+                    "sentence": "You ____.",
+                    "answer": "are",
+                    "options": [
+                        "am",
+                        "are",
+                        "is",
+                        "I"
+                    ],
+                    "id": "item_e18bf958"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, én vagyok.",
+                    "correctAnswer": "Hello, I am.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "I",
+                        "am.",
+                        "You",
+                        "are."
+                    ],
+                    "id": "item_5587f5ec"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, te vagy.",
+                    "correctAnswer": "Yes, you are.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "you",
+                        "are.",
+                        "I",
+                        "am."
+                    ],
+                    "id": "item_8f3579f7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én vagyok és te vagy.",
+                    "correctAnswer": "I am and you are.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "and",
+                        "you",
+                        "are.",
+                        "is"
+                    ],
+                    "id": "item_7d28194a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, én vagyok.",
+                    "correctAnswer": "No, I am.",
+                    "scrambledWords": [
+                        "No,",
+                        "I",
+                        "am.",
+                        "you",
+                        "are."
+                    ],
+                    "id": "item_a8242d99"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "my",
+                "name",
+                "is"
+            ],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Az én nevem.",
+                    "correctAnswer": "My name.",
+                    "scrambledWords": [
+                        "My",
+                        "name.",
+                        "I",
+                        "am."
+                    ],
+                    "id": "item_14c6e8f1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A nevem...",
+                    "correctAnswer": "My name is...",
+                    "scrambledWords": [
+                        "My",
+                        "name",
+                        "is...",
+                        "am...",
+                        "are..."
+                    ],
+                    "id": "item_de008e99"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A nevem...",
+                    "sentence": "____ name is...",
+                    "answer": "My",
+                    "options": [
+                        "My",
+                        "I",
+                        "You",
+                        "Are"
+                    ],
+                    "id": "item_9bf689f6"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A nevem...",
+                    "sentence": "My ____ is...",
+                    "answer": "name",
+                    "options": [
+                        "name",
+                        "am",
+                        "I",
+                        "coffee"
+                    ],
+                    "id": "item_9e7d9a99"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, a nevem...",
+                    "correctAnswer": "Hello, my name is...",
+                    "scrambledWords": [
+                        "Hello,",
+                        "my",
+                        "name",
+                        "is...",
+                        "am...",
+                        "I"
+                    ],
+                    "id": "item_6b528053"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, én vagyok...",
+                    "correctAnswer": "Hello, I am...",
+                    "scrambledWords": [
+                        "Hello,",
+                        "I",
+                        "am...",
+                        "my",
+                        "is..."
+                    ],
+                    "id": "item_58318075"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szia, a nevem...",
+                    "sentence": "Hello, my name ____...",
+                    "answer": "is",
+                    "options": [
+                        "am",
+                        "are",
+                        "is",
+                        "I"
+                    ],
+                    "id": "item_575c3cd2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, a nevem...",
+                    "correctAnswer": "Yes, my name is...",
+                    "scrambledWords": [
+                        "Yes,",
+                        "my",
+                        "name",
+                        "is...",
+                        "I",
+                        "am..."
+                    ],
+                    "id": "item_dbe5d63b"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "nice",
+                "to",
+                "meet"
+            ],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Örülök a találkozásnak.",
+                    "correctAnswer": "Nice to meet you.",
+                    "scrambledWords": [
+                        "Nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "am"
+                    ],
+                    "id": "item_368a9947"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, örülök a találkozásnak.",
+                    "correctAnswer": "Hello, nice to meet you.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "I"
+                    ],
+                    "id": "item_774b746e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Örülök a találkozásnak.",
+                    "sentence": "Nice ____ meet you.",
+                    "answer": "to",
+                    "options": [
+                        "to",
+                        "two",
+                        "too",
+                        "do"
+                    ],
+                    "id": "item_5d9cbc09"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Örülök a találkozásnak.",
+                    "sentence": "Nice to ____ you.",
+                    "answer": "meet",
+                    "options": [
+                        "meet",
+                        "meat",
+                        "greet",
+                        "name"
+                    ],
+                    "id": "item_d891a4d7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A nevem... örülök a találkozásnak.",
+                    "correctAnswer": "My name is... nice to meet you.",
+                    "scrambledWords": [
+                        "My",
+                        "name",
+                        "is...",
+                        "nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "am"
+                    ],
+                    "id": "item_99340974"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én vagyok... örülök a találkozásnak.",
+                    "correctAnswer": "I am... nice to meet you.",
+                    "scrambledWords": [
+                        "I",
+                        "am...",
+                        "nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "is"
+                    ],
+                    "id": "item_02383567"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szia, örülök a találkozásnak.",
+                    "sentence": "Hello, ____ to meet you.",
+                    "answer": "nice",
+                    "options": [
+                        "nice",
+                        "good",
+                        "my",
+                        "name"
+                    ],
+                    "id": "item_3c3ad452"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Viszlát, örülök a találkozásnak.",
+                    "correctAnswer": "Goodbye, nice to meet you.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "thanks"
+                    ],
+                    "id": "item_149b927a"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Szia, a nevem... és te vagy...",
+                    "correctAnswer": "Hello, my name is... and you are...",
+                    "scrambledWords": [
+                        "Hello,",
+                        "my",
+                        "name",
+                        "is...",
+                        "and",
+                        "you",
+                        "are...",
+                        "I",
+                        "am"
+                    ],
+                    "id": "item_bc2b3846"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én vagyok... örülök a találkozásnak.",
+                    "sentence": "I am... nice to ____ you.",
+                    "answer": "meet",
+                    "options": [
+                        "meet",
+                        "name",
+                        "is",
+                        "am"
+                    ],
+                    "id": "item_6bddd9af"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, egy kávét kérek. A nevem...",
+                    "correctAnswer": "Hello, one coffee please. My name is...",
+                    "scrambledWords": [
+                        "Hello,",
+                        "one",
+                        "coffee",
+                        "please.",
+                        "My",
+                        "name",
+                        "is...",
+                        "am"
+                    ],
+                    "id": "item_a555d7ad"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Örülök a találkozásnak. Én vagyok...",
+                    "correctAnswer": "Nice to meet you. I am...",
+                    "scrambledWords": [
+                        "Nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "I",
+                        "am...",
+                        "is..."
+                    ],
+                    "id": "item_90bf4e62"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, én vagyok. Örülök a találkozásnak.",
+                    "correctAnswer": "Yes, I am. Nice to meet you.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "I",
+                        "am.",
+                        "Nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "are"
+                    ],
+                    "id": "item_d082ec3e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A nevem... és egy teát kérek.",
+                    "sentence": "____ name is... and one tea please.",
+                    "answer": "My",
+                    "options": [
+                        "My",
+                        "I",
+                        "You",
+                        "Are"
+                    ],
+                    "id": "item_47d4b373"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, én vagyok... és két kávét kérek.",
+                    "correctAnswer": "Hello, I am... and two coffees please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "I",
+                        "am...",
+                        "and",
+                        "two",
+                        "coffees",
+                        "please.",
+                        "my"
+                    ],
+                    "id": "item_9b4a0d6e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Köszönöm, örülök a találkozásnak. Viszlát.",
+                    "correctAnswer": "Thanks, nice to meet you. Goodbye.",
+                    "scrambledWords": [
+                        "Thanks,",
+                        "nice",
+                        "to",
+                        "meet",
+                        "you.",
+                        "Goodbye.",
+                        "please"
+                    ],
+                    "id": "item_6ab9a0ac"
+                }
+            ]
+        }
+    ]
+}

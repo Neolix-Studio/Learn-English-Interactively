@@ -1,0 +1,902 @@
+{
+    "title": "Szeretem!",
+    "type": "multi_level_node",
+    "targetWords": [
+        "like",
+        "love",
+        "hate",
+        "pizza",
+        "chocolate",
+        "meat",
+        "soup"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "like",
+                "pizza",
+                "soup"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "pizza",
+                    "correctAnswer": "pizza",
+                    "options": [
+                        {
+                            "id": "pizza",
+                            "text": "pizza",
+                            "correct": true
+                        },
+                        {
+                            "id": "soup",
+                            "text": "soup",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_4e158178"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "leves",
+                    "correctAnswer": "soup",
+                    "options": [
+                        {
+                            "id": "pizza",
+                            "text": "pizza",
+                            "correct": false
+                        },
+                        {
+                            "id": "soup",
+                            "text": "soup",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_9e1994aa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretem a pizzát.",
+                    "correctAnswer": "I like pizza.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "pizza.",
+                        "soup.",
+                        "You"
+                    ],
+                    "id": "item_2ee0c2fe"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te szereted a levest.",
+                    "correctAnswer": "You like soup.",
+                    "scrambledWords": [
+                        "You",
+                        "like",
+                        "soup.",
+                        "pizza.",
+                        "I"
+                    ],
+                    "id": "item_2c318a3e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én szeretem a pizzát.",
+                    "sentence": "I ____ pizza.",
+                    "answer": "like",
+                    "options": [
+                        "like",
+                        "likes",
+                        "eat",
+                        "drink"
+                    ],
+                    "id": "item_e8078fa3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretjük a pizzát.",
+                    "correctAnswer": "We like pizza.",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "pizza.",
+                        "soup."
+                    ],
+                    "id": "item_76a84dbf"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szereted a levest?",
+                    "correctAnswer": "Do you like soup?",
+                    "scrambledWords": [
+                        "Do",
+                        "you",
+                        "like",
+                        "soup?",
+                        "Does"
+                    ],
+                    "id": "item_1bf02685"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szereted a pizzát?",
+                    "sentence": "____ you like pizza?",
+                    "answer": "Do",
+                    "options": [
+                        "Do",
+                        "Does",
+                        "Are",
+                        "Is"
+                    ],
+                    "id": "item_697b6645"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem szeretem a levest.",
+                    "correctAnswer": "I do not like soup.",
+                    "scrambledWords": [
+                        "I",
+                        "do",
+                        "not",
+                        "like",
+                        "soup.",
+                        "pizza."
+                    ],
+                    "id": "item_d9958106"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én nem szeretem a pizzát.",
+                    "sentence": "I ____ like pizza.",
+                    "answer": "don't",
+                    "options": [
+                        "don't",
+                        "no",
+                        "not",
+                        "doesn't"
+                    ],
+                    "id": "item_c1432bec"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők szeretik a levest.",
+                    "correctAnswer": "They like soup.",
+                    "scrambledWords": [
+                        "They",
+                        "like",
+                        "soup.",
+                        "pizza."
+                    ],
+                    "id": "item_f141a3b8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én pizzát eszem és szeretem a levest.",
+                    "correctAnswer": "I eat pizza and I like soup.",
+                    "scrambledWords": [
+                        "I",
+                        "eat",
+                        "pizza",
+                        "and",
+                        "I",
+                        "like",
+                        "soup."
+                    ],
+                    "id": "item_64d8c780"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szeretik a levest?",
+                    "sentence": "Do they ____ soup?",
+                    "answer": "like",
+                    "options": [
+                        "like",
+                        "likes",
+                        "eat",
+                        "play"
+                    ],
+                    "id": "item_c176d04d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, én szeretem a pizzát.",
+                    "correctAnswer": "Yes, I like pizza.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "I",
+                        "like",
+                        "pizza.",
+                        "soup."
+                    ],
+                    "id": "item_b909891d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, én nem szeretem a levest.",
+                    "correctAnswer": "No, I don't like soup.",
+                    "scrambledWords": [
+                        "No,",
+                        "I",
+                        "don't",
+                        "like",
+                        "soup.",
+                        "doesn't"
+                    ],
+                    "id": "item_4667a233"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "love",
+                "chocolate"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "imád (nagyon szeret)",
+                    "correctAnswer": "love",
+                    "options": [
+                        {
+                            "id": "love",
+                            "text": "love",
+                            "correct": true
+                        },
+                        {
+                            "id": "like",
+                            "text": "like",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_ca00ae24"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "csokoládé",
+                    "correctAnswer": "chocolate",
+                    "options": [
+                        {
+                            "id": "pizza",
+                            "text": "pizza",
+                            "correct": false
+                        },
+                        {
+                            "id": "chocolate",
+                            "text": "chocolate",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_2f079043"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) szereti a csokoládét.",
+                    "correctAnswer": "She likes chocolate.",
+                    "scrambledWords": [
+                        "She",
+                        "likes",
+                        "chocolate.",
+                        "like"
+                    ],
+                    "id": "item_43b2a699"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én imádom a csokoládét.",
+                    "correctAnswer": "I love chocolate.",
+                    "scrambledWords": [
+                        "I",
+                        "love",
+                        "chocolate.",
+                        "soup."
+                    ],
+                    "id": "item_3eed029b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) szereti a pizzát.",
+                    "sentence": "He ____ pizza.",
+                    "answer": "likes",
+                    "options": [
+                        "likes",
+                        "like",
+                        "loves",
+                        "love"
+                    ],
+                    "id": "item_65d7b959"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) imádja a levest.",
+                    "correctAnswer": "He loves soup.",
+                    "scrambledWords": [
+                        "He",
+                        "loves",
+                        "soup.",
+                        "love"
+                    ],
+                    "id": "item_4f92fbfa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) nem szereti a pizzát.",
+                    "correctAnswer": "She doesn't like pizza.",
+                    "scrambledWords": [
+                        "She",
+                        "doesn't",
+                        "like",
+                        "pizza.",
+                        "likes"
+                    ],
+                    "id": "item_4cd87904"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) nem szereti a csokoládét.",
+                    "sentence": "She doesn't ____ chocolate.",
+                    "answer": "like",
+                    "options": [
+                        "like",
+                        "likes",
+                        "love",
+                        "loves"
+                    ],
+                    "id": "item_ac0cd8aa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szereti ő (férfi) a csokoládét?",
+                    "correctAnswer": "Does he like chocolate?",
+                    "scrambledWords": [
+                        "Does",
+                        "he",
+                        "like",
+                        "chocolate?",
+                        "likes"
+                    ],
+                    "id": "item_da7dfd8b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szereti ő (nő) a pizzát?",
+                    "sentence": "____ she like pizza?",
+                    "answer": "Does",
+                    "options": [
+                        "Does",
+                        "Do",
+                        "Is",
+                        "Are"
+                    ],
+                    "id": "item_5fedc779"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya szereti a levest.",
+                    "correctAnswer": "The dog likes soup.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "likes",
+                        "soup.",
+                        "like"
+                    ],
+                    "id": "item_84738a59"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám imádja a csokoládét.",
+                    "correctAnswer": "My father loves chocolate.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "loves",
+                        "chocolate.",
+                        "love"
+                    ],
+                    "id": "item_3ed596b2"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem imádja a csokoládét.",
+                    "sentence": "My brother ____ chocolate.",
+                    "answer": "loves",
+                    "options": [
+                        "loves",
+                        "love",
+                        "likes",
+                        "like"
+                    ],
+                    "id": "item_447f836a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ő (nő) szereti a pizzát.",
+                    "correctAnswer": "Yes, she likes pizza.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "she",
+                        "likes",
+                        "pizza.",
+                        "like"
+                    ],
+                    "id": "item_99852d31"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) szereti a levest és imádja a csokoládét.",
+                    "correctAnswer": "He likes soup and he loves chocolate.",
+                    "scrambledWords": [
+                        "He",
+                        "likes",
+                        "soup",
+                        "and",
+                        "he",
+                        "loves",
+                        "chocolate."
+                    ],
+                    "id": "item_3c0e9809"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "hate",
+                "meat"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "utál",
+                    "correctAnswer": "hate",
+                    "options": [
+                        {
+                            "id": "hate",
+                            "text": "hate",
+                            "correct": true
+                        },
+                        {
+                            "id": "love",
+                            "text": "love",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_e9432824"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "hús",
+                    "correctAnswer": "meat",
+                    "options": [
+                        {
+                            "id": "chocolate",
+                            "text": "chocolate",
+                            "correct": false
+                        },
+                        {
+                            "id": "meat",
+                            "text": "meat",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_4af8d664"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én utálom a húst.",
+                    "correctAnswer": "I hate meat.",
+                    "scrambledWords": [
+                        "I",
+                        "hate",
+                        "meat.",
+                        "hates"
+                    ],
+                    "id": "item_22778ed2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) utálja a húst.",
+                    "correctAnswer": "She hates meat.",
+                    "scrambledWords": [
+                        "She",
+                        "hates",
+                        "meat.",
+                        "hate"
+                    ],
+                    "id": "item_71f22ee3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya imádja a húst.",
+                    "sentence": "The dog ____ meat.",
+                    "answer": "loves",
+                    "options": [
+                        "loves",
+                        "love",
+                        "hates",
+                        "hate"
+                    ],
+                    "id": "item_07526af3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te utálod a levest?",
+                    "correctAnswer": "Do you hate soup?",
+                    "scrambledWords": [
+                        "Do",
+                        "you",
+                        "hate",
+                        "soup?",
+                        "Does"
+                    ],
+                    "id": "item_bb77bcc9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) utálja a húst?",
+                    "sentence": "Does he ____ meat?",
+                    "answer": "hate",
+                    "options": [
+                        "hate",
+                        "hates",
+                        "like",
+                        "likes"
+                    ],
+                    "id": "item_f226099f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom nem szereti a húst.",
+                    "correctAnswer": "My friend doesn't like meat.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "doesn't",
+                        "like",
+                        "meat.",
+                        "likes"
+                    ],
+                    "id": "item_cf6ef372"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi utáljuk a csokoládét.",
+                    "correctAnswer": "We hate chocolate.",
+                    "scrambledWords": [
+                        "We",
+                        "hate",
+                        "chocolate.",
+                        "hates"
+                    ],
+                    "id": "item_c75e59af"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők utálják a húst.",
+                    "sentence": "They ____ meat.",
+                    "answer": "hate",
+                    "options": [
+                        "hate",
+                        "hates",
+                        "loves",
+                        "love"
+                    ],
+                    "id": "item_f717b816"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én imádom a pizzát és te utálod a pizzát.",
+                    "correctAnswer": "I love pizza and you hate pizza.",
+                    "scrambledWords": [
+                        "I",
+                        "love",
+                        "pizza",
+                        "and",
+                        "you",
+                        "hate",
+                        "pizza."
+                    ],
+                    "id": "item_7252fef0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya szereti a húst?",
+                    "correctAnswer": "Does the dog like meat?",
+                    "scrambledWords": [
+                        "Does",
+                        "the",
+                        "dog",
+                        "like",
+                        "meat?",
+                        "likes"
+                    ],
+                    "id": "item_15440766"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, a kutya imádja a húst.",
+                    "correctAnswer": "Yes, the dog loves meat.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "the",
+                        "dog",
+                        "loves",
+                        "meat.",
+                        "love"
+                    ],
+                    "id": "item_28ea780b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én utálom a húst.",
+                    "sentence": "I hate ____.",
+                    "answer": "meat",
+                    "options": [
+                        "meat",
+                        "soup",
+                        "pizza",
+                        "chocolate"
+                    ],
+                    "id": "item_365ff3f4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem szeretik a levest és utálják a húst.",
+                    "correctAnswer": "They don't like soup and they hate meat.",
+                    "scrambledWords": [
+                        "They",
+                        "don't",
+                        "like",
+                        "soup",
+                        "and",
+                        "they",
+                        "hate",
+                        "meat."
+                    ],
+                    "id": "item_b213e026"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretem a pizzát és ő (nő) szereti a levest.",
+                    "correctAnswer": "I like pizza and she likes soup.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "pizza",
+                        "and",
+                        "she",
+                        "likes",
+                        "soup.",
+                        "like"
+                    ],
+                    "id": "item_98d79a41"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szereted a csokoládét?",
+                    "sentence": "____ you like chocolate?",
+                    "answer": "Do",
+                    "options": [
+                        "Do",
+                        "Does",
+                        "Are",
+                        "Is"
+                    ],
+                    "id": "item_f0536a8e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) utálja a húst és én nem szeretem a húst.",
+                    "correctAnswer": "He hates meat and I don't like meat.",
+                    "scrambledWords": [
+                        "He",
+                        "hates",
+                        "meat",
+                        "and",
+                        "I",
+                        "don't",
+                        "like",
+                        "meat."
+                    ],
+                    "id": "item_4eae90e5"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A lánytestvéred szereti a levest?",
+                    "sentence": "Does your sister ____ soup?",
+                    "answer": "like",
+                    "options": [
+                        "like",
+                        "likes",
+                        "love",
+                        "loves"
+                    ],
+                    "id": "item_24274990"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem imádja a csokoládét, ő (férfi) nem utálja a csokoládét.",
+                    "correctAnswer": "My brother loves chocolate, he doesn't hate chocolate.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "loves",
+                        "chocolate,",
+                        "he",
+                        "doesn't",
+                        "hate",
+                        "chocolate.",
+                        "hates"
+                    ],
+                    "id": "item_aa5cb080"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szereted a húst? Nem, utálom a húst.",
+                    "correctAnswer": "Do you like meat? No, I hate meat.",
+                    "scrambledWords": [
+                        "Do",
+                        "you",
+                        "like",
+                        "meat?",
+                        "No,",
+                        "I",
+                        "hate",
+                        "meat."
+                    ],
+                    "id": "item_e3b3dfb8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) nem szereti a levest.",
+                    "sentence": "She ____ like soup.",
+                    "answer": "doesn't",
+                    "options": [
+                        "doesn't",
+                        "don't",
+                        "no",
+                        "not"
+                    ],
+                    "id": "item_25639eac"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretjük a csokoládét és ők utálják a csokoládét.",
+                    "correctAnswer": "We like chocolate and they hate chocolate.",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "chocolate",
+                        "and",
+                        "they",
+                        "hate",
+                        "chocolate.",
+                        "likes"
+                    ],
+                    "id": "item_ee60d3f1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám szereti a levest és az apám imádja a húst.",
+                    "correctAnswer": "My mother likes soup and my father loves meat.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "likes",
+                        "soup",
+                        "and",
+                        "my",
+                        "father",
+                        "loves",
+                        "meat."
+                    ],
+                    "id": "item_215d6376"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya nem szereti a csokoládét!",
+                    "sentence": "The dog doesn't ____ chocolate!",
+                    "answer": "like",
+                    "options": [
+                        "like",
+                        "likes",
+                        "love",
+                        "loves"
+                    ],
+                    "id": "item_cf1423f7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én pizzát eszem, én imádom a pizzát.",
+                    "correctAnswer": "I eat pizza, I love pizza.",
+                    "scrambledWords": [
+                        "I",
+                        "eat",
+                        "pizza,",
+                        "I",
+                        "love",
+                        "pizza.",
+                        "loves"
+                    ],
+                    "id": "item_d06b1677"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) kávét iszik, ő szereti a kávét.",
+                    "correctAnswer": "She drinks coffee, she likes coffee.",
+                    "scrambledWords": [
+                        "She",
+                        "drinks",
+                        "coffee,",
+                        "she",
+                        "likes",
+                        "coffee.",
+                        "like"
+                    ],
+                    "id": "item_37441e28"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te utálod a levest? Igen, én utálom a levest.",
+                    "correctAnswer": "Do you hate soup? Yes, I hate soup.",
+                    "scrambledWords": [
+                        "Do",
+                        "you",
+                        "hate",
+                        "soup?",
+                        "Yes,",
+                        "I",
+                        "hate",
+                        "soup.",
+                        "Does"
+                    ],
+                    "id": "item_51f8defa"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám imádja a húst.",
+                    "sentence": "My father ____ meat.",
+                    "answer": "loves",
+                    "options": [
+                        "loves",
+                        "love",
+                        "likes",
+                        "like"
+                    ],
+                    "id": "item_20bb96d2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én imádom a csokoládét, te szereted a pizzát és ő utálja a levest.",
+                    "correctAnswer": "I love chocolate, you like pizza and he hates soup.",
+                    "scrambledWords": [
+                        "I",
+                        "love",
+                        "chocolate,",
+                        "you",
+                        "like",
+                        "pizza",
+                        "and",
+                        "he",
+                        "hates",
+                        "soup."
+                    ],
+                    "id": "item_30407437"
+                }
+            ]
+        }
+    ]
+}

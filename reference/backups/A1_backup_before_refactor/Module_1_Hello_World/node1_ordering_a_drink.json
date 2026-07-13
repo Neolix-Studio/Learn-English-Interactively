@@ -1,0 +1,673 @@
+{
+    "title": "Első találkozások",
+    "type": "multi_level_node",
+    "targetWords": [
+        "coffee",
+        "tea",
+        "please",
+        "thanks",
+        "milk",
+        "water",
+        "yes",
+        "no",
+        "hello",
+        "goodbye",
+        "and"
+    ],
+    "dictionary": {
+        "coffee": "kávé",
+        "tea": "tea",
+        "please": "kérem",
+        "thanks": "köszönöm",
+        "milk": "tej",
+        "water": "víz",
+        "yes": "igen",
+        "no": "nem",
+        "hello": "szia",
+        "goodbye": "viszlát",
+        "and": "és"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "coffee",
+                "tea",
+                "please",
+                "thanks"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "kávé",
+                    "correctAnswer": "coffee",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>MILK</text></svg>"
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "tea",
+                    "correctAnswer": "tea",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>MILK</text></svg>"
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Kávét, kérem.",
+                    "correctAnswer": "Coffee, please.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "tea,",
+                        "hello",
+                        "please.",
+                        "or"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Teát, kérem.",
+                    "correctAnswer": "Tea, please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "Tea,",
+                        "please.",
+                        "hello",
+                        "thanks."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": true,
+                    "hu": "Kérem",
+                    "sentence": "Coffee, ____.",
+                    "answer": "please",
+                    "options": [
+                        "please",
+                        "thanks",
+                        "tea",
+                        "coffee"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Köszönöm.",
+                    "correctAnswer": "Thanks.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "Tea",
+                        "please",
+                        "Thanks."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Kávét, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Coffee",
+                    "options": [
+                        "Coffee",
+                        "Tea",
+                        "please",
+                        "water"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Teát, köszönöm.",
+                    "correctAnswer": "Tea, thanks.",
+                    "scrambledWords": [
+                        "Thanks.",
+                        "Coffee,",
+                        "Tea,",
+                        "please",
+                        "and"
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Teát, kérem.",
+                    "sentence": "____, please.",
+                    "answer": "Tea",
+                    "options": [
+                        "Coffee",
+                        "Tea",
+                        "thanks",
+                        "water"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét, kérem. Köszönöm.",
+                    "correctAnswer": "Coffee, please. Thanks.",
+                    "scrambledWords": [
+                        "Coffee,",
+                        "Tea",
+                        "please.",
+                        "Thanks.",
+                        "hello"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "milk",
+                "water",
+                "yes",
+                "no"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "tej",
+                    "correctAnswer": "milk",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>MILK</text></svg>"
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "víz",
+                    "correctAnswer": "water",
+                    "options": [
+                        {
+                            "id": "coffee",
+                            "text": "coffee",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#a0522d'/><path d='M75 40C85 40 85 60 75 60' stroke='#a0522d' stroke-width='8' stroke-linecap='round'/><path d='M35 15C40 20 30 25 35 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M50 15C55 20 45 25 50 30' stroke='#888' stroke-width='3' stroke-linecap='round'/><path d='M65 15C70 20 60 25 65 30' stroke='#888' stroke-width='3' stroke-linecap='round'/></svg>"
+                        },
+                        {
+                            "id": "tea",
+                            "text": "tea",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='30' width='50' height='45' rx='10' fill='#8fbc8f'/><path d='M75 40C85 40 85 60 75 60' stroke='#8fbc8f' stroke-width='8' stroke-linecap='round'/><path d='M50 30V15' stroke='#444' stroke-width='2'/><rect x='45' y='5' width='10' height='10' fill='#fff' stroke='#444' stroke-width='2'/></svg>"
+                        },
+                        {
+                            "id": "milk",
+                            "text": "milk",
+                            "correct": false,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='30' width='40' height='60' rx='2' fill='#f5f5f5' stroke='#ccc' stroke-width='4'/><path d='M30 30 L 50 10 L 70 30 Z' fill='#e0e0e0' stroke='#ccc' stroke-width='4'/><text x='50' y='60' font-size='12' fill='#333' text-anchor='middle' font-weight='bold'>MILK</text></svg>"
+                        },
+                        {
+                            "id": "water",
+                            "text": "water",
+                            "correct": true,
+                            "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='30' y='20' width='40' height='60' rx='5' fill='#e0f7fa' stroke='#4dd0e1' stroke-width='4'/><path d='M30 50 Q 50 60 70 50 L 70 75 Q 50 85 30 75 Z' fill='#4dd0e1'/></svg>"
+                        }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Igen.",
+                    "correctAnswer": "Yes.",
+                    "scrambledWords": [
+                        "No.",
+                        "Yes.",
+                        "Please",
+                        "Thanks",
+                        "Tea"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Nem.",
+                    "correctAnswer": "No.",
+                    "scrambledWords": [
+                        "Yes.",
+                        "No.",
+                        "Coffee",
+                        "Thanks.",
+                        "Water"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, kérem.",
+                    "correctAnswer": "Yes, please.",
+                    "scrambledWords": [
+                        "No,",
+                        "Yes,",
+                        "please.",
+                        "thanks",
+                        "coffee"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Nem, köszönöm.",
+                    "correctAnswer": "No, thanks.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "thanks.",
+                        "please",
+                        "water"
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Vizet, kérem.",
+                    "sentence": "____, please.",
+                    "answer": "Water",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Tea"
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Tejet, köszönöm.",
+                    "sentence": "____, thanks.",
+                    "answer": "Milk",
+                    "options": [
+                        "Milk",
+                        "Water",
+                        "Coffee",
+                        "Yes"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, vizet kérem.",
+                    "correctAnswer": "Yes, water please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "water",
+                        "milk",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Tejet nem, köszönöm.",
+                    "correctAnswer": "No, milk, thanks.",
+                    "scrambledWords": [
+                        "No,",
+                        "Yes,",
+                        "milk,",
+                        "thanks.",
+                        "water,"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "hello",
+                "goodbye",
+                "and"
+            ],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Szia.",
+                    "correctAnswer": "Hello.",
+                    "scrambledWords": [
+                        "Goodbye.",
+                        "Hello.",
+                        "Yes.",
+                        "No."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Viszlát.",
+                    "correctAnswer": "Goodbye.",
+                    "scrambledWords": [
+                        "Goodbye.",
+                        "Hello.",
+                        "Thanks.",
+                        "Please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, kávét kérek.",
+                    "correctAnswer": "Hello, coffee please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "Goodbye,",
+                        "coffee",
+                        "tea",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Kávé és tea.",
+                    "correctAnswer": "Coffee and tea.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "water",
+                        "and",
+                        "hello",
+                        "tea."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Víz és tej.",
+                    "sentence": "Water ____ milk.",
+                    "answer": "and",
+                    "options": [
+                        "and",
+                        "yes",
+                        "no",
+                        "hello"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, vizet és kávét, kérek.",
+                    "correctAnswer": "Hello, water and coffee, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "water",
+                        "and",
+                        "coffee,",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Viszlát, köszönöm.",
+                    "correctAnswer": "Goodbye, thanks.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "Hello,",
+                        "thanks.",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Tejet és vizet, kérek.",
+                    "sentence": "Milk and ____, please.",
+                    "answer": "water",
+                    "options": [
+                        "water",
+                        "coffee",
+                        "tea",
+                        "hello"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, teát és tejet, kérek.",
+                    "correctAnswer": "Hello, tea and milk, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "tea",
+                        "and",
+                        "milk,",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, kávé és víz, köszönöm.",
+                    "correctAnswer": "Yes, coffee and water, thanks.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "No,",
+                        "coffee",
+                        "and",
+                        "water,",
+                        "thanks."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét és tejet, kérek.",
+                    "correctAnswer": "Coffee and milk, please.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "and",
+                        "milk,",
+                        "please.",
+                        "water"
+                    ]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Nem, kávét és vizet, köszönöm.",
+                    "sentence": "No, coffee and water, ____.",
+                    "answer": "thanks",
+                    "options": [
+                        "thanks",
+                        "please",
+                        "yes",
+                        "no"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, tejet és vizet, kérek.",
+                    "correctAnswer": "Hello, milk and water, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "milk",
+                        "and",
+                        "water,",
+                        "please.",
+                        "thanks"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Viszlát, kávé és tea.",
+                    "correctAnswer": "Goodbye, coffee and tea.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "coffee",
+                        "and",
+                        "tea.",
+                        "hello"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, teát és kávét, kérek.",
+                    "correctAnswer": "Yes, tea and coffee please.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "tea",
+                        "and",
+                        "coffee",
+                        "please.",
+                        "milk"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Vizet nem, köszönöm. Viszlát.",
+                    "correctAnswer": "No, water, thanks. Goodbye.",
+                    "scrambledWords": [
+                        "No,",
+                        "water,",
+                        "thanks.",
+                        "Goodbye.",
+                        "Yes,"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, kávét és vizet, kérek.",
+                    "correctAnswer": "Hello, coffee and water, please.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "coffee",
+                        "and",
+                        "water,",
+                        "please."
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét, tejet és vizet, köszönöm.",
+                    "correctAnswer": "Coffee, milk and water, thanks.",
+                    "scrambledWords": [
+                        "Coffee",
+                        "milk",
+                        "and",
+                        "water,",
+                        "thanks.",
+                        "hello"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia! Igen, teát kérlek.",
+                    "correctAnswer": "Hello! Yes, tea please.",
+                    "scrambledWords": [
+                        "Hello!",
+                        "Yes,",
+                        "tea",
+                        "please.",
+                        "No,"
+                    ]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Kávét és teát és tejet és vizet, kérek!",
+                    "correctAnswer": "Coffee and tea and milk and water, please!",
+                    "scrambledWords": [
+                        "Coffee",
+                        "and",
+                        "tea",
+                        "and",
+                        "milk",
+                        "and",
+                        "water,",
+                        "please!"
+                    ]
+                }
+            ]
+        }
+    ]
+}

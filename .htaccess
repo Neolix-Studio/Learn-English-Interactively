@@ -1,9 +1,32 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # If the domain is lexipaws.eu and the root (/) is requested, serve gateway.html
     RewriteCond %{HTTP_HOST} ^(www\.)?lexipaws\.eu$ [NC]
     RewriteRule ^$ gateway.html [L]
 
-    # For .hu and .sk, the default index.html will be served automatically by Apache
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/api\.php [NC]
+    RewriteCond %{REQUEST_URI} !^/api/ [NC]
+    RewriteRule ^(.*)$ /index.html [L]
+</IfModule>
+
+<FilesMatch "^(db_config|db_config_prod|security)\.php$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^(reset_db|nuke_and_rebuild_db|fix_db|dev_simulate_bots|rename_bots|generate_preview|generate_welcome_preview)\.php$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(log|sql|env)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
 </IfModule>

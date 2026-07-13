@@ -1,0 +1,969 @@
+{
+    "title": "Ma vs. Minden nap",
+    "type": "multi_level_node",
+    "targetWords": [
+        "today",
+        "every day"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "today",
+                "every day"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ma",
+                    "correctAnswer": "today",
+                    "options": [
+                        {
+                            "id": "today",
+                            "text": "today",
+                            "correct": true
+                        },
+                        {
+                            "id": "every day",
+                            "text": "every day",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_c9afbfd8"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "minden nap",
+                    "correctAnswer": "every day",
+                    "options": [
+                        {
+                            "id": "today",
+                            "text": "today",
+                            "correct": false
+                        },
+                        {
+                            "id": "every day",
+                            "text": "every day",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_eebea6a8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én minden nap dolgozom.",
+                    "correctAnswer": "I work every day.",
+                    "scrambledWords": [
+                        "I",
+                        "work",
+                        "every",
+                        "day.",
+                        "working",
+                        "am"
+                    ],
+                    "id": "item_8a3d169c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én ma alszom.",
+                    "correctAnswer": "I am sleeping today.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "sleeping",
+                        "today.",
+                        "sleep",
+                        "every"
+                    ],
+                    "id": "item_caa9ec55"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te vizet iszol minden nap.",
+                    "sentence": "You ____ water every day.",
+                    "answer": "drink",
+                    "options": [
+                        "drink",
+                        "drinking",
+                        "are",
+                        "drinks"
+                    ],
+                    "id": "item_aa0876d0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te kávét iszol ma.",
+                    "correctAnswer": "You are drinking coffee today.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "drinking",
+                        "coffee",
+                        "today.",
+                        "drink"
+                    ],
+                    "id": "item_2da61e83"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi ma játszunk.",
+                    "sentence": "We are ____ today.",
+                    "answer": "playing",
+                    "options": [
+                        "playing",
+                        "play",
+                        "plays",
+                        "do"
+                    ],
+                    "id": "item_a5c222a2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők minden nap olvasnak.",
+                    "correctAnswer": "They read every day.",
+                    "scrambledWords": [
+                        "They",
+                        "read",
+                        "every",
+                        "day.",
+                        "reading",
+                        "are"
+                    ],
+                    "id": "item_cbbb9516"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én minden nap dolgozom, de ma alszom.",
+                    "correctAnswer": "I work every day, but I am sleeping today.",
+                    "scrambledWords": [
+                        "I",
+                        "work",
+                        "every",
+                        "day,",
+                        "but",
+                        "I",
+                        "am",
+                        "sleeping",
+                        "today."
+                    ],
+                    "id": "item_7e4dfc57"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők ma dolgoznak.",
+                    "sentence": "They are working ____.",
+                    "answer": "today",
+                    "options": [
+                        "today",
+                        "every day",
+                        "now",
+                        "time"
+                    ],
+                    "id": "item_7b835763"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én fekete nadrágot viselek minden nap.",
+                    "correctAnswer": "I wear black pants every day.",
+                    "scrambledWords": [
+                        "I",
+                        "wear",
+                        "black",
+                        "pants",
+                        "every",
+                        "day.",
+                        "wearing",
+                        "am"
+                    ],
+                    "id": "item_e35c432f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én ma egy piros inget viselek.",
+                    "correctAnswer": "I am wearing a red shirt today.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt",
+                        "today.",
+                        "wear"
+                    ],
+                    "id": "item_10b8ac54"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te minden nap játszol.",
+                    "sentence": "You play ____ day.",
+                    "answer": "every",
+                    "options": [
+                        "every",
+                        "today",
+                        "now",
+                        "are"
+                    ],
+                    "id": "item_4a2403b5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi pizzát eszünk ma.",
+                    "correctAnswer": "We are eating pizza today.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "eating",
+                        "pizza",
+                        "today.",
+                        "eat"
+                    ],
+                    "id": "item_fdc7b0e3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők húst esznek minden nap.",
+                    "correctAnswer": "They eat meat every day.",
+                    "scrambledWords": [
+                        "They",
+                        "eat",
+                        "meat",
+                        "every",
+                        "day.",
+                        "eating",
+                        "are"
+                    ],
+                    "id": "item_26b6269b"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) minden nap dolgozik.",
+                    "correctAnswer": "He works every day.",
+                    "scrambledWords": [
+                        "He",
+                        "works",
+                        "every",
+                        "day.",
+                        "working",
+                        "is"
+                    ],
+                    "id": "item_432ba962"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) ma alszik.",
+                    "correctAnswer": "He is sleeping today.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "sleeping",
+                        "today.",
+                        "sleeps",
+                        "every"
+                    ],
+                    "id": "item_c26988e4"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) pizzát eszik minden nap.",
+                    "sentence": "She ____ pizza every day.",
+                    "answer": "eats",
+                    "options": [
+                        "eats",
+                        "eat",
+                        "is eating",
+                        "eating"
+                    ],
+                    "id": "item_a4e3e69c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) ma levest eszik.",
+                    "correctAnswer": "She is eating soup today.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "eating",
+                        "soup",
+                        "today.",
+                        "eats"
+                    ],
+                    "id": "item_1d6ff5c1"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya ma játszik.",
+                    "sentence": "The dog is ____ today.",
+                    "answer": "playing",
+                    "options": [
+                        "playing",
+                        "plays",
+                        "play",
+                        "doing"
+                    ],
+                    "id": "item_de8b7ba1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya minden nap alszik.",
+                    "correctAnswer": "The dog sleeps every day.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "sleeps",
+                        "every",
+                        "day.",
+                        "sleeping",
+                        "is"
+                    ],
+                    "id": "item_87134391"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám minden nap olvas, de ma dolgozik.",
+                    "correctAnswer": "My father reads every day, but he is working today.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "reads",
+                        "every",
+                        "day,",
+                        "but",
+                        "he",
+                        "is",
+                        "working",
+                        "today.",
+                        "reading",
+                        "works"
+                    ],
+                    "id": "item_1277dd67"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A lánytestvérem egy kék inget visel ma.",
+                    "sentence": "My sister ____ wearing a blue shirt today.",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "does",
+                        "wears",
+                        "are"
+                    ],
+                    "id": "item_d0853909"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lánytestvérem piros inget visel minden nap.",
+                    "correctAnswer": "My sister wears a red shirt every day.",
+                    "scrambledWords": [
+                        "My",
+                        "sister",
+                        "wears",
+                        "a",
+                        "red",
+                        "shirt",
+                        "every",
+                        "day.",
+                        "wearing",
+                        "is"
+                    ],
+                    "id": "item_9e510a76"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) kávét iszik minden nap.",
+                    "correctAnswer": "He drinks coffee every day.",
+                    "scrambledWords": [
+                        "He",
+                        "drinks",
+                        "coffee",
+                        "every",
+                        "day.",
+                        "drinking",
+                        "is"
+                    ],
+                    "id": "item_381f913f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) ma vizet iszik.",
+                    "sentence": "He is drinking water ____.",
+                    "answer": "today",
+                    "options": [
+                        "today",
+                        "every day",
+                        "now",
+                        "time"
+                    ],
+                    "id": "item_7c732761"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A tanár minden nap dolgozik.",
+                    "correctAnswer": "The teacher works every day.",
+                    "scrambledWords": [
+                        "The",
+                        "teacher",
+                        "works",
+                        "every",
+                        "day.",
+                        "working",
+                        "is"
+                    ],
+                    "id": "item_e4d4bc54"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A barátom ma olvas.",
+                    "sentence": "My friend is ____ today.",
+                    "answer": "reading",
+                    "options": [
+                        "reading",
+                        "reads",
+                        "read",
+                        "does"
+                    ],
+                    "id": "item_eed83f9d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) minden nap játszik, de ma alszik.",
+                    "correctAnswer": "She plays every day, but she is sleeping today.",
+                    "scrambledWords": [
+                        "She",
+                        "plays",
+                        "every",
+                        "day,",
+                        "but",
+                        "she",
+                        "is",
+                        "sleeping",
+                        "today.",
+                        "playing",
+                        "sleeps"
+                    ],
+                    "id": "item_058be8b8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A rendőr egy fekete inget visel minden nap.",
+                    "correctAnswer": "The policeman wears a black shirt every day.",
+                    "scrambledWords": [
+                        "The",
+                        "policeman",
+                        "wears",
+                        "a",
+                        "black",
+                        "shirt",
+                        "every",
+                        "day.",
+                        "wearing",
+                        "is"
+                    ],
+                    "id": "item_868f94b2"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én nem dolgozom minden nap.",
+                    "correctAnswer": "I don't work every day.",
+                    "scrambledWords": [
+                        "I",
+                        "don't",
+                        "work",
+                        "every",
+                        "day.",
+                        "am",
+                        "not",
+                        "working"
+                    ],
+                    "id": "item_eab15b17"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én ma nem dolgozom.",
+                    "correctAnswer": "I am not working today.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "not",
+                        "working",
+                        "today.",
+                        "don't",
+                        "work"
+                    ],
+                    "id": "item_41999761"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te dolgozol minden nap?",
+                    "sentence": "____ you work every day?",
+                    "answer": "Do",
+                    "options": [
+                        "Do",
+                        "Are",
+                        "Does",
+                        "Is"
+                    ],
+                    "id": "item_e009edf0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te dolgozol ma?",
+                    "sentence": "____ you working today?",
+                    "answer": "Are",
+                    "options": [
+                        "Are",
+                        "Do",
+                        "Is",
+                        "Does"
+                    ],
+                    "id": "item_a250c774"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) nem eszik húst minden nap.",
+                    "correctAnswer": "He doesn't eat meat every day.",
+                    "scrambledWords": [
+                        "He",
+                        "doesn't",
+                        "eat",
+                        "meat",
+                        "every",
+                        "day.",
+                        "isn't",
+                        "eating"
+                    ],
+                    "id": "item_103df435"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) ma nem eszik húst.",
+                    "correctAnswer": "He isn't eating meat today.",
+                    "scrambledWords": [
+                        "He",
+                        "isn't",
+                        "eating",
+                        "meat",
+                        "today.",
+                        "doesn't",
+                        "eat"
+                    ],
+                    "id": "item_d6de748e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) kávét iszik minden nap?",
+                    "sentence": "____ she drink coffee every day?",
+                    "answer": "Does",
+                    "options": [
+                        "Does",
+                        "Is",
+                        "Do",
+                        "Are"
+                    ],
+                    "id": "item_6fab0c85"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) ma kávét iszik?",
+                    "correctAnswer": "Is she drinking coffee today?",
+                    "scrambledWords": [
+                        "Is",
+                        "she",
+                        "drinking",
+                        "coffee",
+                        "today?",
+                        "Does",
+                        "drink"
+                    ],
+                    "id": "item_c1e033db"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi nem játszunk minden nap.",
+                    "correctAnswer": "We don't play every day.",
+                    "scrambledWords": [
+                        "We",
+                        "don't",
+                        "play",
+                        "every",
+                        "day.",
+                        "aren't",
+                        "playing"
+                    ],
+                    "id": "item_21e563f0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi ma nem játszunk.",
+                    "sentence": "We ____ playing today.",
+                    "answer": "aren't",
+                    "options": [
+                        "aren't",
+                        "don't",
+                        "isn't",
+                        "not"
+                    ],
+                    "id": "item_208e0911"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők olvasnak minden nap?",
+                    "correctAnswer": "Do they read every day?",
+                    "scrambledWords": [
+                        "Do",
+                        "they",
+                        "read",
+                        "every",
+                        "day?",
+                        "Are",
+                        "reading"
+                    ],
+                    "id": "item_8d85b6ef"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők ma olvasnak?",
+                    "correctAnswer": "Are they reading today?",
+                    "scrambledWords": [
+                        "Are",
+                        "they",
+                        "reading",
+                        "today?",
+                        "Do",
+                        "read"
+                    ],
+                    "id": "item_b3aaf20a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) nem visel kék inget minden nap.",
+                    "sentence": "She doesn't ____ a blue shirt every day.",
+                    "answer": "wear",
+                    "options": [
+                        "wear",
+                        "wears",
+                        "wearing",
+                        "is"
+                    ],
+                    "id": "item_d2098d32"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) ma nem visel kék inget.",
+                    "correctAnswer": "She isn't wearing a blue shirt today.",
+                    "scrambledWords": [
+                        "She",
+                        "isn't",
+                        "wearing",
+                        "a",
+                        "blue",
+                        "shirt",
+                        "today.",
+                        "doesn't",
+                        "wear"
+                    ],
+                    "id": "item_ffa74877"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) minden nap alszik?",
+                    "correctAnswer": "Does he sleep every day?",
+                    "scrambledWords": [
+                        "Does",
+                        "he",
+                        "sleep",
+                        "every",
+                        "day?",
+                        "Is",
+                        "sleeping"
+                    ],
+                    "id": "item_82a1866f"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én nem dolgozom minden nap, de ma dolgozom.",
+                    "correctAnswer": "I don't work every day, but I am working today.",
+                    "scrambledWords": [
+                        "I",
+                        "don't",
+                        "work",
+                        "every",
+                        "day,",
+                        "but",
+                        "I",
+                        "am",
+                        "working",
+                        "today.",
+                        "am",
+                        "not",
+                        "work"
+                    ],
+                    "id": "item_48b9d98d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) pizzát eszik minden nap? Nem, ő ma levest eszik.",
+                    "sentence": "____ he eat pizza every day? No, he is eating soup today.",
+                    "answer": "Does",
+                    "options": [
+                        "Does",
+                        "Is",
+                        "Do",
+                        "Are"
+                    ],
+                    "id": "item_3fbf56aa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi kávét iszunk minden nap, de ma vizet iszunk.",
+                    "correctAnswer": "We drink coffee every day, but we are drinking water today.",
+                    "scrambledWords": [
+                        "We",
+                        "drink",
+                        "coffee",
+                        "every",
+                        "day,",
+                        "but",
+                        "we",
+                        "are",
+                        "drinking",
+                        "water",
+                        "today."
+                    ],
+                    "id": "item_71726c05"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te kék nadrágot viselsz ma? Nem, én fekete nadrágot viselek.",
+                    "correctAnswer": "Are you wearing blue pants today? No, I am wearing black pants.",
+                    "scrambledWords": [
+                        "Are",
+                        "you",
+                        "wearing",
+                        "blue",
+                        "pants",
+                        "today?",
+                        "No,",
+                        "I",
+                        "am",
+                        "wearing",
+                        "black",
+                        "pants.",
+                        "Do"
+                    ],
+                    "id": "item_4f91ea85"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az anyám minden nap főz, de ma ő olvas.",
+                    "sentence": "My mother cooks every day, but she is ____ today.",
+                    "answer": "reading",
+                    "options": [
+                        "reading",
+                        "read",
+                        "reads",
+                        "working"
+                    ],
+                    "id": "item_98fd0d18"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutyám minden nap alszik az ágyon, de ma játszik.",
+                    "correctAnswer": "My dog sleeps on the bed every day, but it is playing today.",
+                    "scrambledWords": [
+                        "My",
+                        "dog",
+                        "sleeps",
+                        "on",
+                        "the",
+                        "bed",
+                        "every",
+                        "day,",
+                        "but",
+                        "it",
+                        "is",
+                        "playing",
+                        "today."
+                    ],
+                    "id": "item_8845ea19"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem olvasnak minden nap, de ők ma olvasnak.",
+                    "correctAnswer": "They don't read every day, but they are reading today.",
+                    "scrambledWords": [
+                        "They",
+                        "don't",
+                        "read",
+                        "every",
+                        "day,",
+                        "but",
+                        "they",
+                        "are",
+                        "reading",
+                        "today."
+                    ],
+                    "id": "item_b6cbec2a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem nem dolgozik minden nap, ő ma alszik.",
+                    "sentence": "My brother doesn't work every day, he ____ sleeping today.",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "does",
+                        "are",
+                        "am"
+                    ],
+                    "id": "item_d49e0837"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek futni minden nap, de ma én táncolok.",
+                    "correctAnswer": "I like to run every day, but I am dancing today.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "run",
+                        "every",
+                        "day,",
+                        "but",
+                        "I",
+                        "am",
+                        "dancing",
+                        "today."
+                    ],
+                    "id": "item_37eb7343"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te dolgozol ma? Igen, én minden nap dolgozom.",
+                    "correctAnswer": "Are you working today? Yes, I work every day.",
+                    "scrambledWords": [
+                        "Are",
+                        "you",
+                        "working",
+                        "today?",
+                        "Yes,",
+                        "I",
+                        "work",
+                        "every",
+                        "day.",
+                        "Do"
+                    ],
+                    "id": "item_4e1df78d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) nem visel piros inget ma.",
+                    "sentence": "She ____ wearing a red shirt today.",
+                    "answer": "isn't",
+                    "options": [
+                        "isn't",
+                        "doesn't",
+                        "don't",
+                        "aren't"
+                    ],
+                    "id": "item_76007bd5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom angolul beszél minden nap, de ma nem beszél.",
+                    "correctAnswer": "My friend speaks English every day, but he isn't speaking today.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "speaks",
+                        "English",
+                        "every",
+                        "day,",
+                        "but",
+                        "he",
+                        "isn't",
+                        "speaking",
+                        "today."
+                    ],
+                    "id": "item_eb4293ec"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinálsz ma? Én a konyhában főzök.",
+                    "correctAnswer": "What are you doing today? I am cooking in the kitchen.",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "doing",
+                        "today?",
+                        "I",
+                        "am",
+                        "cooking",
+                        "in",
+                        "the",
+                        "kitchen.",
+                        "cook"
+                    ],
+                    "id": "item_73ab02d0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi nem játszunk minden nap.",
+                    "sentence": "We ____ play every day.",
+                    "answer": "don't",
+                    "options": [
+                        "don't",
+                        "aren't",
+                        "isn't",
+                        "doesn't"
+                    ],
+                    "id": "item_cdeec415"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők húst esznek ma? Nem, ők minden nap pizzát esznek.",
+                    "correctAnswer": "Are they eating meat today? No, they eat pizza every day.",
+                    "scrambledWords": [
+                        "Are",
+                        "they",
+                        "eating",
+                        "meat",
+                        "today?",
+                        "No,",
+                        "they",
+                        "eat",
+                        "pizza",
+                        "every",
+                        "day.",
+                        "Do"
+                    ],
+                    "id": "item_e5faa585"
+                }
+            ]
+        }
+    ]
+}

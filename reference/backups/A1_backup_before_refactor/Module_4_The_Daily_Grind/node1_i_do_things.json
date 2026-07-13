@@ -1,0 +1,525 @@
+{
+    "title": "Cselekszem",
+    "type": "multi_level_node",
+    "targetWords": [
+        "eat",
+        "drink",
+        "sleep",
+        "work",
+        "read",
+        "play",
+        "we",
+        "they"
+    ],
+    "dictionary": {
+        "eat": "eszik (eszem / eszel / eszünk / esznek)",
+        "drink": "iszik (iszom / iszol / iszunk / isznak)",
+        "sleep": "alszik (alszom / alszol / alszunk / alszanak)",
+        "work": "dolgozik (dolgozom / dolgozol / dolgozunk / dolgoznak)",
+        "read": "olvas (olvasom / olvasod / olvasunk / olvasnak)",
+        "play": "játszik (játszom / játszol / játszunk / játszanak)",
+        "we": "mi (többes szám)",
+        "they": "ők"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "eat",
+                "drink",
+                "we",
+                "they"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "eszik",
+                    "correctAnswer": "eat",
+                    "options": [
+                        { "id": "eat", "text": "eat", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 50 Q50 20 70 50 L70 80 Q50 100 30 80 Z' fill='#e74c3c'/><path d='M50 20 Q70 50 60 70' fill='#fff'/></svg>" },
+                        { "id": "drink", "text": "drink", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='35' y='20' width='30' height='60' rx='2' stroke='#bdc3c7' stroke-width='4' fill='none'/><rect x='37' y='40' width='26' height='38' fill='#3498db'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "iszik",
+                    "correctAnswer": "drink",
+                    "options": [
+                        { "id": "eat", "text": "eat", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 50 Q50 20 70 50 L70 80 Q50 100 30 80 Z' fill='#e74c3c'/><path d='M50 20 Q70 50 60 70' fill='#fff'/></svg>" },
+                        { "id": "drink", "text": "drink", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='35' y='20' width='30' height='60' rx='2' stroke='#bdc3c7' stroke-width='4' fill='none'/><rect x='37' y='40' width='26' height='38' fill='#3498db'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én eszem.",
+                    "correctAnswer": "I eat.",
+                    "scrambledWords": ["I", "eat.", "drink.", "You"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te iszol.",
+                    "correctAnswer": "You drink.",
+                    "scrambledWords": ["You", "drink.", "eat.", "I"]
+                },
+                {
+                    "type": "image_choice",
+                    "word": "mi",
+                    "correctAnswer": "we",
+                    "options": [
+                        { "id": "we", "text": "we", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='35' cy='40' r='15' fill='#3498db'/><circle cx='65' cy='40' r='15' fill='#3498db'/></svg>" },
+                        { "id": "they", "text": "they", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='35' cy='40' r='15' fill='#e74c3c'/><circle cx='65' cy='40' r='15' fill='#e74c3c'/><path d='M20 20 L40 40' stroke='#333' stroke-width='3'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "ők",
+                    "correctAnswer": "they",
+                    "options": [
+                        { "id": "we", "text": "we", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='35' cy='40' r='15' fill='#3498db'/><circle cx='65' cy='40' r='15' fill='#3498db'/></svg>" },
+                        { "id": "they", "text": "they", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='35' cy='40' r='15' fill='#9b59b6'/><circle cx='65' cy='40' r='15' fill='#9b59b6'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Mi eszünk.",
+                    "correctAnswer": "We eat.",
+                    "scrambledWords": ["We", "eat.", "They", "drink."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ők isznak.",
+                    "correctAnswer": "They drink.",
+                    "scrambledWords": ["They", "drink.", "We", "eat."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én iszom egy kávét.",
+                    "sentence": "I ____ a coffee.",
+                    "answer": "drink",
+                    "options": ["drink", "eat", "we", "they"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te eszed az almát.",
+                    "correctAnswer": "You eat the apple.",
+                    "scrambledWords": ["You", "eat", "the", "apple.", "drink"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi vizet iszunk.",
+                    "sentence": "We ____ water.",
+                    "answer": "drink",
+                    "options": ["drink", "eat", "are", "have"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők isznak és mi eszünk.",
+                    "correctAnswer": "They drink and we eat.",
+                    "scrambledWords": ["They", "drink", "and", "we", "eat."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én eszem és te iszol.",
+                    "correctAnswer": "I eat and you drink.",
+                    "scrambledWords": ["I", "eat", "and", "you", "drink."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők esznek.",
+                    "sentence": "____ eat.",
+                    "answer": "They",
+                    "options": ["They", "We", "He", "Drink"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi eszünk, köszönöm.",
+                    "correctAnswer": "We eat, thanks.",
+                    "scrambledWords": ["We", "eat,", "thanks.", "They", "drink."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "sleep",
+                "work"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "alszik",
+                    "correctAnswer": "sleep",
+                    "options": [
+                        { "id": "sleep", "text": "sleep", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='70' y='30' font-size='20' font-family='Arial' fill='#34495e'>Z</text><text x='85' y='15' font-size='15' font-family='Arial' fill='#34495e'>z</text></svg>" },
+                        { "id": "work", "text": "work", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='40' width='50' height='40' rx='3' fill='#e67e22'/><path d='M40 40 L40 30 Q50 20 60 30 L60 40' stroke='#d35400' stroke-width='4' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "dolgozik",
+                    "correctAnswer": "work",
+                    "options": [
+                        { "id": "sleep", "text": "sleep", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='70' y='30' font-size='20' font-family='Arial' fill='#34495e'>Z</text><text x='85' y='15' font-size='15' font-family='Arial' fill='#34495e'>z</text></svg>" },
+                        { "id": "work", "text": "work", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='40' width='50' height='40' rx='3' fill='#e67e22'/><path d='M40 40 L40 30 Q50 20 60 30 L60 40' stroke='#d35400' stroke-width='4' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én alszom.",
+                    "correctAnswer": "I sleep.",
+                    "scrambledWords": ["I", "sleep.", "work.", "You"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Te dolgozol.",
+                    "correctAnswer": "You work.",
+                    "scrambledWords": ["You", "work.", "sleep.", "I"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi alszunk.",
+                    "sentence": "We ____.",
+                    "answer": "sleep",
+                    "options": ["sleep", "work", "eat", "drink"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők dolgoznak.",
+                    "correctAnswer": "They work.",
+                    "scrambledWords": ["They", "work.", "We", "sleep."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én a hálószobában alszom.",
+                    "sentence": "I sleep in the ____.",
+                    "answer": "bedroom",
+                    "options": ["bedroom", "kitchen", "table", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te a konyhában dolgozol.",
+                    "correctAnswer": "You work in the kitchen.",
+                    "scrambledWords": ["You", "work", "in", "the", "kitchen.", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők az ágyon alszanak.",
+                    "correctAnswer": "They sleep on the bed.",
+                    "scrambledWords": ["They", "sleep", "on", "the", "bed.", "work"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi dolgozunk.",
+                    "sentence": "____ work.",
+                    "answer": "We",
+                    "options": ["We", "They", "Sleep", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én eszem és én dolgozom.",
+                    "correctAnswer": "I eat and I work.",
+                    "scrambledWords": ["I", "eat", "and", "I", "work.", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te vizet iszol és alszol.",
+                    "correctAnswer": "You drink water and you sleep.",
+                    "scrambledWords": ["You", "drink", "water", "and", "you", "sleep."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők dolgoznak.",
+                    "sentence": "They ____.",
+                    "answer": "work",
+                    "options": ["work", "sleep", "are", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők alszanak.",
+                    "correctAnswer": "They sleep.",
+                    "scrambledWords": ["They", "sleep.", "work.", "We"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi iszunk és alszunk.",
+                    "correctAnswer": "We drink and we sleep.",
+                    "scrambledWords": ["We", "drink", "and", "we", "sleep.", "work"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "read",
+                "play"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "olvas",
+                    "correctAnswer": "read",
+                    "options": [
+                        { "id": "read", "text": "read", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 70 L50 80 L80 70 L80 30 L50 40 L20 30 Z' fill='#3498db'/><line x1='50' y1='40' x2='50' y2='80' stroke='#2980b9' stroke-width='4'/></svg>" },
+                        { "id": "play", "text": "play", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='30' fill='#e74c3c'/><path d='M30 40 Q50 20 70 40' stroke='#fff' stroke-width='3' fill='none'/><path d='M30 60 Q50 80 70 60' stroke='#fff' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "játszik",
+                    "correctAnswer": "play",
+                    "options": [
+                        { "id": "read", "text": "read", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 70 L50 80 L80 70 L80 30 L50 40 L20 30 Z' fill='#3498db'/><line x1='50' y1='40' x2='50' y2='80' stroke='#2980b9' stroke-width='4'/></svg>" },
+                        { "id": "play", "text": "play", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='30' fill='#e74c3c'/><path d='M30 40 Q50 20 70 40' stroke='#fff' stroke-width='3' fill='none'/><path d='M30 60 Q50 80 70 60' stroke='#fff' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én olvasok.",
+                    "correctAnswer": "I read.",
+                    "scrambledWords": ["I", "read.", "play.", "You"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Te játszol.",
+                    "correctAnswer": "You play.",
+                    "scrambledWords": ["You", "play.", "read.", "I"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi olvasunk.",
+                    "sentence": "We ____.",
+                    "answer": "read",
+                    "options": ["read", "play", "work", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők játszanak.",
+                    "correctAnswer": "They play.",
+                    "scrambledWords": ["They", "play.", "read.", "We"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én olvasok egy könyvet.",
+                    "sentence": "I read a ____.",
+                    "answer": "book",
+                    "options": ["book", "table", "play", "they"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te a kutyával játszol.",
+                    "correctAnswer": "You play with the dog.",
+                    "scrambledWords": ["You", "play", "with", "the", "dog.", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők a szobában játszanak.",
+                    "correctAnswer": "They play in the room.",
+                    "scrambledWords": ["They", "play", "in", "the", "room.", "read"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi a könyvet olvassuk.",
+                    "sentence": "We read ____ book.",
+                    "answer": "the",
+                    "options": ["the", "a", "my", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én dolgozom és te játszol.",
+                    "correctAnswer": "I work and you play.",
+                    "scrambledWords": ["I", "work", "and", "you", "play.", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők olvasnak és alszanak.",
+                    "correctAnswer": "They read and they sleep.",
+                    "scrambledWords": ["They", "read", "and", "they", "sleep.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te a barátommal játszol.",
+                    "sentence": "You play ____ my friend.",
+                    "answer": "with",
+                    "options": ["with", "in", "on", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi egy könyvet olvasunk.",
+                    "correctAnswer": "We read a book.",
+                    "scrambledWords": ["We", "read", "a", "book.", "play", "they"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők a házban játszanak.",
+                    "correctAnswer": "They play in the house.",
+                    "scrambledWords": ["They", "play", "in", "the", "house.", "read"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én alszom és te dolgozol.",
+                    "correctAnswer": "I sleep and you work.",
+                    "scrambledWords": ["I", "sleep", "and", "you", "work.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi vizet iszunk.",
+                    "sentence": "We ____ water.",
+                    "answer": "drink",
+                    "options": ["drink", "eat", "read", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők egy könyvet olvasnak a szobában.",
+                    "correctAnswer": "They read a book in the room.",
+                    "scrambledWords": ["They", "read", "a", "book", "in", "the", "room."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te a kutyával játszol a konyhában.",
+                    "correctAnswer": "You play with the dog in the kitchen.",
+                    "scrambledWords": ["You", "play", "with", "the", "dog", "in", "the", "kitchen."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én az asztal mellett eszem.",
+                    "sentence": "I eat ____ to the table.",
+                    "answer": "next",
+                    "options": ["next", "on", "in", "with"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi alszunk a hálószobában.",
+                    "correctAnswer": "We sleep in the bedroom.",
+                    "scrambledWords": ["We", "sleep", "in", "the", "bedroom.", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők isznak és esznek.",
+                    "correctAnswer": "They drink and they eat.",
+                    "scrambledWords": ["They", "drink", "and", "they", "eat."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te a házban dolgozol.",
+                    "sentence": "You work ____ the house.",
+                    "answer": "in",
+                    "options": ["in", "on", "under", "with"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én játszom a telefonomon.",
+                    "correctAnswer": "I play on my phone.",
+                    "scrambledWords": ["I", "play", "on", "my", "phone.", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi a könyvet olvassuk az ágyon.",
+                    "correctAnswer": "We read the book on the bed.",
+                    "scrambledWords": ["We", "read", "the", "book", "on", "the", "bed."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők kávét isznak.",
+                    "sentence": "____ drink coffee.",
+                    "answer": "They",
+                    "options": ["They", "We", "I", "You"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te eszel és én dolgozom.",
+                    "correctAnswer": "You eat and I work.",
+                    "scrambledWords": ["You", "eat", "and", "I", "work.", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi játszunk és ők olvasnak.",
+                    "correctAnswer": "We play and they read.",
+                    "scrambledWords": ["We", "play", "and", "they", "read."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én az autóban alszom.",
+                    "sentence": "I sleep in the ____.",
+                    "answer": "car",
+                    "options": ["car", "bag", "table", "book"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők dolgoznak, mi játszunk.",
+                    "correctAnswer": "They work, we play.",
+                    "scrambledWords": ["They", "work,", "we", "play.", "read,"]
+                }
+            ]
+        }
+    ]
+}

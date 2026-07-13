@@ -1,0 +1,957 @@
+{
+    "title": "Éppen most",
+    "type": "multi_level_node",
+    "targetWords": [
+        "now",
+        "doing",
+        "eating",
+        "drinking",
+        "working",
+        "sleeping",
+        "reading",
+        "playing"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "now",
+                "doing",
+                "eating",
+                "drinking"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "most",
+                    "correctAnswer": "now",
+                    "options": [
+                        {
+                            "id": "now",
+                            "text": "now",
+                            "correct": true
+                        },
+                        {
+                            "id": "doing",
+                            "text": "doing",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_2a436505"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "csinál (éppen most)",
+                    "correctAnswer": "doing",
+                    "options": [
+                        {
+                            "id": "now",
+                            "text": "now",
+                            "correct": false
+                        },
+                        {
+                            "id": "doing",
+                            "text": "doing",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_d208b3bb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinálsz most?",
+                    "correctAnswer": "What are you doing now?",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "doing",
+                        "now?",
+                        "do"
+                    ],
+                    "id": "item_1c859f20"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én most eszem.",
+                    "correctAnswer": "I am eating now.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "eating",
+                        "now.",
+                        "eat"
+                    ],
+                    "id": "item_2e1c4f8d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te most iszol.",
+                    "sentence": "You are ____ now.",
+                    "answer": "drinking",
+                    "options": [
+                        "drinking",
+                        "drink",
+                        "drinks",
+                        "eating"
+                    ],
+                    "id": "item_be3f0bea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én most kávét iszom.",
+                    "correctAnswer": "I am drinking coffee now.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "drinking",
+                        "coffee",
+                        "now.",
+                        "drink"
+                    ],
+                    "id": "item_fe16797c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mit csinálsz?",
+                    "sentence": "What are you ____?",
+                    "answer": "doing",
+                    "options": [
+                        "doing",
+                        "do",
+                        "does",
+                        "now"
+                    ],
+                    "id": "item_f71db06e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te pizzát eszel most.",
+                    "correctAnswer": "You are eating pizza now.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "eating",
+                        "pizza",
+                        "now.",
+                        "eat"
+                    ],
+                    "id": "item_3c3704e2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én most vizet iszom.",
+                    "correctAnswer": "I am drinking water now.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "drinking",
+                        "water",
+                        "now.",
+                        "drinks"
+                    ],
+                    "id": "item_4ccdd1d4"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én most eszem.",
+                    "sentence": "I ____ eating now.",
+                    "answer": "am",
+                    "options": [
+                        "am",
+                        "are",
+                        "is",
+                        "do"
+                    ],
+                    "id": "item_801e816a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te iszol és én eszem most.",
+                    "correctAnswer": "You are drinking and I am eating now.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "drinking",
+                        "and",
+                        "I",
+                        "am",
+                        "eating",
+                        "now."
+                    ],
+                    "id": "item_4abded0d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mit csinálsz most?",
+                    "sentence": "What are you doing ____?",
+                    "answer": "now",
+                    "options": [
+                        "now",
+                        "doing",
+                        "time",
+                        "at"
+                    ],
+                    "id": "item_bc278c79"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én a konyhában eszem most.",
+                    "correctAnswer": "I am eating in the kitchen now.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "eating",
+                        "in",
+                        "the",
+                        "kitchen",
+                        "now.",
+                        "eat"
+                    ],
+                    "id": "item_695d785c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinálsz? Én eszem.",
+                    "correctAnswer": "What are you doing? I am eating.",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "doing?",
+                        "I",
+                        "am",
+                        "eating.",
+                        "eat."
+                    ],
+                    "id": "item_ba688d97"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te most kávét iszol.",
+                    "sentence": "You are ____ coffee now.",
+                    "answer": "drinking",
+                    "options": [
+                        "drinking",
+                        "drink",
+                        "drinks",
+                        "eating"
+                    ],
+                    "id": "item_faa2f6cf"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "working",
+                "sleeping"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "dolgozik (éppen most)",
+                    "correctAnswer": "working",
+                    "options": [
+                        {
+                            "id": "working",
+                            "text": "working",
+                            "correct": true
+                        },
+                        {
+                            "id": "sleeping",
+                            "text": "sleeping",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_ecb81d1b"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "alszik (éppen most)",
+                    "correctAnswer": "sleeping",
+                    "options": [
+                        {
+                            "id": "working",
+                            "text": "working",
+                            "correct": false
+                        },
+                        {
+                            "id": "sleeping",
+                            "text": "sleeping",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_d8e1002f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) most alszik.",
+                    "correctAnswer": "He is sleeping now.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "sleeping",
+                        "now.",
+                        "sleeps"
+                    ],
+                    "id": "item_0c1d9d2c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) most dolgozik.",
+                    "correctAnswer": "She is working now.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "working",
+                        "now.",
+                        "works"
+                    ],
+                    "id": "item_800f4cfd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya most alszik.",
+                    "sentence": "The dog ____ sleeping now.",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "are",
+                        "am",
+                        "does"
+                    ],
+                    "id": "item_314a64be"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinál ő (férfi)?",
+                    "correctAnswer": "What is he doing?",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "he",
+                        "doing?",
+                        "does"
+                    ],
+                    "id": "item_b926ad8f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám most dolgozik.",
+                    "sentence": "My father is ____ now.",
+                    "answer": "working",
+                    "options": [
+                        "working",
+                        "work",
+                        "works",
+                        "doing"
+                    ],
+                    "id": "item_c470e9c8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) a szobában alszik most.",
+                    "correctAnswer": "She is sleeping in the room now.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "sleeping",
+                        "in",
+                        "the",
+                        "room",
+                        "now.",
+                        "sleeps"
+                    ],
+                    "id": "item_b353fa64"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem most dolgozik.",
+                    "correctAnswer": "My brother is working now.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "is",
+                        "working",
+                        "now.",
+                        "works"
+                    ],
+                    "id": "item_e53c21f3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A tanár most dolgozik.",
+                    "sentence": "The teacher is ____ now.",
+                    "answer": "working",
+                    "options": [
+                        "working",
+                        "work",
+                        "works",
+                        "eating"
+                    ],
+                    "id": "item_2e8c7c38"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) dolgozik és ő (nő) alszik.",
+                    "correctAnswer": "He is working and she is sleeping.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "working",
+                        "and",
+                        "she",
+                        "is",
+                        "sleeping.",
+                        "sleeps"
+                    ],
+                    "id": "item_a77f9b7e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A macska (It) az ágyon alszik most.",
+                    "correctAnswer": "It is sleeping on the bed now.",
+                    "scrambledWords": [
+                        "It",
+                        "is",
+                        "sleeping",
+                        "on",
+                        "the",
+                        "bed",
+                        "now.",
+                        "sleeps"
+                    ],
+                    "id": "item_dba83be3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mit csinál ő (nő)?",
+                    "sentence": "What is she ____?",
+                    "answer": "doing",
+                    "options": [
+                        "doing",
+                        "do",
+                        "does",
+                        "working"
+                    ],
+                    "id": "item_2e6d4a3d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinál? Ő (férfi) dolgozik.",
+                    "correctAnswer": "What is he doing? He is working.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "he",
+                        "doing?",
+                        "He",
+                        "is",
+                        "working.",
+                        "work."
+                    ],
+                    "id": "item_9fab1578"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én alszom most, a barátom dolgozik most.",
+                    "correctAnswer": "I am sleeping now, my friend is working now.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "sleeping",
+                        "now,",
+                        "my",
+                        "friend",
+                        "is",
+                        "working",
+                        "now."
+                    ],
+                    "id": "item_dbf901e5"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "playing",
+                "reading"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "játszik (éppen most)",
+                    "correctAnswer": "playing",
+                    "options": [
+                        {
+                            "id": "playing",
+                            "text": "playing",
+                            "correct": true
+                        },
+                        {
+                            "id": "reading",
+                            "text": "reading",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_c629e314"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "olvas (éppen most)",
+                    "correctAnswer": "reading",
+                    "options": [
+                        {
+                            "id": "playing",
+                            "text": "playing",
+                            "correct": false
+                        },
+                        {
+                            "id": "reading",
+                            "text": "reading",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_e1cd9ec9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi most olvasunk.",
+                    "correctAnswer": "We are reading now.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "reading",
+                        "now.",
+                        "read"
+                    ],
+                    "id": "item_e0e07598"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők most játszanak.",
+                    "correctAnswer": "They are playing now.",
+                    "scrambledWords": [
+                        "They",
+                        "are",
+                        "playing",
+                        "now.",
+                        "play"
+                    ],
+                    "id": "item_430d3487"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mit csinálnak ők?",
+                    "sentence": "What ____ they doing?",
+                    "answer": "are",
+                    "options": [
+                        "are",
+                        "do",
+                        "is",
+                        "am"
+                    ],
+                    "id": "item_08fb5711"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi a kutyával játszunk most.",
+                    "correctAnswer": "We are playing with the dog now.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "playing",
+                        "with",
+                        "the",
+                        "dog",
+                        "now.",
+                        "play"
+                    ],
+                    "id": "item_7ac1aac3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők most egy könyvet olvasnak.",
+                    "sentence": "They are ____ a book now.",
+                    "answer": "reading",
+                    "options": [
+                        "reading",
+                        "read",
+                        "reads",
+                        "playing"
+                    ],
+                    "id": "item_9816536c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te most olvasol és ők játszanak.",
+                    "correctAnswer": "You are reading now and they are playing.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "reading",
+                        "now",
+                        "and",
+                        "they",
+                        "are",
+                        "playing.",
+                        "read"
+                    ],
+                    "id": "item_52e09f03"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi most a szobában játszunk.",
+                    "sentence": "We are playing ____ the room now.",
+                    "answer": "in",
+                    "options": [
+                        "in",
+                        "on",
+                        "at",
+                        "to"
+                    ],
+                    "id": "item_e6b983c3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lánytestvérem most olvas.",
+                    "correctAnswer": "My sister is reading now.",
+                    "scrambledWords": [
+                        "My",
+                        "sister",
+                        "is",
+                        "reading",
+                        "now.",
+                        "reads"
+                    ],
+                    "id": "item_cf36afab"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők a konyhában olvasnak most.",
+                    "correctAnswer": "They are reading in the kitchen now.",
+                    "scrambledWords": [
+                        "They",
+                        "are",
+                        "reading",
+                        "in",
+                        "the",
+                        "kitchen",
+                        "now.",
+                        "read"
+                    ],
+                    "id": "item_8572613c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya most játszik.",
+                    "sentence": "The dog is ____ now.",
+                    "answer": "playing",
+                    "options": [
+                        "playing",
+                        "play",
+                        "plays",
+                        "reading"
+                    ],
+                    "id": "item_7c569f8b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csináltok? Mi olvasunk.",
+                    "correctAnswer": "What are you doing? We are reading.",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "doing?",
+                        "We",
+                        "are",
+                        "reading.",
+                        "read."
+                    ],
+                    "id": "item_d16e8b53"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én olvasok, ők játszanak most.",
+                    "correctAnswer": "I am reading, they are playing now.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "reading,",
+                        "they",
+                        "are",
+                        "playing",
+                        "now.",
+                        "play"
+                    ],
+                    "id": "item_6de58eb4"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi most játszunk.",
+                    "sentence": "We ____ playing now.",
+                    "answer": "are",
+                    "options": [
+                        "are",
+                        "am",
+                        "is",
+                        "do"
+                    ],
+                    "id": "item_721924d0"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinálsz most? Én egy könyvet olvasok.",
+                    "correctAnswer": "What are you doing now? I am reading a book.",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "doing",
+                        "now?",
+                        "I",
+                        "am",
+                        "reading",
+                        "a",
+                        "book.",
+                        "read"
+                    ],
+                    "id": "item_2575550b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem dolgozik, és én alszom most.",
+                    "sentence": "My brother is working and I ____ sleeping now.",
+                    "answer": "am",
+                    "options": [
+                        "am",
+                        "is",
+                        "are",
+                        "do"
+                    ],
+                    "id": "item_c6fd5004"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) pizzát eszik a konyhában most.",
+                    "correctAnswer": "She is eating pizza in the kitchen now.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "eating",
+                        "pizza",
+                        "in",
+                        "the",
+                        "kitchen",
+                        "now.",
+                        "eats"
+                    ],
+                    "id": "item_252ba7bc"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők a kutyával játszanak az ágyon.",
+                    "correctAnswer": "They are playing with the dog on the bed.",
+                    "scrambledWords": [
+                        "They",
+                        "are",
+                        "playing",
+                        "with",
+                        "the",
+                        "dog",
+                        "on",
+                        "the",
+                        "bed.",
+                        "play"
+                    ],
+                    "id": "item_3ca24ebd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám vizet iszik most.",
+                    "sentence": "My father is ____ water now.",
+                    "answer": "drinking",
+                    "options": [
+                        "drinking",
+                        "drink",
+                        "drinks",
+                        "eating"
+                    ],
+                    "id": "item_d7f7c718"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinál ő (férfi)? Ő dolgozik.",
+                    "correctAnswer": "What is he doing? He is working.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "he",
+                        "doing?",
+                        "He",
+                        "is",
+                        "working.",
+                        "works."
+                    ],
+                    "id": "item_e0fb1b59"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi a szobában olvasunk most.",
+                    "correctAnswer": "We are reading in the room now.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "reading",
+                        "in",
+                        "the",
+                        "room",
+                        "now.",
+                        "read"
+                    ],
+                    "id": "item_7657a69e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te most alszol?",
+                    "sentence": "Are you ____ now?",
+                    "answer": "sleeping",
+                    "options": [
+                        "sleeping",
+                        "sleep",
+                        "sleeps",
+                        "working"
+                    ],
+                    "id": "item_f5c6ea1b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én eszem, ő (férfi) iszik, és ők játszanak.",
+                    "correctAnswer": "I am eating, he is drinking, and they are playing.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "eating,",
+                        "he",
+                        "is",
+                        "drinking,",
+                        "and",
+                        "they",
+                        "are",
+                        "playing.",
+                        "eat"
+                    ],
+                    "id": "item_efb3289a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom a ház mellett dolgozik most.",
+                    "correctAnswer": "My friend is working next to the house now.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "is",
+                        "working",
+                        "next",
+                        "to",
+                        "the",
+                        "house",
+                        "now.",
+                        "works"
+                    ],
+                    "id": "item_223bd00b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mit csinálnak ők?",
+                    "sentence": "What ____ they doing?",
+                    "answer": "are",
+                    "options": [
+                        "are",
+                        "do",
+                        "is",
+                        "am"
+                    ],
+                    "id": "item_4ba2d137"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya alszik az asztal alatt most.",
+                    "correctAnswer": "The dog is sleeping under the table now.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "is",
+                        "sleeping",
+                        "under",
+                        "the",
+                        "table",
+                        "now.",
+                        "sleeps"
+                    ],
+                    "id": "item_39bab7c1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én imádok olvasni, és most olvasok.",
+                    "correctAnswer": "I love to read, and I am reading now.",
+                    "scrambledWords": [
+                        "I",
+                        "love",
+                        "to",
+                        "read,",
+                        "and",
+                        "I",
+                        "am",
+                        "reading",
+                        "now.",
+                        "reads"
+                    ],
+                    "id": "item_9cbac4ed"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) kávét iszik most.",
+                    "sentence": "She ____ drinking coffee now.",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "are",
+                        "am",
+                        "does"
+                    ],
+                    "id": "item_44b784ea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi dolgozunk, de ők játszanak most.",
+                    "correctAnswer": "We are working, but they are playing now.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "working,",
+                        "but",
+                        "they",
+                        "are",
+                        "playing",
+                        "now.",
+                        "work"
+                    ],
+                    "id": "item_7de7d1e3"
+                }
+            ]
+        }
+    ]
+}

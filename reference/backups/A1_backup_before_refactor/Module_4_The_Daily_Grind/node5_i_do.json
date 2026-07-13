@@ -1,0 +1,497 @@
+{
+    "title": "Csinálod? (Do / Does)",
+    "type": "multi_level_node",
+    "targetWords": [
+        "do",
+        "does"
+    ],
+    "dictionary": {
+        "do": "segédige kérdésnél (én / te / mi / ők)",
+        "does": "segédige kérdésnél (ő / az)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "do"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "kérdés (én / te / mi / ők)",
+                    "correctAnswer": "do",
+                    "options": [
+                        { "id": "do", "text": "do", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50' y='50' font-size='30' font-family='Arial' font-weight='bold' fill='#3498db' text-anchor='middle'>DO...?</text><text x='50' y='75' font-size='10' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>I / YOU / WE / THEY</text></svg>" },
+                        { "id": "does", "text": "does", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50' y='50' font-size='30' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>DOES...?</text><text x='50' y='75' font-size='10' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>HE / SHE / IT</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Te dolgozol?",
+                    "correctAnswer": "Do you work?",
+                    "scrambledWords": ["Do", "you", "work?", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők alszanak?",
+                    "correctAnswer": "Do they sleep?",
+                    "scrambledWords": ["Do", "they", "sleep?", "Does", "are"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi eszünk?",
+                    "sentence": "____ we eat?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "Is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én olvasok?",
+                    "correctAnswer": "Do I read?",
+                    "scrambledWords": ["Do", "I", "read?", "Am"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te kávét iszol?",
+                    "sentence": "____ you drink coffee?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "You"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők a konyhában játszanak?",
+                    "correctAnswer": "Do they play in the kitchen?",
+                    "scrambledWords": ["Do", "they", "play", "in", "the", "kitchen?", "Does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te dolgozol reggel?",
+                    "sentence": "Do you ____ in the morning?",
+                    "answer": "work",
+                    "options": ["work", "works", "working", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi éjszaka alszunk?",
+                    "correctAnswer": "Do we sleep at night?",
+                    "scrambledWords": ["Do", "we", "sleep", "at", "night?", "Does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők dolgoznak hétfőn?",
+                    "sentence": "____ they work on Monday?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "In"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te egy könyvet olvasol?",
+                    "correctAnswer": "Do you read a book?",
+                    "scrambledWords": ["Do", "you", "read", "a", "book?", "reads"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te a kutyával játszol?",
+                    "sentence": "Do you play ____ the dog?",
+                    "answer": "with",
+                    "options": ["with", "in", "on", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők esznek reggel?",
+                    "correctAnswer": "Do they eat in the morning?",
+                    "scrambledWords": ["Do", "they", "eat", "in", "the", "morning?", "eats"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi játszunk hétvégén?",
+                    "sentence": "____ we play on the weekend?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "We"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te iszol vizet?",
+                    "correctAnswer": "Do you drink water?",
+                    "scrambledWords": ["Do", "you", "drink", "water?", "drinks"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "does"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "kérdés (ő / az)",
+                    "correctAnswer": "does",
+                    "options": [
+                        { "id": "do", "text": "do", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50' y='50' font-size='30' font-family='Arial' font-weight='bold' fill='#3498db' text-anchor='middle'>DO...?</text><text x='50' y='75' font-size='10' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>I / YOU / WE / THEY</text></svg>" },
+                        { "id": "does", "text": "does", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><text x='50' y='50' font-size='30' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>DOES...?</text><text x='50' y='75' font-size='10' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>HE / SHE / IT</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (férfi) dolgozik?",
+                    "correctAnswer": "Does he work?",
+                    "scrambledWords": ["Does", "he", "work?", "works?", "Do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) olvas?",
+                    "correctAnswer": "Does she read?",
+                    "scrambledWords": ["Does", "she", "read?", "reads?", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) alszik?",
+                    "sentence": "____ he sleep?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Are"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya játszik?",
+                    "sentence": "Does the dog ____?",
+                    "answer": "play",
+                    "options": ["play", "plays", "playing", "do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apád dolgozik?",
+                    "correctAnswer": "Does your father work?",
+                    "scrambledWords": ["Does", "your", "father", "work?", "works?", "Do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lánytestvéred eszik?",
+                    "correctAnswer": "Does your sister eat?",
+                    "scrambledWords": ["Does", "your", "sister", "eat?", "eats?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) kávét iszik?",
+                    "sentence": "Does he ____ coffee?",
+                    "answer": "drink",
+                    "options": ["drink", "drinks", "drinking", "do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) olvas egy könyvet?",
+                    "sentence": "____ she read a book?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Has"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám alszik?",
+                    "correctAnswer": "Does my mother sleep?",
+                    "scrambledWords": ["Does", "my", "mother", "sleep?", "sleeps?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A tanár dolgozik?",
+                    "sentence": "Does the teacher ____?",
+                    "answer": "work",
+                    "options": ["work", "works", "working", "do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) a szobában játszik?",
+                    "correctAnswer": "Does he play in the room?",
+                    "scrambledWords": ["Does", "he", "play", "in", "the", "room?", "plays"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivéred eszik?",
+                    "sentence": "____ your brother eat?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) vizet iszik?",
+                    "correctAnswer": "Does she drink water?",
+                    "scrambledWords": ["Does", "she", "drink", "water?", "drinks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya az ágyon alszik?",
+                    "correctAnswer": "Does the dog sleep on the bed?",
+                    "scrambledWords": ["Does", "the", "dog", "sleep", "on", "the", "bed?", "sleeps"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te alszol és ő (férfi) dolgozik?",
+                    "correctAnswer": "Do you sleep and does he work?",
+                    "scrambledWords": ["Do", "you", "sleep", "and", "does", "he", "work?", "works?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) olvas?",
+                    "sentence": "____ she read?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Are"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők játszanak?",
+                    "sentence": "____ they play?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "Is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátod a konyhában eszik?",
+                    "correctAnswer": "Does your friend eat in the kitchen?",
+                    "scrambledWords": ["Does", "your", "friend", "eat", "in", "the", "kitchen?", "eats", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te iszol?",
+                    "sentence": "Do you ____?",
+                    "answer": "drink",
+                    "options": ["drink", "drinks", "drinking", "does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A rendőr éjszaka dolgozik?",
+                    "correctAnswer": "Does the policeman work at night?",
+                    "scrambledWords": ["Does", "the", "policeman", "work", "at", "night?", "works"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi dolgozunk pénteken?",
+                    "sentence": "____ we work on Friday?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "Is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők az asztal alatt alszanak?",
+                    "correctAnswer": "Do they sleep under the table?",
+                    "scrambledWords": ["Do", "they", "sleep", "under", "the", "table?", "sleeps", "Does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) játszik hétvégén?",
+                    "sentence": "Does she ____ on the weekend?",
+                    "answer": "play",
+                    "options": ["play", "plays", "playing", "do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) a hálószobában olvas?",
+                    "correctAnswer": "Does he read in the bedroom?",
+                    "scrambledWords": ["Does", "he", "read", "in", "the", "bedroom?", "reads"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én alszom?",
+                    "sentence": "____ I sleep?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Am", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te reggel dolgozol?",
+                    "correctAnswer": "Do you work in the morning?",
+                    "scrambledWords": ["Do", "you", "work", "in", "the", "morning?", "works"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tűzoltó kávét iszik?",
+                    "correctAnswer": "Does the fireman drink coffee?",
+                    "scrambledWords": ["Does", "the", "fireman", "drink", "coffee?", "drinks", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya eszik?",
+                    "sentence": "____ the dog eat?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők a kutyával játszanak?",
+                    "correctAnswer": "Do they play with the dog?",
+                    "scrambledWords": ["Do", "they", "play", "with", "the", "dog?", "Does"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te hétfő reggel dolgozol?",
+                    "correctAnswer": "Do you work on Monday morning?",
+                    "scrambledWords": ["Do", "you", "work", "on", "Monday", "morning?", "Does", "works"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) éjszaka alszik?",
+                    "sentence": "____ she sleep at night?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apád játszik hétvégén?",
+                    "correctAnswer": "Does your father play on the weekend?",
+                    "scrambledWords": ["Does", "your", "father", "play", "on", "the", "weekend?", "plays", "Do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők a könyvet olvassák a szobában?",
+                    "correctAnswer": "Do they read the book in the room?",
+                    "scrambledWords": ["Do", "they", "read", "the", "book", "in", "the", "room?", "Does"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya az asztal alatt alszik?",
+                    "sentence": "Does the dog ____ under the table?",
+                    "answer": "sleep",
+                    "options": ["sleep", "sleeps", "sleeping", "do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te kávét iszol és ő (nő) vizet iszik?",
+                    "correctAnswer": "Do you drink coffee and does she drink water?",
+                    "scrambledWords": ["Do", "you", "drink", "coffee", "and", "does", "she", "drink", "water?", "drinks"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A barátod pénteken dolgozik?",
+                    "sentence": "____ your friend work on Friday?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "Are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi a ház mellett játszunk?",
+                    "correctAnswer": "Do we play next to the house?",
+                    "scrambledWords": ["Do", "we", "play", "next", "to", "the", "house?", "Does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) a konyhában eszik?",
+                    "correctAnswer": "Does he eat in the kitchen?",
+                    "scrambledWords": ["Does", "he", "eat", "in", "the", "kitchen?", "eats", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők egy könyvet olvasnak a hálószobában?",
+                    "sentence": "____ they read a book in the bedroom?",
+                    "answer": "Do",
+                    "options": ["Do", "Does", "Are", "In"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lánytestvéred éjszaka dolgozik?",
+                    "correctAnswer": "Does your sister work at night?",
+                    "scrambledWords": ["Does", "your", "sister", "work", "at", "night?", "works", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A szerelő dolgozik?",
+                    "sentence": "Does the mechanic ____?",
+                    "answer": "work",
+                    "options": ["work", "works", "working", "do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te hétvégén olvasol?",
+                    "correctAnswer": "Do you read on the weekend?",
+                    "scrambledWords": ["Do", "you", "read", "on", "the", "weekend?", "reads"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) a fivéremmel játszik?",
+                    "sentence": "____ he play with my brother?",
+                    "answer": "Does",
+                    "options": ["Does", "Do", "Is", "He"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám kávét iszik reggel?",
+                    "correctAnswer": "Does my mother drink coffee in the morning?",
+                    "scrambledWords": ["Does", "my", "mother", "drink", "coffee", "in", "the", "morning?", "drinks"]
+                }
+            ]
+        }
+    ]
+}

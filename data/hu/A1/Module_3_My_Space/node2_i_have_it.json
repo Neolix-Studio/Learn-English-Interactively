@@ -1,0 +1,945 @@
+{
+    "title": "Nekem van",
+    "type": "multi_level_node",
+    "targetWords": [
+        "have",
+        "bag",
+        "key",
+        "money",
+        "ticket"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "have",
+                "bag",
+                "key"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "táska",
+                    "correctAnswer": "bag",
+                    "options": [
+                        {
+                            "id": "bag",
+                            "text": "bag",
+                            "correct": true
+                        },
+                        {
+                            "id": "key",
+                            "text": "key",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_ab18ed64"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "kulcs",
+                    "correctAnswer": "key",
+                    "options": [
+                        {
+                            "id": "bag",
+                            "text": "bag",
+                            "correct": false
+                        },
+                        {
+                            "id": "key",
+                            "text": "key",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_b8984f04"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy táskám.",
+                    "correctAnswer": "I have a bag.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "bag.",
+                        "key."
+                    ],
+                    "id": "item_00541f53"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy kulcsod.",
+                    "correctAnswer": "You have a key.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "key.",
+                        "I"
+                    ],
+                    "id": "item_6b40bed3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy kulcsom.",
+                    "sentence": "I ____ a key.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "am",
+                        "is",
+                        "a"
+                    ],
+                    "id": "item_6d23b2de"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy telefonom.",
+                    "correctAnswer": "I have a phone.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "phone.",
+                        "bag."
+                    ],
+                    "id": "item_8d42d4e9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy táskám.",
+                    "sentence": "____ have a bag.",
+                    "answer": "I",
+                    "options": [
+                        "I",
+                        "You",
+                        "My",
+                        "Am"
+                    ],
+                    "id": "item_c409ade6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy autód.",
+                    "correctAnswer": "You have a car.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "car.",
+                        "I"
+                    ],
+                    "id": "item_2ae00372"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy kulcsom és neked van egy táskád.",
+                    "correctAnswer": "I have a key and you have a bag.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "key",
+                        "and",
+                        "you",
+                        "have",
+                        "a",
+                        "bag."
+                    ],
+                    "id": "item_46702828"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Neked van egy könyved.",
+                    "sentence": "You ____ a book.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "are",
+                        "is",
+                        "am"
+                    ],
+                    "id": "item_c01f953d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nálam van a kulcsom. (Nekem megvan a kulcsom.)",
+                    "correctAnswer": "I have my key.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "my",
+                        "key.",
+                        "a",
+                        "bag."
+                    ],
+                    "id": "item_807d113c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én táskám és nekem van egy kulcsom.",
+                    "correctAnswer": "This is my bag and I have a key.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "bag",
+                        "and",
+                        "I",
+                        "have",
+                        "a",
+                        "key."
+                    ],
+                    "id": "item_f80941f2"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy táskám.",
+                    "sentence": "I have ____ bag.",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "the",
+                        "an",
+                        "my"
+                    ],
+                    "id": "item_4cf1f09d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nálad van a táskám. (Neked van meg a táskám.)",
+                    "correctAnswer": "You have my bag.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "my",
+                        "bag.",
+                        "key.",
+                        "I"
+                    ],
+                    "id": "item_3284f58f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy jó autóm.",
+                    "correctAnswer": "I have a good car.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "good",
+                        "car.",
+                        "bad"
+                    ],
+                    "id": "item_84175e9f"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "money",
+                "ticket"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "pénz",
+                    "correctAnswer": "money",
+                    "options": [
+                        {
+                            "id": "money",
+                            "text": "money",
+                            "correct": true
+                        },
+                        {
+                            "id": "ticket",
+                            "text": "ticket",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_a95d8891"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "jegy",
+                    "correctAnswer": "ticket",
+                    "options": [
+                        {
+                            "id": "money",
+                            "text": "money",
+                            "correct": false
+                        },
+                        {
+                            "id": "ticket",
+                            "text": "ticket",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_3f34eea3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van pénzem.",
+                    "correctAnswer": "I have money.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "money.",
+                        "a",
+                        "ticket."
+                    ],
+                    "id": "item_f1ee7af6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy jegyed.",
+                    "correctAnswer": "You have a ticket.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "ticket.",
+                        "money."
+                    ],
+                    "id": "item_4349b834"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van pénzem.",
+                    "sentence": "I have ____.",
+                    "answer": "money",
+                    "options": [
+                        "money",
+                        "a money",
+                        "ticket",
+                        "a ticket"
+                    ],
+                    "id": "item_1fe2c10d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van pénzem és neked van egy jegyed.",
+                    "correctAnswer": "I have money and you have a ticket.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "money",
+                        "and",
+                        "you",
+                        "have",
+                        "a",
+                        "ticket."
+                    ],
+                    "id": "item_002d2a46"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Neked van egy jegyed.",
+                    "sentence": "You have a ____.",
+                    "answer": "ticket",
+                    "options": [
+                        "ticket",
+                        "money",
+                        "key",
+                        "have"
+                    ],
+                    "id": "item_d5be9282"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én jegyem.",
+                    "correctAnswer": "This is my ticket.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "ticket.",
+                        "have",
+                        "money."
+                    ],
+                    "id": "item_f7075ace"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy táskám és nekem van pénzem.",
+                    "correctAnswer": "I have a bag and I have money.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "bag",
+                        "and",
+                        "I",
+                        "have",
+                        "money."
+                    ],
+                    "id": "item_899bbf68"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van pénzem.",
+                    "sentence": "I ____ money.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "am",
+                        "is",
+                        "a"
+                    ],
+                    "id": "item_386103f1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nálad van a jegyem! (Neked megvan a jegyem!)",
+                    "correctAnswer": "You have my ticket!",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "my",
+                        "ticket!",
+                        "money!",
+                        "I"
+                    ],
+                    "id": "item_2f62eefa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy tollam és neked van pénzed.",
+                    "correctAnswer": "I have a pen and you have money.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "pen",
+                        "and",
+                        "you",
+                        "have",
+                        "money."
+                    ],
+                    "id": "item_5bf15479"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Neked van egy jegyed.",
+                    "sentence": "____ have a ticket.",
+                    "answer": "You",
+                    "options": [
+                        "You",
+                        "I",
+                        "My",
+                        "Are"
+                    ],
+                    "id": "item_77c25bfa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az pénz.",
+                    "correctAnswer": "That is money.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "money.",
+                        "a",
+                        "ticket."
+                    ],
+                    "id": "item_88a1efc1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy kulcsom, egy jegyem és pénzem.",
+                    "correctAnswer": "I have a key, a ticket and money.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "key,",
+                        "a",
+                        "ticket",
+                        "and",
+                        "money.",
+                        "bag"
+                    ],
+                    "id": "item_33a64fef"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én táskám. Nekem van egy táskám.",
+                    "correctAnswer": "This is my bag. I have a bag.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "bag.",
+                        "I",
+                        "have",
+                        "a",
+                        "bag.",
+                        "money."
+                    ],
+                    "id": "item_78c7e082"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez a te kulcsod. Neked van egy kulcsod.",
+                    "correctAnswer": "This is your key. You have a key.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "your",
+                        "key.",
+                        "You",
+                        "have",
+                        "a",
+                        "key.",
+                        "my"
+                    ],
+                    "id": "item_2498065a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez az én pénzem.",
+                    "sentence": "____ is my money.",
+                    "answer": "This",
+                    "options": [
+                        "This",
+                        "A",
+                        "Have",
+                        "You"
+                    ],
+                    "id": "item_adbf0e51"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nálam van a jegyem. (Nekem megvan a jegyem.)",
+                    "correctAnswer": "I have my ticket.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "my",
+                        "ticket.",
+                        "money.",
+                        "a"
+                    ],
+                    "id": "item_3c2f9b4f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nálad van a telefonod. (Neked megvan a telefonod.)",
+                    "sentence": "You ____ your phone.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "are",
+                        "a",
+                        "is"
+                    ],
+                    "id": "item_500055a5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy házam és nekem van egy autóm.",
+                    "correctAnswer": "I have a house and I have a car.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "house",
+                        "and",
+                        "I",
+                        "have",
+                        "a",
+                        "car."
+                    ],
+                    "id": "item_a4c1e704"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az a te táskád. Neked van egy táskád.",
+                    "correctAnswer": "That is your bag. You have a bag.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "your",
+                        "bag.",
+                        "You",
+                        "have",
+                        "a",
+                        "bag."
+                    ],
+                    "id": "item_9f2ad21e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van pénzem.",
+                    "sentence": "I have ____ money.",
+                    "answer": "my",
+                    "options": [
+                        "my",
+                        "a",
+                        "the",
+                        "are"
+                    ],
+                    "id": "item_b1190f1a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy könyved és nekem van egy tollam.",
+                    "correctAnswer": "You have a book and I have a pen.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "book",
+                        "and",
+                        "I",
+                        "have",
+                        "a",
+                        "pen."
+                    ],
+                    "id": "item_2bc30dc3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy jegy. Nekem van egy jegyem.",
+                    "correctAnswer": "This is a ticket. I have a ticket.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "ticket.",
+                        "I",
+                        "have",
+                        "a",
+                        "ticket."
+                    ],
+                    "id": "item_0925ec52"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy házam.",
+                    "sentence": "I have a ____.",
+                    "answer": "house",
+                    "options": [
+                        "house",
+                        "money",
+                        "good",
+                        "am"
+                    ],
+                    "id": "item_1a23fede"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van pénzed és nekem van egy telefonom.",
+                    "correctAnswer": "You have money and I have a phone.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "money",
+                        "and",
+                        "I",
+                        "have",
+                        "a",
+                        "phone."
+                    ],
+                    "id": "item_e90ef4e5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy autó. Neked van egy autód.",
+                    "correctAnswer": "That is a car. You have a car.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "a",
+                        "car.",
+                        "You",
+                        "have",
+                        "a",
+                        "car."
+                    ],
+                    "id": "item_006a4c11"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy jegyem.",
+                    "sentence": "I have ____ ticket.",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "the",
+                        "an",
+                        "is"
+                    ],
+                    "id": "item_ee51a828"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nálam van a táskám és nálad van a kulcsod.",
+                    "correctAnswer": "I have my bag and you have your key.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "my",
+                        "bag",
+                        "and",
+                        "you",
+                        "have",
+                        "your",
+                        "key."
+                    ],
+                    "id": "item_4f1cc4c0"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy táskám és neked van pénzed.",
+                    "correctAnswer": "I have a bag and you have money.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "bag",
+                        "and",
+                        "you",
+                        "have",
+                        "money.",
+                        "a"
+                    ],
+                    "id": "item_eea95af9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Neked van egy jegyed.",
+                    "sentence": "You have ____ ticket.",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "my",
+                        "is",
+                        "the"
+                    ],
+                    "id": "item_062aadcb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én kulcsom és az a te táskád.",
+                    "correctAnswer": "This is my key and that is your bag.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "key",
+                        "and",
+                        "that",
+                        "is",
+                        "your",
+                        "bag."
+                    ],
+                    "id": "item_d8f0c08a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy házam, egy autóm és pénzem.",
+                    "correctAnswer": "I have a house, a car and money.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "house,",
+                        "a",
+                        "car",
+                        "and",
+                        "money.",
+                        "ticket"
+                    ],
+                    "id": "item_17817dfd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy jó telefonom.",
+                    "sentence": "I ____ a good phone.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "am",
+                        "a",
+                        "my"
+                    ],
+                    "id": "item_b42d23d7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez? Ez az én jegyem.",
+                    "correctAnswer": "What is this? This is my ticket.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "This",
+                        "is",
+                        "my",
+                        "ticket.",
+                        "money."
+                    ],
+                    "id": "item_592ce280"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy jegyem és nekem van pénzem.",
+                    "correctAnswer": "I have a ticket and I have money.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "ticket",
+                        "and",
+                        "I",
+                        "have",
+                        "money.",
+                        "a"
+                    ],
+                    "id": "item_19ae45f8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nálad van a kulcsom! (Neked megvan a kulcsom!)",
+                    "sentence": "____ have my key!",
+                    "answer": "You",
+                    "options": [
+                        "You",
+                        "I",
+                        "Are",
+                        "My"
+                    ],
+                    "id": "item_51edda1c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy táskád, egy tollad és egy könyved.",
+                    "correctAnswer": "You have a bag, a pen and a book.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "bag,",
+                        "a",
+                        "pen",
+                        "and",
+                        "a",
+                        "book."
+                    ],
+                    "id": "item_31437624"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi az? Az egy kulcs.",
+                    "correctAnswer": "What is that? That is a key.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "that?",
+                        "That",
+                        "is",
+                        "a",
+                        "key.",
+                        "this?"
+                    ],
+                    "id": "item_fbc2b93a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van pénzem.",
+                    "sentence": "I have ____.",
+                    "answer": "money",
+                    "options": [
+                        "money",
+                        "a money",
+                        "ticket",
+                        "key"
+                    ],
+                    "id": "item_4ed5b8dc"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nálam van a te jegyed és nálad van az én táskám.",
+                    "correctAnswer": "I have your ticket and you have my bag.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "your",
+                        "ticket",
+                        "and",
+                        "you",
+                        "have",
+                        "my",
+                        "bag."
+                    ],
+                    "id": "item_a01b146f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy autód. Ez a te autód.",
+                    "correctAnswer": "You have a car. This is your car.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "car.",
+                        "This",
+                        "is",
+                        "your",
+                        "car.",
+                        "my"
+                    ],
+                    "id": "item_d03f981f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy kulcsom és neked van egy jegyed.",
+                    "sentence": "I have a key and you ____ a ticket.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "are",
+                        "a",
+                        "is"
+                    ],
+                    "id": "item_ba622be1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van pénzem, egy telefonom és a kulcsom.",
+                    "correctAnswer": "I have money, a phone and my key.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "money,",
+                        "a",
+                        "phone",
+                        "and",
+                        "my",
+                        "key.",
+                        "a money,"
+                    ],
+                    "id": "item_8770f287"
+                }
+            ]
+        }
+    ]
+}

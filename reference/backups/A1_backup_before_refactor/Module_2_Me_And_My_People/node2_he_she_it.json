@@ -1,0 +1,321 @@
+{
+    "title": "Ők (He, She, It)",
+    "type": "multi_level_node",
+    "targetWords": [
+        "he",
+        "she",
+        "it",
+        "is",
+        "boy",
+        "girl",
+        "man",
+        "woman",
+        "dog",
+        "a",
+        "the"
+    ],
+    "dictionary": {
+        "he": "ő (hímnem)",
+        "she": "ő (nőnem)",
+        "it": "az / ő (élettelen / állat)",
+        "is": "van (létige)",
+        "boy": "fiú",
+        "girl": "lány",
+        "man": "férfi",
+        "woman": "nő",
+        "dog": "kutya",
+        "a": "egy (határozatlan névelő)",
+        "the": "a / az (határozott névelő)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "boy",
+                "girl",
+                "he",
+                "she",
+                "is",
+                "a"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fiú",
+                    "correctAnswer": "boy",
+                    "options": [
+                        { "id": "boy", "text": "boy", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M30 40 Q50 10 70 40' fill='#8b4513'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/><path d='M45 50 Q50 55 55 50' stroke='#333' stroke-width='2' fill='none'/></svg>" },
+                        { "id": "girl", "text": "girl", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M25 40 Q50 0 75 40 L70 70 Q50 50 30 70 Z' fill='#ffcc00'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/><path d='M45 50 Q50 55 55 50' stroke='#333' stroke-width='2' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "lány",
+                    "correctAnswer": "girl",
+                    "options": [
+                        { "id": "boy", "text": "boy", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M30 40 Q50 10 70 40' fill='#8b4513'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/><path d='M45 50 Q50 55 55 50' stroke='#333' stroke-width='2' fill='none'/></svg>" },
+                        { "id": "girl", "text": "girl", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M25 40 Q50 0 75 40 L70 70 Q50 50 30 70 Z' fill='#ffcc00'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/><path d='M45 50 Q50 55 55 50' stroke='#333' stroke-width='2' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő egy fiú.",
+                    "correctAnswer": "He is a boy.",
+                    "scrambledWords": ["He", "is", "a", "boy.", "She"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő egy lány.",
+                    "correctAnswer": "She is a girl.",
+                    "scrambledWords": ["She", "is", "a", "girl.", "He"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő egy lány.",
+                    "sentence": "____ is a girl.",
+                    "answer": "She",
+                    "options": ["She", "He", "I", "You"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) boldog.",
+                    "correctAnswer": "He is happy.",
+                    "scrambledWords": ["He", "is", "happy.", "She", "are"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) szomorú.",
+                    "sentence": "____ is sad.",
+                    "answer": "She",
+                    "options": ["She", "He", "It", "Am"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy fiú és ő egy lány.",
+                    "correctAnswer": "He is a boy and she is a girl.",
+                    "scrambledWords": ["He", "is", "a", "boy", "and", "she", "is", "a", "girl."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "man",
+                "woman"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "férfi",
+                    "correctAnswer": "man",
+                    "options": [
+                        { "id": "man", "text": "man", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='25' fill='#ffdbac'/><rect x='30' y='60' width='40' height='40' rx='5' fill='#2c3e50'/><circle cx='40' cy='30' r='3' fill='#333'/><circle cx='60' cy='30' r='3' fill='#333'/><path d='M35 45 Q50 55 65 45' stroke='#333' stroke-width='3' fill='none'/></svg>" },
+                        { "id": "woman", "text": "woman", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='25' fill='#ffdbac'/><path d='M25 35 Q50 -10 75 35 L80 70 Q50 50 20 70 Z' fill='#8b0000'/><rect x='35' y='60' width='30' height='40' rx='10' fill='#8e44ad'/><circle cx='40' cy='30' r='3' fill='#333'/><circle cx='60' cy='30' r='3' fill='#333'/><path d='M45 45 Q50 50 55 45' stroke='#e74c3c' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "nő",
+                    "correctAnswer": "woman",
+                    "options": [
+                        { "id": "man", "text": "man", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='25' fill='#ffdbac'/><rect x='30' y='60' width='40' height='40' rx='5' fill='#2c3e50'/><circle cx='40' cy='30' r='3' fill='#333'/><circle cx='60' cy='30' r='3' fill='#333'/><path d='M35 45 Q50 55 65 45' stroke='#333' stroke-width='3' fill='none'/></svg>" },
+                        { "id": "woman", "text": "woman", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='25' fill='#ffdbac'/><path d='M25 35 Q50 -10 75 35 L80 70 Q50 50 20 70 Z' fill='#8b0000'/><rect x='35' y='60' width='30' height='40' rx='10' fill='#8e44ad'/><circle cx='40' cy='30' r='3' fill='#333'/><circle cx='60' cy='30' r='3' fill='#333'/><path d='M45 45 Q50 50 55 45' stroke='#e74c3c' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy férfi.",
+                    "correctAnswer": "He is a man.",
+                    "scrambledWords": ["He", "is", "a", "man.", "She"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy nő.",
+                    "correctAnswer": "She is a woman.",
+                    "scrambledWords": ["She", "is", "a", "woman.", "He"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) fáradt.",
+                    "sentence": "____ is tired.",
+                    "answer": "He",
+                    "options": ["He", "She", "Am", "I"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy nő és ő boldog.",
+                    "correctAnswer": "She is a woman and she is happy.",
+                    "scrambledWords": ["She", "is", "a", "woman", "and", "she", "is", "happy."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő egy férfi.",
+                    "sentence": "He is a ____.",
+                    "answer": "man",
+                    "options": ["man", "woman", "boy", "girl"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én egy férfi vagyok és te egy nő vagy.",
+                    "correctAnswer": "I am a man and you are a woman.",
+                    "scrambledWords": ["I", "am", "a", "man", "and", "you", "are", "a", "woman."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "dog",
+                "it",
+                "the"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "kutya",
+                    "correctAnswer": "dog",
+                    "options": [
+                        { "id": "dog", "text": "dog", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='30' fill='#d2b48c'/><path d='M20 30 Q30 20 40 40' fill='#8b4513'/><path d='M80 30 Q70 20 60 40' fill='#8b4513'/><circle cx='40' cy='45' r='4' fill='#333'/><circle cx='60' cy='45' r='4' fill='#333'/><circle cx='50' cy='55' r='6' fill='#333'/><path d='M45 65 Q50 70 55 65' stroke='#333' stroke-width='2' fill='none'/></svg>" },
+                        { "id": "man", "text": "man", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='25' fill='#ffdbac'/><rect x='30' y='60' width='40' height='40' rx='5' fill='#2c3e50'/><circle cx='40' cy='30' r='3' fill='#333'/><circle cx='60' cy='30' r='3' fill='#333'/><path d='M35 45 Q50 55 65 45' stroke='#333' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő egy kutya.",
+                    "correctAnswer": "It is a dog.",
+                    "scrambledWords": ["It", "is", "a", "dog.", "He"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "A kutya",
+                    "correctAnswer": "The dog",
+                    "scrambledWords": ["The", "dog", "a", "is"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő egy kutya.",
+                    "sentence": "____ is a dog.",
+                    "answer": "It",
+                    "options": ["It", "She", "He", "The"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya boldog.",
+                    "correctAnswer": "The dog is happy.",
+                    "scrambledWords": ["The", "dog", "is", "happy.", "It"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fiú és a kutya.",
+                    "sentence": "____ boy and the dog.",
+                    "answer": "The",
+                    "options": ["The", "A", "It", "He"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (állat) fáradt.",
+                    "correctAnswer": "It is tired.",
+                    "scrambledWords": ["It", "is", "tired.", "He", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy lány és ő egy kutya.",
+                    "correctAnswer": "She is a girl and it is a dog.",
+                    "scrambledWords": ["She", "is", "a", "girl", "and", "it", "is", "a", "dog."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy férfi és ő egy nő.",
+                    "correctAnswer": "He is a man and she is a woman.",
+                    "scrambledWords": ["He", "is", "a", "man", "and", "she", "is", "a", "woman."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya szomorú.",
+                    "sentence": "The dog is ____.",
+                    "answer": "sad",
+                    "options": ["sad", "a", "it", "she"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én egy fiú vagyok és te egy lány vagy.",
+                    "correctAnswer": "I am a boy and you are a girl.",
+                    "scrambledWords": ["I", "am", "a", "boy", "and", "you", "are", "a", "girl.", "is"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy kutya? Igen, ő egy kutya.",
+                    "correctAnswer": "Is it a dog? Yes, it is a dog.",
+                    "scrambledWords": ["Is", "it", "a", "dog?", "Yes,", "it", "is", "a", "dog."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) fáradt és a fiú boldog.",
+                    "sentence": "____ is tired and the boy is happy.",
+                    "answer": "She",
+                    "options": ["She", "He", "It", "I"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A férfi jól van.",
+                    "correctAnswer": "The man is good.",
+                    "scrambledWords": ["The", "man", "is", "good.", "a", "he"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, a nevem... és ő egy kutya.",
+                    "correctAnswer": "Hello, my name is... and it is a dog.",
+                    "scrambledWords": ["Hello,", "my", "name", "is...", "and", "it", "is", "a", "dog.", "he"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) boldog, ő (nő) szomorú, és a kutya fáradt.",
+                    "correctAnswer": "He is happy, she is sad, and the dog is tired.",
+                    "scrambledWords": ["He", "is", "happy,", "she", "is", "sad,", "and", "the", "dog", "is", "tired."]
+                }
+            ]
+        }
+    ]
+}

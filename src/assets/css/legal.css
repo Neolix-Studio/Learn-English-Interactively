@@ -1,0 +1,187 @@
+.legal-wrapper {
+    max-width: 850px;
+    margin: 100px auto 40px auto;
+    padding: 0 1.5rem;
+}
+.legal-card {
+    background: var(--color-bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+}
+.legal-card h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-accent-in));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+}
+.legal-card h2 {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-accent-in);
+    border-bottom: 1px solid oklch(1 0 0 / 0.1);
+    padding-bottom: 0.5rem;
+}
+.legal-card p, .legal-card ul {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+}
+.legal-card ul {
+    padding-left: 1.5rem;
+}
+.legal-card li {
+    margin-bottom: 0.5rem;
+}
+.legal-card strong {
+    color: var(--color-text-main);
+}
+.back-link-container {
+    margin-top: 2rem;
+    text-align: center;
+}
+.btn-back {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: #000;
+    background: var(--color-accent-in);
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    transition: all var(--transition-base);
+    box-shadow: 0 0 15px oklch(0.75 0.15 250 / 0.3);
+    text-decoration: none;
+}
+.btn-back:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px var(--color-accent-in);
+    filter: brightness(1.1);
+}
+@media (max-width: 768px) {
+    .legal-card {
+        padding: 1.5rem;
+    }
+    .legal-card h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Grid layout for Contact content */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+/* Contact Form Styles */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.form-group label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text-main);
+}
+.form-control {
+    background: oklch(0.12 0.01 260 / 0.5);
+    border: 1px solid oklch(1 0 0 / 0.15);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--color-text-main);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-accent-in);
+    box-shadow: 0 0 10px oklch(0.75 0.15 250 / 0.2);
+}
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+.btn-submit {
+    align-self: flex-start;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: #000;
+    background: var(--color-accent-in);
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: 0 0 15px oklch(0.75 0.15 250 / 0.3);
+}
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px var(--color-accent-in);
+    filter: brightness(1.1);
+}
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Status Notification Styles */
+.status-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+.status-success {
+    background: oklch(0.75 0.2 150 / 0.1);
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+}
+.status-error {
+    background: oklch(0.65 0.2 25 / 0.1);
+    border: 1px solid var(--color-error);
+    color: var(--color-error);
+}
+
+.copy-btn {
+    background: oklch(1 0 0 / 0.08);
+    border: 1px solid oklch(1 0 0 / 0.15);
+    color: var(--color-text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: all var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.copy-btn:hover {
+    background: oklch(1 0 0 / 0.15);
+    color: var(--color-accent-in);
+    border-color: var(--color-accent-in);
+}
+
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}

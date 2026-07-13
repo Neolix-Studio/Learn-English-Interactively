@@ -4,6 +4,7 @@
         "type": "earn_xp",
         "target": 20,
         "reward": 10,
+        "level": 1,
         "title": "Szerezz 20 XP-t ma!",
         "desc": "Tanulj szorgalmasan, és gyűjts össze 20 pontot."
     },
@@ -12,39 +13,62 @@
         "type": "earn_xp",
         "target": 50,
         "reward": 25,
+        "level": 3,
         "title": "Szerezz 50 XP-t ma!",
         "desc": "Légy mester, és gyűjts be ma 50 pontot!"
+    },
+    {
+        "id": "quest_xp_100",
+        "type": "earn_xp",
+        "target": 100,
+        "reward": 50,
+        "level": 5,
+        "title": "Szerezz 100 XP-t ma!",
+        "desc": "Igazi profi vagy! Gyűjts össze 100 pontot."
     },
     {
         "id": "quest_lesson_1",
         "type": "complete_lesson",
         "target": 1,
         "reward": 15,
-        "title": "Fejezz be 1 új leckét",
-        "desc": "Haladj a tananyaggal, és fejezz be egy új modult."
+        "level": 1,
+        "title": "Fejezz be 1 leckét",
+        "desc": "Haladj a tananyaggal, és fejezz be egy modult."
     },
     {
-        "id": "quest_lesson_2",
+        "id": "quest_lesson_3",
         "type": "complete_lesson",
-        "target": 2,
-        "reward": 30,
-        "title": "Tanulj 2 leckét!",
-        "desc": "Fejezz be legalább két leckét a roadmap-en."
+        "target": 3,
+        "reward": 40,
+        "level": 4,
+        "title": "Tanulj 3 leckét!",
+        "desc": "Fejezz be legalább három leckét a roadmap-en."
     },
     {
         "id": "quest_perfect_quiz",
         "type": "perfect_quiz",
         "target": 1,
         "reward": 20,
-        "title": "Hiba nélküli kvíz",
-        "desc": "Oldj meg egy kvízt úgy, hogy nem hibázol."
+        "level": 2,
+        "title": "Hiba nélküli lecke",
+        "desc": "Oldj meg egy teljes leckét úgy, hogy nem vesztesz életet."
     },
     {
         "id": "quest_login_streak",
         "type": "login",
         "target": 1,
         "reward": 5,
+        "level": 1,
         "title": "Napi bejelentkezés",
         "desc": "Jelentkezz be és tanulj ma is!"
+    },
+    {
+        "id": "quest_practice_weak",
+        "type": "practice_weak",
+        "target": 1,
+        "reward": 30,
+        "level": 3,
+        "title": "Ismétlés a tudás anyja",
+        "desc": "Teljesíts egy 'Gyakorlás' csomópontot a hibáidból."
     }
 ]

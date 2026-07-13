@@ -1,0 +1,497 @@
+{
+    "title": "Kérdések és Tagadások",
+    "type": "multi_level_node",
+    "targetWords": [
+        "not",
+        "isn't",
+        "aren't"
+    ],
+    "dictionary": {
+        "not": "nem (am not / are not / is not)",
+        "isn't": "nem (is not rövidítése - ő/az)",
+        "aren't": "nem (are not rövidítése - te/mi/ők)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "not",
+                "isn't"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nem (not)",
+                    "correctAnswer": "not",
+                    "options": [
+                        { "id": "not", "text": "not", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#e74c3c' stroke-width='8'/><line x1='30' y1='30' x2='70' y2='70' stroke='#e74c3c' stroke-width='8'/><line x1='70' y1='30' x2='30' y2='70' stroke='#e74c3c' stroke-width='8'/><text x='50' y='90' font-size='15' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>NOT</text></svg>" },
+                        { "id": "now", "text": "now", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#2c3e50' stroke-width='6' fill='#ecf0f1'/><line x1='50' y1='50' x2='50' y2='25' stroke='#e74c3c' stroke-width='4'/><text x='50' y='75' font-size='16' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>NOW</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "nem (isn't)",
+                    "correctAnswer": "isn't",
+                    "options": [
+                        { "id": "not", "text": "not", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#e74c3c' stroke-width='8'/><line x1='30' y1='30' x2='70' y2='70' stroke='#e74c3c' stroke-width='8'/><line x1='70' y1='30' x2='30' y2='70' stroke='#e74c3c' stroke-width='8'/><text x='50' y='90' font-size='15' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>NOT</text></svg>" },
+                        { "id": "isn't", "text": "isn't", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#c0392b' stroke-width='8'/><text x='50' y='55' font-size='20' font-family='Arial' font-weight='bold' fill='#c0392b' text-anchor='middle'>ISN'T</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én nem dolgozom most.",
+                    "correctAnswer": "I am not working now.",
+                    "scrambledWords": ["I", "am", "not", "working", "now.", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (férfi) nem alszik.",
+                    "correctAnswer": "He isn't sleeping.",
+                    "scrambledWords": ["He", "isn't", "sleeping.", "doesn't", "sleep"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én nem eszem pizzát.",
+                    "sentence": "I am ____ eating pizza.",
+                    "answer": "not",
+                    "options": ["not", "no", "don't", "isn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te dolgozol most?",
+                    "correctAnswer": "Are you working now?",
+                    "scrambledWords": ["Are", "you", "working", "now?", "Do", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem olvas a szobában.",
+                    "correctAnswer": "She isn't reading in the room.",
+                    "scrambledWords": ["She", "isn't", "reading", "in", "the", "room.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya nem játszik.",
+                    "sentence": "The dog ____ playing.",
+                    "answer": "isn't",
+                    "options": ["isn't", "doesn't", "not", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) alszik?",
+                    "correctAnswer": "Is he sleeping?",
+                    "scrambledWords": ["Is", "he", "sleeping?", "Does", "sleep?"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem iszom vizet most.",
+                    "correctAnswer": "I am not drinking water now.",
+                    "scrambledWords": ["I", "am", "not", "drinking", "water", "now.", "don't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te most olvasol?",
+                    "sentence": "____ you reading now?",
+                    "answer": "Are",
+                    "options": ["Are", "Do", "Is", "Does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám nem dolgozik a házban.",
+                    "correctAnswer": "My father isn't working in the house.",
+                    "scrambledWords": ["My", "father", "isn't", "working", "in", "the", "house.", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) kávét iszik?",
+                    "correctAnswer": "Is she drinking coffee?",
+                    "scrambledWords": ["Is", "she", "drinking", "coffee?", "Does", "drink?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem nem eszik.",
+                    "sentence": "My brother ____ eating.",
+                    "answer": "isn't",
+                    "options": ["isn't", "doesn't", "not", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én alszom? Nem, én nem alszom.",
+                    "correctAnswer": "Am I sleeping? No, I am not sleeping.",
+                    "scrambledWords": ["Am", "I", "sleeping?", "No,", "I", "am", "not", "sleeping.", "Do", "don't"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "aren't"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nem (aren't)",
+                    "correctAnswer": "aren't",
+                    "options": [
+                        { "id": "isn't", "text": "isn't", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#c0392b' stroke-width='8'/><text x='50' y='55' font-size='20' font-family='Arial' font-weight='bold' fill='#c0392b' text-anchor='middle'>ISN'T</text></svg>" },
+                        { "id": "aren't", "text": "aren't", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='40' stroke='#e67e22' stroke-width='8'/><text x='50' y='55' font-size='20' font-family='Arial' font-weight='bold' fill='#e67e22' text-anchor='middle'>AREN'T</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Mi nem játszunk.",
+                    "correctAnswer": "We aren't playing.",
+                    "scrambledWords": ["We", "aren't", "playing.", "don't", "play."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ők nem olvasnak.",
+                    "correctAnswer": "They aren't reading.",
+                    "scrambledWords": ["They", "aren't", "reading.", "don't", "isn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te nem dolgozol.",
+                    "sentence": "You ____ working.",
+                    "answer": "aren't",
+                    "options": ["aren't", "don't", "isn't", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi játszunk most?",
+                    "correctAnswer": "Are we playing now?",
+                    "scrambledWords": ["Are", "we", "playing", "now?", "Do", "play?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők most alszanak?",
+                    "sentence": "____ they sleeping now?",
+                    "answer": "Are",
+                    "options": ["Are", "Do", "Is", "Does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ti nem esztek pizzát. (Te nem eszel pizzát.)",
+                    "correctAnswer": "You aren't eating pizza.",
+                    "scrambledWords": ["You", "aren't", "eating", "pizza.", "don't", "isn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom nem dolgozik, ő játszik.",
+                    "correctAnswer": "My friend isn't working, he is playing.",
+                    "scrambledWords": ["My", "friend", "isn't", "working,", "he", "is", "playing.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők nem isznak kávét.",
+                    "sentence": "They ____ drinking coffee.",
+                    "answer": "aren't",
+                    "options": ["aren't", "don't", "isn't", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi nem olvasunk a konyhában.",
+                    "correctAnswer": "We aren't reading in the kitchen.",
+                    "scrambledWords": ["We", "aren't", "reading", "in", "the", "kitchen.", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te kávét iszol?",
+                    "correctAnswer": "Are you drinking coffee?",
+                    "scrambledWords": ["Are", "you", "drinking", "coffee?", "Do", "drink?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi nem dolgozunk.",
+                    "sentence": "We ____ working.",
+                    "answer": "aren't",
+                    "options": ["aren't", "isn't", "don't", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem alszom és te nem dolgozol.",
+                    "correctAnswer": "I am not sleeping and you aren't working.",
+                    "scrambledWords": ["I", "am", "not", "sleeping", "and", "you", "aren't", "working.", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők pizzát esznek most?",
+                    "correctAnswer": "Are they eating pizza now?",
+                    "scrambledWords": ["Are", "they", "eating", "pizza", "now?", "Do", "eat?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutyák (They) nem játszanak.",
+                    "sentence": "They ____ playing.",
+                    "answer": "aren't",
+                    "options": ["aren't", "don't", "isn't", "not"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te fekete nadrágot viselsz most?",
+                    "correctAnswer": "Are you wearing black pants now?",
+                    "scrambledWords": ["Are", "you", "wearing", "black", "pants", "now?", "Do", "wear?"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem viselek piros inget.",
+                    "correctAnswer": "I am not wearing a red shirt.",
+                    "scrambledWords": ["I", "am", "not", "wearing", "a", "red", "shirt.", "don't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) kék nadrágot visel?",
+                    "sentence": "____ he wearing blue pants?",
+                    "answer": "Is",
+                    "options": ["Is", "Does", "Are", "Do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) nem visel fekete inget.",
+                    "correctAnswer": "She isn't wearing a black shirt.",
+                    "scrambledWords": ["She", "isn't", "wearing", "a", "black", "shirt.", "doesn't", "wear"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi nem viselünk piros nadrágot.",
+                    "sentence": "We ____ wearing red pants.",
+                    "answer": "aren't",
+                    "options": ["aren't", "don't", "isn't", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők kék inget viselnek?",
+                    "correctAnswer": "Are they wearing a blue shirt?",
+                    "scrambledWords": ["Are", "they", "wearing", "a", "blue", "shirt?", "Do", "wear?"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tanár nem dolgozik és nem visel kék inget.",
+                    "correctAnswer": "The teacher isn't working and isn't wearing a blue shirt.",
+                    "scrambledWords": ["The", "teacher", "isn't", "working", "and", "isn't", "wearing", "a", "blue", "shirt.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te kék nadrágot viselsz?",
+                    "sentence": "____ you wearing blue pants?",
+                    "answer": "Are",
+                    "options": ["Are", "Do", "Is", "Does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én egy fekete inget viselek, de nem dolgozom.",
+                    "correctAnswer": "I am wearing a black shirt, but I am not working.",
+                    "scrambledWords": ["I", "am", "wearing", "a", "black", "shirt,", "but", "I", "am", "not", "working.", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem nem alszik, ő a szobában játszik.",
+                    "correctAnswer": "My brother isn't sleeping, he is playing in the room.",
+                    "scrambledWords": ["My", "brother", "isn't", "sleeping,", "he", "is", "playing", "in", "the", "room.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők nem viselnek piros inget.",
+                    "sentence": "They ____ wearing a red shirt.",
+                    "answer": "aren't",
+                    "options": ["aren't", "don't", "isn't", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mit viselsz? Én nem viselek nadrágot!",
+                    "correctAnswer": "What are you wearing? I am not wearing pants!",
+                    "scrambledWords": ["What", "are", "you", "wearing?", "I", "am", "not", "wearing", "pants!", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) pizzát eszik? Nem, ő nem eszik.",
+                    "correctAnswer": "Is he eating pizza? No, he isn't eating.",
+                    "scrambledWords": ["Is", "he", "eating", "pizza?", "No,", "he", "isn't", "eating.", "Does", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya nem játszik.",
+                    "sentence": "The dog ____ playing.",
+                    "answer": "isn't",
+                    "options": ["isn't", "doesn't", "aren't", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te dolgozol? Nem, én nem dolgozom.",
+                    "correctAnswer": "Are you working? No, I am not working.",
+                    "scrambledWords": ["Are", "you", "working?", "No,", "I", "am", "not", "working.", "Do", "don't"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te kék nadrágot viselsz? Nem, én fekete nadrágot viselek.",
+                    "correctAnswer": "Are you wearing blue pants? No, I am wearing black pants.",
+                    "scrambledWords": ["Are", "you", "wearing", "blue", "pants?", "No,", "I", "am", "wearing", "black", "pants.", "Do"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én nem dolgozom, én olvasok.",
+                    "sentence": "I am ____ working, I am reading.",
+                    "answer": "not",
+                    "options": ["not", "no", "don't", "isn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők nem játszanak, ők a konyhában esznek.",
+                    "correctAnswer": "They aren't playing, they are eating in the kitchen.",
+                    "scrambledWords": ["They", "aren't", "playing,", "they", "are", "eating", "in", "the", "kitchen.", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apád dolgozik most? Nem, ő nem dolgozik.",
+                    "correctAnswer": "Is your father working now? No, he isn't working.",
+                    "scrambledWords": ["Is", "your", "father", "working", "now?", "No,", "he", "isn't", "working.", "Does", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi nem viselünk piros inget.",
+                    "sentence": "We ____ wearing a red shirt.",
+                    "answer": "aren't",
+                    "options": ["aren't", "isn't", "don't", "not"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom nem alszik, ő a kutyával játszik.",
+                    "correctAnswer": "My friend isn't sleeping, he is playing with the dog.",
+                    "scrambledWords": ["My", "friend", "isn't", "sleeping,", "he", "is", "playing", "with", "the", "dog.", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te iszol vizet? Nem, én kávét iszom.",
+                    "correctAnswer": "Are you drinking water? No, I am drinking coffee.",
+                    "scrambledWords": ["Are", "you", "drinking", "water?", "No,", "I", "am", "drinking", "coffee.", "Do", "don't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) kék inget visel?",
+                    "sentence": "____ she wearing a blue shirt?",
+                    "answer": "Is",
+                    "options": ["Is", "Does", "Are", "Do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lánytestvérem nem olvas, ő a szobában alszik.",
+                    "correctAnswer": "My sister isn't reading, she is sleeping in the room.",
+                    "scrambledWords": ["My", "sister", "isn't", "reading,", "she", "is", "sleeping", "in", "the", "room.", "doesn't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én egy fekete inget viselek, de nem viselek nadrágot!",
+                    "correctAnswer": "I am wearing a black shirt, but I am not wearing pants!",
+                    "scrambledWords": ["I", "am", "wearing", "a", "black", "shirt,", "but", "I", "am", "not", "wearing", "pants!", "don't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te a házban dolgozol most?",
+                    "sentence": "____ you working in the house now?",
+                    "answer": "Are",
+                    "options": ["Are", "Do", "Is", "Does"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők piros nadrágot viselnek? Nem, ők nem viselnek.",
+                    "correctAnswer": "Are they wearing red pants? No, they aren't wearing.",
+                    "scrambledWords": ["Are", "they", "wearing", "red", "pants?", "No,", "they", "aren't", "wearing.", "Do", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) mit csinál? Ő nem dolgozik, ő eszik.",
+                    "correctAnswer": "What is he doing? He isn't working, he is eating.",
+                    "scrambledWords": ["What", "is", "he", "doing?", "He", "isn't", "working,", "he", "is", "eating.", "doesn't"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A tanár nem olvas.",
+                    "sentence": "The teacher ____ reading.",
+                    "answer": "isn't",
+                    "options": ["isn't", "doesn't", "aren't", "don't"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én nem alszom, te nem dolgozol, és ő nem olvas.",
+                    "correctAnswer": "I am not sleeping, you aren't working, and he isn't reading.",
+                    "scrambledWords": ["I", "am", "not", "sleeping,", "you", "aren't", "working,", "and", "he", "isn't", "reading.", "don't", "doesn't"]
+                }
+            ]
+        }
+    ]
+}

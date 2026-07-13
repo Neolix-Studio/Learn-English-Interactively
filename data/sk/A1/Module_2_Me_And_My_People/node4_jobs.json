@@ -1,0 +1,673 @@
+{
+    "title": "Mi a foglalkozásod?",
+    "type": "multi_level_node",
+    "targetWords": [
+        "teacher",
+        "doctor",
+        "policeman",
+        "fireman",
+        "mechanic",
+        "builder",
+        "miner"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "teacher",
+                "doctor"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "tanár",
+                    "correctAnswer": "teacher",
+                    "options": [
+                        {
+                            "id": "teacher",
+                            "text": "teacher",
+                            "correct": true
+                        },
+                        {
+                            "id": "doctor",
+                            "text": "doctor",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_c06107c6"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "orvos",
+                    "correctAnswer": "doctor",
+                    "options": [
+                        {
+                            "id": "teacher",
+                            "text": "teacher",
+                            "correct": false
+                        },
+                        {
+                            "id": "doctor",
+                            "text": "doctor",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_9b033564"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tanár vagyok.",
+                    "correctAnswer": "I am a teacher.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "a",
+                        "teacher.",
+                        "doctor."
+                    ],
+                    "id": "item_7e928a97"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) orvos.",
+                    "correctAnswer": "She is a doctor.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "a",
+                        "doctor.",
+                        "He"
+                    ],
+                    "id": "item_bc460de0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám orvos.",
+                    "sentence": "My father is ____ doctor.",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "I",
+                        "my",
+                        "he"
+                    ],
+                    "id": "item_ab5e0c37"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te orvos vagy?",
+                    "correctAnswer": "Are you a doctor?",
+                    "scrambledWords": [
+                        "Are",
+                        "you",
+                        "a",
+                        "doctor?",
+                        "teacher?"
+                    ],
+                    "id": "item_79326457"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) egy tanár?",
+                    "sentence": "____ he a teacher?",
+                    "answer": "Is",
+                    "options": [
+                        "Is",
+                        "Are",
+                        "Am",
+                        "A"
+                    ],
+                    "id": "item_fadc1128"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám tanár és az apám orvos.",
+                    "correctAnswer": "My mother is a teacher and my father is a doctor.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "is",
+                        "a",
+                        "teacher",
+                        "and",
+                        "my",
+                        "father",
+                        "is",
+                        "a",
+                        "doctor."
+                    ],
+                    "id": "item_60e9eb1b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, én tanár vagyok.",
+                    "correctAnswer": "Yes, I am a teacher.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "I",
+                        "am",
+                        "a",
+                        "teacher.",
+                        "doctor."
+                    ],
+                    "id": "item_196bedcb"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A barátom egy orvos.",
+                    "sentence": "My friend is a ____.",
+                    "answer": "doctor",
+                    "options": [
+                        "doctor",
+                        "teacher",
+                        "father",
+                        "mother"
+                    ],
+                    "id": "item_a126439c"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "policeman",
+                "fireman",
+                "mechanic"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "rendőr",
+                    "correctAnswer": "policeman",
+                    "options": [
+                        {
+                            "id": "policeman",
+                            "text": "policeman",
+                            "correct": true
+                        },
+                        {
+                            "id": "fireman",
+                            "text": "fireman",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_37aad303"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "tűzoltó",
+                    "correctAnswer": "fireman",
+                    "options": [
+                        {
+                            "id": "policeman",
+                            "text": "policeman",
+                            "correct": false
+                        },
+                        {
+                            "id": "fireman",
+                            "text": "fireman",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_4d7818ef"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "szerelő",
+                    "correctAnswer": "mechanic",
+                    "options": [
+                        {
+                            "id": "mechanic",
+                            "text": "mechanic",
+                            "correct": true
+                        },
+                        {
+                            "id": "teacher",
+                            "text": "teacher",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_aeb24bdf"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem rendőr.",
+                    "correctAnswer": "My brother is a policeman.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "is",
+                        "a",
+                        "policeman.",
+                        "fireman."
+                    ],
+                    "id": "item_ce4e3dde"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) egy tűzoltó.",
+                    "sentence": "He is a ____.",
+                    "answer": "fireman",
+                    "options": [
+                        "fireman",
+                        "teacher",
+                        "dog",
+                        "brother"
+                    ],
+                    "id": "item_a5bb6b13"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom szerelő.",
+                    "correctAnswer": "My friend is a mechanic.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "is",
+                        "a",
+                        "mechanic.",
+                        "doctor."
+                    ],
+                    "id": "item_67410d5c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A rendőr fáradt.",
+                    "sentence": "The ____ is tired.",
+                    "answer": "policeman",
+                    "options": [
+                        "policeman",
+                        "mechanic",
+                        "happy",
+                        "water"
+                    ],
+                    "id": "item_f91390e2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám tűzoltó.",
+                    "correctAnswer": "My father is a fireman.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "is",
+                        "a",
+                        "fireman.",
+                        "mechanic."
+                    ],
+                    "id": "item_b970d553"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A szerelő jó.",
+                    "correctAnswer": "The mechanic is good.",
+                    "scrambledWords": [
+                        "The",
+                        "mechanic",
+                        "is",
+                        "good.",
+                        "bad.",
+                        "a"
+                    ],
+                    "id": "item_e2c23425"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te rendőr vagy?",
+                    "sentence": "Are you a ____?",
+                    "answer": "policeman",
+                    "options": [
+                        "policeman",
+                        "teacher",
+                        "I",
+                        "am"
+                    ],
+                    "id": "item_4d877635"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy rendőr és én tűzoltó vagyok.",
+                    "correctAnswer": "He is a policeman and I am a fireman.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "a",
+                        "policeman",
+                        "and",
+                        "I",
+                        "am",
+                        "a",
+                        "fireman."
+                    ],
+                    "id": "item_419e7e60"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "builder",
+                "miner"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "építőmunkás",
+                    "correctAnswer": "builder",
+                    "options": [
+                        {
+                            "id": "builder",
+                            "text": "builder",
+                            "correct": true
+                        },
+                        {
+                            "id": "miner",
+                            "text": "miner",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_48417b28"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "bányász",
+                    "correctAnswer": "miner",
+                    "options": [
+                        {
+                            "id": "builder",
+                            "text": "builder",
+                            "correct": false
+                        },
+                        {
+                            "id": "miner",
+                            "text": "miner",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_1874f16f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én bányász vagyok.",
+                    "correctAnswer": "I am a miner.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "a",
+                        "miner.",
+                        "builder."
+                    ],
+                    "id": "item_169ff417"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te építőmunkás vagy.",
+                    "correctAnswer": "You are a builder.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "a",
+                        "builder.",
+                        "miner."
+                    ],
+                    "id": "item_c48ab449"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem bányász.",
+                    "sentence": "My brother is a ____.",
+                    "answer": "miner",
+                    "options": [
+                        "miner",
+                        "builder",
+                        "friend",
+                        "happy"
+                    ],
+                    "id": "item_5c002c08"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apád építőmunkás?",
+                    "correctAnswer": "Is your father a builder?",
+                    "scrambledWords": [
+                        "Is",
+                        "your",
+                        "father",
+                        "a",
+                        "builder?",
+                        "miner?"
+                    ],
+                    "id": "item_6c16e2d0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) építőmunkás?",
+                    "sentence": "Is he a ____?",
+                    "answer": "builder",
+                    "options": [
+                        "builder",
+                        "miner",
+                        "teacher",
+                        "a"
+                    ],
+                    "id": "item_7aadc6d0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A bányász fáradt és a szerelő boldog.",
+                    "correctAnswer": "The miner is tired and the mechanic is happy.",
+                    "scrambledWords": [
+                        "The",
+                        "miner",
+                        "is",
+                        "tired",
+                        "and",
+                        "the",
+                        "mechanic",
+                        "is",
+                        "happy."
+                    ],
+                    "id": "item_e990fb95"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátod bányász?",
+                    "correctAnswer": "Is your friend a miner?",
+                    "scrambledWords": [
+                        "Is",
+                        "your",
+                        "friend",
+                        "a",
+                        "miner?",
+                        "builder?"
+                    ],
+                    "id": "item_4a1aade2"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én bányász vagyok.",
+                    "sentence": "I am ____ miner.",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "the",
+                        "an",
+                        "I"
+                    ],
+                    "id": "item_21c524e2"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám tanár és a fivérem rendőr.",
+                    "correctAnswer": "My mother is a teacher and my brother is a policeman.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "is",
+                        "a",
+                        "teacher",
+                        "and",
+                        "my",
+                        "brother",
+                        "is",
+                        "a",
+                        "policeman."
+                    ],
+                    "id": "item_36c8a331"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apád tűzoltó?",
+                    "sentence": "Is your father a ____?",
+                    "answer": "fireman",
+                    "options": [
+                        "fireman",
+                        "miner",
+                        "mechanic",
+                        "doctor"
+                    ],
+                    "id": "item_c5c08cb3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, ő szerelő.",
+                    "correctAnswer": "No, he is a mechanic.",
+                    "scrambledWords": [
+                        "No,",
+                        "he",
+                        "is",
+                        "a",
+                        "mechanic.",
+                        "builder."
+                    ],
+                    "id": "item_095123d5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én bányász vagyok és a barátom építőmunkás.",
+                    "correctAnswer": "I am a miner and my friend is a builder.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "a",
+                        "miner",
+                        "and",
+                        "my",
+                        "friend",
+                        "is",
+                        "a",
+                        "builder."
+                    ],
+                    "id": "item_beaf983c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) orvos és te tanár vagy.",
+                    "sentence": "She is a doctor and you are a ____.",
+                    "answer": "teacher",
+                    "options": [
+                        "teacher",
+                        "policeman",
+                        "builder",
+                        "fireman"
+                    ],
+                    "id": "item_05130b14"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A rendőr fáradt és a tűzoltó boldog.",
+                    "correctAnswer": "The policeman is tired and the fireman is happy.",
+                    "scrambledWords": [
+                        "The",
+                        "policeman",
+                        "is",
+                        "tired",
+                        "and",
+                        "the",
+                        "fireman",
+                        "is",
+                        "happy."
+                    ],
+                    "id": "item_938da762"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te orvos vagy?",
+                    "sentence": "____ you a doctor?",
+                    "answer": "Are",
+                    "options": [
+                        "Are",
+                        "Is",
+                        "Am",
+                        "Do"
+                    ],
+                    "id": "item_b88503ba"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lánytestvéred tanár? Igen, ő tanár.",
+                    "correctAnswer": "Is your sister a teacher? Yes, she is a teacher.",
+                    "scrambledWords": [
+                        "Is",
+                        "your",
+                        "sister",
+                        "a",
+                        "teacher?",
+                        "Yes,",
+                        "she",
+                        "is",
+                        "a",
+                        "teacher."
+                    ],
+                    "id": "item_46f2bca3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, a nevem... és orvos vagyok.",
+                    "correctAnswer": "Hello, my name is... and I am a doctor.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "my",
+                        "name",
+                        "is...",
+                        "and",
+                        "I",
+                        "am",
+                        "a",
+                        "doctor."
+                    ],
+                    "id": "item_959f2afd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám bányász és a fivérem szerelő.",
+                    "correctAnswer": "My father is a miner and my brother is a mechanic.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "is",
+                        "a",
+                        "miner",
+                        "and",
+                        "my",
+                        "brother",
+                        "is",
+                        "a",
+                        "mechanic."
+                    ],
+                    "id": "item_718df790"
+                }
+            ]
+        }
+    ]
+}

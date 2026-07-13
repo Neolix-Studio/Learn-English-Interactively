@@ -1,0 +1,508 @@
+{
+    "title": "Szabályszegők",
+    "type": "multi_level_node",
+    "targetWords": [
+        "went",
+        "ate",
+        "drank",
+        "slept",
+        "read"
+    ],
+    "dictionary": {
+        "went": "ment (a 'go' múlt ideje)",
+        "ate": "evett (az 'eat' múlt ideje)",
+        "drank": "ivott (a 'drink' múlt ideje)",
+        "slept": "aludt (a 'sleep' múlt ideje)",
+        "read": "olvasott (múlt idő, ejtsd: red)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "went",
+                "ate"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ment",
+                    "correctAnswer": "went",
+                    "options": [
+                        { "id": "went", "text": "went", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 50 L70 50 M60 40 L70 50 L60 60' stroke='#3498db' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><path d='M80 30 L80 70' stroke='#e74c3c' stroke-width='8' stroke-linecap='round'/><text x='45' y='30' font-size='16' font-family='Arial' font-weight='bold' fill='#2980b9' text-anchor='middle'>PAST</text></svg>" },
+                        { "id": "ate", "text": "ate", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 50 Q50 20 70 50 L70 80 Q50 100 30 80 Z' fill='#e74c3c'/><path d='M50 20 Q70 50 60 70' fill='#fff'/><text x='50' y='50' font-size='16' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>PAST</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "evett",
+                    "correctAnswer": "ate",
+                    "options": [
+                        { "id": "went", "text": "went", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 50 L70 50 M60 40 L70 50 L60 60' stroke='#3498db' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><path d='M80 30 L80 70' stroke='#e74c3c' stroke-width='8' stroke-linecap='round'/><text x='45' y='30' font-size='16' font-family='Arial' font-weight='bold' fill='#2980b9' text-anchor='middle'>PAST</text></svg>" },
+                        { "id": "ate", "text": "ate", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 50 Q50 20 70 50 L70 80 Q50 100 30 80 Z' fill='#e74c3c'/><path d='M50 20 Q70 50 60 70' fill='#fff'/><text x='50' y='50' font-size='16' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>PAST</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én odamentem tegnap. (Én ott mentem tegnap.)",
+                    "correctAnswer": "I went there yesterday.",
+                    "scrambledWords": ["I", "went", "there", "yesterday.", "goed"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (férfi) pizzát evett.",
+                    "correctAnswer": "He ate pizza.",
+                    "scrambledWords": ["He", "ate", "pizza.", "eated", "eats"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi odamentünk.",
+                    "sentence": "We ____ there.",
+                    "answer": "went",
+                    "options": ["went", "goed", "go", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) húst evett tegnap.",
+                    "correctAnswer": "She ate meat yesterday.",
+                    "scrambledWords": ["She", "ate", "meat", "yesterday.", "eats"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te csokoládét ettél.",
+                    "sentence": "You ____ chocolate.",
+                    "answer": "ate",
+                    "options": ["ate", "eat", "eated", "eating"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők odamentek.",
+                    "correctAnswer": "They went there.",
+                    "scrambledWords": ["They", "went", "there.", "go"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én odamentem és én ettem.",
+                    "correctAnswer": "I went there and I ate.",
+                    "scrambledWords": ["I", "went", "there", "and", "I", "ate.", "goed"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya húst evett.",
+                    "sentence": "The dog ____ meat.",
+                    "answer": "ate",
+                    "options": ["ate", "eats", "eat", "eated"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám odament tegnap.",
+                    "correctAnswer": "My mother went there yesterday.",
+                    "scrambledWords": ["My", "mother", "went", "there", "yesterday.", "goes"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem levest evett.",
+                    "correctAnswer": "My brother ate soup.",
+                    "scrambledWords": ["My", "brother", "ate", "soup.", "eat"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te odamentél tegnap.",
+                    "sentence": "You ____ there yesterday.",
+                    "answer": "went",
+                    "options": ["went", "go", "goes", "goed"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én pizzát ettem és ő (férfi) odament.",
+                    "correctAnswer": "I ate pizza and he went there.",
+                    "scrambledWords": ["I", "ate", "pizza", "and", "he", "went", "there.", "eats"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi odamentünk és játszottunk.",
+                    "correctAnswer": "We went there and we played.",
+                    "scrambledWords": ["We", "went", "there", "and", "we", "played.", "go"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "drank",
+                "slept"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ivott",
+                    "correctAnswer": "drank",
+                    "options": [
+                        { "id": "drank", "text": "drank", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='35' y='20' width='30' height='60' rx='2' stroke='#bdc3c7' stroke-width='4' fill='none'/><rect x='37' y='60' width='26' height='18' fill='#3498db'/><text x='50' y='50' font-size='14' font-family='Arial' font-weight='bold' fill='#2980b9' text-anchor='middle'>PAST</text></svg>" },
+                        { "id": "slept", "text": "slept", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='70' y='30' font-size='20' font-family='Arial' fill='#34495e'>Z</text><text x='50' y='50' font-size='16' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>PAST</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "aludt",
+                    "correctAnswer": "slept",
+                    "options": [
+                        { "id": "drank", "text": "drank", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='35' y='20' width='30' height='60' rx='2' stroke='#bdc3c7' stroke-width='4' fill='none'/><rect x='37' y='60' width='26' height='18' fill='#3498db'/><text x='50' y='50' font-size='14' font-family='Arial' font-weight='bold' fill='#2980b9' text-anchor='middle'>PAST</text></svg>" },
+                        { "id": "slept", "text": "slept", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='70' y='30' font-size='20' font-family='Arial' fill='#34495e'>Z</text><text x='50' y='50' font-size='16' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>PAST</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én vizet ittam tegnap.",
+                    "correctAnswer": "I drank water yesterday.",
+                    "scrambledWords": ["I", "drank", "water", "yesterday.", "drinked"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Te az ágyban aludtál.",
+                    "correctAnswer": "You slept in the bed.",
+                    "scrambledWords": ["You", "slept", "in", "the", "bed.", "sleeped"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) kávét ivott.",
+                    "sentence": "He ____ coffee.",
+                    "answer": "drank",
+                    "options": ["drank", "drinked", "drinks", "drinking"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) a szobában aludt.",
+                    "correctAnswer": "She slept in the room.",
+                    "scrambledWords": ["She", "slept", "in", "the", "room.", "sleeps"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi vizet ittunk.",
+                    "sentence": "We ____ water.",
+                    "answer": "drank",
+                    "options": ["drank", "drink", "drinks", "drinked"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők tegnap aludtak.",
+                    "correctAnswer": "They slept yesterday.",
+                    "scrambledWords": ["They", "slept", "yesterday.", "sleeped", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya az asztal alatt aludt.",
+                    "correctAnswer": "The dog slept under the table.",
+                    "scrambledWords": ["The", "dog", "slept", "under", "the", "table.", "sleeps"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én ittam és én aludtam.",
+                    "sentence": "I drank and I ____.",
+                    "answer": "slept",
+                    "options": ["slept", "sleeped", "sleep", "sleeps"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom kávét ivott.",
+                    "correctAnswer": "My friend drank coffee.",
+                    "scrambledWords": ["My", "friend", "drank", "coffee.", "drinks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én odamentem és én aludtam.",
+                    "correctAnswer": "I went there and I slept.",
+                    "scrambledWords": ["I", "went", "there", "and", "I", "slept.", "sleeps"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) pizzát evett és vizet ivott.",
+                    "sentence": "She ate pizza and ____ water.",
+                    "answer": "drank",
+                    "options": ["drank", "drinked", "drinks", "drink"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi a házban aludtunk.",
+                    "correctAnswer": "We slept in the house.",
+                    "scrambledWords": ["We", "slept", "in", "the", "house.", "sleeped"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te kávét ittál tegnap.",
+                    "correctAnswer": "You drank coffee yesterday.",
+                    "scrambledWords": ["You", "drank", "coffee", "yesterday.", "drink"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "read"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "olvasott (ejtsd: red)",
+                    "correctAnswer": "read",
+                    "options": [
+                        { "id": "read", "text": "read", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 70 L50 80 L80 70 L80 30 L50 40 L20 30 Z' fill='#3498db'/><line x1='50' y1='40' x2='50' y2='80' stroke='#2980b9' stroke-width='4'/><text x='50' y='60' font-size='16' font-family='Arial' font-weight='bold' fill='#fff' text-anchor='middle'>PAST</text></svg>" },
+                        { "id": "slept", "text": "slept", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='70' y='30' font-size='20' font-family='Arial' fill='#34495e'>Z</text><text x='50' y='50' font-size='16' font-family='Arial' font-weight='bold' fill='#e74c3c' text-anchor='middle'>PAST</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én olvastam egy könyvet tegnap.",
+                    "correctAnswer": "I read a book yesterday.",
+                    "scrambledWords": ["I", "read", "a", "book", "yesterday.", "readed"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) a szobában olvasott.",
+                    "correctAnswer": "He read in the room.",
+                    "scrambledWords": ["He", "read", "in", "the", "room.", "reads"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) olvasott egy könyvet tegnap.",
+                    "sentence": "She ____ a book yesterday.",
+                    "answer": "read",
+                    "options": ["read", "readed", "reads", "is reading"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi vizet ittunk és olvastunk.",
+                    "correctAnswer": "We drank water and we read.",
+                    "scrambledWords": ["We", "drank", "water", "and", "we", "read.", "readed"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők aludtak és olvastak.",
+                    "sentence": "They slept and they ____.",
+                    "answer": "read",
+                    "options": ["read", "readed", "reading", "reads"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én ettem, ittam, és aludtam.",
+                    "correctAnswer": "I ate, drank, and slept.",
+                    "scrambledWords": ["I", "ate,", "drank,", "and", "slept.", "sleeped"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te odamentél és olvastál.",
+                    "correctAnswer": "You went there and you read.",
+                    "scrambledWords": ["You", "went", "there", "and", "you", "read.", "goed"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám olvasott egy könyvet.",
+                    "sentence": "My father ____ a book.",
+                    "answer": "read",
+                    "options": ["read", "readed", "reads", "reading"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tanár odament.",
+                    "correctAnswer": "The teacher went there.",
+                    "scrambledWords": ["The", "teacher", "went", "there.", "goed"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én játszottam és olvastam.",
+                    "correctAnswer": "I played and I read.",
+                    "scrambledWords": ["I", "played", "and", "I", "read.", "readed"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya aludt.",
+                    "sentence": "The dog ____.",
+                    "answer": "slept",
+                    "options": ["slept", "sleeped", "sleeps", "is sleeping"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi kávét ittunk és olvastunk.",
+                    "correctAnswer": "We drank coffee and read.",
+                    "scrambledWords": ["We", "drank", "coffee", "and", "read.", "drinks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) húst evett és vizet ivott.",
+                    "correctAnswer": "He ate meat and drank water.",
+                    "scrambledWords": ["He", "ate", "meat", "and", "drank", "water.", "eated", "drinked"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én a konyhában olvastam tegnap.",
+                    "correctAnswer": "I read in the kitchen yesterday.",
+                    "scrambledWords": ["I", "read", "in", "the", "kitchen", "yesterday.", "reads"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én minden nap olvasok, de tegnap aludtam.",
+                    "correctAnswer": "I read every day, but yesterday I slept.",
+                    "scrambledWords": ["I", "read", "every", "day,", "but", "yesterday", "I", "slept.", "sleeped"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) kávét iszik ma, de tegnap vizet ivott.",
+                    "sentence": "He is drinking coffee today, but yesterday he ____ water.",
+                    "answer": "drank",
+                    "options": ["drank", "drinks", "drink", "drinked"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te tegnap odamentél és pizzát ettél.",
+                    "correctAnswer": "You went there yesterday and ate pizza.",
+                    "scrambledWords": ["You", "went", "there", "yesterday", "and", "ate", "pizza.", "goed", "eated"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi ma dolgozunk, de tegnap olvastunk.",
+                    "correctAnswer": "We are working today, but yesterday we read.",
+                    "scrambledWords": ["We", "are", "working", "today,", "but", "yesterday", "we", "read.", "readed"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) tegnap húst evett.",
+                    "sentence": "She ____ meat yesterday.",
+                    "answer": "ate",
+                    "options": ["ate", "eated", "eats", "eat"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya most alszik, de tegnap húst evett.",
+                    "correctAnswer": "The dog is sleeping now, but yesterday it ate meat.",
+                    "scrambledWords": ["The", "dog", "is", "sleeping", "now,", "but", "yesterday", "it", "ate", "meat."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők odamentek és kávét ittak.",
+                    "correctAnswer": "They went there and drank coffee.",
+                    "scrambledWords": ["They", "went", "there", "and", "drank", "coffee.", "go", "drinked"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám tegnap olvasott egy könyvet.",
+                    "sentence": "My father ____ a book yesterday.",
+                    "answer": "read",
+                    "options": ["read", "reads", "readed", "reading"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én a kutyával aludtam tegnap.",
+                    "correctAnswer": "I slept with the dog yesterday.",
+                    "scrambledWords": ["I", "slept", "with", "the", "dog", "yesterday.", "sleeped"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te tegnap itt voltál és olvastál!",
+                    "correctAnswer": "You were here yesterday and you read!",
+                    "scrambledWords": ["You", "were", "here", "yesterday", "and", "you", "read!", "readed"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem tegnap a szobában aludt.",
+                    "sentence": "My brother ____ in the room yesterday.",
+                    "answer": "slept",
+                    "options": ["slept", "sleeped", "sleeps", "is sleeping"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) odament tegnap és levest evett.",
+                    "correctAnswer": "She went there yesterday and ate soup.",
+                    "scrambledWords": ["She", "went", "there", "yesterday", "and", "ate", "soup.", "goed", "eated"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi ott voltunk és vizet ittunk.",
+                    "correctAnswer": "We were there and we drank water.",
+                    "scrambledWords": ["We", "were", "there", "and", "we", "drank", "water.", "drinked"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők tegnap játszottak és aludtak.",
+                    "sentence": "They played and ____ yesterday.",
+                    "answer": "slept",
+                    "options": ["slept", "sleeped", "sleep", "sleeps"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én minden nap kávét iszom, de tegnap vizet ittam.",
+                    "correctAnswer": "I drink coffee every day, but yesterday I drank water.",
+                    "scrambledWords": ["I", "drink", "coffee", "every", "day,", "but", "yesterday", "I", "drank", "water."]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,949 @@
+{
+    "title": "Otthon",
+    "type": "multi_level_node",
+    "targetWords": [
+        "table",
+        "chair",
+        "room",
+        "bed",
+        "kitchen",
+        "bedroom"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "table",
+                "chair",
+                "room"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "asztal",
+                    "correctAnswer": "table",
+                    "options": [
+                        {
+                            "id": "table",
+                            "text": "table",
+                            "correct": true
+                        },
+                        {
+                            "id": "chair",
+                            "text": "chair",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_3b57a470"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "szék",
+                    "correctAnswer": "chair",
+                    "options": [
+                        {
+                            "id": "table",
+                            "text": "table",
+                            "correct": false
+                        },
+                        {
+                            "id": "chair",
+                            "text": "chair",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_7cf69295"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "szoba",
+                    "correctAnswer": "room",
+                    "options": [
+                        {
+                            "id": "room",
+                            "text": "room",
+                            "correct": true
+                        },
+                        {
+                            "id": "table",
+                            "text": "table",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_6f4719d3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy asztal.",
+                    "correctAnswer": "This is a table.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "table.",
+                        "chair."
+                    ],
+                    "id": "item_9b1e56d1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy szék.",
+                    "correctAnswer": "That is a chair.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "a",
+                        "chair.",
+                        "room."
+                    ],
+                    "id": "item_1cc38431"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy szoba.",
+                    "sentence": "This is a ____.",
+                    "answer": "room",
+                    "options": [
+                        "room",
+                        "table",
+                        "my",
+                        "is"
+                    ],
+                    "id": "item_1623ac07"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy asztalom.",
+                    "correctAnswer": "I have a table.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "table.",
+                        "chair."
+                    ],
+                    "id": "item_66330526"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy széked.",
+                    "correctAnswer": "You have a chair.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "chair.",
+                        "room."
+                    ],
+                    "id": "item_56bf81a8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez az én szobám.",
+                    "sentence": "This is ____ room.",
+                    "answer": "my",
+                    "options": [
+                        "my",
+                        "I",
+                        "a",
+                        "your"
+                    ],
+                    "id": "item_7fdfb5bf"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy szék és az egy asztal.",
+                    "correctAnswer": "This is a chair and that is a table.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "chair",
+                        "and",
+                        "that",
+                        "is",
+                        "a",
+                        "table."
+                    ],
+                    "id": "item_fc737b83"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az a te széked?",
+                    "sentence": "Is that ____ chair?",
+                    "answer": "your",
+                    "options": [
+                        "your",
+                        "my",
+                        "a",
+                        "you"
+                    ],
+                    "id": "item_c0665afe"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ez az én szobám.",
+                    "correctAnswer": "Yes, this is my room.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "this",
+                        "is",
+                        "my",
+                        "room.",
+                        "table."
+                    ],
+                    "id": "item_61190c13"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én asztalom és ez a te széked.",
+                    "correctAnswer": "This is my table and this is your chair.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "table",
+                        "and",
+                        "this",
+                        "is",
+                        "your",
+                        "chair."
+                    ],
+                    "id": "item_3137b7ba"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Neked van egy asztalod.",
+                    "sentence": "You ____ a table.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "is",
+                        "are",
+                        "a"
+                    ],
+                    "id": "item_434dd1aa"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez? Ez egy szoba.",
+                    "correctAnswer": "What is this? This is a room.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "This",
+                        "is",
+                        "a",
+                        "room."
+                    ],
+                    "id": "item_fcf6a861"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "bed",
+                "kitchen",
+                "bedroom"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ágy",
+                    "correctAnswer": "bed",
+                    "options": [
+                        {
+                            "id": "bed",
+                            "text": "bed",
+                            "correct": true
+                        },
+                        {
+                            "id": "table",
+                            "text": "table",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_65e0e44a"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "konyha",
+                    "correctAnswer": "kitchen",
+                    "options": [
+                        {
+                            "id": "room",
+                            "text": "room",
+                            "correct": false
+                        },
+                        {
+                            "id": "kitchen",
+                            "text": "kitchen",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_164f404a"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "hálószoba",
+                    "correctAnswer": "bedroom",
+                    "options": [
+                        {
+                            "id": "bedroom",
+                            "text": "bedroom",
+                            "correct": true
+                        },
+                        {
+                            "id": "kitchen",
+                            "text": "kitchen",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_10f57557"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez egy ágy.",
+                    "correctAnswer": "This is a bed.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "a",
+                        "bed.",
+                        "kitchen."
+                    ],
+                    "id": "item_c2ed5768"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy konyha.",
+                    "correctAnswer": "That is a kitchen.",
+                    "scrambledWords": [
+                        "That",
+                        "is",
+                        "a",
+                        "kitchen.",
+                        "bedroom."
+                    ],
+                    "id": "item_75de97dc"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez az én hálószobám.",
+                    "sentence": "This is my ____.",
+                    "answer": "bedroom",
+                    "options": [
+                        "bedroom",
+                        "bed",
+                        "kitchen",
+                        "are"
+                    ],
+                    "id": "item_2809389c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy ágyam.",
+                    "correctAnswer": "I have a bed.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "bed.",
+                        "kitchen."
+                    ],
+                    "id": "item_f5f2b7e3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy konyha és az egy hálószoba.",
+                    "sentence": "This is a kitchen and that is a ____.",
+                    "answer": "bedroom",
+                    "options": [
+                        "bedroom",
+                        "room",
+                        "bed",
+                        "table"
+                    ],
+                    "id": "item_4f384b29"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A hálószoba jó.",
+                    "correctAnswer": "The bedroom is good.",
+                    "scrambledWords": [
+                        "The",
+                        "bedroom",
+                        "is",
+                        "good.",
+                        "bad.",
+                        "a"
+                    ],
+                    "id": "item_217c8761"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez a te ágyad?",
+                    "correctAnswer": "Is this your bed?",
+                    "scrambledWords": [
+                        "Is",
+                        "this",
+                        "your",
+                        "bed?",
+                        "my"
+                    ],
+                    "id": "item_0caeb884"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Igen, ez az én ágyam.",
+                    "sentence": "Yes, this is ____ bed.",
+                    "answer": "my",
+                    "options": [
+                        "my",
+                        "your",
+                        "a",
+                        "I"
+                    ],
+                    "id": "item_7c3eea65"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A konyha és a hálószoba.",
+                    "correctAnswer": "The kitchen and the bedroom.",
+                    "scrambledWords": [
+                        "The",
+                        "kitchen",
+                        "and",
+                        "the",
+                        "bedroom.",
+                        "is"
+                    ],
+                    "id": "item_080e780a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én házam és ez a konyha.",
+                    "correctAnswer": "This is my house and this is the kitchen.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "house",
+                        "and",
+                        "this",
+                        "is",
+                        "the",
+                        "kitchen."
+                    ],
+                    "id": "item_80065b0c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy hálószobám.",
+                    "sentence": "I have a ____.",
+                    "answer": "bedroom",
+                    "options": [
+                        "bedroom",
+                        "bed",
+                        "good",
+                        "my"
+                    ],
+                    "id": "item_287c4bbb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az én ágyam jó.",
+                    "correctAnswer": "My bed is good.",
+                    "scrambledWords": [
+                        "My",
+                        "bed",
+                        "is",
+                        "good.",
+                        "bedroom",
+                        "have"
+                    ],
+                    "id": "item_721be467"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Ez a hálószobám és ez az ágyam.",
+                    "correctAnswer": "This is my bedroom and this is my bed.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "bedroom",
+                        "and",
+                        "this",
+                        "is",
+                        "my",
+                        "bed."
+                    ],
+                    "id": "item_a08b2741"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy jó konyha.",
+                    "sentence": "This is a ____ kitchen.",
+                    "answer": "good",
+                    "options": [
+                        "good",
+                        "bad",
+                        "my",
+                        "your"
+                    ],
+                    "id": "item_e193e01a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy asztalom és egy székem.",
+                    "correctAnswer": "I have a table and a chair.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "table",
+                        "and",
+                        "a",
+                        "chair.",
+                        "bed."
+                    ],
+                    "id": "item_72f32b16"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A te ágyad egy jó ágy.",
+                    "correctAnswer": "Your bed is a good bed.",
+                    "scrambledWords": [
+                        "Your",
+                        "bed",
+                        "is",
+                        "a",
+                        "good",
+                        "bed.",
+                        "my",
+                        "table."
+                    ],
+                    "id": "item_94eb2633"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi az? Az egy szék.",
+                    "sentence": "What is that? That is a ____.",
+                    "answer": "chair",
+                    "options": [
+                        "chair",
+                        "table",
+                        "my",
+                        "is"
+                    ],
+                    "id": "item_b0b4a1bd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én szobám, nekem van egy ágyam.",
+                    "correctAnswer": "This is my room, I have a bed.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "room,",
+                        "I",
+                        "have",
+                        "a",
+                        "bed.",
+                        "chair."
+                    ],
+                    "id": "item_cc05d4ec"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A konyhám jó.",
+                    "sentence": "____ kitchen is good.",
+                    "answer": "My",
+                    "options": [
+                        "My",
+                        "I",
+                        "Your",
+                        "A"
+                    ],
+                    "id": "item_c35381ea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez a te asztalod és az az én székem.",
+                    "correctAnswer": "This is your table and that is my chair.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "your",
+                        "table",
+                        "and",
+                        "that",
+                        "is",
+                        "my",
+                        "chair."
+                    ],
+                    "id": "item_d9e68dd7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy hálószobád.",
+                    "correctAnswer": "You have a bedroom.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "bedroom.",
+                        "bed.",
+                        "I"
+                    ],
+                    "id": "item_6e38707f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy szék és az egy asztal.",
+                    "sentence": "This is a chair and ____ is a table.",
+                    "answer": "that",
+                    "options": [
+                        "that",
+                        "this",
+                        "it",
+                        "my"
+                    ],
+                    "id": "item_60e47408"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ez a konyha és az a szoba.",
+                    "correctAnswer": "Yes, this is the kitchen and that is the room.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "this",
+                        "is",
+                        "the",
+                        "kitchen",
+                        "and",
+                        "that",
+                        "is",
+                        "the",
+                        "room."
+                    ],
+                    "id": "item_025fc193"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy székem. Ez az én székem.",
+                    "correctAnswer": "I have a chair. This is my chair.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "chair.",
+                        "This",
+                        "is",
+                        "my",
+                        "chair.",
+                        "table."
+                    ],
+                    "id": "item_daff8fc3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez a te szobád?",
+                    "sentence": "Is this ____ room?",
+                    "answer": "your",
+                    "options": [
+                        "your",
+                        "you",
+                        "my",
+                        "a"
+                    ],
+                    "id": "item_90c54a7e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az egy ágy? Nem, az egy asztal.",
+                    "correctAnswer": "Is that a bed? No, that is a table.",
+                    "scrambledWords": [
+                        "Is",
+                        "that",
+                        "a",
+                        "bed?",
+                        "No,",
+                        "that",
+                        "is",
+                        "a",
+                        "table."
+                    ],
+                    "id": "item_88c76b04"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A házam, a konyhám és a hálószobám.",
+                    "correctAnswer": "My house, my kitchen and my bedroom.",
+                    "scrambledWords": [
+                        "My",
+                        "house,",
+                        "my",
+                        "kitchen",
+                        "and",
+                        "my",
+                        "bedroom.",
+                        "a"
+                    ],
+                    "id": "item_b2c32d95"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Mi ez? Ez egy konyha.",
+                    "correctAnswer": "What is this? This is a kitchen.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "this?",
+                        "This",
+                        "is",
+                        "a",
+                        "kitchen.",
+                        "bedroom."
+                    ],
+                    "id": "item_1057fc63"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nekem van egy asztalom.",
+                    "sentence": "I ____ a table.",
+                    "answer": "have",
+                    "options": [
+                        "have",
+                        "am",
+                        "is",
+                        "my"
+                    ],
+                    "id": "item_5ab8cb80"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én ágyam és az a te széked.",
+                    "correctAnswer": "This is my bed and that is your chair.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "bed",
+                        "and",
+                        "that",
+                        "is",
+                        "your",
+                        "chair.",
+                        "table"
+                    ],
+                    "id": "item_2878c929"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A hálószobám jó és a konyhám jó.",
+                    "correctAnswer": "My bedroom is good and my kitchen is good.",
+                    "scrambledWords": [
+                        "My",
+                        "bedroom",
+                        "is",
+                        "good",
+                        "and",
+                        "my",
+                        "kitchen",
+                        "is",
+                        "good."
+                    ],
+                    "id": "item_49365aea"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az a te asztalod?",
+                    "sentence": "Is that your ____?",
+                    "answer": "table",
+                    "options": [
+                        "table",
+                        "chair",
+                        "bed",
+                        "you"
+                    ],
+                    "id": "item_de18328a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, ez az én szobám és nekem van egy ágyam.",
+                    "correctAnswer": "Yes, this is my room and I have a bed.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "this",
+                        "is",
+                        "my",
+                        "room",
+                        "and",
+                        "I",
+                        "have",
+                        "a",
+                        "bed."
+                    ],
+                    "id": "item_2d123a8a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Neked van egy széked és egy asztalod.",
+                    "correctAnswer": "You have a chair and a table.",
+                    "scrambledWords": [
+                        "You",
+                        "have",
+                        "a",
+                        "chair",
+                        "and",
+                        "a",
+                        "table.",
+                        "bed."
+                    ],
+                    "id": "item_85a1be23"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ez egy ház, egy konyha és egy szoba.",
+                    "sentence": "This is a house, a kitchen and a ____.",
+                    "answer": "room",
+                    "options": [
+                        "room",
+                        "bedroom",
+                        "bed",
+                        "my"
+                    ],
+                    "id": "item_1d5cceea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az én asztalom és a te széked.",
+                    "correctAnswer": "My table and your chair.",
+                    "scrambledWords": [
+                        "My",
+                        "table",
+                        "and",
+                        "your",
+                        "chair.",
+                        "bed."
+                    ],
+                    "id": "item_ce397f56"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez az én házam, ez a konyha.",
+                    "correctAnswer": "This is my house, this is the kitchen.",
+                    "scrambledWords": [
+                        "This",
+                        "is",
+                        "my",
+                        "house,",
+                        "this",
+                        "is",
+                        "the",
+                        "kitchen.",
+                        "bedroom."
+                    ],
+                    "id": "item_276b7eea"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi az? Az egy szék.",
+                    "sentence": "____ is that? That is a chair.",
+                    "answer": "What",
+                    "options": [
+                        "What",
+                        "How",
+                        "This",
+                        "Is"
+                    ],
+                    "id": "item_82cfde4f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van pénzem, egy telefonom és egy ágyam.",
+                    "correctAnswer": "I have money, a phone and a bed.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "money,",
+                        "a",
+                        "phone",
+                        "and",
+                        "a",
+                        "bed."
+                    ],
+                    "id": "item_61ccc8b3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ez a te hálószobád? Igen, ez a hálószobám.",
+                    "correctAnswer": "Is this your bedroom? Yes, this is my bedroom.",
+                    "scrambledWords": [
+                        "Is",
+                        "this",
+                        "your",
+                        "bedroom?",
+                        "Yes,",
+                        "this",
+                        "is",
+                        "my",
+                        "bedroom."
+                    ],
+                    "id": "item_8b856a3b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az egy jó asztal.",
+                    "sentence": "That is a ____ table.",
+                    "answer": "good",
+                    "options": [
+                        "good",
+                        "my",
+                        "your",
+                        "bad"
+                    ],
+                    "id": "item_898fae46"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nekem van egy szobám. A szobám jó.",
+                    "correctAnswer": "I have a room. My room is good.",
+                    "scrambledWords": [
+                        "I",
+                        "have",
+                        "a",
+                        "room.",
+                        "My",
+                        "room",
+                        "is",
+                        "good.",
+                        "bedroom."
+                    ],
+                    "id": "item_d7248de1"
+                }
+            ]
+        }
+    ]
+}

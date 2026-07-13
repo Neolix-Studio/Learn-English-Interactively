@@ -1,0 +1,135 @@
+{
+    "title": "Egy katasztrofális utazás",
+    "type": "reading_node",
+    "story": {
+        "en": "Last weekend, my friend Sarah and I went to London. We were very excited because we had never been there before. Our flight was early in the morning, so we arrived at the airport at 5 AM. Unfortunately, Sarah forgot her passport at home! We had to take a taxi back to her house. Because of the heavy traffic, we missed our flight. We were waiting at the airport for five hours until the next plane arrived. When we finally got to our hotel in London, it was raining heavily, and we didn't have an umbrella. However, we ate some delicious fish and chips at a local pub, which made us feel much better.",
+        "hu": "Múlt hétvégén a barátnőm, Sarah és én Londonba utaztunk. Nagyon izgatottak voltunk, mert még sosem jártunk ott korábban. A járatunk kora reggel indult, így reggel 5-kor érkeztünk a repülőtérre. Sajnos Sarah otthon felejtette az útlevelét! Vissza kellett mennünk taxival a házához. A nagy forgalom miatt lekéstük a járatunkat. Öt órát várakoztunk a repülőtéren, amíg a következő gép megérkezett. Amikor végre megérkeztünk a londoni szállodánkba, szakadt az eső, és nem volt nálunk esernyő. Azonban ettünk egy kis finom fish and chips-et egy helyi kocsmában, amitől sokkal jobban éreztük magunkat."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "They traveled to Paris last weekend.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "The story says they went to London."
+        },
+        {
+            "type": "true_false",
+            "statement": "Sarah forgot her passport at the airport.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "Sarah forgot her passport at home."
+        },
+        {
+            "type": "true_false",
+            "statement": "They missed their first flight.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "Because of the heavy traffic, they missed their flight."
+        },
+        {
+            "type": "true_false",
+            "statement": "They waited at the airport for five hours.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "The text states: 'We were waiting at the airport for five hours.'"
+        },
+        {
+            "type": "true_false",
+            "statement": "They had an umbrella when they arrived at the hotel.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "It was raining heavily, and they didn't have an umbrella."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Why were they very excited?",
+            "correctAnswer": "They had never been to London before.",
+            "options": [
+                "They loved waking up early.",
+                "They had never been to London before.",
+                "They wanted to eat fish and chips.",
+                "They bought new passports."
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What time did they arrive at the airport in the morning?",
+            "correctAnswer": "At 5 AM",
+            "options": [
+                "At 6 AM",
+                "At 5 AM",
+                "At 8 AM",
+                "At 10 AM"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "How did they go back to Sarah's house?",
+            "correctAnswer": "By taxi",
+            "options": [
+                "By bus",
+                "By train",
+                "By taxi",
+                "By car"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Why did they miss their flight?",
+            "correctAnswer": "Because of the heavy traffic.",
+            "options": [
+                "Because they were eating.",
+                "Because of the heavy traffic.",
+                "Because it was raining.",
+                "Because the airport was closed."
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where did they eat fish and chips?",
+            "correctAnswer": "At a local pub",
+            "options": [
+                "At the airport",
+                "At the hotel",
+                "At Sarah's house",
+                "At a local pub"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mit felejtett otthon Sarah? (What did Sarah forget at home?)",
+            "sentence": "She forgot her ____.",
+            "correctAnswer": "passport",
+            "hint": "útlevél"
+        },
+        {
+            "type": "type_in",
+            "question": "Mivel mentek vissza a házhoz? (How did they go back to the house?)",
+            "sentence": "They had to take a ____.",
+            "correctAnswer": "taxi",
+            "hint": "taxi"
+        },
+        {
+            "type": "type_in",
+            "question": "Hol várakoztak öt órát? (Where did they wait for five hours?)",
+            "sentence": "They were waiting at the ____.",
+            "correctAnswer": "airport",
+            "hint": "repülőtér"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen volt az időjárás Londonban? (What was the weather like in London?)",
+            "sentence": "It was ____ heavily.",
+            "correctAnswer": "raining",
+            "hint": "esett (az eső)"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen volt a fish and chips? (How was the fish and chips?)",
+            "sentence": "They ate some ____ fish and chips.",
+            "correctAnswer": "delicious",
+            "hint": "finom"
+        }
+    ]
+}

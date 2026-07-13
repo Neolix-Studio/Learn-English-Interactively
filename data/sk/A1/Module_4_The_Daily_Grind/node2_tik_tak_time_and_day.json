@@ -1,0 +1,898 @@
+{
+    "title": "Tik-Tak",
+    "type": "multi_level_node",
+    "targetWords": [
+        "morning",
+        "night",
+        "monday",
+        "friday",
+        "weekend",
+        "time",
+        "at",
+        "on"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "morning",
+                "night",
+                "at"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "reggel",
+                    "correctAnswer": "morning",
+                    "options": [
+                        {
+                            "id": "morning",
+                            "text": "morning",
+                            "correct": true
+                        },
+                        {
+                            "id": "night",
+                            "text": "night",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_3edd2690"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "éjszaka",
+                    "correctAnswer": "night",
+                    "options": [
+                        {
+                            "id": "morning",
+                            "text": "morning",
+                            "correct": false
+                        },
+                        {
+                            "id": "night",
+                            "text": "night",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_a329ad4e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Reggel.",
+                    "correctAnswer": "In the morning.",
+                    "scrambledWords": [
+                        "In",
+                        "the",
+                        "morning.",
+                        "At",
+                        "night."
+                    ],
+                    "id": "item_acacd463"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Éjszaka.",
+                    "correctAnswer": "At night.",
+                    "scrambledWords": [
+                        "At",
+                        "night.",
+                        "In",
+                        "morning."
+                    ],
+                    "id": "item_5b9cce5d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én kávét iszom reggel.",
+                    "sentence": "I drink coffee in the ____.",
+                    "answer": "morning",
+                    "options": [
+                        "morning",
+                        "night",
+                        "at",
+                        "on"
+                    ],
+                    "id": "item_41e363cd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én reggel dolgozom.",
+                    "correctAnswer": "I work in the morning.",
+                    "scrambledWords": [
+                        "I",
+                        "work",
+                        "in",
+                        "the",
+                        "morning.",
+                        "at"
+                    ],
+                    "id": "item_0de5e045"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te éjszaka alszol.",
+                    "correctAnswer": "You sleep at night.",
+                    "scrambledWords": [
+                        "You",
+                        "sleep",
+                        "at",
+                        "night.",
+                        "in"
+                    ],
+                    "id": "item_2caf731d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi éjszaka alszunk.",
+                    "sentence": "We sleep ____ night.",
+                    "answer": "at",
+                    "options": [
+                        "at",
+                        "in",
+                        "on",
+                        "the"
+                    ],
+                    "id": "item_ec920de5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők éjszaka olvasnak.",
+                    "correctAnswer": "They read at night.",
+                    "scrambledWords": [
+                        "They",
+                        "read",
+                        "at",
+                        "night.",
+                        "morning."
+                    ],
+                    "id": "item_0db34844"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én reggel eszem és éjszaka alszom.",
+                    "correctAnswer": "I eat in the morning and I sleep at night.",
+                    "scrambledWords": [
+                        "I",
+                        "eat",
+                        "in",
+                        "the",
+                        "morning",
+                        "and",
+                        "I",
+                        "sleep",
+                        "at",
+                        "night."
+                    ],
+                    "id": "item_dd592e4e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Reggel.",
+                    "sentence": "____ the morning.",
+                    "answer": "In",
+                    "options": [
+                        "In",
+                        "At",
+                        "On",
+                        "To"
+                    ],
+                    "id": "item_df2eea60"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi reggel dolgozunk.",
+                    "correctAnswer": "We work in the morning.",
+                    "scrambledWords": [
+                        "We",
+                        "work",
+                        "in",
+                        "the",
+                        "morning.",
+                        "night."
+                    ],
+                    "id": "item_e5186ee3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te éjszaka játszol.",
+                    "correctAnswer": "You play at night.",
+                    "scrambledWords": [
+                        "You",
+                        "play",
+                        "at",
+                        "night.",
+                        "in"
+                    ],
+                    "id": "item_b486f13e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én éjszaka olvasok.",
+                    "sentence": "I read ____ night.",
+                    "answer": "at",
+                    "options": [
+                        "at",
+                        "in",
+                        "on",
+                        "morning"
+                    ],
+                    "id": "item_9322f969"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Reggel vizet iszom.",
+                    "correctAnswer": "In the morning, I drink water.",
+                    "scrambledWords": [
+                        "In",
+                        "the",
+                        "morning,",
+                        "I",
+                        "drink",
+                        "water.",
+                        "at"
+                    ],
+                    "id": "item_71901bec"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "monday",
+                "friday",
+                "on"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "hétfő",
+                    "correctAnswer": "Monday",
+                    "options": [
+                        {
+                            "id": "Monday",
+                            "text": "Monday",
+                            "correct": true
+                        },
+                        {
+                            "id": "Friday",
+                            "text": "Friday",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_bd4dfcee"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "péntek",
+                    "correctAnswer": "Friday",
+                    "options": [
+                        {
+                            "id": "Monday",
+                            "text": "Monday",
+                            "correct": false
+                        },
+                        {
+                            "id": "Friday",
+                            "text": "Friday",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_574c321c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hétfőn.",
+                    "correctAnswer": "On Monday.",
+                    "scrambledWords": [
+                        "On",
+                        "Monday.",
+                        "In",
+                        "At"
+                    ],
+                    "id": "item_993ac4bc"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Pénteken.",
+                    "correctAnswer": "On Friday.",
+                    "scrambledWords": [
+                        "On",
+                        "Friday.",
+                        "In",
+                        "At"
+                    ],
+                    "id": "item_af3a1c39"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én hétfőn dolgozom.",
+                    "sentence": "I work ____ Monday.",
+                    "answer": "on",
+                    "options": [
+                        "on",
+                        "in",
+                        "at",
+                        "the"
+                    ],
+                    "id": "item_92fdf37c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én hétfőn dolgozom.",
+                    "correctAnswer": "I work on Monday.",
+                    "scrambledWords": [
+                        "I",
+                        "work",
+                        "on",
+                        "Monday.",
+                        "in"
+                    ],
+                    "id": "item_d5f2ee43"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők pénteken játszanak.",
+                    "correctAnswer": "They play on Friday.",
+                    "scrambledWords": [
+                        "They",
+                        "play",
+                        "on",
+                        "Friday.",
+                        "at"
+                    ],
+                    "id": "item_50bacbf0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi pénteken alszunk.",
+                    "sentence": "We sleep on ____.",
+                    "answer": "Friday",
+                    "options": [
+                        "Friday",
+                        "morning",
+                        "night",
+                        "at"
+                    ],
+                    "id": "item_55b9e94d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én hétfőn olvasok.",
+                    "correctAnswer": "I read on Monday.",
+                    "scrambledWords": [
+                        "I",
+                        "read",
+                        "on",
+                        "Monday.",
+                        "Friday."
+                    ],
+                    "id": "item_67a440d8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te pénteken eszel.",
+                    "correctAnswer": "You eat on Friday.",
+                    "scrambledWords": [
+                        "You",
+                        "eat",
+                        "on",
+                        "Friday.",
+                        "in"
+                    ],
+                    "id": "item_e78cce2d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Pénteken.",
+                    "sentence": "____ Friday.",
+                    "answer": "On",
+                    "options": [
+                        "On",
+                        "In",
+                        "At",
+                        "To"
+                    ],
+                    "id": "item_9e4d2ae5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi hétfőn kávét iszunk.",
+                    "correctAnswer": "We drink coffee on Monday.",
+                    "scrambledWords": [
+                        "We",
+                        "drink",
+                        "coffee",
+                        "on",
+                        "Monday.",
+                        "the"
+                    ],
+                    "id": "item_b5ef585a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hétfőn dolgozom.",
+                    "correctAnswer": "On Monday, I work.",
+                    "scrambledWords": [
+                        "On",
+                        "Monday,",
+                        "I",
+                        "work.",
+                        "in"
+                    ],
+                    "id": "item_89619f43"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők hétfőn dolgoznak.",
+                    "sentence": "They work ____ Monday.",
+                    "answer": "on",
+                    "options": [
+                        "on",
+                        "in",
+                        "at",
+                        "where"
+                    ],
+                    "id": "item_e7704560"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én pénteken alszom.",
+                    "correctAnswer": "I sleep on Friday.",
+                    "scrambledWords": [
+                        "I",
+                        "sleep",
+                        "on",
+                        "Friday.",
+                        "at"
+                    ],
+                    "id": "item_9eda391d"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "weekend",
+                "time"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "hétvége",
+                    "correctAnswer": "weekend",
+                    "options": [
+                        {
+                            "id": "weekend",
+                            "text": "weekend",
+                            "correct": true
+                        },
+                        {
+                            "id": "Monday",
+                            "text": "Monday",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_ac511951"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "idő",
+                    "correctAnswer": "time",
+                    "options": [
+                        {
+                            "id": "time",
+                            "text": "time",
+                            "correct": true
+                        },
+                        {
+                            "id": "weekend",
+                            "text": "weekend",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_ed23c1f9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hétvégén.",
+                    "correctAnswer": "On the weekend.",
+                    "scrambledWords": [
+                        "On",
+                        "the",
+                        "weekend.",
+                        "In",
+                        "at"
+                    ],
+                    "id": "item_1aeccdec"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mennyi az idő?",
+                    "correctAnswer": "What time is it?",
+                    "scrambledWords": [
+                        "What",
+                        "time",
+                        "is",
+                        "it?",
+                        "Where"
+                    ],
+                    "id": "item_fd1ab1b8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én játszom hétvégén.",
+                    "sentence": "I play on the ____.",
+                    "answer": "weekend",
+                    "options": [
+                        "weekend",
+                        "Monday",
+                        "time",
+                        "night"
+                    ],
+                    "id": "item_a0e3f9f4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi alszunk hétvégén.",
+                    "correctAnswer": "We sleep on the weekend.",
+                    "scrambledWords": [
+                        "We",
+                        "sleep",
+                        "on",
+                        "the",
+                        "weekend.",
+                        "in"
+                    ],
+                    "id": "item_908485e8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Itt az idő? (Ideje van?)",
+                    "correctAnswer": "Is it time?",
+                    "scrambledWords": [
+                        "Is",
+                        "it",
+                        "time?",
+                        "on",
+                        "What"
+                    ],
+                    "id": "item_99a06293"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mennyi az idő?",
+                    "sentence": "What ____ is it?",
+                    "answer": "time",
+                    "options": [
+                        "time",
+                        "weekend",
+                        "is",
+                        "are"
+                    ],
+                    "id": "item_cd5c776c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én olvasok hétvégén.",
+                    "correctAnswer": "I read on the weekend.",
+                    "scrambledWords": [
+                        "I",
+                        "read",
+                        "on",
+                        "the",
+                        "weekend.",
+                        "Friday."
+                    ],
+                    "id": "item_4b0c977f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők dolgoznak hétvégén.",
+                    "correctAnswer": "They work on the weekend.",
+                    "scrambledWords": [
+                        "They",
+                        "work",
+                        "on",
+                        "the",
+                        "weekend.",
+                        "at"
+                    ],
+                    "id": "item_8cf15dae"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi eszünk hétvégén.",
+                    "sentence": "We eat on ____ weekend.",
+                    "answer": "the",
+                    "options": [
+                        "the",
+                        "a",
+                        "in",
+                        "at"
+                    ],
+                    "id": "item_fb38dc38"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hétvégén játszom.",
+                    "correctAnswer": "On the weekend, I play.",
+                    "scrambledWords": [
+                        "On",
+                        "the",
+                        "weekend,",
+                        "I",
+                        "play.",
+                        "in"
+                    ],
+                    "id": "item_6b3d5747"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az idő jó.",
+                    "correctAnswer": "The time is good.",
+                    "scrambledWords": [
+                        "The",
+                        "time",
+                        "is",
+                        "good.",
+                        "bad.",
+                        "on"
+                    ],
+                    "id": "item_9e873ddc"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mennyi az idő?",
+                    "sentence": "What time ____ it?",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "are",
+                        "am",
+                        "do"
+                    ],
+                    "id": "item_47d92973"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutyával játszom hétvégén.",
+                    "correctAnswer": "I play with the dog on the weekend.",
+                    "scrambledWords": [
+                        "I",
+                        "play",
+                        "with",
+                        "the",
+                        "dog",
+                        "on",
+                        "the",
+                        "weekend."
+                    ],
+                    "id": "item_f7e78ca5"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Hétfő reggel dolgozom.",
+                    "correctAnswer": "I work on Monday morning.",
+                    "scrambledWords": [
+                        "I",
+                        "work",
+                        "on",
+                        "Monday",
+                        "morning.",
+                        "in"
+                    ],
+                    "id": "item_d96f1fbd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Péntek éjszaka alszom.",
+                    "sentence": "I sleep on Friday ____.",
+                    "answer": "night",
+                    "options": [
+                        "night",
+                        "morning",
+                        "weekend",
+                        "time"
+                    ],
+                    "id": "item_e028ede3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők hétvégén játszanak.",
+                    "correctAnswer": "They play on the weekend.",
+                    "scrambledWords": [
+                        "They",
+                        "play",
+                        "on",
+                        "the",
+                        "weekend.",
+                        "in"
+                    ],
+                    "id": "item_cca2cc13"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi éjszaka olvasunk.",
+                    "correctAnswer": "We read at night.",
+                    "scrambledWords": [
+                        "We",
+                        "read",
+                        "at",
+                        "night.",
+                        "on"
+                    ],
+                    "id": "item_9ff2742f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Reggel kávét iszom.",
+                    "sentence": "I drink coffee ____ the morning.",
+                    "answer": "in",
+                    "options": [
+                        "in",
+                        "on",
+                        "at",
+                        "the"
+                    ],
+                    "id": "item_434a0520"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Pénteken dolgozom.",
+                    "correctAnswer": "On Friday, I work.",
+                    "scrambledWords": [
+                        "On",
+                        "Friday,",
+                        "I",
+                        "work.",
+                        "at"
+                    ],
+                    "id": "item_01386163"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hétvégén éjszaka alszom.",
+                    "correctAnswer": "I sleep at night on the weekend.",
+                    "scrambledWords": [
+                        "I",
+                        "sleep",
+                        "at",
+                        "night",
+                        "on",
+                        "the",
+                        "weekend."
+                    ],
+                    "id": "item_0a628bc2"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Hétfő reggel.",
+                    "sentence": "____ Monday morning.",
+                    "answer": "On",
+                    "options": [
+                        "On",
+                        "In",
+                        "At",
+                        "The"
+                    ],
+                    "id": "item_fcd02315"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mennyi az idő?",
+                    "correctAnswer": "What time is it?",
+                    "scrambledWords": [
+                        "What",
+                        "time",
+                        "is",
+                        "it?",
+                        "where"
+                    ],
+                    "id": "item_d6432031"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hétvégén reggel alszom.",
+                    "correctAnswer": "On the weekend, I sleep in the morning.",
+                    "scrambledWords": [
+                        "On",
+                        "the",
+                        "weekend,",
+                        "I",
+                        "sleep",
+                        "in",
+                        "the",
+                        "morning."
+                    ],
+                    "id": "item_1af3ec39"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők hétfőn és pénteken dolgoznak.",
+                    "sentence": "They work on Monday and ____.",
+                    "answer": "Friday",
+                    "options": [
+                        "Friday",
+                        "morning",
+                        "weekend",
+                        "time"
+                    ],
+                    "id": "item_8b243c63"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én reggel eszem és éjszaka játszom.",
+                    "correctAnswer": "I eat in the morning and I play at night.",
+                    "scrambledWords": [
+                        "I",
+                        "eat",
+                        "in",
+                        "the",
+                        "morning",
+                        "and",
+                        "I",
+                        "play",
+                        "at",
+                        "night."
+                    ],
+                    "id": "item_c7140013"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi péntek éjszaka olvasunk.",
+                    "correctAnswer": "We read on Friday night.",
+                    "scrambledWords": [
+                        "We",
+                        "read",
+                        "on",
+                        "Friday",
+                        "night.",
+                        "at"
+                    ],
+                    "id": "item_faf13549"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te éjszaka alszol.",
+                    "sentence": "You sleep ____ night.",
+                    "answer": "at",
+                    "options": [
+                        "at",
+                        "in",
+                        "on",
+                        "to"
+                    ],
+                    "id": "item_bd8ed11d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hétfőn dolgozom és hétvégén játszom.",
+                    "correctAnswer": "On Monday, I work and on the weekend, I play.",
+                    "scrambledWords": [
+                        "On",
+                        "Monday,",
+                        "I",
+                        "work",
+                        "and",
+                        "on",
+                        "the",
+                        "weekend,",
+                        "I",
+                        "play."
+                    ],
+                    "id": "item_d9bf2489"
+                }
+            ]
+        }
+    ]
+}

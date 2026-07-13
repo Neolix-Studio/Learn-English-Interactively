@@ -1,0 +1,135 @@
+{
+    "title": "A Családi Vacsora",
+    "type": "reading_node",
+    "story": {
+        "en": "Hello, my name is Tom. I am a doctor. I have a house and a car. Today, my family is in the kitchen. My mother and my father are next to the table. My mother drinks tea with lemon. My father eats an apple. He is a policeman. My sister is on the chair. She has two phones. My brother is not in the kitchen. He is in the bedroom. He is tired and he sleeps. My dog is under the table. It is happy.",
+        "hu": "Szia, a nevem Tom. Orvos vagyok. Van egy házam és egy autóm. Ma a családom a konyhában van. Az anyám és az apám az asztal mellett vannak. Az anyám teát iszik citrommal. Az apám egy almát eszik. Ő rendőr. A lánytestvérem a széken van. Neki két telefonja van. A fivérem nincs a konyhában. Ő a hálószobában van. Fáradt és alszik. A kutyám az asztal alatt van. Ő boldog."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Tom is a teacher.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "Tom is a doctor."
+        },
+        {
+            "type": "true_false",
+            "statement": "Tom has a car.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "The story says: 'I have a house and a car.'"
+        },
+        {
+            "type": "true_false",
+            "statement": "The mother drinks coffee.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "The mother drinks tea with lemon."
+        },
+        {
+            "type": "true_false",
+            "statement": "The brother is in the kitchen.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "The brother is in the bedroom."
+        },
+        {
+            "type": "true_false",
+            "statement": "The dog is happy.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "The story says: 'My dog is under the table. It is happy.'"
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the father's job?",
+            "correctAnswer": "Policeman",
+            "options": [
+                "Doctor",
+                "Teacher",
+                "Policeman",
+                "Fireman"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where is the mother?",
+            "correctAnswer": "Next to the table",
+            "options": [
+                "Under the table",
+                "Next to the table",
+                "On the bed",
+                "In the bedroom"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "How many phones does the sister have?",
+            "correctAnswer": "Two",
+            "options": [
+                "One",
+                "Two",
+                "Three",
+                "Four"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where is the brother?",
+            "correctAnswer": "In the bedroom",
+            "options": [
+                "In the kitchen",
+                "In the car",
+                "In the bedroom",
+                "Next to the house"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where is the dog?",
+            "correctAnswer": "Under the table",
+            "options": [
+                "On the chair",
+                "Under the table",
+                "Next to the bed",
+                "In the car"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mi Tom foglalkozása? (What is Tom's job?)",
+            "sentence": "Tom is a ____.",
+            "correctAnswer": "doctor",
+            "hint": "orvos"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit iszik az anya? (What does the mother drink?)",
+            "sentence": "The mother drinks tea with ____.",
+            "correctAnswer": "lemon",
+            "hint": "citrom"
+        },
+        {
+            "type": "type_in",
+            "question": "Hol van a lánytestvér? (Where is the sister?)",
+            "sentence": "The sister is on the ____.",
+            "correctAnswer": "chair",
+            "hint": "szék"
+        },
+        {
+            "type": "type_in",
+            "question": "Hogy van a fivér? (How is the brother?)",
+            "sentence": "The brother is ____.",
+            "correctAnswer": "tired",
+            "hint": "fáradt"
+        },
+        {
+            "type": "type_in",
+            "question": "Hol van a kutya? (Where is the dog?)",
+            "sentence": "The dog is under the ____.",
+            "correctAnswer": "table",
+            "hint": "asztal"
+        }
+    ]
+}

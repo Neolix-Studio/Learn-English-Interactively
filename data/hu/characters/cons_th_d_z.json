@@ -1,0 +1,1022 @@
+{
+  "id": "cons_th_d_z",
+  "type": "character_lesson",
+  "title": "CONS TH D Z",
+  "characters": [
+    "ð",
+    "d",
+    "z"
+  ],
+  "lessons": [
+    {
+      "id": "cons_th_d_z_level_1",
+      "title": "Szint 1",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "they",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "day",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zay",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "they",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "day",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "zay",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "then",
+              "audioUrl": null
+            },
+            {
+              "text": "den",
+              "audioUrl": null
+            },
+            {
+              "text": "zen",
+              "audioUrl": null
+            },
+            {
+              "text": "they",
+              "audioUrl": null
+            },
+            {
+              "text": "day",
+              "audioUrl": null
+            },
+            {
+              "text": "zay",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "they",
+          "word2": "they",
+          "isSame": true
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "then",
+          "word2": "then",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "they",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "day",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zay",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "then",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "den",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "zen",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "then",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "den",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zen",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "then",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "den",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zen",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "den",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "zen",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_d_z_level_2",
+      "title": "Szint 2",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "there",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "dare",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zare",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "those",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "doze",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "zoze",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "those",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "doze",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zoze",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "those",
+          "word2": "those",
+          "isSame": true
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "there",
+              "audioUrl": null
+            },
+            {
+              "text": "dare",
+              "audioUrl": null
+            },
+            {
+              "text": "zare",
+              "audioUrl": null
+            },
+            {
+              "text": "those",
+              "audioUrl": null
+            },
+            {
+              "text": "doze",
+              "audioUrl": null
+            },
+            {
+              "text": "zoze",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "those",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "doze",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zoze",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "there",
+          "word2": "dare",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "there",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "dare",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "zare",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "there",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "dare",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "zare",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "zoze",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "dare",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_d_z_level_3",
+      "title": "Szint 3",
+      "items": [
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "breathe",
+          "word2": "breathe",
+          "isSame": true
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "teethe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "teed",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "tease",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "breathe",
+              "audioUrl": null
+            },
+            {
+              "text": "breed",
+              "audioUrl": null
+            },
+            {
+              "text": "breeze",
+              "audioUrl": null
+            },
+            {
+              "text": "teethe",
+              "audioUrl": null
+            },
+            {
+              "text": "teed",
+              "audioUrl": null
+            },
+            {
+              "text": "tease",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "breathe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "breed",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "breeze",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "breathe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "breed",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "breeze",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "teethe",
+          "word2": "teed",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "teethe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "teed",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "tease",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "breathe",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "breed",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "breeze",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "teethe",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "teed",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "tease",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "breeze",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "teethe",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_d_z_level_4",
+      "title": "Szint 4",
+      "items": [
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "clothe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "code",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "close",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "clothe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "code",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "close",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bathe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "bade",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "bays",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bathe",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "bade",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "bays",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "bathe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "bade",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "bays",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "bathe",
+          "word2": "bade",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "clothe",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "code",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "close",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "clothe",
+          "word2": "clothe",
+          "isSame": true
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "clothe",
+              "audioUrl": null
+            },
+            {
+              "text": "code",
+              "audioUrl": null
+            },
+            {
+              "text": "close",
+              "audioUrl": null
+            },
+            {
+              "text": "bathe",
+              "audioUrl": null
+            },
+            {
+              "text": "bade",
+              "audioUrl": null
+            },
+            {
+              "text": "bays",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "bathe",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "code",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    },
+    {
+      "id": "cons_th_d_z_level_5",
+      "title": "Szint 5",
+      "items": [
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "soothe",
+          "word2": "sued",
+          "isSame": false
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "loathe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "load",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "lows",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "loathe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "load",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "lows",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_match",
+          "instruction": "Válaszd ki az összetartozó párokat!",
+          "pairs": [
+            {
+              "text": "loathe",
+              "audioUrl": null
+            },
+            {
+              "text": "load",
+              "audioUrl": null
+            },
+            {
+              "text": "lows",
+              "audioUrl": null
+            },
+            {
+              "text": "soothe",
+              "audioUrl": null
+            },
+            {
+              "text": "sued",
+              "audioUrl": null
+            },
+            {
+              "text": "sues",
+              "audioUrl": null
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "soothe",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "sued",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "sues",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "soothe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sued",
+              "correct": true
+            },
+            {
+              "id": "opt_2",
+              "text": "sues",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "soothe",
+              "correct": false
+            },
+            {
+              "id": "opt_1",
+              "text": "sued",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "sues",
+              "correct": true
+            }
+          ]
+        },
+        {
+          "type": "phonics_listen_choose",
+          "instruction": "Mit hallasz?",
+          "audioUrl": null,
+          "options": [
+            {
+              "id": "opt_0",
+              "text": "loathe",
+              "correct": true
+            },
+            {
+              "id": "opt_1",
+              "text": "load",
+              "correct": false
+            },
+            {
+              "id": "opt_2",
+              "text": "lows",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "type": "phonics_compare",
+          "instruction": "Hallgasd meg és válaszolj!",
+          "questionText": "Melyik szavakat hallod?",
+          "audioUrl1": null,
+          "audioUrl2": null,
+          "word1": "loathe",
+          "word2": "loathe",
+          "isSame": true
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "soothe",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        },
+        {
+          "type": "phonics_speak",
+          "instruction": "Mondd ki ezt a szót!",
+          "word": "sues",
+          "audioUrl": null,
+          "targetLang": "en-US"
+        }
+      ]
+    }
+  ]
+}

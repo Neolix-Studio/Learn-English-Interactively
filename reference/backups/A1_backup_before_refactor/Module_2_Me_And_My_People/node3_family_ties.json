@@ -1,0 +1,396 @@
+{
+    "title": "Családi kötelékek",
+    "type": "multi_level_node",
+    "targetWords": [
+        "mother",
+        "father",
+        "brother",
+        "sister",
+        "friend",
+        "family",
+        "my",
+        "your"
+    ],
+    "dictionary": {
+        "mother": "anya",
+        "father": "apa",
+        "brother": "fivér / fiútestvér",
+        "sister": "nővér / lánytestvér",
+        "friend": "barát",
+        "family": "család",
+        "my": "az én (enyém)",
+        "your": "a te (tied)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "mother",
+                "father",
+                "my"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "anya",
+                    "correctAnswer": "mother",
+                    "options": [
+                        { "id": "mother", "text": "mother", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><path d='M30 35 Q50 0 70 35 L75 60 Q50 45 25 60 Z' fill='#8b0000'/><rect x='35' y='55' width='30' height='40' rx='10' fill='#27ae60'/></svg>" },
+                        { "id": "father", "text": "father", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><rect x='35' y='55' width='30' height='40' rx='5' fill='#2980b9'/><path d='M35 40 Q50 50 65 40' stroke='#333' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "apa",
+                    "correctAnswer": "father",
+                    "options": [
+                        { "id": "mother", "text": "mother", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><path d='M30 35 Q50 0 70 35 L75 60 Q50 45 25 60 Z' fill='#8b0000'/><rect x='35' y='55' width='30' height='40' rx='10' fill='#27ae60'/></svg>" },
+                        { "id": "father", "text": "father", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><rect x='35' y='55' width='30' height='40' rx='5' fill='#2980b9'/><path d='M35 40 Q50 50 65 40' stroke='#333' stroke-width='3' fill='none'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Az én anyám.",
+                    "correctAnswer": "My mother.",
+                    "scrambledWords": ["My", "mother.", "Your", "father."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az én apám.",
+                    "correctAnswer": "My father.",
+                    "scrambledWords": ["My", "father.", "I", "am", "mother."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám fáradt.",
+                    "sentence": "My ____ is tired.",
+                    "answer": "father",
+                    "options": ["father", "mother", "my", "he"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám egy nő.",
+                    "correctAnswer": "My mother is a woman.",
+                    "scrambledWords": ["My", "mother", "is", "a", "woman.", "man"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám egy férfi.",
+                    "correctAnswer": "My father is a man.",
+                    "scrambledWords": ["My", "father", "is", "a", "man.", "woman"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő az apám.",
+                    "sentence": "He is ____ father.",
+                    "answer": "my",
+                    "options": ["my", "I", "she", "a"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő az anyám.",
+                    "correctAnswer": "She is my mother.",
+                    "scrambledWords": ["She", "is", "my", "mother.", "He"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az anyám boldog.",
+                    "sentence": "____ mother is happy.",
+                    "answer": "My",
+                    "options": ["My", "I", "She", "A"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, a nevem... és ő az apám.",
+                    "correctAnswer": "Hello, my name is... and he is my father.",
+                    "scrambledWords": ["Hello,", "my", "name", "is...", "and", "he", "is", "my", "father."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "brother",
+                "sister",
+                "your"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fivér",
+                    "correctAnswer": "brother",
+                    "options": [
+                        { "id": "brother", "text": "brother", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M30 40 Q50 10 70 40' fill='#f1c40f'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/></svg>" },
+                        { "id": "sister", "text": "sister", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M25 40 Q50 0 75 40 L70 70 Q50 50 30 70 Z' fill='#d35400'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "lánytestvér",
+                    "correctAnswer": "sister",
+                    "options": [
+                        { "id": "brother", "text": "brother", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M30 40 Q50 10 70 40' fill='#f1c40f'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/></svg>" },
+                        { "id": "sister", "text": "sister", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='25' fill='#ffdbac'/><path d='M25 40 Q50 0 75 40 L70 70 Q50 50 30 70 Z' fill='#d35400'/><circle cx='40' cy='35' r='3' fill='#333'/><circle cx='60' cy='35' r='3' fill='#333'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "A te fivéred.",
+                    "correctAnswer": "Your brother.",
+                    "scrambledWords": ["Your", "brother.", "My", "sister."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A te lánytestvéred.",
+                    "correctAnswer": "Your sister.",
+                    "scrambledWords": ["Your", "sister.", "My", "brother.", "is"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivéred szomorú.",
+                    "sentence": "____ brother is sad.",
+                    "answer": "Your",
+                    "options": ["Your", "You", "He", "My"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lánytestvéred egy nő.",
+                    "correctAnswer": "Your sister is a woman.",
+                    "scrambledWords": ["Your", "sister", "is", "a", "woman.", "man"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő a te fivéred.",
+                    "sentence": "He is ____ brother.",
+                    "answer": "your",
+                    "options": ["your", "you", "my", "a"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő a te lánytestvéred.",
+                    "correctAnswer": "She is your sister.",
+                    "scrambledWords": ["She", "is", "your", "sister.", "He", "brother."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám és a te lánytestvéred.",
+                    "correctAnswer": "My mother and your sister.",
+                    "scrambledWords": ["My", "mother", "and", "your", "sister.", "father"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A lánytestvéred fáradt.",
+                    "sentence": "Your ____ is tired.",
+                    "answer": "sister",
+                    "options": ["sister", "brother", "she", "girl"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A te fivéred egy fiú.",
+                    "correctAnswer": "Your brother is a boy.",
+                    "scrambledWords": ["Your", "brother", "is", "a", "boy.", "girl."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "friend",
+                "family"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "barát",
+                    "correctAnswer": "friend",
+                    "options": [
+                        { "id": "friend", "text": "friend", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='35' cy='40' r='15' fill='#ffdbac'/><circle cx='65' cy='40' r='15' fill='#ffdbac'/><path d='M25 60 Q35 50 45 60 L45 80 L25 80 Z' fill='#e67e22'/><path d='M55 60 Q65 50 75 60 L75 80 L55 80 Z' fill='#3498db'/></svg>" },
+                        { "id": "family", "text": "family", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='40' r='12' fill='#ffdbac'/><circle cx='70' cy='40' r='12' fill='#ffdbac'/><circle cx='50' cy='55' r='10' fill='#ffdbac'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "család",
+                    "correctAnswer": "family",
+                    "options": [
+                        { "id": "friend", "text": "friend", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='35' cy='40' r='15' fill='#ffdbac'/><circle cx='65' cy='40' r='15' fill='#ffdbac'/><path d='M25 60 Q35 50 45 60 L45 80 L25 80 Z' fill='#e67e22'/><path d='M55 60 Q65 50 75 60 L75 80 L55 80 Z' fill='#3498db'/></svg>" },
+                        { "id": "family", "text": "family", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='30' cy='40' r='12' fill='#ffdbac'/><circle cx='70' cy='40' r='12' fill='#ffdbac'/><circle cx='50' cy='55' r='10' fill='#ffdbac'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Az én barátom.",
+                    "correctAnswer": "My friend.",
+                    "scrambledWords": ["My", "friend.", "Your", "family."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A te barátod.",
+                    "correctAnswer": "Your friend.",
+                    "scrambledWords": ["Your", "friend.", "My", "family."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A családom jól van.",
+                    "sentence": "My ____ is good.",
+                    "answer": "family",
+                    "options": ["family", "friend", "I", "your"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom egy fiú.",
+                    "correctAnswer": "My friend is a boy.",
+                    "scrambledWords": ["My", "friend", "is", "a", "boy.", "girl."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A te barátod egy lány.",
+                    "correctAnswer": "Your friend is a girl.",
+                    "scrambledWords": ["Your", "friend", "is", "a", "girl.", "boy."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) a te barátod.",
+                    "sentence": "____ is your friend.",
+                    "answer": "She",
+                    "options": ["She", "He", "My", "It"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) az én barátom.",
+                    "correctAnswer": "He is my friend.",
+                    "scrambledWords": ["He", "is", "my", "friend.", "She", "your"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A családod boldog.",
+                    "sentence": "____ family is happy.",
+                    "answer": "Your",
+                    "options": ["Your", "My", "You", "A"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A családod és az én barátom.",
+                    "correctAnswer": "Your family and my friend.",
+                    "scrambledWords": ["Your", "family", "and", "my", "friend.", "mother"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A te lánytestvéred egy nő.",
+                    "correctAnswer": "Your sister is a woman.",
+                    "scrambledWords": ["Your", "sister", "is", "a", "woman.", "man.", "my"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az anyám boldog, de az apám fáradt.",
+                    "sentence": "My mother is happy and my ____ is tired.",
+                    "answer": "father",
+                    "options": ["father", "friend", "brother", "sister"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő a fivérem, ő egy fiú.",
+                    "correctAnswer": "He is my brother, he is a boy.",
+                    "scrambledWords": ["He", "is", "my", "brother,", "he", "is", "a", "boy.", "she", "girl."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom és a családja.",
+                    "correctAnswer": "My friend and my family.",
+                    "scrambledWords": ["My", "friend", "and", "my", "family.", "your", "is"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutyád szomorú.",
+                    "sentence": "____ dog is sad.",
+                    "answer": "Your",
+                    "options": ["Your", "My", "You", "He"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, a nevem... Ő a fivérem.",
+                    "correctAnswer": "Hello, my name is... She is my sister.",
+                    "scrambledWords": ["Hello,", "my", "name", "is...", "She", "is", "my", "sister.", "brother."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te vagy az én barátom és én vagyok a te barátod.",
+                    "correctAnswer": "You are my friend and I am your friend.",
+                    "scrambledWords": ["You", "are", "my", "friend", "and", "I", "am", "your", "friend.", "he", "she"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fiú és a fivére.",
+                    "sentence": "The boy and ____ brother.",
+                    "answer": "the",
+                    "options": ["the", "a", "my", "your"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám jól van, köszönöm.",
+                    "correctAnswer": "My father is good, thanks.",
+                    "scrambledWords": ["My", "father", "is", "good,", "thanks.", "bad", "your"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hogy van a családod? A családom jól van.",
+                    "correctAnswer": "How is your family? My family is good.",
+                    "scrambledWords": ["How", "is", "your", "family?", "My", "family", "is", "good.", "are"]
+                }
+            ]
+        }
+    ]
+}

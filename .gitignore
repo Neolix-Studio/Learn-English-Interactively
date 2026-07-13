@@ -1,3 +1,46 @@
-.DS_Store
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+release
+dist-ssr
+*.local
+
+# Local secrets and environment-specific config
+.env
+.env.*
+!.env.example
 db_config.php
-node_modules/
+db_config_prod.php
+
+# Generated/cache output
+audio/
+avatars/
+logs/
+email_preview*.html
+
+# Vendored PHPMailer: keep only runtime files needed by mailer.php
+libs/PHPMailer/*
+!libs/PHPMailer/src/
+!libs/PHPMailer/src/**
+!libs/PHPMailer/LICENSE
+!libs/PHPMailer/VERSION
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+**/.obsidian/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

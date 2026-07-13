@@ -2,9 +2,9 @@ name: "CodeQL Security Scan"
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "dev", "master" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main", "dev", "master" ]
   schedule:
     - cron: '30 18 * * 4' # Runs weekly on Thursday evenings
 
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript-typescript' ] # Scans JS files. You can add 'php' here if scanning PHP files.
+        language: [ 'javascript-typescript', 'php' ]
 
     steps:
     - name: Checkout repository

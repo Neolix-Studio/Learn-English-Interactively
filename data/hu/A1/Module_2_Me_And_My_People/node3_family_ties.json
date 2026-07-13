@@ -1,0 +1,679 @@
+{
+    "title": "Családi kötelékek",
+    "type": "multi_level_node",
+    "targetWords": [
+        "mother",
+        "father",
+        "brother",
+        "sister",
+        "friend",
+        "family",
+        "my",
+        "your"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "mother",
+                "father",
+                "my"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "anya",
+                    "correctAnswer": "mother",
+                    "options": [
+                        {
+                            "id": "mother",
+                            "text": "mother",
+                            "correct": true
+                        },
+                        {
+                            "id": "father",
+                            "text": "father",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_6858966f"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "apa",
+                    "correctAnswer": "father",
+                    "options": [
+                        {
+                            "id": "mother",
+                            "text": "mother",
+                            "correct": false
+                        },
+                        {
+                            "id": "father",
+                            "text": "father",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_52fbd5ad"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az én anyám.",
+                    "correctAnswer": "My mother.",
+                    "scrambledWords": [
+                        "My",
+                        "mother.",
+                        "Your",
+                        "father."
+                    ],
+                    "id": "item_1847af9d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az én apám.",
+                    "correctAnswer": "My father.",
+                    "scrambledWords": [
+                        "My",
+                        "father.",
+                        "I",
+                        "am",
+                        "mother."
+                    ],
+                    "id": "item_4a326db0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám fáradt.",
+                    "sentence": "My ____ is tired.",
+                    "answer": "father",
+                    "options": [
+                        "father",
+                        "mother",
+                        "my",
+                        "he"
+                    ],
+                    "id": "item_80116465"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám egy nő.",
+                    "correctAnswer": "My mother is a woman.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "is",
+                        "a",
+                        "woman.",
+                        "man"
+                    ],
+                    "id": "item_6019afe9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám egy férfi.",
+                    "correctAnswer": "My father is a man.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "is",
+                        "a",
+                        "man.",
+                        "woman"
+                    ],
+                    "id": "item_c651114f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő az apám.",
+                    "sentence": "He is ____ father.",
+                    "answer": "my",
+                    "options": [
+                        "my",
+                        "I",
+                        "she",
+                        "a"
+                    ],
+                    "id": "item_ed7b67e5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő az anyám.",
+                    "correctAnswer": "She is my mother.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "my",
+                        "mother.",
+                        "He"
+                    ],
+                    "id": "item_9e3acbab"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az anyám boldog.",
+                    "sentence": "____ mother is happy.",
+                    "answer": "My",
+                    "options": [
+                        "My",
+                        "I",
+                        "She",
+                        "A"
+                    ],
+                    "id": "item_6e71093f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, a nevem... és ő az apám.",
+                    "correctAnswer": "Hello, my name is... and he is my father.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "my",
+                        "name",
+                        "is...",
+                        "and",
+                        "he",
+                        "is",
+                        "my",
+                        "father."
+                    ],
+                    "id": "item_8996a74c"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "brother",
+                "sister",
+                "your"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fivér",
+                    "correctAnswer": "brother",
+                    "options": [
+                        {
+                            "id": "brother",
+                            "text": "brother",
+                            "correct": true
+                        },
+                        {
+                            "id": "sister",
+                            "text": "sister",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_8b1d39e9"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "lánytestvér",
+                    "correctAnswer": "sister",
+                    "options": [
+                        {
+                            "id": "brother",
+                            "text": "brother",
+                            "correct": false
+                        },
+                        {
+                            "id": "sister",
+                            "text": "sister",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_22f90b75"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A te fivéred.",
+                    "correctAnswer": "Your brother.",
+                    "scrambledWords": [
+                        "Your",
+                        "brother.",
+                        "My",
+                        "sister."
+                    ],
+                    "id": "item_4b513e87"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A te lánytestvéred.",
+                    "correctAnswer": "Your sister.",
+                    "scrambledWords": [
+                        "Your",
+                        "sister.",
+                        "My",
+                        "brother.",
+                        "is"
+                    ],
+                    "id": "item_13802d48"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivéred szomorú.",
+                    "sentence": "____ brother is sad.",
+                    "answer": "Your",
+                    "options": [
+                        "Your",
+                        "You",
+                        "He",
+                        "My"
+                    ],
+                    "id": "item_c4f5e216"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lánytestvéred egy nő.",
+                    "correctAnswer": "Your sister is a woman.",
+                    "scrambledWords": [
+                        "Your",
+                        "sister",
+                        "is",
+                        "a",
+                        "woman.",
+                        "man"
+                    ],
+                    "id": "item_ef9d03fe"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő a te fivéred.",
+                    "sentence": "He is ____ brother.",
+                    "answer": "your",
+                    "options": [
+                        "your",
+                        "you",
+                        "my",
+                        "a"
+                    ],
+                    "id": "item_a4109e97"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő a te lánytestvéred.",
+                    "correctAnswer": "She is your sister.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "your",
+                        "sister.",
+                        "He",
+                        "brother."
+                    ],
+                    "id": "item_31fc1985"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám és a te lánytestvéred.",
+                    "correctAnswer": "My mother and your sister.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "and",
+                        "your",
+                        "sister.",
+                        "father"
+                    ],
+                    "id": "item_a43b7bbe"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A lánytestvéred fáradt.",
+                    "sentence": "Your ____ is tired.",
+                    "answer": "sister",
+                    "options": [
+                        "sister",
+                        "brother",
+                        "she",
+                        "girl"
+                    ],
+                    "id": "item_5a5ea722"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A te fivéred egy fiú.",
+                    "correctAnswer": "Your brother is a boy.",
+                    "scrambledWords": [
+                        "Your",
+                        "brother",
+                        "is",
+                        "a",
+                        "boy.",
+                        "girl."
+                    ],
+                    "id": "item_a287185a"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "friend",
+                "family"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "barát",
+                    "correctAnswer": "friend",
+                    "options": [
+                        {
+                            "id": "friend",
+                            "text": "friend",
+                            "correct": true
+                        },
+                        {
+                            "id": "family",
+                            "text": "family",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_078d39a3"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "család",
+                    "correctAnswer": "family",
+                    "options": [
+                        {
+                            "id": "friend",
+                            "text": "friend",
+                            "correct": false
+                        },
+                        {
+                            "id": "family",
+                            "text": "family",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_eca17545"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az én barátom.",
+                    "correctAnswer": "My friend.",
+                    "scrambledWords": [
+                        "My",
+                        "friend.",
+                        "Your",
+                        "family."
+                    ],
+                    "id": "item_01ed2222"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A te barátod.",
+                    "correctAnswer": "Your friend.",
+                    "scrambledWords": [
+                        "Your",
+                        "friend.",
+                        "My",
+                        "family."
+                    ],
+                    "id": "item_cf07f650"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A családom jól van.",
+                    "sentence": "My ____ is good.",
+                    "answer": "family",
+                    "options": [
+                        "family",
+                        "friend",
+                        "I",
+                        "your"
+                    ],
+                    "id": "item_aed430bb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom egy fiú.",
+                    "correctAnswer": "My friend is a boy.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "is",
+                        "a",
+                        "boy.",
+                        "girl."
+                    ],
+                    "id": "item_a5a4cf39"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A te barátod egy lány.",
+                    "correctAnswer": "Your friend is a girl.",
+                    "scrambledWords": [
+                        "Your",
+                        "friend",
+                        "is",
+                        "a",
+                        "girl.",
+                        "boy."
+                    ],
+                    "id": "item_8a417173"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) a te barátod.",
+                    "sentence": "____ is your friend.",
+                    "answer": "She",
+                    "options": [
+                        "She",
+                        "He",
+                        "My",
+                        "It"
+                    ],
+                    "id": "item_006e1786"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) az én barátom.",
+                    "correctAnswer": "He is my friend.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "my",
+                        "friend.",
+                        "She",
+                        "your"
+                    ],
+                    "id": "item_4506f300"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A családod boldog.",
+                    "sentence": "____ family is happy.",
+                    "answer": "Your",
+                    "options": [
+                        "Your",
+                        "My",
+                        "You",
+                        "A"
+                    ],
+                    "id": "item_6571d5dd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A családod és az én barátom.",
+                    "correctAnswer": "Your family and my friend.",
+                    "scrambledWords": [
+                        "Your",
+                        "family",
+                        "and",
+                        "my",
+                        "friend.",
+                        "mother"
+                    ],
+                    "id": "item_0d01950e"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "A te lánytestvéred egy nő.",
+                    "correctAnswer": "Your sister is a woman.",
+                    "scrambledWords": [
+                        "Your",
+                        "sister",
+                        "is",
+                        "a",
+                        "woman.",
+                        "man.",
+                        "my"
+                    ],
+                    "id": "item_e115b2e8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az anyám boldog, de az apám fáradt.",
+                    "sentence": "My mother is happy and my ____ is tired.",
+                    "answer": "father",
+                    "options": [
+                        "father",
+                        "friend",
+                        "brother",
+                        "sister"
+                    ],
+                    "id": "item_968ef22f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő a fivérem, ő egy fiú.",
+                    "correctAnswer": "He is my brother, he is a boy.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "my",
+                        "brother,",
+                        "he",
+                        "is",
+                        "a",
+                        "boy.",
+                        "she",
+                        "girl."
+                    ],
+                    "id": "item_76847d64"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom és a családja.",
+                    "correctAnswer": "My friend and my family.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "and",
+                        "my",
+                        "family.",
+                        "your",
+                        "is"
+                    ],
+                    "id": "item_e1d1f675"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutyád szomorú.",
+                    "sentence": "____ dog is sad.",
+                    "answer": "Your",
+                    "options": [
+                        "Your",
+                        "My",
+                        "You",
+                        "He"
+                    ],
+                    "id": "item_1590c917"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, a nevem... Ő a fivérem.",
+                    "correctAnswer": "Hello, my name is... She is my sister.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "my",
+                        "name",
+                        "is...",
+                        "She",
+                        "is",
+                        "my",
+                        "sister.",
+                        "brother."
+                    ],
+                    "id": "item_df635034"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te vagy az én barátom és én vagyok a te barátod.",
+                    "correctAnswer": "You are my friend and I am your friend.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "my",
+                        "friend",
+                        "and",
+                        "I",
+                        "am",
+                        "your",
+                        "friend.",
+                        "he",
+                        "she"
+                    ],
+                    "id": "item_55fd0163"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fiú és a fivére.",
+                    "sentence": "The boy and ____ brother.",
+                    "answer": "the",
+                    "options": [
+                        "the",
+                        "a",
+                        "my",
+                        "your"
+                    ],
+                    "id": "item_ed01e271"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám jól van, köszönöm.",
+                    "correctAnswer": "My father is good, thanks.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "is",
+                        "good,",
+                        "thanks.",
+                        "bad",
+                        "your"
+                    ],
+                    "id": "item_43e5bc23"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hogy van a családod? A családom jól van.",
+                    "correctAnswer": "How is your family? My family is good.",
+                    "scrambledWords": [
+                        "How",
+                        "is",
+                        "your",
+                        "family?",
+                        "My",
+                        "family",
+                        "is",
+                        "good.",
+                        "are"
+                    ],
+                    "id": "item_9e48ebeb"
+                }
+            ]
+        }
+    ]
+}

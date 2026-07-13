@@ -1,0 +1,904 @@
+{
+    "title": "Szeretek csinálni...",
+    "type": "multi_level_node",
+    "targetWords": [
+        "to",
+        "run",
+        "cook",
+        "dance",
+        "swim"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "to",
+                "run",
+                "cook"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fut (futni)",
+                    "correctAnswer": "run",
+                    "options": [
+                        {
+                            "id": "run",
+                            "text": "run",
+                            "correct": true
+                        },
+                        {
+                            "id": "cook",
+                            "text": "cook",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_534a9842"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "főz (főzni)",
+                    "correctAnswer": "cook",
+                    "options": [
+                        {
+                            "id": "run",
+                            "text": "run",
+                            "correct": false
+                        },
+                        {
+                            "id": "cook",
+                            "text": "cook",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_d8f520b9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek futni.",
+                    "correctAnswer": "I like to run.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "run.",
+                        "cook."
+                    ],
+                    "id": "item_5144252f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te szeretsz főzni.",
+                    "correctAnswer": "You like to cook.",
+                    "scrambledWords": [
+                        "You",
+                        "like",
+                        "to",
+                        "cook.",
+                        "run."
+                    ],
+                    "id": "item_364ee5cd"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) szeret futni.",
+                    "sentence": "She likes ____ run.",
+                    "answer": "to",
+                    "options": [
+                        "to",
+                        "in",
+                        "on",
+                        "at"
+                    ],
+                    "id": "item_b2bab28c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek főzni.",
+                    "correctAnswer": "I like to cook.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "cook.",
+                        "likes"
+                    ],
+                    "id": "item_1271b3ae"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretünk futni.",
+                    "correctAnswer": "We like to run.",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "to",
+                        "run.",
+                        "likes"
+                    ],
+                    "id": "item_16c9eb1e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szeretsz futni?",
+                    "sentence": "Do you like ____ run?",
+                    "answer": "to",
+                    "options": [
+                        "to",
+                        "the",
+                        "a",
+                        "in"
+                    ],
+                    "id": "item_414e3c8b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem szeretnek főzni.",
+                    "correctAnswer": "They don't like to cook.",
+                    "scrambledWords": [
+                        "They",
+                        "don't",
+                        "like",
+                        "to",
+                        "cook.",
+                        "doesn't"
+                    ],
+                    "id": "item_afa88051"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) szeret futni.",
+                    "correctAnswer": "He likes to run.",
+                    "scrambledWords": [
+                        "He",
+                        "likes",
+                        "to",
+                        "run.",
+                        "like"
+                    ],
+                    "id": "item_f10f0a59"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én szeretek főzni.",
+                    "sentence": "I like to ____.",
+                    "answer": "cook",
+                    "options": [
+                        "cook",
+                        "cooks",
+                        "run",
+                        "runs"
+                    ],
+                    "id": "item_21441d98"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szeret ő (nő) futni?",
+                    "correctAnswer": "Does she like to run?",
+                    "scrambledWords": [
+                        "Does",
+                        "she",
+                        "like",
+                        "to",
+                        "run?",
+                        "likes"
+                    ],
+                    "id": "item_73b50219"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, én szeretek futni.",
+                    "correctAnswer": "Yes, I like to run.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "I",
+                        "like",
+                        "to",
+                        "run.",
+                        "runs."
+                    ],
+                    "id": "item_aa639efc"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) szeret főzni?",
+                    "sentence": "Does he like to ____?",
+                    "answer": "cook",
+                    "options": [
+                        "cook",
+                        "cooks",
+                        "run",
+                        "runs"
+                    ],
+                    "id": "item_8076a9ee"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te nem szeretsz futni.",
+                    "correctAnswer": "You do not like to run.",
+                    "scrambledWords": [
+                        "You",
+                        "do",
+                        "not",
+                        "like",
+                        "to",
+                        "run.",
+                        "likes"
+                    ],
+                    "id": "item_63af508a"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "dance",
+                "swim"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "táncol (táncolni)",
+                    "correctAnswer": "dance",
+                    "options": [
+                        {
+                            "id": "dance",
+                            "text": "dance",
+                            "correct": true
+                        },
+                        {
+                            "id": "swim",
+                            "text": "swim",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_fdba3a96"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "úszik (úszni)",
+                    "correctAnswer": "swim",
+                    "options": [
+                        {
+                            "id": "dance",
+                            "text": "dance",
+                            "correct": false
+                        },
+                        {
+                            "id": "swim",
+                            "text": "swim",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_4d4cb494"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek táncolni.",
+                    "correctAnswer": "I like to dance.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "dance.",
+                        "swim."
+                    ],
+                    "id": "item_b01dc29c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te szeretsz úszni.",
+                    "correctAnswer": "You like to swim.",
+                    "scrambledWords": [
+                        "You",
+                        "like",
+                        "to",
+                        "swim.",
+                        "dance."
+                    ],
+                    "id": "item_9e7bbebb"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi szeretünk táncolni.",
+                    "sentence": "We like ____ dance.",
+                    "answer": "to",
+                    "options": [
+                        "to",
+                        "in",
+                        "on",
+                        "at"
+                    ],
+                    "id": "item_c05d60a0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) imád táncolni.",
+                    "correctAnswer": "She loves to dance.",
+                    "scrambledWords": [
+                        "She",
+                        "loves",
+                        "to",
+                        "dance.",
+                        "love"
+                    ],
+                    "id": "item_c1fe6f9e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) utál úszni.",
+                    "correctAnswer": "He hates to swim.",
+                    "scrambledWords": [
+                        "He",
+                        "hates",
+                        "to",
+                        "swim.",
+                        "hate"
+                    ],
+                    "id": "item_ef338cca"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők imádnak úszni.",
+                    "sentence": "They ____ to swim.",
+                    "answer": "love",
+                    "options": [
+                        "love",
+                        "loves",
+                        "like",
+                        "hate"
+                    ],
+                    "id": "item_d7d3e1ae"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szeretsz táncolni?",
+                    "correctAnswer": "Do you like to dance?",
+                    "scrambledWords": [
+                        "Do",
+                        "you",
+                        "like",
+                        "to",
+                        "dance?",
+                        "Does"
+                    ],
+                    "id": "item_fccb6268"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem szeretek úszni.",
+                    "correctAnswer": "I don't like to swim.",
+                    "scrambledWords": [
+                        "I",
+                        "don't",
+                        "like",
+                        "to",
+                        "swim.",
+                        "doesn't"
+                    ],
+                    "id": "item_54fe50dc"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szeret ő (férfi) úszni?",
+                    "sentence": "Does he like to ____?",
+                    "answer": "swim",
+                    "options": [
+                        "swim",
+                        "swims",
+                        "dance",
+                        "dances"
+                    ],
+                    "id": "item_c7def60c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom szeret táncolni.",
+                    "correctAnswer": "My friend likes to dance.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "likes",
+                        "to",
+                        "dance.",
+                        "like"
+                    ],
+                    "id": "item_814ed79a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem utál táncolni.",
+                    "correctAnswer": "My brother hates to dance.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "hates",
+                        "to",
+                        "dance.",
+                        "hate"
+                    ],
+                    "id": "item_c8c44583"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te szeretsz úszni?",
+                    "sentence": "____ you like to swim?",
+                    "answer": "Do",
+                    "options": [
+                        "Do",
+                        "Does",
+                        "Are",
+                        "Is"
+                    ],
+                    "id": "item_97f74949"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya szeret úszni.",
+                    "correctAnswer": "The dog likes to swim.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "likes",
+                        "to",
+                        "swim.",
+                        "like"
+                    ],
+                    "id": "item_a67f76b1"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek aludni.",
+                    "correctAnswer": "I like to sleep.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "sleep.",
+                        "sleeps."
+                    ],
+                    "id": "item_197c377b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te szeretsz olvasni.",
+                    "correctAnswer": "You like to read.",
+                    "scrambledWords": [
+                        "You",
+                        "like",
+                        "to",
+                        "read.",
+                        "reads."
+                    ],
+                    "id": "item_1e1791a4"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) szeret enni.",
+                    "sentence": "She likes to ____.",
+                    "answer": "eat",
+                    "options": [
+                        "eat",
+                        "eats",
+                        "eating",
+                        "do"
+                    ],
+                    "id": "item_f8c37486"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretünk játszani.",
+                    "correctAnswer": "We like to play.",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "to",
+                        "play.",
+                        "plays."
+                    ],
+                    "id": "item_c4757d77"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) imád aludni.",
+                    "sentence": "He loves ____ sleep.",
+                    "answer": "to",
+                    "options": [
+                        "to",
+                        "on",
+                        "in",
+                        "the"
+                    ],
+                    "id": "item_6354cc3a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szeretsz olvasni?",
+                    "correctAnswer": "Do you like to read?",
+                    "scrambledWords": [
+                        "Do",
+                        "you",
+                        "like",
+                        "to",
+                        "read?",
+                        "Does"
+                    ],
+                    "id": "item_c6d22334"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők utálnak dolgozni.",
+                    "correctAnswer": "They hate to work.",
+                    "scrambledWords": [
+                        "They",
+                        "hate",
+                        "to",
+                        "work.",
+                        "hates"
+                    ],
+                    "id": "item_28d19cf8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szeret ő (nő) játszani?",
+                    "sentence": "Does she like to ____?",
+                    "answer": "play",
+                    "options": [
+                        "play",
+                        "plays",
+                        "run",
+                        "work"
+                    ],
+                    "id": "item_3b788b87"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya szeret aludni.",
+                    "correctAnswer": "The dog likes to sleep.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "likes",
+                        "to",
+                        "sleep.",
+                        "like"
+                    ],
+                    "id": "item_74795b33"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek pizzát enni.",
+                    "correctAnswer": "I like to eat pizza.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "eat",
+                        "pizza.",
+                        "eats"
+                    ],
+                    "id": "item_575bde1a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én imádok kávét inni.",
+                    "sentence": "I love to ____ coffee.",
+                    "answer": "drink",
+                    "options": [
+                        "drink",
+                        "drinks",
+                        "eat",
+                        "eats"
+                    ],
+                    "id": "item_bd60adba"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) szeret a konyhában főzni.",
+                    "correctAnswer": "She likes to cook in the kitchen.",
+                    "scrambledWords": [
+                        "She",
+                        "likes",
+                        "to",
+                        "cook",
+                        "in",
+                        "the",
+                        "kitchen."
+                    ],
+                    "id": "item_e3161fb2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te szeretsz a kutyával játszani.",
+                    "correctAnswer": "You like to play with the dog.",
+                    "scrambledWords": [
+                        "You",
+                        "like",
+                        "to",
+                        "play",
+                        "with",
+                        "the",
+                        "dog."
+                    ],
+                    "id": "item_2e47cf56"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi szeretünk a szobában táncolni.",
+                    "sentence": "We like to dance in the ____.",
+                    "answer": "room",
+                    "options": [
+                        "room",
+                        "table",
+                        "chair",
+                        "bed"
+                    ],
+                    "id": "item_e27f577d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem utál dolgozni.",
+                    "correctAnswer": "My brother hates to work.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "hates",
+                        "to",
+                        "work.",
+                        "hate"
+                    ],
+                    "id": "item_6a4cc400"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Szeretsz futni? Igen, szeretek futni.",
+                    "correctAnswer": "Do you like to run? Yes, I like to run.",
+                    "scrambledWords": [
+                        "Do",
+                        "you",
+                        "like",
+                        "to",
+                        "run?",
+                        "Yes,",
+                        "I",
+                        "like",
+                        "to",
+                        "run."
+                    ],
+                    "id": "item_d0485f38"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) szeret főzni, és én utálok főzni.",
+                    "sentence": "He likes to cook and I ____ to cook.",
+                    "answer": "hate",
+                    "options": [
+                        "hate",
+                        "hates",
+                        "love",
+                        "like"
+                    ],
+                    "id": "item_a889adf8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szeret ő (nő) táncolni? Nem, ő utál táncolni.",
+                    "correctAnswer": "Does she like to dance? No, she hates to dance.",
+                    "scrambledWords": [
+                        "Does",
+                        "she",
+                        "like",
+                        "to",
+                        "dance?",
+                        "No,",
+                        "she",
+                        "hates",
+                        "to",
+                        "dance."
+                    ],
+                    "id": "item_b2b88829"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek olvasni és te szeretsz aludni.",
+                    "correctAnswer": "I like to read and you like to sleep.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "read",
+                        "and",
+                        "you",
+                        "like",
+                        "to",
+                        "sleep."
+                    ],
+                    "id": "item_e26b15e9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya szeret a vízben úszni?",
+                    "sentence": "Does the dog like to swim in the ____?",
+                    "answer": "water",
+                    "options": [
+                        "water",
+                        "house",
+                        "room",
+                        "table"
+                    ],
+                    "id": "item_9bb06017"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretünk pizzát enni hétvégén.",
+                    "correctAnswer": "We like to eat pizza on the weekend.",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "to",
+                        "eat",
+                        "pizza",
+                        "on",
+                        "the",
+                        "weekend."
+                    ],
+                    "id": "item_dbf536e8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem szeretnek dolgozni reggel.",
+                    "correctAnswer": "They don't like to work in the morning.",
+                    "scrambledWords": [
+                        "They",
+                        "don't",
+                        "like",
+                        "to",
+                        "work",
+                        "in",
+                        "the",
+                        "morning.",
+                        "doesn't"
+                    ],
+                    "id": "item_50c74c45"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te szeretsz éjszaka olvasni?",
+                    "sentence": "Do you like to read ____ night?",
+                    "answer": "at",
+                    "options": [
+                        "at",
+                        "in",
+                        "on",
+                        "the"
+                    ],
+                    "id": "item_80a4d486"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám szeret főzni, és az apám szeret enni.",
+                    "correctAnswer": "My mother likes to cook and my father likes to eat.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "likes",
+                        "to",
+                        "cook",
+                        "and",
+                        "my",
+                        "father",
+                        "likes",
+                        "to",
+                        "eat."
+                    ],
+                    "id": "item_11cd4460"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szeret a fivéred táncolni?",
+                    "correctAnswer": "Does your brother like to dance?",
+                    "scrambledWords": [
+                        "Does",
+                        "your",
+                        "brother",
+                        "like",
+                        "to",
+                        "dance?",
+                        "Do"
+                    ],
+                    "id": "item_6b4618ae"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én imádok futni reggel.",
+                    "sentence": "I love ____ run in the morning.",
+                    "answer": "to",
+                    "options": [
+                        "to",
+                        "in",
+                        "on",
+                        "at"
+                    ],
+                    "id": "item_f1efb555"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) nem szeret úszni.",
+                    "correctAnswer": "She doesn't like to swim.",
+                    "scrambledWords": [
+                        "She",
+                        "doesn't",
+                        "like",
+                        "to",
+                        "swim.",
+                        "don't"
+                    ],
+                    "id": "item_6f80196b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom utál dolgozni és szeret aludni.",
+                    "correctAnswer": "My friend hates to work and likes to sleep.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "hates",
+                        "to",
+                        "work",
+                        "and",
+                        "likes",
+                        "to",
+                        "sleep.",
+                        "hate"
+                    ],
+                    "id": "item_a1e09615"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szeret ő (férfi) a kutyával játszani?",
+                    "sentence": "Does he like to play ____ the dog?",
+                    "answer": "with",
+                    "options": [
+                        "with",
+                        "in",
+                        "on",
+                        "at"
+                    ],
+                    "id": "item_fe9a9347"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek a szobámban olvasni.",
+                    "correctAnswer": "I like to read in my room.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "read",
+                        "in",
+                        "my",
+                        "room.",
+                        "reads"
+                    ],
+                    "id": "item_69a244ad"
+                }
+            ]
+        }
+    ]
+}

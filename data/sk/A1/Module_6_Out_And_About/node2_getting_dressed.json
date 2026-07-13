@@ -1,0 +1,951 @@
+{
+    "title": "Öltözködés",
+    "type": "multi_level_node",
+    "targetWords": [
+        "wearing",
+        "shirt",
+        "pants",
+        "red",
+        "blue",
+        "black"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "wearing",
+                "shirt",
+                "red"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ing",
+                    "correctAnswer": "shirt",
+                    "options": [
+                        {
+                            "id": "shirt",
+                            "text": "shirt",
+                            "correct": true
+                        },
+                        {
+                            "id": "pants",
+                            "text": "pants",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_69bc30b2"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "piros",
+                    "correctAnswer": "red",
+                    "options": [
+                        {
+                            "id": "red",
+                            "text": "red",
+                            "correct": true
+                        },
+                        {
+                            "id": "blue",
+                            "text": "blue",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_8d30ae76"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én egy inget viselek.",
+                    "correctAnswer": "I am wearing a shirt.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "wearing",
+                        "a",
+                        "shirt.",
+                        "wear"
+                    ],
+                    "id": "item_0948dd5c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Egy piros ing.",
+                    "correctAnswer": "A red shirt.",
+                    "scrambledWords": [
+                        "A",
+                        "red",
+                        "shirt.",
+                        "blue"
+                    ],
+                    "id": "item_ba9f8927"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) egy inget visel.",
+                    "sentence": "He is ____ a shirt.",
+                    "answer": "wearing",
+                    "options": [
+                        "wearing",
+                        "wear",
+                        "wears",
+                        "doing"
+                    ],
+                    "id": "item_6624b110"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én egy piros inget viselek.",
+                    "correctAnswer": "I am wearing a red shirt.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt.",
+                        "wear"
+                    ],
+                    "id": "item_9850b53b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) egy piros inget visel most.",
+                    "correctAnswer": "She is wearing a red shirt now.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt",
+                        "now.",
+                        "wear"
+                    ],
+                    "id": "item_44d0fbec"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi egy piros inget viselünk.",
+                    "sentence": "We are wearing a ____ shirt.",
+                    "answer": "red",
+                    "options": [
+                        "red",
+                        "wearing",
+                        "now",
+                        "are"
+                    ],
+                    "id": "item_3572ff61"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit viselsz most?",
+                    "correctAnswer": "What are you wearing now?",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "wearing",
+                        "now?",
+                        "wear"
+                    ],
+                    "id": "item_507b1e93"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te egy piros inget viselsz.",
+                    "correctAnswer": "You are wearing a red shirt.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt.",
+                        "wear"
+                    ],
+                    "id": "item_5df5c3f1"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A tanár egy piros inget visel.",
+                    "sentence": "The teacher ____ wearing a red shirt.",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "are",
+                        "am",
+                        "does"
+                    ],
+                    "id": "item_4410fcf6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők piros inget viselnek.",
+                    "correctAnswer": "They are wearing a red shirt.",
+                    "scrambledWords": [
+                        "They",
+                        "are",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt.",
+                        "wear"
+                    ],
+                    "id": "item_2485f780"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám egy inget visel.",
+                    "correctAnswer": "My father is wearing a shirt.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "is",
+                        "wearing",
+                        "a",
+                        "shirt.",
+                        "wears"
+                    ],
+                    "id": "item_0f814c98"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Egy piros ing.",
+                    "sentence": "A ____ shirt.",
+                    "answer": "red",
+                    "options": [
+                        "red",
+                        "wearing",
+                        "now",
+                        "blue"
+                    ],
+                    "id": "item_99a45ef3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinálsz? Egy piros inget viselek.",
+                    "correctAnswer": "What are you doing? I am wearing a red shirt.",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "doing?",
+                        "I",
+                        "am",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt."
+                    ],
+                    "id": "item_57881e28"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "pants",
+                "blue"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nadrág",
+                    "correctAnswer": "pants",
+                    "options": [
+                        {
+                            "id": "pants",
+                            "text": "pants",
+                            "correct": true
+                        },
+                        {
+                            "id": "shirt",
+                            "text": "shirt",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_7b4a178d"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "kék",
+                    "correctAnswer": "blue",
+                    "options": [
+                        {
+                            "id": "red",
+                            "text": "red",
+                            "correct": false
+                        },
+                        {
+                            "id": "blue",
+                            "text": "blue",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_e1f3fdef"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nadrágot viselek.",
+                    "correctAnswer": "I am wearing pants.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "wearing",
+                        "pants.",
+                        "a"
+                    ],
+                    "id": "item_7802d070"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Kék nadrág.",
+                    "correctAnswer": "Blue pants.",
+                    "scrambledWords": [
+                        "Blue",
+                        "pants.",
+                        "red",
+                        "a"
+                    ],
+                    "id": "item_b14a708e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) kék nadrágot visel.",
+                    "sentence": "She is wearing ____ pants.",
+                    "answer": "blue",
+                    "options": [
+                        "blue",
+                        "red",
+                        "a",
+                        "wearing"
+                    ],
+                    "id": "item_4b95b19e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te kék inget viselsz.",
+                    "correctAnswer": "You are wearing a blue shirt.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "wearing",
+                        "a",
+                        "blue",
+                        "shirt.",
+                        "pants."
+                    ],
+                    "id": "item_d33f1442"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi nadrágot viselünk.",
+                    "sentence": "We are ____ pants.",
+                    "answer": "wearing",
+                    "options": [
+                        "wearing",
+                        "wear",
+                        "wears",
+                        "a"
+                    ],
+                    "id": "item_e5504fec"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők kék nadrágot viselnek most.",
+                    "correctAnswer": "They are wearing blue pants now.",
+                    "scrambledWords": [
+                        "They",
+                        "are",
+                        "wearing",
+                        "blue",
+                        "pants",
+                        "now.",
+                        "wear"
+                    ],
+                    "id": "item_deb603c4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Egy piros ing és kék nadrág.",
+                    "correctAnswer": "A red shirt and blue pants.",
+                    "scrambledWords": [
+                        "A",
+                        "red",
+                        "shirt",
+                        "and",
+                        "blue",
+                        "pants."
+                    ],
+                    "id": "item_c49b7df4"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én kék nadrágot viselek.",
+                    "sentence": "I am wearing blue ____.",
+                    "answer": "pants",
+                    "options": [
+                        "pants",
+                        "shirt",
+                        "wearing",
+                        "red"
+                    ],
+                    "id": "item_2740aa79"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem kék inget visel.",
+                    "correctAnswer": "My brother is wearing a blue shirt.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "is",
+                        "wearing",
+                        "a",
+                        "blue",
+                        "shirt.",
+                        "pants."
+                    ],
+                    "id": "item_4876f346"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te piros nadrágot viselsz.",
+                    "correctAnswer": "You are wearing red pants.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "wearing",
+                        "red",
+                        "pants.",
+                        "a"
+                    ],
+                    "id": "item_ddb15328"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A tanár kék nadrágot visel.",
+                    "sentence": "The teacher is wearing ____ pants.",
+                    "answer": "blue",
+                    "options": [
+                        "blue",
+                        "a blue",
+                        "red",
+                        "wearing"
+                    ],
+                    "id": "item_304d946a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit visel ő (férfi)?",
+                    "correctAnswer": "What is he wearing?",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "he",
+                        "wearing?",
+                        "wear?"
+                    ],
+                    "id": "item_cb612eb3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) kék nadrágot visel.",
+                    "correctAnswer": "He is wearing blue pants.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "wearing",
+                        "blue",
+                        "pants.",
+                        "a"
+                    ],
+                    "id": "item_e7c7b0c4"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "black"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fekete",
+                    "correctAnswer": "black",
+                    "options": [
+                        {
+                            "id": "black",
+                            "text": "black",
+                            "correct": true
+                        },
+                        {
+                            "id": "blue",
+                            "text": "blue",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_54746291"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Fekete nadrág.",
+                    "correctAnswer": "Black pants.",
+                    "scrambledWords": [
+                        "Black",
+                        "pants.",
+                        "red",
+                        "a"
+                    ],
+                    "id": "item_9eac8c6c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Egy fekete ing.",
+                    "correctAnswer": "A black shirt.",
+                    "scrambledWords": [
+                        "A",
+                        "black",
+                        "shirt.",
+                        "blue"
+                    ],
+                    "id": "item_8b318918"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én fekete nadrágot viselek.",
+                    "sentence": "I am wearing ____ pants.",
+                    "answer": "black",
+                    "options": [
+                        "black",
+                        "a black",
+                        "red",
+                        "wearing"
+                    ],
+                    "id": "item_eeeba1a3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) egy fekete inget visel.",
+                    "correctAnswer": "She is wearing a black shirt.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "wearing",
+                        "a",
+                        "black",
+                        "shirt.",
+                        "pants."
+                    ],
+                    "id": "item_dac24e42"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te kék nadrágot és egy fekete inget viselsz.",
+                    "correctAnswer": "You are wearing blue pants and a black shirt.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "wearing",
+                        "blue",
+                        "pants",
+                        "and",
+                        "a",
+                        "black",
+                        "shirt."
+                    ],
+                    "id": "item_52fe951b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A rendőr fekete nadrágot visel.",
+                    "sentence": "The policeman is wearing black ____.",
+                    "answer": "pants",
+                    "options": [
+                        "pants",
+                        "shirt",
+                        "a pants",
+                        "wearing"
+                    ],
+                    "id": "item_8bf35b61"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi fekete nadrágot viselünk most.",
+                    "correctAnswer": "We are wearing black pants now.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "wearing",
+                        "black",
+                        "pants",
+                        "now.",
+                        "wear"
+                    ],
+                    "id": "item_d8a40eeb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők piros inget és fekete nadrágot viselnek.",
+                    "correctAnswer": "They are wearing a red shirt and black pants.",
+                    "scrambledWords": [
+                        "They",
+                        "are",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt",
+                        "and",
+                        "black",
+                        "pants."
+                    ],
+                    "id": "item_ea2fa34e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám egy fekete inget visel.",
+                    "sentence": "My father is wearing a ____ shirt.",
+                    "answer": "black",
+                    "options": [
+                        "black",
+                        "blue",
+                        "red",
+                        "now"
+                    ],
+                    "id": "item_956533eb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom egy kék inget és fekete nadrágot visel.",
+                    "correctAnswer": "My friend is wearing a blue shirt and black pants.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "is",
+                        "wearing",
+                        "a",
+                        "blue",
+                        "shirt",
+                        "and",
+                        "black",
+                        "pants."
+                    ],
+                    "id": "item_77b67fd1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit visel a tanár?",
+                    "correctAnswer": "What is the teacher wearing?",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "the",
+                        "teacher",
+                        "wearing?",
+                        "wear?"
+                    ],
+                    "id": "item_f27da0a0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én fekete inget viselek most.",
+                    "sentence": "I am wearing a black shirt ____.",
+                    "answer": "now",
+                    "options": [
+                        "now",
+                        "wearing",
+                        "blue",
+                        "doing"
+                    ],
+                    "id": "item_594c5e6d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te fekete nadrágot viselsz az ágyon.",
+                    "correctAnswer": "You are wearing black pants on the bed.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "wearing",
+                        "black",
+                        "pants",
+                        "on",
+                        "the",
+                        "bed."
+                    ],
+                    "id": "item_556f2d68"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) egy fekete inget visel a konyhában.",
+                    "correctAnswer": "He is wearing a black shirt in the kitchen.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "wearing",
+                        "a",
+                        "black",
+                        "shirt",
+                        "in",
+                        "the",
+                        "kitchen."
+                    ],
+                    "id": "item_b406e56e"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én dolgozom és egy fekete inget viselek.",
+                    "correctAnswer": "I am working and I am wearing a black shirt.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "working",
+                        "and",
+                        "I",
+                        "am",
+                        "wearing",
+                        "a",
+                        "black",
+                        "shirt."
+                    ],
+                    "id": "item_24fb630c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) kék nadrágot visel most.",
+                    "sentence": "She is wearing ____ pants now.",
+                    "answer": "blue",
+                    "options": [
+                        "blue",
+                        "a blue",
+                        "red",
+                        "black"
+                    ],
+                    "id": "item_d0ba8792"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya a kék nadrágon alszik.",
+                    "correctAnswer": "The dog is sleeping on the blue pants.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "is",
+                        "sleeping",
+                        "on",
+                        "the",
+                        "blue",
+                        "pants.",
+                        "sleeps"
+                    ],
+                    "id": "item_04885836"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit csinálsz? Én egy piros inget viselek.",
+                    "correctAnswer": "What are you doing? I am wearing a red shirt.",
+                    "scrambledWords": [
+                        "What",
+                        "are",
+                        "you",
+                        "doing?",
+                        "I",
+                        "am",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt."
+                    ],
+                    "id": "item_1ff64da1"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az anyám a konyhában olvas most.",
+                    "sentence": "My mother is ____ in the kitchen now.",
+                    "answer": "reading",
+                    "options": [
+                        "reading",
+                        "read",
+                        "reads",
+                        "wearing"
+                    ],
+                    "id": "item_2c0c3bc2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi fekete nadrágot és kék inget viselünk.",
+                    "correctAnswer": "We are wearing black pants and a blue shirt.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "wearing",
+                        "black",
+                        "pants",
+                        "and",
+                        "a",
+                        "blue",
+                        "shirt."
+                    ],
+                    "id": "item_7f7f10fd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) egy piros inget visel és ő játszik.",
+                    "correctAnswer": "He is wearing a red shirt and he is playing.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt",
+                        "and",
+                        "he",
+                        "is",
+                        "playing.",
+                        "plays."
+                    ],
+                    "id": "item_7aa8ac71"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te mit viselsz?",
+                    "sentence": "What are you ____?",
+                    "answer": "wearing",
+                    "options": [
+                        "wearing",
+                        "wear",
+                        "doing",
+                        "working"
+                    ],
+                    "id": "item_388767f0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők a kék nadrágot viselik a szobában.",
+                    "correctAnswer": "They are wearing the blue pants in the room.",
+                    "scrambledWords": [
+                        "They",
+                        "are",
+                        "wearing",
+                        "the",
+                        "blue",
+                        "pants",
+                        "in",
+                        "the",
+                        "room."
+                    ],
+                    "id": "item_343d7a38"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom alszik, ő fekete nadrágot visel.",
+                    "correctAnswer": "My friend is sleeping, he is wearing black pants.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "is",
+                        "sleeping,",
+                        "he",
+                        "is",
+                        "wearing",
+                        "black",
+                        "pants."
+                    ],
+                    "id": "item_b20e4aa8"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem egy fekete inget visel.",
+                    "sentence": "My brother is wearing ____ black shirt.",
+                    "answer": "a",
+                    "options": [
+                        "a",
+                        "the",
+                        "an",
+                        "is"
+                    ],
+                    "id": "item_70637b79"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én egy piros inget viselek és pizzát eszem most.",
+                    "correctAnswer": "I am wearing a red shirt and eating pizza now.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "wearing",
+                        "a",
+                        "red",
+                        "shirt",
+                        "and",
+                        "eating",
+                        "pizza",
+                        "now."
+                    ],
+                    "id": "item_281c5668"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te kék inget és piros nadrágot viselsz?",
+                    "correctAnswer": "Are you wearing a blue shirt and red pants?",
+                    "scrambledWords": [
+                        "Are",
+                        "you",
+                        "wearing",
+                        "a",
+                        "blue",
+                        "shirt",
+                        "and",
+                        "red",
+                        "pants?",
+                        "Do"
+                    ],
+                    "id": "item_a232ea2b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) kávét iszik most.",
+                    "sentence": "She is ____ coffee now.",
+                    "answer": "drinking",
+                    "options": [
+                        "drinking",
+                        "drink",
+                        "wearing",
+                        "working"
+                    ],
+                    "id": "item_5ce30362"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mit visel az apád? Egy fekete inget.",
+                    "correctAnswer": "What is your father wearing? A black shirt.",
+                    "scrambledWords": [
+                        "What",
+                        "is",
+                        "your",
+                        "father",
+                        "wearing?",
+                        "A",
+                        "black",
+                        "shirt.",
+                        "wear?"
+                    ],
+                    "id": "item_d8b98b49"
+                }
+            ]
+        }
+    ]
+}

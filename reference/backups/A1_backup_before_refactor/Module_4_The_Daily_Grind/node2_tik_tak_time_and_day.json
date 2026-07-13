@@ -1,0 +1,520 @@
+{
+    "title": "Tik-Tak",
+    "type": "multi_level_node",
+    "targetWords": [
+        "morning",
+        "night",
+        "monday",
+        "friday",
+        "weekend",
+        "time",
+        "at",
+        "on"
+    ],
+    "dictionary": {
+        "morning": "reggel",
+        "night": "éjszaka / éjjel",
+        "monday": "hétfő (hétfőn)",
+        "friday": "péntek (pénteken)",
+        "weekend": "hétvége (hétvégén)",
+        "time": "idő",
+        "at": "-kor / -ban (időpontoknál)",
+        "on": "-on / -en / -ön (napoknál)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "morning",
+                "night",
+                "at"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "reggel",
+                    "correctAnswer": "morning",
+                    "options": [
+                        { "id": "morning", "text": "morning", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='60' r='20' fill='#f1c40f'/><path d='M20 60 L80 60' stroke='#34495e' stroke-width='4'/><path d='M50 30 L50 20 M30 40 L20 35 M70 40 L80 35' stroke='#f1c40f' stroke-width='3' stroke-linecap='round'/></svg>" },
+                        { "id": "night", "text": "night", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M45 30 A 20 20 0 1 0 70 55 A 25 25 0 1 1 45 30' fill='#f1c40f'/><circle cx='25' cy='30' r='2' fill='#fff'/><circle cx='80' cy='20' r='2' fill='#fff'/><circle cx='75' cy='80' r='2' fill='#fff'/><rect x='0' y='0' width='100' height='100' fill='#2c3e50' opacity='0.2'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "éjszaka",
+                    "correctAnswer": "night",
+                    "options": [
+                        { "id": "morning", "text": "morning", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='60' r='20' fill='#f1c40f'/><path d='M20 60 L80 60' stroke='#34495e' stroke-width='4'/><path d='M50 30 L50 20 M30 40 L20 35 M70 40 L80 35' stroke='#f1c40f' stroke-width='3' stroke-linecap='round'/></svg>" },
+                        { "id": "night", "text": "night", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M45 30 A 20 20 0 1 0 70 55 A 25 25 0 1 1 45 30' fill='#f1c40f'/><circle cx='25' cy='30' r='2' fill='#fff'/><circle cx='80' cy='20' r='2' fill='#fff'/><circle cx='75' cy='80' r='2' fill='#fff'/><rect x='0' y='0' width='100' height='100' fill='#2c3e50' opacity='0.2'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Reggel.",
+                    "correctAnswer": "In the morning.",
+                    "scrambledWords": ["In", "the", "morning.", "At", "night."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Éjszaka.",
+                    "correctAnswer": "At night.",
+                    "scrambledWords": ["At", "night.", "In", "morning."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én kávét iszom reggel.",
+                    "sentence": "I drink coffee in the ____.",
+                    "answer": "morning",
+                    "options": ["morning", "night", "at", "on"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én reggel dolgozom.",
+                    "correctAnswer": "I work in the morning.",
+                    "scrambledWords": ["I", "work", "in", "the", "morning.", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te éjszaka alszol.",
+                    "correctAnswer": "You sleep at night.",
+                    "scrambledWords": ["You", "sleep", "at", "night.", "in"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi éjszaka alszunk.",
+                    "sentence": "We sleep ____ night.",
+                    "answer": "at",
+                    "options": ["at", "in", "on", "the"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők éjszaka olvasnak.",
+                    "correctAnswer": "They read at night.",
+                    "scrambledWords": ["They", "read", "at", "night.", "morning."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én reggel eszem és éjszaka alszom.",
+                    "correctAnswer": "I eat in the morning and I sleep at night.",
+                    "scrambledWords": ["I", "eat", "in", "the", "morning", "and", "I", "sleep", "at", "night."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Reggel.",
+                    "sentence": "____ the morning.",
+                    "answer": "In",
+                    "options": ["In", "At", "On", "To"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi reggel dolgozunk.",
+                    "correctAnswer": "We work in the morning.",
+                    "scrambledWords": ["We", "work", "in", "the", "morning.", "night."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te éjszaka játszol.",
+                    "correctAnswer": "You play at night.",
+                    "scrambledWords": ["You", "play", "at", "night.", "in"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én éjszaka olvasok.",
+                    "sentence": "I read ____ night.",
+                    "answer": "at",
+                    "options": ["at", "in", "on", "morning"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Reggel vizet iszom.",
+                    "correctAnswer": "In the morning, I drink water.",
+                    "scrambledWords": ["In", "the", "morning,", "I", "drink", "water.", "at"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "monday",
+                "friday",
+                "on"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "hétfő",
+                    "correctAnswer": "Monday",
+                    "options": [
+                        { "id": "Monday", "text": "Monday", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='60' rx='5' fill='#ecf0f1'/><rect x='20' y='20' width='60' height='20' rx='5' fill='#e74c3c'/><text x='50' y='65' font-size='20' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>MON</text></svg>" },
+                        { "id": "Friday", "text": "Friday", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='60' rx='5' fill='#ecf0f1'/><rect x='20' y='20' width='60' height='20' rx='5' fill='#3498db'/><text x='50' y='65' font-size='20' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>FRI</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "péntek",
+                    "correctAnswer": "Friday",
+                    "options": [
+                        { "id": "Monday", "text": "Monday", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='60' rx='5' fill='#ecf0f1'/><rect x='20' y='20' width='60' height='20' rx='5' fill='#e74c3c'/><text x='50' y='65' font-size='20' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>MON</text></svg>" },
+                        { "id": "Friday", "text": "Friday", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='60' rx='5' fill='#ecf0f1'/><rect x='20' y='20' width='60' height='20' rx='5' fill='#3498db'/><text x='50' y='65' font-size='20' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>FRI</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Hétfőn.",
+                    "correctAnswer": "On Monday.",
+                    "scrambledWords": ["On", "Monday.", "In", "At"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Pénteken.",
+                    "correctAnswer": "On Friday.",
+                    "scrambledWords": ["On", "Friday.", "In", "At"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én hétfőn dolgozom.",
+                    "sentence": "I work ____ Monday.",
+                    "answer": "on",
+                    "options": ["on", "in", "at", "the"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én hétfőn dolgozom.",
+                    "correctAnswer": "I work on Monday.",
+                    "scrambledWords": ["I", "work", "on", "Monday.", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők pénteken játszanak.",
+                    "correctAnswer": "They play on Friday.",
+                    "scrambledWords": ["They", "play", "on", "Friday.", "at"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi pénteken alszunk.",
+                    "sentence": "We sleep on ____.",
+                    "answer": "Friday",
+                    "options": ["Friday", "morning", "night", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én hétfőn olvasok.",
+                    "correctAnswer": "I read on Monday.",
+                    "scrambledWords": ["I", "read", "on", "Monday.", "Friday."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te pénteken eszel.",
+                    "correctAnswer": "You eat on Friday.",
+                    "scrambledWords": ["You", "eat", "on", "Friday.", "in"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Pénteken.",
+                    "sentence": "____ Friday.",
+                    "answer": "On",
+                    "options": ["On", "In", "At", "To"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi hétfőn kávét iszunk.",
+                    "correctAnswer": "We drink coffee on Monday.",
+                    "scrambledWords": ["We", "drink", "coffee", "on", "Monday.", "the"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hétfőn dolgozom.",
+                    "correctAnswer": "On Monday, I work.",
+                    "scrambledWords": ["On", "Monday,", "I", "work.", "in"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők hétfőn dolgoznak.",
+                    "sentence": "They work ____ Monday.",
+                    "answer": "on",
+                    "options": ["on", "in", "at", "where"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én pénteken alszom.",
+                    "correctAnswer": "I sleep on Friday.",
+                    "scrambledWords": ["I", "sleep", "on", "Friday.", "at"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "weekend",
+                "time"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "hétvége",
+                    "correctAnswer": "weekend",
+                    "options": [
+                        { "id": "weekend", "text": "weekend", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='60' rx='5' fill='#ecf0f1'/><rect x='20' y='20' width='60' height='20' rx='5' fill='#27ae60'/><text x='50' y='55' font-size='12' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>SAT / SUN</text></svg>" },
+                        { "id": "Monday", "text": "Monday", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='60' rx='5' fill='#ecf0f1'/><rect x='20' y='20' width='60' height='20' rx='5' fill='#e74c3c'/><text x='50' y='65' font-size='20' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>MON</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "idő",
+                    "correctAnswer": "time",
+                    "options": [
+                        { "id": "time", "text": "time", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='35' stroke='#2c3e50' stroke-width='6' fill='#ecf0f1'/><line x1='50' y1='50' x2='50' y2='25' stroke='#e74c3c' stroke-width='4' stroke-linecap='round'/><line x1='50' y1='50' x2='70' y2='50' stroke='#34495e' stroke-width='4' stroke-linecap='round'/></svg>" },
+                        { "id": "weekend", "text": "weekend", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='60' rx='5' fill='#ecf0f1'/><rect x='20' y='20' width='60' height='20' rx='5' fill='#27ae60'/><text x='50' y='55' font-size='12' font-family='Arial' font-weight='bold' fill='#2c3e50' text-anchor='middle'>SAT / SUN</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Hétvégén.",
+                    "correctAnswer": "On the weekend.",
+                    "scrambledWords": ["On", "the", "weekend.", "In", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Mennyi az idő?",
+                    "correctAnswer": "What time is it?",
+                    "scrambledWords": ["What", "time", "is", "it?", "Where"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én játszom hétvégén.",
+                    "sentence": "I play on the ____.",
+                    "answer": "weekend",
+                    "options": ["weekend", "Monday", "time", "night"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi alszunk hétvégén.",
+                    "correctAnswer": "We sleep on the weekend.",
+                    "scrambledWords": ["We", "sleep", "on", "the", "weekend.", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Itt az idő? (Ideje van?)",
+                    "correctAnswer": "Is it time?",
+                    "scrambledWords": ["Is", "it", "time?", "on", "What"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mennyi az idő?",
+                    "sentence": "What ____ is it?",
+                    "answer": "time",
+                    "options": ["time", "weekend", "is", "are"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én olvasok hétvégén.",
+                    "correctAnswer": "I read on the weekend.",
+                    "scrambledWords": ["I", "read", "on", "the", "weekend.", "Friday."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők dolgoznak hétvégén.",
+                    "correctAnswer": "They work on the weekend.",
+                    "scrambledWords": ["They", "work", "on", "the", "weekend.", "at"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi eszünk hétvégén.",
+                    "sentence": "We eat on ____ weekend.",
+                    "answer": "the",
+                    "options": ["the", "a", "in", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hétvégén játszom.",
+                    "correctAnswer": "On the weekend, I play.",
+                    "scrambledWords": ["On", "the", "weekend,", "I", "play.", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az idő jó.",
+                    "correctAnswer": "The time is good.",
+                    "scrambledWords": ["The", "time", "is", "good.", "bad.", "on"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mennyi az idő?",
+                    "sentence": "What time ____ it?",
+                    "answer": "is",
+                    "options": ["is", "are", "am", "do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutyával játszom hétvégén.",
+                    "correctAnswer": "I play with the dog on the weekend.",
+                    "scrambledWords": ["I", "play", "with", "the", "dog", "on", "the", "weekend."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hétfő reggel dolgozom.",
+                    "correctAnswer": "I work on Monday morning.",
+                    "scrambledWords": ["I", "work", "on", "Monday", "morning.", "in"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Péntek éjszaka alszom.",
+                    "sentence": "I sleep on Friday ____.",
+                    "answer": "night",
+                    "options": ["night", "morning", "weekend", "time"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők hétvégén játszanak.",
+                    "correctAnswer": "They play on the weekend.",
+                    "scrambledWords": ["They", "play", "on", "the", "weekend.", "in"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi éjszaka olvasunk.",
+                    "correctAnswer": "We read at night.",
+                    "scrambledWords": ["We", "read", "at", "night.", "on"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Reggel kávét iszom.",
+                    "sentence": "I drink coffee ____ the morning.",
+                    "answer": "in",
+                    "options": ["in", "on", "at", "the"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Pénteken dolgozom.",
+                    "correctAnswer": "On Friday, I work.",
+                    "scrambledWords": ["On", "Friday,", "I", "work.", "at"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hétvégén éjszaka alszom.",
+                    "correctAnswer": "I sleep at night on the weekend.",
+                    "scrambledWords": ["I", "sleep", "at", "night", "on", "the", "weekend."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Hétfő reggel.",
+                    "sentence": "____ Monday morning.",
+                    "answer": "On",
+                    "options": ["On", "In", "At", "The"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mennyi az idő?",
+                    "correctAnswer": "What time is it?",
+                    "scrambledWords": ["What", "time", "is", "it?", "where"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hétvégén reggel alszom.",
+                    "correctAnswer": "On the weekend, I sleep in the morning.",
+                    "scrambledWords": ["On", "the", "weekend,", "I", "sleep", "in", "the", "morning."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők hétfőn és pénteken dolgoznak.",
+                    "sentence": "They work on Monday and ____.",
+                    "answer": "Friday",
+                    "options": ["Friday", "morning", "weekend", "time"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én reggel eszem és éjszaka játszom.",
+                    "correctAnswer": "I eat in the morning and I play at night.",
+                    "scrambledWords": ["I", "eat", "in", "the", "morning", "and", "I", "play", "at", "night."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi péntek éjszaka olvasunk.",
+                    "correctAnswer": "We read on Friday night.",
+                    "scrambledWords": ["We", "read", "on", "Friday", "night.", "at"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te éjszaka alszol.",
+                    "sentence": "You sleep ____ night.",
+                    "answer": "at",
+                    "options": ["at", "in", "on", "to"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Hétfőn dolgozom és hétvégén játszom.",
+                    "correctAnswer": "On Monday, I work and on the weekend, I play.",
+                    "scrambledWords": ["On", "Monday,", "I", "work", "and", "on", "the", "weekend,", "I", "play."]
+                }
+            ]
+        }
+    ]
+}

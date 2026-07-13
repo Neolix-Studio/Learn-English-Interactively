@@ -1,0 +1,515 @@
+{
+    "title": "Hogy vagy?",
+    "type": "multi_level_node",
+    "targetWords": [
+        "how",
+        "are",
+        "you",
+        "good",
+        "bad",
+        "happy",
+        "sad",
+        "tired",
+        "I",
+        "am",
+        "yes",
+        "no"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "how",
+                "good",
+                "bad"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "jó (jól)",
+                    "correctAnswer": "good",
+                    "options": [
+                        {
+                            "id": "good",
+                            "text": "good",
+                            "correct": true
+                        },
+                        {
+                            "id": "bad",
+                            "text": "bad",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_ce9ef2fd"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "rossz (rosszul)",
+                    "correctAnswer": "bad",
+                    "options": [
+                        {
+                            "id": "good",
+                            "text": "good",
+                            "correct": false
+                        },
+                        {
+                            "id": "bad",
+                            "text": "bad",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_0a7a8a98"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hogy vagy?",
+                    "correctAnswer": "How are you?",
+                    "scrambledWords": [
+                        "How",
+                        "are",
+                        "you?",
+                        "am",
+                        "I"
+                    ],
+                    "id": "item_f50bfcf2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Jól vagyok.",
+                    "correctAnswer": "I am good.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "good.",
+                        "are",
+                        "you"
+                    ],
+                    "id": "item_1c47d141"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Hogy vagy?",
+                    "sentence": "____ are you?",
+                    "answer": "How",
+                    "options": [
+                        "How",
+                        "Are",
+                        "You",
+                        "Good"
+                    ],
+                    "id": "item_30f3ba3e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, hogy vagy?",
+                    "correctAnswer": "Hello, how are you?",
+                    "scrambledWords": [
+                        "Hello,",
+                        "how",
+                        "are",
+                        "you?",
+                        "good"
+                    ],
+                    "id": "item_8795f14a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Rosszul vagyok.",
+                    "sentence": "I am ____.",
+                    "answer": "bad",
+                    "options": [
+                        "bad",
+                        "good",
+                        "how",
+                        "are"
+                    ],
+                    "id": "item_010ed6dd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Jól vagyok, köszönöm.",
+                    "correctAnswer": "I am good, thanks.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "good,",
+                        "thanks.",
+                        "bad"
+                    ],
+                    "id": "item_604c5db0"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "happy",
+                "sad"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "boldog",
+                    "correctAnswer": "happy",
+                    "options": [
+                        {
+                            "id": "happy",
+                            "text": "happy",
+                            "correct": true
+                        },
+                        {
+                            "id": "sad",
+                            "text": "sad",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_4a8120c8"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "szomorú",
+                    "correctAnswer": "sad",
+                    "options": [
+                        {
+                            "id": "happy",
+                            "text": "happy",
+                            "correct": false
+                        },
+                        {
+                            "id": "sad",
+                            "text": "sad",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_70177d07"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én boldog vagyok.",
+                    "correctAnswer": "I am happy.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "happy.",
+                        "sad.",
+                        "you"
+                    ],
+                    "id": "item_8883752a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Boldog vagy?",
+                    "correctAnswer": "Are you happy?",
+                    "scrambledWords": [
+                        "Are",
+                        "you",
+                        "happy?",
+                        "You",
+                        "are"
+                    ],
+                    "id": "item_9a4a2f96"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Szomorú vagy?",
+                    "sentence": "____ you sad?",
+                    "answer": "Are",
+                    "options": [
+                        "Are",
+                        "Am",
+                        "How",
+                        "I"
+                    ],
+                    "id": "item_e77afb40"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, boldog vagyok.",
+                    "correctAnswer": "Yes, I am happy.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "I",
+                        "am",
+                        "happy.",
+                        "Are"
+                    ],
+                    "id": "item_c5283181"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te szomorú vagy.",
+                    "correctAnswer": "You are sad.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "sad.",
+                        "Are",
+                        "you"
+                    ],
+                    "id": "item_ec00ef0d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nem, szomorú vagyok.",
+                    "sentence": "No, I am ____.",
+                    "answer": "sad",
+                    "options": [
+                        "sad",
+                        "happy",
+                        "good",
+                        "how"
+                    ],
+                    "id": "item_82846474"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "tired"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fáradt",
+                    "correctAnswer": "tired",
+                    "options": [
+                        {
+                            "id": "tired",
+                            "text": "tired",
+                            "correct": true
+                        },
+                        {
+                            "id": "happy",
+                            "text": "happy",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_fe58ef18"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Fáradt vagyok.",
+                    "correctAnswer": "I am tired.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "tired.",
+                        "sad.",
+                        "you"
+                    ],
+                    "id": "item_d1ed1310"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Fáradt vagy?",
+                    "correctAnswer": "Are you tired?",
+                    "scrambledWords": [
+                        "Are",
+                        "you",
+                        "tired?",
+                        "You",
+                        "are"
+                    ],
+                    "id": "item_88c6077e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Igen, fáradt vagyok.",
+                    "sentence": "Yes, I ____ tired.",
+                    "answer": "am",
+                    "options": [
+                        "am",
+                        "are",
+                        "how",
+                        "good"
+                    ],
+                    "id": "item_8adb64ca"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Hogy vagy? Fáradt vagy?",
+                    "correctAnswer": "How are you? Are you tired?",
+                    "scrambledWords": [
+                        "How",
+                        "are",
+                        "you?",
+                        "Are",
+                        "you",
+                        "tired?"
+                    ],
+                    "id": "item_9b1c7fbf"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, én jól vagyok.",
+                    "correctAnswer": "No, I am good.",
+                    "scrambledWords": [
+                        "No,",
+                        "I",
+                        "am",
+                        "good.",
+                        "bad."
+                    ],
+                    "id": "item_75d8d87c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Fáradt vagy?",
+                    "sentence": "____ you tired?",
+                    "answer": "Are",
+                    "options": [
+                        "Are",
+                        "Am",
+                        "How",
+                        "Yes"
+                    ],
+                    "id": "item_ac125733"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Boldog és fáradt vagyok.",
+                    "correctAnswer": "I am happy and tired.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "happy",
+                        "and",
+                        "tired.",
+                        "sad"
+                    ],
+                    "id": "item_3fb1c73e"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Szia, hogy vagy? Fáradt vagy?",
+                    "correctAnswer": "Hello, how are you? Are you tired?",
+                    "scrambledWords": [
+                        "Hello,",
+                        "how",
+                        "are",
+                        "you?",
+                        "Are",
+                        "you",
+                        "tired?",
+                        "am"
+                    ],
+                    "id": "item_13206608"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Nem, én boldog vagyok.",
+                    "sentence": "No, I am ____.",
+                    "answer": "happy",
+                    "options": [
+                        "happy",
+                        "how",
+                        "are",
+                        "you"
+                    ],
+                    "id": "item_8468fb84"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, rosszul vagyok és fáradt vagyok.",
+                    "correctAnswer": "Yes, I am bad and I am tired.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "I",
+                        "am",
+                        "bad",
+                        "and",
+                        "I",
+                        "am",
+                        "tired.",
+                        "good"
+                    ],
+                    "id": "item_93fef524"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Boldog vagy és én szomorú vagyok.",
+                    "correctAnswer": "You are happy and I am sad.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "happy",
+                        "and",
+                        "I",
+                        "am",
+                        "sad.",
+                        "tired"
+                    ],
+                    "id": "item_ff7003e7"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Hogy vagy? Jól vagy?",
+                    "sentence": "How are you? ____ you good?",
+                    "answer": "Are",
+                    "options": [
+                        "Are",
+                        "Am",
+                        "I",
+                        "How"
+                    ],
+                    "id": "item_2f61ce0d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Viszlát, fáradt vagyok.",
+                    "correctAnswer": "Goodbye, I am tired.",
+                    "scrambledWords": [
+                        "Goodbye,",
+                        "I",
+                        "am",
+                        "tired.",
+                        "sad."
+                    ],
+                    "id": "item_cad4e6e3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A nevem... és boldog vagyok.",
+                    "correctAnswer": "My name is... and I am happy.",
+                    "scrambledWords": [
+                        "My",
+                        "name",
+                        "is...",
+                        "and",
+                        "I",
+                        "am",
+                        "happy.",
+                        "tired"
+                    ],
+                    "id": "item_5069d88f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Két kávét, kérem. Fáradt vagyok!",
+                    "correctAnswer": "Two coffees, please. I am tired!",
+                    "scrambledWords": [
+                        "Two",
+                        "coffees,",
+                        "please.",
+                        "I",
+                        "am",
+                        "tired!",
+                        "sad!"
+                    ],
+                    "id": "item_98df41e4"
+                }
+            ]
+        }
+    ]
+}

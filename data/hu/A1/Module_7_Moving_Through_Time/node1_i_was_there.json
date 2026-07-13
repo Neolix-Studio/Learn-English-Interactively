@@ -1,0 +1,933 @@
+{
+    "title": "Volt egyszer...",
+    "type": "multi_level_node",
+    "targetWords": [
+        "was",
+        "were",
+        "yesterday",
+        "here",
+        "there"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "was",
+                "yesterday",
+                "here"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "tegnap",
+                    "correctAnswer": "yesterday",
+                    "options": [
+                        {
+                            "id": "yesterday",
+                            "text": "yesterday",
+                            "correct": true
+                        },
+                        {
+                            "id": "now",
+                            "text": "now",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_641c11dd"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "itt",
+                    "correctAnswer": "here",
+                    "options": [
+                        {
+                            "id": "here",
+                            "text": "here",
+                            "correct": true
+                        },
+                        {
+                            "id": "there",
+                            "text": "there",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_bf91c0f7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én itt voltam tegnap.",
+                    "correctAnswer": "I was here yesterday.",
+                    "scrambledWords": [
+                        "I",
+                        "was",
+                        "here",
+                        "yesterday.",
+                        "am"
+                    ],
+                    "id": "item_c8728821"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) itt volt.",
+                    "correctAnswer": "He was here.",
+                    "scrambledWords": [
+                        "He",
+                        "was",
+                        "here.",
+                        "were",
+                        "is"
+                    ],
+                    "id": "item_40ff1bd4"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) tegnap itt volt.",
+                    "sentence": "She ____ here yesterday.",
+                    "answer": "was",
+                    "options": [
+                        "was",
+                        "were",
+                        "is",
+                        "am"
+                    ],
+                    "id": "item_61e07445"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya itt volt.",
+                    "correctAnswer": "The dog was here.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "was",
+                        "here.",
+                        "were"
+                    ],
+                    "id": "item_f2b9bba9"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én itt voltam.",
+                    "sentence": "I ____ here.",
+                    "answer": "was",
+                    "options": [
+                        "was",
+                        "were",
+                        "am",
+                        "is"
+                    ],
+                    "id": "item_1f3a5f51"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám tegnap itt volt.",
+                    "correctAnswer": "My father was here yesterday.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "was",
+                        "here",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_ca9befb4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tegnap a konyhában voltam.",
+                    "correctAnswer": "I was in the kitchen yesterday.",
+                    "scrambledWords": [
+                        "I",
+                        "was",
+                        "in",
+                        "the",
+                        "kitchen",
+                        "yesterday.",
+                        "am"
+                    ],
+                    "id": "item_38a7dd6d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) tegnap itt volt.",
+                    "sentence": "She was here ____.",
+                    "answer": "yesterday",
+                    "options": [
+                        "yesterday",
+                        "now",
+                        "today",
+                        "every day"
+                    ],
+                    "id": "item_5917ff09"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem itt volt tegnap.",
+                    "correctAnswer": "My brother was here yesterday.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "was",
+                        "here",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_f08a1fd3"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én voltam...",
+                    "sentence": "I ____...",
+                    "answer": "was",
+                    "options": [
+                        "was",
+                        "were",
+                        "am",
+                        "are"
+                    ],
+                    "id": "item_b904f53f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én itt voltam és ő (férfi) itt volt.",
+                    "correctAnswer": "I was here and he was here.",
+                    "scrambledWords": [
+                        "I",
+                        "was",
+                        "here",
+                        "and",
+                        "he",
+                        "was",
+                        "here.",
+                        "were"
+                    ],
+                    "id": "item_cd58d450"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom tegnap a szobában volt.",
+                    "correctAnswer": "My friend was in the room yesterday.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "was",
+                        "in",
+                        "the",
+                        "room",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_650d3359"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) itt volt.",
+                    "sentence": "He was ____.",
+                    "answer": "here",
+                    "options": [
+                        "here",
+                        "there",
+                        "where",
+                        "now"
+                    ],
+                    "id": "item_7052512f"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "were",
+                "there"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "ott",
+                    "correctAnswer": "there",
+                    "options": [
+                        {
+                            "id": "here",
+                            "text": "here",
+                            "correct": false
+                        },
+                        {
+                            "id": "there",
+                            "text": "there",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_1c3d76e2"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "voltak / voltál / voltunk (were)",
+                    "correctAnswer": "were",
+                    "options": [
+                        {
+                            "id": "was",
+                            "text": "was",
+                            "correct": false
+                        },
+                        {
+                            "id": "were",
+                            "text": "were",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_b7990f00"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te ott voltál tegnap.",
+                    "correctAnswer": "You were there yesterday.",
+                    "scrambledWords": [
+                        "You",
+                        "were",
+                        "there",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_9857c551"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ott voltunk.",
+                    "correctAnswer": "We were there.",
+                    "scrambledWords": [
+                        "We",
+                        "were",
+                        "there.",
+                        "was",
+                        "are"
+                    ],
+                    "id": "item_ebcc2d35"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők ott voltak tegnap.",
+                    "sentence": "They ____ there yesterday.",
+                    "answer": "were",
+                    "options": [
+                        "were",
+                        "was",
+                        "are",
+                        "do"
+                    ],
+                    "id": "item_b9992fdf"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te tegnap a házban voltál.",
+                    "correctAnswer": "You were in the house yesterday.",
+                    "scrambledWords": [
+                        "You",
+                        "were",
+                        "in",
+                        "the",
+                        "house",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_70bf1346"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi ott voltunk.",
+                    "sentence": "We were ____.",
+                    "answer": "there",
+                    "options": [
+                        "there",
+                        "here",
+                        "where",
+                        "now"
+                    ],
+                    "id": "item_ca3ba895"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők tegnap ott voltak.",
+                    "correctAnswer": "They were there yesterday.",
+                    "scrambledWords": [
+                        "They",
+                        "were",
+                        "there",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_79616a81"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te itt voltál és én ott voltam.",
+                    "correctAnswer": "You were here and I was there.",
+                    "scrambledWords": [
+                        "You",
+                        "were",
+                        "here",
+                        "and",
+                        "I",
+                        "was",
+                        "there."
+                    ],
+                    "id": "item_81bd1ddb"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők tegnap a szobában voltak.",
+                    "sentence": "They were in the room ____.",
+                    "answer": "yesterday",
+                    "options": [
+                        "yesterday",
+                        "now",
+                        "today",
+                        "every day"
+                    ],
+                    "id": "item_1a2ad651"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutyák (They) ott voltak.",
+                    "correctAnswer": "They were there.",
+                    "scrambledWords": [
+                        "They",
+                        "were",
+                        "there.",
+                        "was"
+                    ],
+                    "id": "item_e040d184"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te ott voltál tegnap.",
+                    "sentence": "You ____ there yesterday.",
+                    "answer": "were",
+                    "options": [
+                        "were",
+                        "was",
+                        "are",
+                        "am"
+                    ],
+                    "id": "item_99025073"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi tegnap itt voltunk.",
+                    "correctAnswer": "We were here yesterday.",
+                    "scrambledWords": [
+                        "We",
+                        "were",
+                        "here",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_15f47db0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők ott voltak.",
+                    "sentence": "____ were there.",
+                    "answer": "They",
+                    "options": [
+                        "They",
+                        "He",
+                        "She",
+                        "I"
+                    ],
+                    "id": "item_ac1e2bee"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te ott voltál az asztal mellett.",
+                    "correctAnswer": "You were there next to the table.",
+                    "scrambledWords": [
+                        "You",
+                        "were",
+                        "there",
+                        "next",
+                        "to",
+                        "the",
+                        "table."
+                    ],
+                    "id": "item_5198b00f"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én ott voltam, te itt voltál.",
+                    "correctAnswer": "I was there, you were here.",
+                    "scrambledWords": [
+                        "I",
+                        "was",
+                        "there,",
+                        "you",
+                        "were",
+                        "here.",
+                        "was",
+                        "were"
+                    ],
+                    "id": "item_30c8c35b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) a konyhában volt tegnap.",
+                    "sentence": "She ____ in the kitchen yesterday.",
+                    "answer": "was",
+                    "options": [
+                        "was",
+                        "were",
+                        "is",
+                        "are"
+                    ],
+                    "id": "item_0282864a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi tegnap az ágyon voltunk.",
+                    "correctAnswer": "We were on the bed yesterday.",
+                    "scrambledWords": [
+                        "We",
+                        "were",
+                        "on",
+                        "the",
+                        "bed",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_c57043c4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A tanár ott volt a szobában.",
+                    "correctAnswer": "The teacher was there in the room.",
+                    "scrambledWords": [
+                        "The",
+                        "teacher",
+                        "was",
+                        "there",
+                        "in",
+                        "the",
+                        "room.",
+                        "were"
+                    ],
+                    "id": "item_d13d685e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők itt voltak tegnap.",
+                    "sentence": "They ____ here yesterday.",
+                    "answer": "were",
+                    "options": [
+                        "were",
+                        "was",
+                        "are",
+                        "am"
+                    ],
+                    "id": "item_cc2baa1b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám és az apám ott voltak.",
+                    "correctAnswer": "My mother and my father were there.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "and",
+                        "my",
+                        "father",
+                        "were",
+                        "there.",
+                        "was"
+                    ],
+                    "id": "item_29516d58"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem itt volt.",
+                    "sentence": "My brother ____ here.",
+                    "answer": "was",
+                    "options": [
+                        "was",
+                        "were",
+                        "is",
+                        "are"
+                    ],
+                    "id": "item_58791649"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te a házban voltál tegnap.",
+                    "correctAnswer": "You were in the house yesterday.",
+                    "scrambledWords": [
+                        "You",
+                        "were",
+                        "in",
+                        "the",
+                        "house",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_b6c0524a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én a kutyával voltam tegnap.",
+                    "correctAnswer": "I was with the dog yesterday.",
+                    "scrambledWords": [
+                        "I",
+                        "was",
+                        "with",
+                        "the",
+                        "dog",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_0fc54731"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi tegnap ott voltunk.",
+                    "sentence": "We ____ there yesterday.",
+                    "answer": "were",
+                    "options": [
+                        "were",
+                        "was",
+                        "are",
+                        "am"
+                    ],
+                    "id": "item_1f8b7306"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A rendőr ott volt az autó mellett.",
+                    "correctAnswer": "The policeman was there next to the car.",
+                    "scrambledWords": [
+                        "The",
+                        "policeman",
+                        "was",
+                        "there",
+                        "next",
+                        "to",
+                        "the",
+                        "car."
+                    ],
+                    "id": "item_575d06c6"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) a konyhában volt.",
+                    "sentence": "He ____ in the kitchen.",
+                    "answer": "was",
+                    "options": [
+                        "was",
+                        "were",
+                        "is",
+                        "am"
+                    ],
+                    "id": "item_92ea10d2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők tegnap a házban voltak.",
+                    "correctAnswer": "They were in the house yesterday.",
+                    "scrambledWords": [
+                        "They",
+                        "were",
+                        "in",
+                        "the",
+                        "house",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_80666fde"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te tegnap itt voltál.",
+                    "sentence": "You ____ here yesterday.",
+                    "answer": "were",
+                    "options": [
+                        "were",
+                        "was",
+                        "are",
+                        "am"
+                    ],
+                    "id": "item_e5f6414f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én itt voltam a fivéremmel.",
+                    "correctAnswer": "I was here with my brother.",
+                    "scrambledWords": [
+                        "I",
+                        "was",
+                        "here",
+                        "with",
+                        "my",
+                        "brother.",
+                        "were"
+                    ],
+                    "id": "item_ea54013b"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én ma itt vagyok, de tegnap ott voltam.",
+                    "correctAnswer": "I am here today, but I was there yesterday.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "here",
+                        "today,",
+                        "but",
+                        "I",
+                        "was",
+                        "there",
+                        "yesterday.",
+                        "were",
+                        "are"
+                    ],
+                    "id": "item_d09a2e98"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) tegnap itt volt.",
+                    "sentence": "He ____ here yesterday.",
+                    "answer": "was",
+                    "options": [
+                        "was",
+                        "were",
+                        "is",
+                        "am"
+                    ],
+                    "id": "item_8afa32a3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ma a házban vagyunk, de tegnap ott voltunk.",
+                    "correctAnswer": "We are in the house today, but we were there yesterday.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "in",
+                        "the",
+                        "house",
+                        "today,",
+                        "but",
+                        "we",
+                        "were",
+                        "there",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_f1051a33"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te ma ott vagy, de tegnap itt voltál.",
+                    "correctAnswer": "You are there today, but you were here yesterday.",
+                    "scrambledWords": [
+                        "You",
+                        "are",
+                        "there",
+                        "today,",
+                        "but",
+                        "you",
+                        "were",
+                        "here",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_2ffc6f1c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők ma itt vannak.",
+                    "sentence": "They ____ here today.",
+                    "answer": "are",
+                    "options": [
+                        "are",
+                        "were",
+                        "is",
+                        "was"
+                    ],
+                    "id": "item_4b7eac6d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya tegnap az asztal alatt volt.",
+                    "correctAnswer": "The dog was under the table yesterday.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "was",
+                        "under",
+                        "the",
+                        "table",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_ca1deee8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) ma dolgozik, de tegnap a szobában volt.",
+                    "correctAnswer": "She is working today, but she was in the room yesterday.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "working",
+                        "today,",
+                        "but",
+                        "she",
+                        "was",
+                        "in",
+                        "the",
+                        "room",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_169eb797"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én ma itt vagyok.",
+                    "sentence": "I ____ here today.",
+                    "answer": "am",
+                    "options": [
+                        "am",
+                        "was",
+                        "were",
+                        "are"
+                    ],
+                    "id": "item_f30cc976"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom tegnap itt volt, de ma ott van.",
+                    "correctAnswer": "My friend was here yesterday, but he is there today.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "was",
+                        "here",
+                        "yesterday,",
+                        "but",
+                        "he",
+                        "is",
+                        "there",
+                        "today."
+                    ],
+                    "id": "item_e465d45a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők tegnap ott voltak.",
+                    "sentence": "They ____ there yesterday.",
+                    "answer": "were",
+                    "options": [
+                        "were",
+                        "was",
+                        "are",
+                        "am"
+                    ],
+                    "id": "item_89ea2db0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám tegnap a konyhában volt.",
+                    "correctAnswer": "My father was in the kitchen yesterday.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "was",
+                        "in",
+                        "the",
+                        "kitchen",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_1933b2e3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te tegnap a kutyával voltál.",
+                    "correctAnswer": "You were with the dog yesterday.",
+                    "scrambledWords": [
+                        "You",
+                        "were",
+                        "with",
+                        "the",
+                        "dog",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_5217a12e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A tanár ma itt van.",
+                    "sentence": "The teacher ____ here today.",
+                    "answer": "is",
+                    "options": [
+                        "is",
+                        "was",
+                        "were",
+                        "are"
+                    ],
+                    "id": "item_0293cf4b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én ma játszom, de tegnap itt voltam.",
+                    "correctAnswer": "I am playing today, but I was here yesterday.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "playing",
+                        "today,",
+                        "but",
+                        "I",
+                        "was",
+                        "here",
+                        "yesterday.",
+                        "were"
+                    ],
+                    "id": "item_fa456693"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi ma ott vagyunk, de tegnap itt voltunk.",
+                    "correctAnswer": "We are there today, but we were here yesterday.",
+                    "scrambledWords": [
+                        "We",
+                        "are",
+                        "there",
+                        "today,",
+                        "but",
+                        "we",
+                        "were",
+                        "here",
+                        "yesterday.",
+                        "was"
+                    ],
+                    "id": "item_c6051d55"
+                }
+            ]
+        }
+    ]
+}

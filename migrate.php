@@ -22,8 +22,7 @@ $isCli = (php_sapi_name() === 'cli');
 
 // Token authentication for HTTP runs
 if (!$isCli) {
-    // Define a secure migration token from environment variable or fallback to a hardcoded constant
-    // We get the token from a secure header or a GET parameter
+    // Define a secure migration token from environment variable or generated config.
     $expectedToken = getenv('MIGRATION_TOKEN');
     if (!$expectedToken && defined('MIGRATION_TOKEN')) {
         $expectedToken = MIGRATION_TOKEN;
@@ -36,10 +35,7 @@ if (!$isCli) {
         exit;
     }
 
-    $providedToken = isset($_GET['token']) ? $_GET['token'] : '';
-    if (empty($providedToken) && isset($_SERVER['HTTP_X_MIGRATION_TOKEN'])) {
-        $providedToken = $_SERVER['HTTP_X_MIGRATION_TOKEN'];
-    }
+    $providedToken = $_SERVER['HTTP_X_MIGRATION_TOKEN'] ?? '';
     if (!hash_equals($expectedToken, $providedToken)) {
         http_response_code(401);
         echo json_encode(['success' => false, 'error' => 'Unauthorized migration attempt.']);

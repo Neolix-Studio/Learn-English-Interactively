@@ -1,0 +1,382 @@
+{
+    "title": "Mi a foglalkozásod?",
+    "type": "multi_level_node",
+    "targetWords": [
+        "teacher",
+        "doctor",
+        "policeman",
+        "fireman",
+        "mechanic",
+        "builder",
+        "miner"
+    ],
+    "dictionary": {
+        "teacher": "tanár",
+        "doctor": "orvos",
+        "policeman": "rendőr",
+        "fireman": "tűzoltó",
+        "mechanic": "szerelő",
+        "builder": "építőmunkás",
+        "miner": "bányász"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "teacher",
+                "doctor"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "tanár",
+                    "correctAnswer": "teacher",
+                    "options": [
+                        { "id": "teacher", "text": "teacher", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='40' fill='#2c3e50'/><circle cx='50' cy='40' r='15' fill='#ffdbac'/><path d='M35 60 Q50 40 65 60' stroke='#333' stroke-width='4' fill='none'/><rect x='60' y='30' width='30' height='5' fill='#bdc3c7'/></svg>" },
+                        { "id": "doctor", "text": "doctor", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><rect x='35' y='55' width='30' height='40' rx='5' fill='#ecf0f1'/><path d='M45 65 L55 65 M50 60 L50 70' stroke='#e74c3c' stroke-width='4'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "orvos",
+                    "correctAnswer": "doctor",
+                    "options": [
+                        { "id": "teacher", "text": "teacher", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='40' fill='#2c3e50'/><circle cx='50' cy='40' r='15' fill='#ffdbac'/><path d='M35 60 Q50 40 65 60' stroke='#333' stroke-width='4' fill='none'/><rect x='60' y='30' width='30' height='5' fill='#bdc3c7'/></svg>" },
+                        { "id": "doctor", "text": "doctor", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><rect x='35' y='55' width='30' height='40' rx='5' fill='#ecf0f1'/><path d='M45 65 L55 65 M50 60 L50 70' stroke='#e74c3c' stroke-width='4'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én tanár vagyok.",
+                    "correctAnswer": "I am a teacher.",
+                    "scrambledWords": ["I", "am", "a", "teacher.", "doctor."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) orvos.",
+                    "correctAnswer": "She is a doctor.",
+                    "scrambledWords": ["She", "is", "a", "doctor.", "He"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám orvos.",
+                    "sentence": "My father is ____ doctor.",
+                    "answer": "a",
+                    "options": ["a", "I", "my", "he"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te orvos vagy?",
+                    "correctAnswer": "Are you a doctor?",
+                    "scrambledWords": ["Are", "you", "a", "doctor?", "teacher?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) egy tanár?",
+                    "sentence": "____ he a teacher?",
+                    "answer": "Is",
+                    "options": ["Is", "Are", "Am", "A"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám tanár és az apám orvos.",
+                    "correctAnswer": "My mother is a teacher and my father is a doctor.",
+                    "scrambledWords": ["My", "mother", "is", "a", "teacher", "and", "my", "father", "is", "a", "doctor."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Igen, én tanár vagyok.",
+                    "correctAnswer": "Yes, I am a teacher.",
+                    "scrambledWords": ["Yes,", "I", "am", "a", "teacher.", "doctor."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A barátom egy orvos.",
+                    "sentence": "My friend is a ____.",
+                    "answer": "doctor",
+                    "options": ["doctor", "teacher", "father", "mother"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "policeman",
+                "fireman",
+                "mechanic"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "rendőr",
+                    "correctAnswer": "policeman",
+                    "options": [
+                        { "id": "policeman", "text": "policeman", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><path d='M30 25 Q50 5 70 25 L75 30 L25 30 Z' fill='#2980b9'/><rect x='45' y='20' width='10' height='10' fill='#f1c40f'/></svg>" },
+                        { "id": "fireman", "text": "fireman", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><path d='M25 25 Q50 0 75 25 L80 35 L20 35 Z' fill='#c0392b'/><rect x='45' y='15' width='10' height='10' fill='#f1c40f'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "tűzoltó",
+                    "correctAnswer": "fireman",
+                    "options": [
+                        { "id": "policeman", "text": "policeman", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><path d='M30 25 Q50 5 70 25 L75 30 L25 30 Z' fill='#2980b9'/><rect x='45' y='20' width='10' height='10' fill='#f1c40f'/></svg>" },
+                        { "id": "fireman", "text": "fireman", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><path d='M25 25 Q50 0 75 25 L80 35 L20 35 Z' fill='#c0392b'/><rect x='45' y='15' width='10' height='10' fill='#f1c40f'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "szerelő",
+                    "correctAnswer": "mechanic",
+                    "options": [
+                        { "id": "mechanic", "text": "mechanic", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='35' r='20' fill='#ffdbac'/><rect x='30' y='60' width='40' height='40' fill='#7f8c8d'/><path d='M70 70 L90 50 L85 45 L65 65 Z' fill='#95a5a6'/></svg>" },
+                        { "id": "teacher", "text": "teacher", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='20' width='60' height='40' fill='#2c3e50'/><circle cx='50' cy='40' r='15' fill='#ffdbac'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "A fivérem rendőr.",
+                    "correctAnswer": "My brother is a policeman.",
+                    "scrambledWords": ["My", "brother", "is", "a", "policeman.", "fireman."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) egy tűzoltó.",
+                    "sentence": "He is a ____.",
+                    "answer": "fireman",
+                    "options": ["fireman", "teacher", "dog", "brother"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom szerelő.",
+                    "correctAnswer": "My friend is a mechanic.",
+                    "scrambledWords": ["My", "friend", "is", "a", "mechanic.", "doctor."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A rendőr fáradt.",
+                    "sentence": "The ____ is tired.",
+                    "answer": "policeman",
+                    "options": ["policeman", "mechanic", "happy", "water"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám tűzoltó.",
+                    "correctAnswer": "My father is a fireman.",
+                    "scrambledWords": ["My", "father", "is", "a", "fireman.", "mechanic."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A szerelő jó.",
+                    "correctAnswer": "The mechanic is good.",
+                    "scrambledWords": ["The", "mechanic", "is", "good.", "bad.", "a"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te rendőr vagy?",
+                    "sentence": "Are you a ____?",
+                    "answer": "policeman",
+                    "options": ["policeman", "teacher", "I", "am"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő egy rendőr és én tűzoltó vagyok.",
+                    "correctAnswer": "He is a policeman and I am a fireman.",
+                    "scrambledWords": ["He", "is", "a", "policeman", "and", "I", "am", "a", "fireman."]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "builder",
+                "miner"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "építőmunkás",
+                    "correctAnswer": "builder",
+                    "options": [
+                        { "id": "builder", "text": "builder", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='20' fill='#ffdbac'/><path d='M30 30 Q50 10 70 30 L75 35 L25 35 Z' fill='#f39c12'/><rect x='30' y='60' width='40' height='40' fill='#e67e22'/></svg>" },
+                        { "id": "miner", "text": "miner", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='20' fill='#ffdbac'/><path d='M30 30 Q50 10 70 30 L75 35 L25 35 Z' fill='#34495e'/><circle cx='50' cy='25' r='5' fill='#f1c40f'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "bányász",
+                    "correctAnswer": "miner",
+                    "options": [
+                        { "id": "builder", "text": "builder", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='20' fill='#ffdbac'/><path d='M30 30 Q50 10 70 30 L75 35 L25 35 Z' fill='#f39c12'/><rect x='30' y='60' width='40' height='40' fill='#e67e22'/></svg>" },
+                        { "id": "miner", "text": "miner", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='40' r='20' fill='#ffdbac'/><path d='M30 30 Q50 10 70 30 L75 35 L25 35 Z' fill='#34495e'/><circle cx='50' cy='25' r='5' fill='#f1c40f'/></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Én bányász vagyok.",
+                    "correctAnswer": "I am a miner.",
+                    "scrambledWords": ["I", "am", "a", "miner.", "builder."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Te építőmunkás vagy.",
+                    "correctAnswer": "You are a builder.",
+                    "scrambledWords": ["You", "are", "a", "builder.", "miner."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem bányász.",
+                    "sentence": "My brother is a ____.",
+                    "answer": "miner",
+                    "options": ["miner", "builder", "friend", "happy"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apád építőmunkás?",
+                    "correctAnswer": "Is your father a builder?",
+                    "scrambledWords": ["Is", "your", "father", "a", "builder?", "miner?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) építőmunkás?",
+                    "sentence": "Is he a ____?",
+                    "answer": "builder",
+                    "options": ["builder", "miner", "teacher", "a"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A bányász fáradt és a szerelő boldog.",
+                    "correctAnswer": "The miner is tired and the mechanic is happy.",
+                    "scrambledWords": ["The", "miner", "is", "tired", "and", "the", "mechanic", "is", "happy."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátod bányász?",
+                    "correctAnswer": "Is your friend a miner?",
+                    "scrambledWords": ["Is", "your", "friend", "a", "miner?", "builder?"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én bányász vagyok.",
+                    "sentence": "I am ____ miner.",
+                    "answer": "a",
+                    "options": ["a", "the", "an", "I"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám tanár és a fivérem rendőr.",
+                    "correctAnswer": "My mother is a teacher and my brother is a policeman.",
+                    "scrambledWords": ["My", "mother", "is", "a", "teacher", "and", "my", "brother", "is", "a", "policeman."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apád tűzoltó?",
+                    "sentence": "Is your father a ____?",
+                    "answer": "fireman",
+                    "options": ["fireman", "miner", "mechanic", "doctor"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Nem, ő szerelő.",
+                    "correctAnswer": "No, he is a mechanic.",
+                    "scrambledWords": ["No,", "he", "is", "a", "mechanic.", "builder."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én bányász vagyok és a barátom építőmunkás.",
+                    "correctAnswer": "I am a miner and my friend is a builder.",
+                    "scrambledWords": ["I", "am", "a", "miner", "and", "my", "friend", "is", "a", "builder."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (nő) orvos és te tanár vagy.",
+                    "sentence": "She is a doctor and you are a ____.",
+                    "answer": "teacher",
+                    "options": ["teacher", "policeman", "builder", "fireman"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A rendőr fáradt és a tűzoltó boldog.",
+                    "correctAnswer": "The policeman is tired and the fireman is happy.",
+                    "scrambledWords": ["The", "policeman", "is", "tired", "and", "the", "fireman", "is", "happy."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te orvos vagy?",
+                    "sentence": "____ you a doctor?",
+                    "answer": "Are",
+                    "options": ["Are", "Is", "Am", "Do"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lánytestvéred tanár? Igen, ő tanár.",
+                    "correctAnswer": "Is your sister a teacher? Yes, she is a teacher.",
+                    "scrambledWords": ["Is", "your", "sister", "a", "teacher?", "Yes,", "she", "is", "a", "teacher."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Szia, a nevem... és orvos vagyok.",
+                    "correctAnswer": "Hello, my name is... and I am a doctor.",
+                    "scrambledWords": ["Hello,", "my", "name", "is...", "and", "I", "am", "a", "doctor."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám bányász és a fivérem szerelő.",
+                    "correctAnswer": "My father is a miner and my brother is a mechanic.",
+                    "scrambledWords": ["My", "father", "is", "a", "miner", "and", "my", "brother", "is", "a", "mechanic."]
+                }
+            ]
+        }
+    ]
+}

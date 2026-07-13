@@ -1,0 +1,541 @@
+{
+    "title": "Ők (He, She, It)",
+    "type": "multi_level_node",
+    "targetWords": [
+        "he",
+        "she",
+        "it",
+        "is",
+        "boy",
+        "girl",
+        "man",
+        "woman",
+        "dog",
+        "a",
+        "the"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "boy",
+                "girl",
+                "he",
+                "she",
+                "is",
+                "a"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "fiú",
+                    "correctAnswer": "boy",
+                    "options": [
+                        {
+                            "id": "boy",
+                            "text": "boy",
+                            "correct": true
+                        },
+                        {
+                            "id": "girl",
+                            "text": "girl",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_e3391659"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "lány",
+                    "correctAnswer": "girl",
+                    "options": [
+                        {
+                            "id": "boy",
+                            "text": "boy",
+                            "correct": false
+                        },
+                        {
+                            "id": "girl",
+                            "text": "girl",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_42afcdba"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy fiú.",
+                    "correctAnswer": "He is a boy.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "a",
+                        "boy.",
+                        "She"
+                    ],
+                    "id": "item_ef5ade2e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy lány.",
+                    "correctAnswer": "She is a girl.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "a",
+                        "girl.",
+                        "He"
+                    ],
+                    "id": "item_f93a6cd5"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő egy lány.",
+                    "sentence": "____ is a girl.",
+                    "answer": "She",
+                    "options": [
+                        "She",
+                        "He",
+                        "I",
+                        "You"
+                    ],
+                    "id": "item_60857d51"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) boldog.",
+                    "correctAnswer": "He is happy.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "happy.",
+                        "She",
+                        "are"
+                    ],
+                    "id": "item_79443a9a"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) szomorú.",
+                    "sentence": "____ is sad.",
+                    "answer": "She",
+                    "options": [
+                        "She",
+                        "He",
+                        "It",
+                        "Am"
+                    ],
+                    "id": "item_47bbd9ad"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy fiú és ő egy lány.",
+                    "correctAnswer": "He is a boy and she is a girl.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "a",
+                        "boy",
+                        "and",
+                        "she",
+                        "is",
+                        "a",
+                        "girl."
+                    ],
+                    "id": "item_164b090b"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "man",
+                "woman"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "férfi",
+                    "correctAnswer": "man",
+                    "options": [
+                        {
+                            "id": "man",
+                            "text": "man",
+                            "correct": true
+                        },
+                        {
+                            "id": "woman",
+                            "text": "woman",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_c7d059bd"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "nő",
+                    "correctAnswer": "woman",
+                    "options": [
+                        {
+                            "id": "man",
+                            "text": "man",
+                            "correct": false
+                        },
+                        {
+                            "id": "woman",
+                            "text": "woman",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_e7ca55ea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy férfi.",
+                    "correctAnswer": "He is a man.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "a",
+                        "man.",
+                        "She"
+                    ],
+                    "id": "item_b7cd586c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy nő.",
+                    "correctAnswer": "She is a woman.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "a",
+                        "woman.",
+                        "He"
+                    ],
+                    "id": "item_a214a3cf"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) fáradt.",
+                    "sentence": "____ is tired.",
+                    "answer": "He",
+                    "options": [
+                        "He",
+                        "She",
+                        "Am",
+                        "I"
+                    ],
+                    "id": "item_7ea52fcc"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy nő és ő boldog.",
+                    "correctAnswer": "She is a woman and she is happy.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "a",
+                        "woman",
+                        "and",
+                        "she",
+                        "is",
+                        "happy."
+                    ],
+                    "id": "item_ecc62e66"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő egy férfi.",
+                    "sentence": "He is a ____.",
+                    "answer": "man",
+                    "options": [
+                        "man",
+                        "woman",
+                        "boy",
+                        "girl"
+                    ],
+                    "id": "item_d5d57a26"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én egy férfi vagyok és te egy nő vagy.",
+                    "correctAnswer": "I am a man and you are a woman.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "a",
+                        "man",
+                        "and",
+                        "you",
+                        "are",
+                        "a",
+                        "woman."
+                    ],
+                    "id": "item_03a69845"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "dog",
+                "it",
+                "the"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "kutya",
+                    "correctAnswer": "dog",
+                    "options": [
+                        {
+                            "id": "dog",
+                            "text": "dog",
+                            "correct": true
+                        },
+                        {
+                            "id": "man",
+                            "text": "man",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_d15f001e"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy kutya.",
+                    "correctAnswer": "It is a dog.",
+                    "scrambledWords": [
+                        "It",
+                        "is",
+                        "a",
+                        "dog.",
+                        "He"
+                    ],
+                    "id": "item_97e30a69"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya",
+                    "correctAnswer": "The dog",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "a",
+                        "is"
+                    ],
+                    "id": "item_0945e06e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő egy kutya.",
+                    "sentence": "____ is a dog.",
+                    "answer": "It",
+                    "options": [
+                        "It",
+                        "She",
+                        "He",
+                        "The"
+                    ],
+                    "id": "item_49999cdd"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya boldog.",
+                    "correctAnswer": "The dog is happy.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "is",
+                        "happy.",
+                        "It"
+                    ],
+                    "id": "item_22eba303"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fiú és a kutya.",
+                    "sentence": "____ boy and the dog.",
+                    "answer": "The",
+                    "options": [
+                        "The",
+                        "A",
+                        "It",
+                        "He"
+                    ],
+                    "id": "item_22013ae5"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (állat) fáradt.",
+                    "correctAnswer": "It is tired.",
+                    "scrambledWords": [
+                        "It",
+                        "is",
+                        "tired.",
+                        "He",
+                        "are"
+                    ],
+                    "id": "item_d714b995"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy lány és ő egy kutya.",
+                    "correctAnswer": "She is a girl and it is a dog.",
+                    "scrambledWords": [
+                        "She",
+                        "is",
+                        "a",
+                        "girl",
+                        "and",
+                        "it",
+                        "is",
+                        "a",
+                        "dog."
+                    ],
+                    "id": "item_cd134f76"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy férfi és ő egy nő.",
+                    "correctAnswer": "He is a man and she is a woman.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "a",
+                        "man",
+                        "and",
+                        "she",
+                        "is",
+                        "a",
+                        "woman."
+                    ],
+                    "id": "item_6984603f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya szomorú.",
+                    "sentence": "The dog is ____.",
+                    "answer": "sad",
+                    "options": [
+                        "sad",
+                        "a",
+                        "it",
+                        "she"
+                    ],
+                    "id": "item_78af4aab"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én egy fiú vagyok és te egy lány vagy.",
+                    "correctAnswer": "I am a boy and you are a girl.",
+                    "scrambledWords": [
+                        "I",
+                        "am",
+                        "a",
+                        "boy",
+                        "and",
+                        "you",
+                        "are",
+                        "a",
+                        "girl.",
+                        "is"
+                    ],
+                    "id": "item_51908b34"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő egy kutya? Igen, ő egy kutya.",
+                    "correctAnswer": "Is it a dog? Yes, it is a dog.",
+                    "scrambledWords": [
+                        "Is",
+                        "it",
+                        "a",
+                        "dog?",
+                        "Yes,",
+                        "it",
+                        "is",
+                        "a",
+                        "dog."
+                    ],
+                    "id": "item_cb9620e7"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) fáradt és a fiú boldog.",
+                    "sentence": "____ is tired and the boy is happy.",
+                    "answer": "She",
+                    "options": [
+                        "She",
+                        "He",
+                        "It",
+                        "I"
+                    ],
+                    "id": "item_2c64aa6b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A férfi jól van.",
+                    "correctAnswer": "The man is good.",
+                    "scrambledWords": [
+                        "The",
+                        "man",
+                        "is",
+                        "good.",
+                        "a",
+                        "he"
+                    ],
+                    "id": "item_0ea123a8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szia, a nevem... és ő egy kutya.",
+                    "correctAnswer": "Hello, my name is... and it is a dog.",
+                    "scrambledWords": [
+                        "Hello,",
+                        "my",
+                        "name",
+                        "is...",
+                        "and",
+                        "it",
+                        "is",
+                        "a",
+                        "dog.",
+                        "he"
+                    ],
+                    "id": "item_f978b6ee"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) boldog, ő (nő) szomorú, és a kutya fáradt.",
+                    "correctAnswer": "He is happy, she is sad, and the dog is tired.",
+                    "scrambledWords": [
+                        "He",
+                        "is",
+                        "happy,",
+                        "she",
+                        "is",
+                        "sad,",
+                        "and",
+                        "the",
+                        "dog",
+                        "is",
+                        "tired."
+                    ],
+                    "id": "item_4e5f9192"
+                }
+            ]
+        }
+    ]
+}

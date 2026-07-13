@@ -1,0 +1,135 @@
+{
+    "title": "A meglepetés buli",
+    "type": "reading_node",
+    "story": {
+        "en": "Last Friday was Maria's birthday. She finished her work at 6 PM and drove home. She had a long day, so she was extremely tired and only wanted to sleep. When she opened her front door, the house was completely dark. She turned on the light in the living room. Suddenly, ten of her closest friends jumped out from behind the sofa! They shouted 'Surprise!' and started singing. They brought a huge chocolate cake and some beautiful flowers. Maria was shocked, but it was the best birthday ever.",
+        "hu": "Múlt pénteken volt Maria születésnapja. Este 6-kor fejezte be a munkát, és hazavezetett. Hosszú napja volt, így rendkívül fáradt volt, és csak aludni akart. Amikor kinyitotta a bejárati ajtót, a ház teljesen sötét volt. Felkapcsolta a villanyt a nappaliban. Hirtelen tíz legközelebbi barátja ugrott elő a kanapé mögül! Azt kiabálták: 'Meglepetés!', és énekelni kezdtek. Hoztak egy hatalmas csokitortát és néhány gyönyörű virágot. Maria sokkot kapott, de ez volt a valaha volt legjobb születésnapja."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Maria's birthday was last Saturday.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "Her birthday was last Friday."
+        },
+        {
+            "type": "true_false",
+            "statement": "She wanted to sleep because she was tired.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "She had a long day, so she was extremely tired and only wanted to sleep."
+        },
+        {
+            "type": "true_false",
+            "statement": "The house was full of light when she opened the door.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "The house was completely dark."
+        },
+        {
+            "type": "true_false",
+            "statement": "Her friends jumped out from behind the sofa.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "The story says: 'ten of her closest friends jumped out from behind the sofa!'"
+        },
+        {
+            "type": "true_false",
+            "statement": "They brought a strawberry cake.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "They brought a huge chocolate cake."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What time did Maria finish work?",
+            "correctAnswer": "At 6 PM",
+            "options": [
+                "At 5 PM",
+                "At 6 PM",
+                "At 8 PM",
+                "At 10 PM"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "How did she go home?",
+            "correctAnswer": "She drove.",
+            "options": [
+                "She walked.",
+                "She took a taxi.",
+                "She took the bus.",
+                "She drove."
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where did she turn on the light?",
+            "correctAnswer": "In the living room",
+            "options": [
+                "In the kitchen",
+                "In the bedroom",
+                "In the living room",
+                "In the bathroom"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "How many friends were there?",
+            "correctAnswer": "Ten",
+            "options": [
+                "Five",
+                "Ten",
+                "Twelve",
+                "Twenty"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What did the friends bring?",
+            "correctAnswer": "A chocolate cake and flowers",
+            "options": [
+                "A pizza and drinks",
+                "A chocolate cake and flowers",
+                "A new phone and clothes",
+                "A book and a pen"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen napja volt Mariának? (What kind of day did Maria have?)",
+            "sentence": "She had a ____ day.",
+            "correctAnswer": "long",
+            "hint": "hosszú"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit csinált, amikor hazaért? (What did she do when she got home?)",
+            "sentence": "She opened her ____ door.",
+            "correctAnswer": "front",
+            "hint": "bejárati / elülső"
+        },
+        {
+            "type": "type_in",
+            "question": "Honnan ugrottak elő a barátok? (Where did the friends jump out from?)",
+            "sentence": "From behind the ____.",
+            "correctAnswer": "sofa",
+            "hint": "kanapé"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit csináltak a barátok? (What did the friends do?)",
+            "sentence": "They started ____.",
+            "correctAnswer": "singing",
+            "hint": "énekelni"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen volt a torta? (What was the cake like?)",
+            "sentence": "It was a ____ chocolate cake.",
+            "correctAnswer": "huge",
+            "hint": "hatalmas"
+        }
+    ]
+}

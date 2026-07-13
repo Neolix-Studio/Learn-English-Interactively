@@ -1,0 +1,947 @@
+{
+    "title": "Igen, tudom!",
+    "type": "multi_level_node",
+    "targetWords": [
+        "can",
+        "sing",
+        "jump",
+        "drive",
+        "speak",
+        "English"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "can",
+                "sing",
+                "jump"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "énekel (énekelni)",
+                    "correctAnswer": "sing",
+                    "options": [
+                        {
+                            "id": "sing",
+                            "text": "sing",
+                            "correct": true
+                        },
+                        {
+                            "id": "jump",
+                            "text": "jump",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_9077f3e3"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "ugrik (ugrani)",
+                    "correctAnswer": "jump",
+                    "options": [
+                        {
+                            "id": "sing",
+                            "text": "sing",
+                            "correct": false
+                        },
+                        {
+                            "id": "jump",
+                            "text": "jump",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_0568adad"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok énekelni.",
+                    "correctAnswer": "I can sing.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "sing.",
+                        "to",
+                        "cans"
+                    ],
+                    "id": "item_0f839e9c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te tudsz ugrani.",
+                    "correctAnswer": "You can jump.",
+                    "scrambledWords": [
+                        "You",
+                        "can",
+                        "jump.",
+                        "to",
+                        "sing."
+                    ],
+                    "id": "item_953fb879"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Mi tudunk énekelni.",
+                    "sentence": "We ____ sing.",
+                    "answer": "can",
+                    "options": [
+                        "can",
+                        "cans",
+                        "to",
+                        "are"
+                    ],
+                    "id": "item_41e9549c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők tudnak ugrani.",
+                    "correctAnswer": "They can jump.",
+                    "scrambledWords": [
+                        "They",
+                        "can",
+                        "jump.",
+                        "to",
+                        "cans"
+                    ],
+                    "id": "item_e787ce10"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én tudok ugrani.",
+                    "sentence": "I can ____.",
+                    "answer": "jump",
+                    "options": [
+                        "jump",
+                        "jumps",
+                        "to jump",
+                        "jumping"
+                    ],
+                    "id": "item_fe5e863c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya tud ugrani.",
+                    "correctAnswer": "The dog can jump.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "can",
+                        "jump.",
+                        "jumps.",
+                        "to"
+                    ],
+                    "id": "item_ba9e319c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én szeretek énekelni és én tudok énekelni.",
+                    "correctAnswer": "I like to sing and I can sing.",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "sing",
+                        "and",
+                        "I",
+                        "can",
+                        "sing.",
+                        "to"
+                    ],
+                    "id": "item_07aa68ff"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te tudsz énekelni.",
+                    "sentence": "You can ____.",
+                    "answer": "sing",
+                    "options": [
+                        "sing",
+                        "sings",
+                        "to sing",
+                        "can"
+                    ],
+                    "id": "item_db040eab"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom tud ugrani.",
+                    "correctAnswer": "My friend can jump.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "can",
+                        "jump.",
+                        "jumps.",
+                        "to"
+                    ],
+                    "id": "item_5038a41b"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretünk ugrani és mi tudunk ugrani.",
+                    "correctAnswer": "We like to jump and we can jump.",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "to",
+                        "jump",
+                        "and",
+                        "we",
+                        "can",
+                        "jump.",
+                        "jumps."
+                    ],
+                    "id": "item_85b2eb23"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők tudnak énekelni.",
+                    "sentence": "They ____ sing.",
+                    "answer": "can",
+                    "options": [
+                        "can",
+                        "cans",
+                        "are",
+                        "do"
+                    ],
+                    "id": "item_de1cabea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te tudsz ugrani és én tudok énekelni.",
+                    "correctAnswer": "You can jump and I can sing.",
+                    "scrambledWords": [
+                        "You",
+                        "can",
+                        "jump",
+                        "and",
+                        "I",
+                        "can",
+                        "sing.",
+                        "to"
+                    ],
+                    "id": "item_090e9659"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A fivérem tud énekelni.",
+                    "correctAnswer": "My brother can sing.",
+                    "scrambledWords": [
+                        "My",
+                        "brother",
+                        "can",
+                        "sing.",
+                        "sings.",
+                        "to"
+                    ],
+                    "id": "item_f10a6642"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "drive"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "vezet (vezetni)",
+                    "correctAnswer": "drive",
+                    "options": [
+                        {
+                            "id": "drive",
+                            "text": "drive",
+                            "correct": true
+                        },
+                        {
+                            "id": "jump",
+                            "text": "jump",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_267784e7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) tud vezetni.",
+                    "correctAnswer": "She can drive.",
+                    "scrambledWords": [
+                        "She",
+                        "can",
+                        "drive.",
+                        "cans",
+                        "drives.",
+                        "to"
+                    ],
+                    "id": "item_97b010a3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) tud ugrani.",
+                    "correctAnswer": "He can jump.",
+                    "scrambledWords": [
+                        "He",
+                        "can",
+                        "jump.",
+                        "cans",
+                        "jumps.",
+                        "to"
+                    ],
+                    "id": "item_abb4a915"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Az apám tud vezetni.",
+                    "sentence": "My father can ____.",
+                    "answer": "drive",
+                    "options": [
+                        "drive",
+                        "drives",
+                        "to drive",
+                        "driving"
+                    ],
+                    "id": "item_d3f86844"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az anyám tud énekelni.",
+                    "correctAnswer": "My mother can sing.",
+                    "scrambledWords": [
+                        "My",
+                        "mother",
+                        "can",
+                        "sing.",
+                        "sings.",
+                        "to"
+                    ],
+                    "id": "item_fa76bf3c"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) tud ugrani.",
+                    "sentence": "She ____ jump.",
+                    "answer": "can",
+                    "options": [
+                        "can",
+                        "cans",
+                        "to",
+                        "is"
+                    ],
+                    "id": "item_8b00ab01"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya tud ugrani és ő (férfi) tud vezetni.",
+                    "correctAnswer": "The dog can jump and he can drive.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "can",
+                        "jump",
+                        "and",
+                        "he",
+                        "can",
+                        "drive.",
+                        "drives.",
+                        "to"
+                    ],
+                    "id": "item_36735ff6"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A lánytestvérem tud vezetni.",
+                    "sentence": "My sister can ____.",
+                    "answer": "drive",
+                    "options": [
+                        "drive",
+                        "drives",
+                        "to drive",
+                        "cans"
+                    ],
+                    "id": "item_ff879b6c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) tud énekelni és ő (nő) tud vezetni.",
+                    "correctAnswer": "He can sing and she can drive.",
+                    "scrambledWords": [
+                        "He",
+                        "can",
+                        "sing",
+                        "and",
+                        "she",
+                        "can",
+                        "drive.",
+                        "sings",
+                        "drives"
+                    ],
+                    "id": "item_4347cd84"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A tanár tud vezetni.",
+                    "correctAnswer": "The teacher can drive.",
+                    "scrambledWords": [
+                        "The",
+                        "teacher",
+                        "can",
+                        "drive.",
+                        "drives.",
+                        "to"
+                    ],
+                    "id": "item_5718b0fb"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) tud énekelni.",
+                    "sentence": "He can ____.",
+                    "answer": "sing",
+                    "options": [
+                        "sing",
+                        "sings",
+                        "to sing",
+                        "cans"
+                    ],
+                    "id": "item_f434c53c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok vezetni és ő (nő) tud vezetni.",
+                    "correctAnswer": "I can drive and she can drive.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "drive",
+                        "and",
+                        "she",
+                        "can",
+                        "drive.",
+                        "drives."
+                    ],
+                    "id": "item_8d193d39"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) szeret vezetni és ő tud vezetni.",
+                    "correctAnswer": "She likes to drive and she can drive.",
+                    "scrambledWords": [
+                        "She",
+                        "likes",
+                        "to",
+                        "drive",
+                        "and",
+                        "she",
+                        "can",
+                        "drive.",
+                        "drives."
+                    ],
+                    "id": "item_050f65a0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) tud ugrani.",
+                    "sentence": "He can ____.",
+                    "answer": "jump",
+                    "options": [
+                        "jump",
+                        "jumps",
+                        "to jump",
+                        "cans"
+                    ],
+                    "id": "item_8f6278cb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A rendőr tud vezetni.",
+                    "correctAnswer": "The policeman can drive.",
+                    "scrambledWords": [
+                        "The",
+                        "policeman",
+                        "can",
+                        "drive.",
+                        "drives.",
+                        "to"
+                    ],
+                    "id": "item_cae47869"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "speak",
+                "English"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "beszél (beszélni)",
+                    "correctAnswer": "speak",
+                    "options": [
+                        {
+                            "id": "speak",
+                            "text": "speak",
+                            "correct": true
+                        },
+                        {
+                            "id": "drive",
+                            "text": "drive",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_ac0dd2e6"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "angol (angolul)",
+                    "correctAnswer": "English",
+                    "options": [
+                        {
+                            "id": "sing",
+                            "text": "sing",
+                            "correct": false
+                        },
+                        {
+                            "id": "English",
+                            "text": "English",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_894c0f78"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok angolul beszélni.",
+                    "correctAnswer": "I can speak English.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "speak",
+                        "English.",
+                        "speaks",
+                        "to"
+                    ],
+                    "id": "item_2fba23d0"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te tudsz angolul beszélni.",
+                    "correctAnswer": "You can speak English.",
+                    "scrambledWords": [
+                        "You",
+                        "can",
+                        "speak",
+                        "English.",
+                        "speaks"
+                    ],
+                    "id": "item_82a9fdbe"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) tud angolul beszélni.",
+                    "sentence": "She can ____ English.",
+                    "answer": "speak",
+                    "options": [
+                        "speak",
+                        "speaks",
+                        "to speak",
+                        "speaking"
+                    ],
+                    "id": "item_4b3ad9d2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi tudunk angolul beszélni.",
+                    "correctAnswer": "We can speak English.",
+                    "scrambledWords": [
+                        "We",
+                        "can",
+                        "speak",
+                        "English.",
+                        "to"
+                    ],
+                    "id": "item_b015c715"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) tud beszélni.",
+                    "correctAnswer": "He can speak.",
+                    "scrambledWords": [
+                        "He",
+                        "can",
+                        "speak.",
+                        "speaks.",
+                        "to"
+                    ],
+                    "id": "item_85bc1c98"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők tudnak angolul beszélni.",
+                    "sentence": "They can speak ____.",
+                    "answer": "English",
+                    "options": [
+                        "English",
+                        "speak",
+                        "can",
+                        "the"
+                    ],
+                    "id": "item_065a600f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A barátom tud angolul beszélni.",
+                    "correctAnswer": "My friend can speak English.",
+                    "scrambledWords": [
+                        "My",
+                        "friend",
+                        "can",
+                        "speak",
+                        "English.",
+                        "speaks"
+                    ],
+                    "id": "item_3cb9fe43"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te tudsz vezetni és te tudsz angolul beszélni.",
+                    "correctAnswer": "You can drive and you can speak English.",
+                    "scrambledWords": [
+                        "You",
+                        "can",
+                        "drive",
+                        "and",
+                        "you",
+                        "can",
+                        "speak",
+                        "English.",
+                        "to"
+                    ],
+                    "id": "item_966d2ac0"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én tudok angolul beszélni.",
+                    "sentence": "I can speak ____.",
+                    "answer": "English",
+                    "options": [
+                        "English",
+                        "to",
+                        "can",
+                        "a"
+                    ],
+                    "id": "item_39571bf9"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) szeret beszélni és ő tud beszélni.",
+                    "correctAnswer": "He likes to speak and he can speak.",
+                    "scrambledWords": [
+                        "He",
+                        "likes",
+                        "to",
+                        "speak",
+                        "and",
+                        "he",
+                        "can",
+                        "speak.",
+                        "speaks."
+                    ],
+                    "id": "item_81eac727"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám tud angolul beszélni.",
+                    "correctAnswer": "My father can speak English.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "can",
+                        "speak",
+                        "English.",
+                        "speaks"
+                    ],
+                    "id": "item_73803403"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) tud angolul beszélni.",
+                    "sentence": "She ____ speak English.",
+                    "answer": "can",
+                    "options": [
+                        "can",
+                        "cans",
+                        "to",
+                        "does"
+                    ],
+                    "id": "item_16e5a9b2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A tanár tud angolul beszélni.",
+                    "correctAnswer": "The teacher can speak English.",
+                    "scrambledWords": [
+                        "The",
+                        "teacher",
+                        "can",
+                        "speak",
+                        "English.",
+                        "speaks.",
+                        "to"
+                    ],
+                    "id": "item_45add864"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok énekelni és te tudsz angolul beszélni.",
+                    "correctAnswer": "I can sing and you can speak English.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "sing",
+                        "and",
+                        "you",
+                        "can",
+                        "speak",
+                        "English.",
+                        "speaks"
+                    ],
+                    "id": "item_564cc328"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) tud vezetni.",
+                    "sentence": "She can ____.",
+                    "answer": "drive",
+                    "options": [
+                        "drive",
+                        "drives",
+                        "to drive",
+                        "driving"
+                    ],
+                    "id": "item_85c18ed8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) tud ugrani és a kutya tud ugrani.",
+                    "correctAnswer": "He can jump and the dog can jump.",
+                    "scrambledWords": [
+                        "He",
+                        "can",
+                        "jump",
+                        "and",
+                        "the",
+                        "dog",
+                        "can",
+                        "jump.",
+                        "jumps"
+                    ],
+                    "id": "item_ce4abeb7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretünk énekelni és mi tudunk énekelni.",
+                    "correctAnswer": "We like to sing and we can sing.",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "to",
+                        "sing",
+                        "and",
+                        "we",
+                        "can",
+                        "sing.",
+                        "sings"
+                    ],
+                    "id": "item_1744deec"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem tud angolul beszélni.",
+                    "sentence": "My brother can ____ English.",
+                    "answer": "speak",
+                    "options": [
+                        "speak",
+                        "speaks",
+                        "to speak",
+                        "speaking"
+                    ],
+                    "id": "item_35ad4538"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) szeret vezetni és ő tud vezetni.",
+                    "correctAnswer": "She likes to drive and she can drive.",
+                    "scrambledWords": [
+                        "She",
+                        "likes",
+                        "to",
+                        "drive",
+                        "and",
+                        "she",
+                        "can",
+                        "drive.",
+                        "drives."
+                    ],
+                    "id": "item_086df102"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok vezetni és én szeretek vezetni.",
+                    "correctAnswer": "I can drive and I like to drive.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "drive",
+                        "and",
+                        "I",
+                        "like",
+                        "to",
+                        "drive.",
+                        "drives"
+                    ],
+                    "id": "item_c4559a27"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ők tudnak énekelni a szobában.",
+                    "sentence": "They can sing in the ____.",
+                    "answer": "room",
+                    "options": [
+                        "room",
+                        "table",
+                        "English",
+                        "speak"
+                    ],
+                    "id": "item_cb0bd89f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) tud angolul beszélni és ő tud énekelni.",
+                    "correctAnswer": "He can speak English and he can sing.",
+                    "scrambledWords": [
+                        "He",
+                        "can",
+                        "speak",
+                        "English",
+                        "and",
+                        "he",
+                        "can",
+                        "sing.",
+                        "speaks"
+                    ],
+                    "id": "item_9b426c3d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lánytestvérem tud énekelni és ő szeret énekelni.",
+                    "correctAnswer": "My sister can sing and she likes to sing.",
+                    "scrambledWords": [
+                        "My",
+                        "sister",
+                        "can",
+                        "sing",
+                        "and",
+                        "she",
+                        "likes",
+                        "to",
+                        "sing.",
+                        "sings"
+                    ],
+                    "id": "item_0105ea52"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) tud angolul beszélni.",
+                    "sentence": "She can speak ____.",
+                    "answer": "English",
+                    "options": [
+                        "English",
+                        "can",
+                        "the",
+                        "to"
+                    ],
+                    "id": "item_dc56c9b4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A kutya tud ugrani az ágyon.",
+                    "correctAnswer": "The dog can jump on the bed.",
+                    "scrambledWords": [
+                        "The",
+                        "dog",
+                        "can",
+                        "jump",
+                        "on",
+                        "the",
+                        "bed.",
+                        "jumps"
+                    ],
+                    "id": "item_d6dfa36f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok angolul beszélni és ő (férfi) tud angolul beszélni.",
+                    "correctAnswer": "I can speak English and he can speak English.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "speak",
+                        "English",
+                        "and",
+                        "he",
+                        "can",
+                        "speak",
+                        "English.",
+                        "speaks"
+                    ],
+                    "id": "item_142bb394"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) tud énekelni.",
+                    "sentence": "He ____ sing.",
+                    "answer": "can",
+                    "options": [
+                        "can",
+                        "cans",
+                        "to",
+                        "does"
+                    ],
+                    "id": "item_29727a2a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi szeretünk angolul beszélni, és mi tudunk angolul beszélni!",
+                    "correctAnswer": "We like to speak English and we can speak English!",
+                    "scrambledWords": [
+                        "We",
+                        "like",
+                        "to",
+                        "speak",
+                        "English",
+                        "and",
+                        "we",
+                        "can",
+                        "speak",
+                        "English!",
+                        "speaks"
+                    ],
+                    "id": "item_d6d0b0d2"
+                }
+            ]
+        }
+    ]
+}

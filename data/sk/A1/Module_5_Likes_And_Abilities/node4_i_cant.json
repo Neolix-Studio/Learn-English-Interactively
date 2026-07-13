@@ -1,0 +1,921 @@
+{
+    "title": "Nem tudom!",
+    "type": "multi_level_node",
+    "targetWords": [
+        "cannot",
+        "can't",
+        "but",
+        "can"
+    ],
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "cannot",
+                "can't"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "nem tud (cannot)",
+                    "correctAnswer": "cannot",
+                    "options": [
+                        {
+                            "id": "cannot",
+                            "text": "cannot",
+                            "correct": true
+                        },
+                        {
+                            "id": "can't",
+                            "text": "can't",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_88114b97"
+                },
+                {
+                    "type": "image_choice",
+                    "word": "nem tud (can't)",
+                    "correctAnswer": "can't",
+                    "options": [
+                        {
+                            "id": "cannot",
+                            "text": "cannot",
+                            "correct": false
+                        },
+                        {
+                            "id": "can't",
+                            "text": "can't",
+                            "correct": true
+                        }
+                    ],
+                    "id": "item_cb9ad29d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem tudok énekelni.",
+                    "correctAnswer": "I cannot sing.",
+                    "scrambledWords": [
+                        "I",
+                        "cannot",
+                        "sing.",
+                        "don't",
+                        "am"
+                    ],
+                    "id": "item_09bbff74"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) nem tud vezetni.",
+                    "correctAnswer": "She can't drive.",
+                    "scrambledWords": [
+                        "She",
+                        "can't",
+                        "drive.",
+                        "doesn't",
+                        "to"
+                    ],
+                    "id": "item_bd627871"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Te nem tudsz ugrani.",
+                    "sentence": "You ____ jump.",
+                    "answer": "can't",
+                    "options": [
+                        "can't",
+                        "don't",
+                        "aren't",
+                        "cannot to"
+                    ],
+                    "id": "item_50a6f7ef"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi nem tudunk főzni.",
+                    "correctAnswer": "We cannot cook.",
+                    "scrambledWords": [
+                        "We",
+                        "cannot",
+                        "cook.",
+                        "don't",
+                        "to"
+                    ],
+                    "id": "item_e7fa6852"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya nem tud beszélni.",
+                    "sentence": "The dog ____ speak.",
+                    "answer": "cannot",
+                    "options": [
+                        "cannot",
+                        "doesn't",
+                        "don't",
+                        "can't to"
+                    ],
+                    "id": "item_4b437be1"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők nem tudnak angolul beszélni.",
+                    "correctAnswer": "They can't speak English.",
+                    "scrambledWords": [
+                        "They",
+                        "can't",
+                        "speak",
+                        "English.",
+                        "don't"
+                    ],
+                    "id": "item_fe7543d2"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) nem tud úszni.",
+                    "correctAnswer": "He can't swim.",
+                    "scrambledWords": [
+                        "He",
+                        "can't",
+                        "swim.",
+                        "doesn't",
+                        "swims."
+                    ],
+                    "id": "item_3adfd546"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én nem tudok táncolni.",
+                    "sentence": "I ____ dance.",
+                    "answer": "can't",
+                    "options": [
+                        "can't",
+                        "don't",
+                        "not",
+                        "am not"
+                    ],
+                    "id": "item_70feebcf"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám nem tud főzni.",
+                    "correctAnswer": "My father cannot cook.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "cannot",
+                        "cook.",
+                        "doesn't"
+                    ],
+                    "id": "item_d4f49dc3"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te nem tudsz angolul beszélni.",
+                    "correctAnswer": "You cannot speak English.",
+                    "scrambledWords": [
+                        "You",
+                        "cannot",
+                        "speak",
+                        "English.",
+                        "don't"
+                    ],
+                    "id": "item_7b5f4921"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A tanár nem tud énekelni.",
+                    "sentence": "The teacher ____ sing.",
+                    "answer": "can't",
+                    "options": [
+                        "can't",
+                        "doesn't",
+                        "don't",
+                        "isn't"
+                    ],
+                    "id": "item_afb36783"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok futni, és én nem tudok úszni.",
+                    "correctAnswer": "I can run and I can't swim.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "run",
+                        "and",
+                        "I",
+                        "can't",
+                        "swim.",
+                        "don't"
+                    ],
+                    "id": "item_29dc6e0c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) nem tud olvasni.",
+                    "correctAnswer": "He cannot read.",
+                    "scrambledWords": [
+                        "He",
+                        "cannot",
+                        "read.",
+                        "doesn't",
+                        "reads."
+                    ],
+                    "id": "item_4c2f6ec9"
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "can"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "tud...? (kérdés)",
+                    "correctAnswer": "can",
+                    "options": [
+                        {
+                            "id": "can",
+                            "text": "can",
+                            "correct": true
+                        },
+                        {
+                            "id": "do",
+                            "text": "do",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_e430648a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tudsz úszni?",
+                    "correctAnswer": "Can you swim?",
+                    "scrambledWords": [
+                        "Can",
+                        "you",
+                        "swim?",
+                        "Do"
+                    ],
+                    "id": "item_1c02f373"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tud ő (férfi) vezetni?",
+                    "correctAnswer": "Can he drive?",
+                    "scrambledWords": [
+                        "Can",
+                        "he",
+                        "drive?",
+                        "Does",
+                        "drives?"
+                    ],
+                    "id": "item_c648237f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tudsz angolul beszélni?",
+                    "sentence": "____ you speak English?",
+                    "answer": "Can",
+                    "options": [
+                        "Can",
+                        "Do",
+                        "Are",
+                        "Is"
+                    ],
+                    "id": "item_d413642d"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tudnak énekelni?",
+                    "correctAnswer": "Can they sing?",
+                    "scrambledWords": [
+                        "Can",
+                        "they",
+                        "sing?",
+                        "Do"
+                    ],
+                    "id": "item_f79b65ce"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tud ő (nő) főzni?",
+                    "sentence": "____ she cook?",
+                    "answer": "Can",
+                    "options": [
+                        "Can",
+                        "Does",
+                        "Do",
+                        "Is"
+                    ],
+                    "id": "item_b840dea8"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tud a kutya ugrani?",
+                    "correctAnswer": "Can the dog jump?",
+                    "scrambledWords": [
+                        "Can",
+                        "the",
+                        "dog",
+                        "jump?",
+                        "Does"
+                    ],
+                    "id": "item_27428e2a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tudsz táncolni a szobában?",
+                    "correctAnswer": "Can you dance in the room?",
+                    "scrambledWords": [
+                        "Can",
+                        "you",
+                        "dance",
+                        "in",
+                        "the",
+                        "room?",
+                        "Do"
+                    ],
+                    "id": "item_212cee95"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tudunk angolul beszélni?",
+                    "sentence": "____ we speak English?",
+                    "answer": "Can",
+                    "options": [
+                        "Can",
+                        "Do",
+                        "Are",
+                        "Have"
+                    ],
+                    "id": "item_da39e82c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Igen, én tudok úszni.",
+                    "correctAnswer": "Yes, I can swim.",
+                    "scrambledWords": [
+                        "Yes,",
+                        "I",
+                        "can",
+                        "swim.",
+                        "do"
+                    ],
+                    "id": "item_484d3720"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Nem, én nem tudok vezetni.",
+                    "correctAnswer": "No, I can't drive.",
+                    "scrambledWords": [
+                        "No,",
+                        "I",
+                        "can't",
+                        "drive.",
+                        "don't"
+                    ],
+                    "id": "item_9ec443ce"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tud a fivéred énekelni?",
+                    "correctAnswer": "Can your brother sing?",
+                    "scrambledWords": [
+                        "Can",
+                        "your",
+                        "brother",
+                        "sing?",
+                        "Does"
+                    ],
+                    "id": "item_7dcf3ec1"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tud a tanár táncolni?",
+                    "sentence": "____ the teacher dance?",
+                    "answer": "Can",
+                    "options": [
+                        "Can",
+                        "Does",
+                        "Do",
+                        "Is"
+                    ],
+                    "id": "item_457132f6"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tud ő (nő) angolul beszélni?",
+                    "correctAnswer": "Can she speak English?",
+                    "scrambledWords": [
+                        "Can",
+                        "she",
+                        "speak",
+                        "English?",
+                        "Does",
+                        "speaks"
+                    ],
+                    "id": "item_3d8e50cb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tudsz futni?",
+                    "correctAnswer": "Can you run?",
+                    "scrambledWords": [
+                        "Can",
+                        "you",
+                        "run?",
+                        "Do",
+                        "to"
+                    ],
+                    "id": "item_d0096603"
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "but"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "de",
+                    "correctAnswer": "but",
+                    "options": [
+                        {
+                            "id": "but",
+                            "text": "but",
+                            "correct": true
+                        },
+                        {
+                            "id": "and",
+                            "text": "and",
+                            "correct": false
+                        }
+                    ],
+                    "id": "item_944f02ea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok úszni, de nem tudok énekelni.",
+                    "correctAnswer": "I can swim, but I can't sing.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "swim,",
+                        "but",
+                        "I",
+                        "can't",
+                        "sing.",
+                        "don't"
+                    ],
+                    "id": "item_367fbe93"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) tud vezetni, de nem tud főzni.",
+                    "correctAnswer": "He can drive, but he can't cook.",
+                    "scrambledWords": [
+                        "He",
+                        "can",
+                        "drive,",
+                        "but",
+                        "he",
+                        "can't",
+                        "cook.",
+                        "doesn't"
+                    ],
+                    "id": "item_a1c6646d"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tudok beszélni, de nem tudok angolul beszélni.",
+                    "sentence": "I can speak, ____ I can't speak English.",
+                    "answer": "but",
+                    "options": [
+                        "but",
+                        "and",
+                        "to",
+                        "in"
+                    ],
+                    "id": "item_15db6792"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Te tudsz futni, de te nem tudsz úszni.",
+                    "correctAnswer": "You can run, but you can't swim.",
+                    "scrambledWords": [
+                        "You",
+                        "can",
+                        "run,",
+                        "but",
+                        "you",
+                        "can't",
+                        "swim.",
+                        "don't"
+                    ],
+                    "id": "item_02119784"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Szeretek táncolni, de nem tudok táncolni!",
+                    "correctAnswer": "I like to dance, but I can't dance!",
+                    "scrambledWords": [
+                        "I",
+                        "like",
+                        "to",
+                        "dance,",
+                        "but",
+                        "I",
+                        "can't",
+                        "dance!",
+                        "don't"
+                    ],
+                    "id": "item_30f3f772"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A kutya tud ugrani, de nem tud beszélni.",
+                    "sentence": "The dog can jump, ____ it can't speak.",
+                    "answer": "but",
+                    "options": [
+                        "but",
+                        "and",
+                        "the",
+                        "does"
+                    ],
+                    "id": "item_f35a2fac"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (nő) tud angolul beszélni, de én nem tudok.",
+                    "correctAnswer": "She can speak English, but I cannot.",
+                    "scrambledWords": [
+                        "She",
+                        "can",
+                        "speak",
+                        "English,",
+                        "but",
+                        "I",
+                        "cannot.",
+                        "speaks"
+                    ],
+                    "id": "item_f66ed92f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi tudunk olvasni, de ők nem tudnak.",
+                    "correctAnswer": "We can read, but they can't.",
+                    "scrambledWords": [
+                        "We",
+                        "can",
+                        "read,",
+                        "but",
+                        "they",
+                        "can't.",
+                        "don't"
+                    ],
+                    "id": "item_6ecf708f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (férfi) szeret főzni, de nem tud főzni.",
+                    "sentence": "He likes to cook, ____ he can't cook.",
+                    "answer": "but",
+                    "options": [
+                        "but",
+                        "and",
+                        "doesn't",
+                        "in"
+                    ],
+                    "id": "item_7654dd95"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tudok énekelni, de nem szeretek énekelni.",
+                    "correctAnswer": "I can sing, but I don't like to sing.",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "sing,",
+                        "but",
+                        "I",
+                        "don't",
+                        "like",
+                        "to",
+                        "sing.",
+                        "can't"
+                    ],
+                    "id": "item_2a0e30dc"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ők tudnak játszani, de nem tudnak dolgozni.",
+                    "correctAnswer": "They can play, but they can't work.",
+                    "scrambledWords": [
+                        "They",
+                        "can",
+                        "play,",
+                        "but",
+                        "they",
+                        "can't",
+                        "work.",
+                        "don't"
+                    ],
+                    "id": "item_4496882e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "A fivérem tud vezetni, de én nem tudok.",
+                    "sentence": "My brother can drive, ____ I can't.",
+                    "answer": "but",
+                    "options": [
+                        "but",
+                        "and",
+                        "do",
+                        "don't"
+                    ],
+                    "id": "item_c302c1ea"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én utálok futni, de tudok futni.",
+                    "correctAnswer": "I hate to run, but I can run.",
+                    "scrambledWords": [
+                        "I",
+                        "hate",
+                        "to",
+                        "run,",
+                        "but",
+                        "I",
+                        "can",
+                        "run."
+                    ],
+                    "id": "item_6577896f"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tud ő (nő) úszni? Igen, de nem szeret úszni.",
+                    "correctAnswer": "Can she swim? Yes, but she doesn't like to swim.",
+                    "scrambledWords": [
+                        "Can",
+                        "she",
+                        "swim?",
+                        "Yes,",
+                        "but",
+                        "she",
+                        "doesn't",
+                        "like",
+                        "to",
+                        "swim."
+                    ],
+                    "id": "item_23af17be"
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "hu": "Tudsz vezetni? Nem, de tudok futni.",
+                    "correctAnswer": "Can you drive? No, but I can run.",
+                    "scrambledWords": [
+                        "Can",
+                        "you",
+                        "drive?",
+                        "No,",
+                        "but",
+                        "I",
+                        "can",
+                        "run.",
+                        "Do"
+                    ],
+                    "id": "item_d82b286f"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) nem tud énekelni.",
+                    "sentence": "She ____ sing.",
+                    "answer": "can't",
+                    "options": [
+                        "can't",
+                        "doesn't",
+                        "don't",
+                        "isn't"
+                    ],
+                    "id": "item_54ba6083"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én nem tudok angolul beszélni, de a barátom tud.",
+                    "correctAnswer": "I can't speak English, but my friend can.",
+                    "scrambledWords": [
+                        "I",
+                        "can't",
+                        "speak",
+                        "English,",
+                        "but",
+                        "my",
+                        "friend",
+                        "can.",
+                        "don't"
+                    ],
+                    "id": "item_ce4c84b4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tud ő (férfi) főzni? Nem, ő nem tud főzni.",
+                    "correctAnswer": "Can he cook? No, he can't cook.",
+                    "scrambledWords": [
+                        "Can",
+                        "he",
+                        "cook?",
+                        "No,",
+                        "he",
+                        "can't",
+                        "cook.",
+                        "Does"
+                    ],
+                    "id": "item_b951b63e"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tudnak táncolni?",
+                    "sentence": "____ they dance?",
+                    "answer": "Can",
+                    "options": [
+                        "Can",
+                        "Do",
+                        "Are",
+                        "Does"
+                    ],
+                    "id": "item_a54cbeeb"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Az apám tud vezetni, de én nem tudok vezetni.",
+                    "correctAnswer": "My father can drive, but I can't drive.",
+                    "scrambledWords": [
+                        "My",
+                        "father",
+                        "can",
+                        "drive,",
+                        "but",
+                        "I",
+                        "can't",
+                        "drive.",
+                        "don't"
+                    ],
+                    "id": "item_75c0c37a"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tud a kutya úszni? Igen, a kutya tud úszni.",
+                    "correctAnswer": "Can the dog swim? Yes, the dog can swim.",
+                    "scrambledWords": [
+                        "Can",
+                        "the",
+                        "dog",
+                        "swim?",
+                        "Yes,",
+                        "the",
+                        "dog",
+                        "can",
+                        "swim.",
+                        "Does"
+                    ],
+                    "id": "item_a58b90f6"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Én tudok játszani, de nem tudok dolgozni.",
+                    "sentence": "I can play, ____ I can't work.",
+                    "answer": "but",
+                    "options": [
+                        "but",
+                        "and",
+                        "do",
+                        "don't"
+                    ],
+                    "id": "item_54210536"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Mi tudunk angolul beszélni, de ők nem tudnak.",
+                    "correctAnswer": "We can speak English, but they can't.",
+                    "scrambledWords": [
+                        "We",
+                        "can",
+                        "speak",
+                        "English,",
+                        "but",
+                        "they",
+                        "can't.",
+                        "don't"
+                    ],
+                    "id": "item_ab1f51c7"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Tudsz olvasni? Igen, tudok olvasni.",
+                    "correctAnswer": "Can you read? Yes, I can read.",
+                    "scrambledWords": [
+                        "Can",
+                        "you",
+                        "read?",
+                        "Yes,",
+                        "I",
+                        "can",
+                        "read.",
+                        "Do"
+                    ],
+                    "id": "item_d2d213c7"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Ő (nő) szeret énekelni, de ő nem tud énekelni.",
+                    "sentence": "She likes to sing, but she ____ sing.",
+                    "answer": "can't",
+                    "options": [
+                        "can't",
+                        "doesn't",
+                        "don't",
+                        "cannot to"
+                    ],
+                    "id": "item_a7547cc4"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "A lánytestvérem nem tud úszni, de tud táncolni.",
+                    "correctAnswer": "My sister can't swim, but she can dance.",
+                    "scrambledWords": [
+                        "My",
+                        "sister",
+                        "can't",
+                        "swim,",
+                        "but",
+                        "she",
+                        "can",
+                        "dance.",
+                        "doesn't"
+                    ],
+                    "id": "item_a3bf4081"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Ő (férfi) nem tud vezetni, de tud futni.",
+                    "correctAnswer": "He cannot drive, but he can run.",
+                    "scrambledWords": [
+                        "He",
+                        "cannot",
+                        "drive,",
+                        "but",
+                        "he",
+                        "can",
+                        "run.",
+                        "doesn't"
+                    ],
+                    "id": "item_d5d67e7b"
+                },
+                {
+                    "type": "fill_blanks",
+                    "hu": "Tud ő (férfi) angolul beszélni?",
+                    "sentence": "____ he speak English?",
+                    "answer": "Can",
+                    "options": [
+                        "Can",
+                        "Does",
+                        "Do",
+                        "Is"
+                    ],
+                    "id": "item_ae3cc28c"
+                },
+                {
+                    "type": "word_order",
+                    "hu": "Én tudok énekelni, de te nem tudsz énekelni!",
+                    "correctAnswer": "I can sing, but you can't sing!",
+                    "scrambledWords": [
+                        "I",
+                        "can",
+                        "sing,",
+                        "but",
+                        "you",
+                        "can't",
+                        "sing!",
+                        "don't"
+                    ],
+                    "id": "item_6787427e"
+                }
+            ]
+        }
+    ]
+}

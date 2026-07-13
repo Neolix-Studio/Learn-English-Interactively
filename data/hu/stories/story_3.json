@@ -1,0 +1,135 @@
+{
+    "title": "Az elveszett pénztárca",
+    "type": "reading_node",
+    "story": {
+        "en": "Yesterday afternoon, Peter went to the local supermarket. He needed to buy some milk, fresh bread, and apples. He put the items in his basket and walked to the cashier. However, when he wanted to pay, he couldn't find his wallet! He checked his pockets, but they were empty. Peter started to panic. Suddenly, he remembered something. He ran back to his car in the parking lot. Luckily, his wallet was sitting on the front seat. He smiled and went back inside to pay.",
+        "hu": "Tegnap délután Péter elment a helyi szupermarketbe. Tejet, friss kenyeret és almát kellett vennie. Betette a termékeket a kosarába, és a pénztároshoz sétált. Azonban, amikor fizetni akart, nem találta a pénztárcáját! Ellenőrizte a zsebeit, de üresek voltak. Péter pánikba esett. Hirtelen eszébe jutott valami. Visszarohant az autójához a parkolóba. Szerencsére a pénztárcája az első ülésen pihent. Elmosolyodott, és visszament fizetni."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Peter went to the supermarket in the morning.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "The story says he went 'Yesterday afternoon'."
+        },
+        {
+            "type": "true_false",
+            "statement": "He wanted to buy milk, bread, and apples.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "The text states: 'He needed to buy some milk, fresh bread, and apples.'"
+        },
+        {
+            "type": "true_false",
+            "statement": "Peter found his wallet in his pocket.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "He checked his pockets, but they were empty."
+        },
+        {
+            "type": "true_false",
+            "statement": "His wallet was in the car.",
+            "correctAnswer": "True",
+            "options": ["True", "False"],
+            "explanation": "His wallet was sitting on the front seat of his car."
+        },
+        {
+            "type": "true_false",
+            "statement": "Peter was sad at the end of the story.",
+            "correctAnswer": "False",
+            "options": ["True", "False"],
+            "explanation": "He smiled and went back inside to pay."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where did Peter walk to after getting his items?",
+            "correctAnswer": "To the cashier",
+            "options": [
+                "To the cashier",
+                "To his car",
+                "To the bakery",
+                "To his house"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What did Peter do when he couldn't find his wallet?",
+            "correctAnswer": "He started to panic.",
+            "options": [
+                "He went home.",
+                "He started to panic.",
+                "He called the police.",
+                "He bought the apples."
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where did he run?",
+            "correctAnswer": "Back to his car",
+            "options": [
+                "To the bus stop",
+                "To the kitchen",
+                "Back to his car",
+                "To the manager"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where was the wallet exactly?",
+            "correctAnswer": "On the front seat",
+            "options": [
+                "Under the car",
+                "In the trunk",
+                "On the front seat",
+                "Under the seat"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What did Peter do after he found the wallet?",
+            "correctAnswer": "He went back inside to pay.",
+            "options": [
+                "He went back inside to pay.",
+                "He drove home.",
+                "He ate the apples.",
+                "He called his friend."
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mit akart venni Péter? (What did Peter want to buy?)",
+            "sentence": "He needed to buy some milk, fresh ____, and apples.",
+            "correctAnswer": "bread",
+            "hint": "kenyér"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit csinált, amikor nem találta a pénztárcáját? (What did he do when he couldn't find his wallet?)",
+            "sentence": "He checked his ____.",
+            "correctAnswer": "pockets",
+            "hint": "zsebek (angolul többesszám)"
+        },
+        {
+            "type": "type_in",
+            "question": "Hol volt az autója? (Where was his car?)",
+            "sentence": "It was in the ____ lot.",
+            "correctAnswer": "parking",
+            "hint": "parkoló (első fele)"
+        },
+        {
+            "type": "type_in",
+            "question": "Hol volt a pénztárca? (Where was the wallet?)",
+            "sentence": "On the ____ seat.",
+            "correctAnswer": "front",
+            "hint": "első"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit csinált a végén? (What did he do at the end?)",
+            "sentence": "He ____ and went back inside.",
+            "correctAnswer": "smiled",
+            "hint": "elmosolyodott"
+        }
+    ]
+}

@@ -1,0 +1,517 @@
+{
+    "title": "Az 'S' szabály",
+    "type": "multi_level_node",
+    "targetWords": [
+        "eats",
+        "drinks",
+        "sleeps",
+        "works",
+        "reads",
+        "plays"
+    ],
+    "dictionary": {
+        "eats": "eszik (ő)",
+        "drinks": "iszik (ő)",
+        "sleeps": "alszik (ő)",
+        "works": "dolgozik (ő)",
+        "reads": "olvas (ő)",
+        "plays": "játszik (ő)"
+    },
+    "lessons": [
+        {
+            "id": "lesson_1",
+            "title": "Part 1/4",
+            "introducedWords": [
+                "eats",
+                "drinks"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "eszik (ő)",
+                    "correctAnswer": "eats",
+                    "options": [
+                        { "id": "eats", "text": "eats", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 50 Q50 20 70 50 L70 80 Q50 100 30 80 Z' fill='#e74c3c'/><path d='M50 20 Q70 50 60 70' fill='#fff'/><text x='85' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#e74c3c'>+S</text></svg>" },
+                        { "id": "drinks", "text": "drinks", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='35' y='20' width='30' height='60' rx='2' stroke='#bdc3c7' stroke-width='4' fill='none'/><rect x='37' y='40' width='26' height='38' fill='#3498db'/><text x='85' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#3498db'>+S</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "iszik (ő)",
+                    "correctAnswer": "drinks",
+                    "options": [
+                        { "id": "eats", "text": "eats", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 50 Q50 20 70 50 L70 80 Q50 100 30 80 Z' fill='#e74c3c'/><path d='M50 20 Q70 50 60 70' fill='#fff'/><text x='85' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#e74c3c'>+S</text></svg>" },
+                        { "id": "drinks", "text": "drinks", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='35' y='20' width='30' height='60' rx='2' stroke='#bdc3c7' stroke-width='4' fill='none'/><rect x='37' y='40' width='26' height='38' fill='#3498db'/><text x='85' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#3498db'>+S</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (férfi) eszik.",
+                    "correctAnswer": "He eats.",
+                    "scrambledWords": ["He", "eats.", "eat.", "She"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) iszik.",
+                    "correctAnswer": "She drinks.",
+                    "scrambledWords": ["She", "drinks.", "drink.", "He"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) kávét iszik.",
+                    "sentence": "He ____ coffee.",
+                    "answer": "drinks",
+                    "options": ["drinks", "drink", "eats", "eat"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya eszik.",
+                    "correctAnswer": "The dog eats.",
+                    "scrambledWords": ["The", "dog", "eats.", "eat."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én eszem és ő (nő) eszik.",
+                    "sentence": "I eat and she ____.",
+                    "answer": "eats",
+                    "options": ["eats", "eat", "drinks", "drink"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) vizet iszik reggel.",
+                    "correctAnswer": "He drinks water in the morning.",
+                    "scrambledWords": ["He", "drinks", "water", "in", "the", "morning.", "drink"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fivérem eszik.",
+                    "sentence": "My brother ____.",
+                    "answer": "eats",
+                    "options": ["eats", "eat", "drink", "drinks"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám kávét iszik.",
+                    "correctAnswer": "My mother drinks coffee.",
+                    "scrambledWords": ["My", "mother", "drinks", "coffee.", "drink"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lánytestvéred eszik a konyhában.",
+                    "correctAnswer": "Your sister eats in the kitchen.",
+                    "scrambledWords": ["Your", "sister", "eats", "in", "the", "kitchen.", "eat"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Mi iszunk és ő (férfi) iszik.",
+                    "sentence": "We drink and he ____.",
+                    "answer": "drinks",
+                    "options": ["drinks", "drink", "eats", "eat"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom eszik a konyhában.",
+                    "correctAnswer": "My friend eats in the kitchen.",
+                    "scrambledWords": ["My", "friend", "eats", "in", "the", "kitchen.", "eat"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya vizet iszik.",
+                    "sentence": "The dog ____ water.",
+                    "answer": "drinks",
+                    "options": ["drinks", "drink", "eats", "eat"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) eszik reggel.",
+                    "correctAnswer": "She eats in the morning.",
+                    "scrambledWords": ["She", "eats", "in", "the", "morning.", "eat"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_2",
+            "title": "Part 2/4",
+            "introducedWords": [
+                "sleeps",
+                "works"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "alszik (ő)",
+                    "correctAnswer": "sleeps",
+                    "options": [
+                        { "id": "sleeps", "text": "sleeps", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='70' y='30' font-size='20' font-family='Arial' fill='#34495e'>Z</text><text x='85' y='15' font-size='15' font-family='Arial' fill='#34495e'>z</text><text x='15' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#34495e'>+S</text></svg>" },
+                        { "id": "works", "text": "works", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='40' width='50' height='40' rx='3' fill='#e67e22'/><path d='M40 40 L40 30 Q50 20 60 30 L60 40' stroke='#d35400' stroke-width='4' fill='none'/><text x='80' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#e67e22'>+S</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "dolgozik (ő)",
+                    "correctAnswer": "works",
+                    "options": [
+                        { "id": "sleeps", "text": "sleeps", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M30 60 Q50 80 70 60' stroke='#333' stroke-width='4' stroke-linecap='round' fill='none'/><text x='70' y='30' font-size='20' font-family='Arial' fill='#34495e'>Z</text><text x='85' y='15' font-size='15' font-family='Arial' fill='#34495e'>z</text><text x='15' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#34495e'>+S</text></svg>" },
+                        { "id": "works", "text": "works", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='25' y='40' width='50' height='40' rx='3' fill='#e67e22'/><path d='M40 40 L40 30 Q50 20 60 30 L60 40' stroke='#d35400' stroke-width='4' fill='none'/><text x='80' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#e67e22'>+S</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) alszik.",
+                    "correctAnswer": "She sleeps.",
+                    "scrambledWords": ["She", "sleeps.", "sleep.", "He"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Az apám dolgozik.",
+                    "correctAnswer": "My father works.",
+                    "scrambledWords": ["My", "father", "works.", "work."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya az ágy alatt alszik.",
+                    "sentence": "The dog ____ under the bed.",
+                    "answer": "sleeps",
+                    "options": ["sleeps", "sleep", "works", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem hétfőn dolgozik.",
+                    "correctAnswer": "My brother works on Monday.",
+                    "scrambledWords": ["My", "brother", "works", "on", "Monday.", "work"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én dolgozom és ő (férfi) dolgozik.",
+                    "sentence": "I work and he ____.",
+                    "answer": "works",
+                    "options": ["works", "work", "sleeps", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám éjszaka alszik.",
+                    "correctAnswer": "My mother sleeps at night.",
+                    "scrambledWords": ["My", "mother", "sleeps", "at", "night.", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A tanár dolgozik a szobában.",
+                    "correctAnswer": "The teacher works in the room.",
+                    "scrambledWords": ["The", "teacher", "works", "in", "the", "room.", "work"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Te alszol és a kutya alszik.",
+                    "sentence": "You sleep and the dog ____.",
+                    "answer": "sleeps",
+                    "options": ["sleeps", "sleep", "works", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom a hálószobában alszik.",
+                    "correctAnswer": "My friend sleeps in the bedroom.",
+                    "scrambledWords": ["My", "friend", "sleeps", "in", "the", "bedroom.", "sleep"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A rendőr éjszaka dolgozik.",
+                    "sentence": "The policeman ____ at night.",
+                    "answer": "works",
+                    "options": ["works", "work", "sleeps", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) dolgozik és ő (nő) alszik.",
+                    "correctAnswer": "He works and she sleeps.",
+                    "scrambledWords": ["He", "works", "and", "she", "sleeps.", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A macska (It) a széken alszik.",
+                    "correctAnswer": "It sleeps on the chair.",
+                    "scrambledWords": ["It", "sleeps", "on", "the", "chair.", "sleep"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az orvos a konyhában dolgozik.",
+                    "sentence": "The doctor ____ in the kitchen.",
+                    "answer": "works",
+                    "options": ["works", "work", "eats", "sleeps"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_3",
+            "title": "Part 3/4",
+            "introducedWords": [
+                "reads",
+                "plays"
+            ],
+            "items": [
+                {
+                    "type": "image_choice",
+                    "word": "olvas (ő)",
+                    "correctAnswer": "reads",
+                    "options": [
+                        { "id": "reads", "text": "reads", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 70 L50 80 L80 70 L80 30 L50 40 L20 30 Z' fill='#3498db'/><line x1='50' y1='40' x2='50' y2='80' stroke='#2980b9' stroke-width='4'/><text x='85' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#2980b9'>+S</text></svg>" },
+                        { "id": "plays", "text": "plays", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='30' fill='#e74c3c'/><path d='M30 40 Q50 20 70 40' stroke='#fff' stroke-width='3' fill='none'/><path d='M30 60 Q50 80 70 60' stroke='#fff' stroke-width='3' fill='none'/><text x='80' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#e74c3c'>+S</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "image_choice",
+                    "word": "játszik (ő)",
+                    "correctAnswer": "plays",
+                    "options": [
+                        { "id": "reads", "text": "reads", "correct": false, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 70 L50 80 L80 70 L80 30 L50 40 L20 30 Z' fill='#3498db'/><line x1='50' y1='40' x2='50' y2='80' stroke='#2980b9' stroke-width='4'/><text x='85' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#2980b9'>+S</text></svg>" },
+                        { "id": "plays", "text": "plays", "correct": true, "svg": "<svg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='50' cy='50' r='30' fill='#e74c3c'/><path d='M30 40 Q50 20 70 40' stroke='#fff' stroke-width='3' fill='none'/><path d='M30 60 Q50 80 70 60' stroke='#fff' stroke-width='3' fill='none'/><text x='80' y='30' font-size='25' font-family='Arial' font-weight='bold' fill='#e74c3c'>+S</text></svg>" }
+                    ],
+                    "newWord": true
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "Ő (nő) olvas egy könyvet.",
+                    "correctAnswer": "She reads a book.",
+                    "scrambledWords": ["She", "reads", "a", "book.", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": true,
+                    "hu": "A kutya játszik.",
+                    "correctAnswer": "The dog plays.",
+                    "scrambledWords": ["The", "dog", "plays.", "play."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A fiú olvas.",
+                    "sentence": "The boy ____.",
+                    "answer": "reads",
+                    "options": ["reads", "read", "plays", "play"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem hétvégén játszik.",
+                    "correctAnswer": "My brother plays on the weekend.",
+                    "scrambledWords": ["My", "brother", "plays", "on", "the", "weekend.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ők játszanak és ő (férfi) játszik.",
+                    "sentence": "They play and he ____.",
+                    "answer": "plays",
+                    "options": ["plays", "play", "reads", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A lány a hálószobában olvas.",
+                    "correctAnswer": "The girl reads in the bedroom.",
+                    "scrambledWords": ["The", "girl", "reads", "in", "the", "bedroom.", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) a barátommal játszik.",
+                    "correctAnswer": "She plays with my friend.",
+                    "scrambledWords": ["She", "plays", "with", "my", "friend.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A tanár olvas.",
+                    "sentence": "The teacher ____.",
+                    "answer": "reads",
+                    "options": ["reads", "read", "plays", "play"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A kutya a konyhában játszik.",
+                    "correctAnswer": "The dog plays in the kitchen.",
+                    "scrambledWords": ["The", "dog", "plays", "in", "the", "kitchen.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az anyám éjszaka olvas.",
+                    "sentence": "My mother ____ at night.",
+                    "answer": "reads",
+                    "options": ["reads", "read", "plays", "play"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) olvas, a kutya játszik.",
+                    "correctAnswer": "He reads, the dog plays.",
+                    "scrambledWords": ["He", "reads,", "the", "dog", "plays.", "read,", "play."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fiú játszik az asztal alatt.",
+                    "correctAnswer": "The boy plays under the table.",
+                    "scrambledWords": ["The", "boy", "plays", "under", "the", "table.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A lánytestvérem a szobában olvas.",
+                    "sentence": "My sister ____ in the room.",
+                    "answer": "reads",
+                    "options": ["reads", "read", "plays", "play"]
+                }
+            ]
+        },
+        {
+            "id": "lesson_4",
+            "title": "Part 4/4 - Boss Level",
+            "introducedWords": [],
+            "items": [
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az apám dolgozik, az anyám olvas.",
+                    "correctAnswer": "My father works, my mother reads.",
+                    "scrambledWords": ["My", "father", "works,", "my", "mother", "reads.", "work,", "read."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A kutya az ágyon alszik.",
+                    "sentence": "The dog ____ on the bed.",
+                    "answer": "sleeps",
+                    "options": ["sleeps", "sleep", "plays", "play"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (férfi) reggel kávét iszik.",
+                    "correctAnswer": "He drinks coffee in the morning.",
+                    "scrambledWords": ["He", "drinks", "coffee", "in", "the", "morning.", "drink"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A fivérem játszik és a lánytestvérem eszik.",
+                    "correctAnswer": "My brother plays and my sister eats.",
+                    "scrambledWords": ["My", "brother", "plays", "and", "my", "sister", "eats.", "play"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Én olvasok és ő (nő) olvas.",
+                    "sentence": "I read and she ____.",
+                    "answer": "reads",
+                    "options": ["reads", "read", "works", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A rendőr éjszaka dolgozik.",
+                    "correctAnswer": "The policeman works at night.",
+                    "scrambledWords": ["The", "policeman", "works", "at", "night.", "work"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "A tanár a könyvet olvassa.",
+                    "sentence": "The teacher ____ the book.",
+                    "answer": "reads",
+                    "options": ["reads", "read", "plays", "play"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ő (nő) hétvégén dolgozik a házban.",
+                    "correctAnswer": "She works on the weekend in the house.",
+                    "scrambledWords": ["She", "works", "on", "the", "weekend", "in", "the", "house.", "work"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Mi iszunk, a kutya iszik.",
+                    "correctAnswer": "We drink, the dog drinks.",
+                    "scrambledWords": ["We", "drink,", "the", "dog", "drinks.", "drink."]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Az apám a konyhában eszik.",
+                    "sentence": "My father ____ in the kitchen.",
+                    "answer": "eats",
+                    "options": ["eats", "eat", "sleeps", "sleep"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Ők játszanak és a fiú játszik.",
+                    "correctAnswer": "They play and the boy plays.",
+                    "scrambledWords": ["They", "play", "and", "the", "boy", "plays.", "play."]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "A barátom a hálószobában alszik.",
+                    "correctAnswer": "My friend sleeps in the bedroom.",
+                    "scrambledWords": ["My", "friend", "sleeps", "in", "the", "bedroom.", "sleep"]
+                },
+                {
+                    "type": "fill_blanks",
+                    "newWord": false,
+                    "hu": "Ő (férfi) pénteken dolgozik.",
+                    "sentence": "He ____ on Friday.",
+                    "answer": "works",
+                    "options": ["works", "work", "eats", "eat"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Az anyám hétvégén könyvet olvas.",
+                    "correctAnswer": "My mother reads a book on the weekend.",
+                    "scrambledWords": ["My", "mother", "reads", "a", "book", "on", "the", "weekend.", "read"]
+                },
+                {
+                    "type": "word_order",
+                    "newWord": false,
+                    "hu": "Én dolgozom, te alszol, és ő (férfi) játszik.",
+                    "correctAnswer": "I work, you sleep, and he plays.",
+                    "scrambledWords": ["I", "work,", "you", "sleep,", "and", "he", "plays.", "play."]
+                }
+            ]
+        }
+    ]
+}
