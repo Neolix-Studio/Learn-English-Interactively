@@ -9,6 +9,7 @@
     "package:release": "npm run build && node scripts/build_release.js",
     "lint": "oxlint src cypress.config.js vite.config.ts",
     "lint:js": "oxlint src cypress.config.js vite.config.ts",
+    "security:php": "node scripts/check_php_security.js",
     "validate:json": "node scripts/validate_json.js",
     "preview": "vite preview"
   },
