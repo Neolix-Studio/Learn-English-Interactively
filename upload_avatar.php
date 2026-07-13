@@ -6,6 +6,12 @@ security_start_session();
 security_validate_same_origin(security_allowed_origins());
 require_once 'db_config.php';
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'error' => 'Method not allowed']);
+    exit;
+}
+
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
     $pdo = new PDO($dsn, DB_USER, DB_PASS, [
@@ -26,12 +32,18 @@ if (!isset($_SESSION['user_id'])) {
 
 security_validate_csrf();
 
+$user_id = $_SESSION['user_id'];
+if (!security_rate_limit('avatar_upload_' . $user_id, 10, 3600)) {
+    http_response_code(429);
+    echo json_encode(['success' => false, 'error' => 'Too many avatar uploads. Please try again later.']);
+    exit;
+}
+
 if (!isset($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
     echo json_encode(['success' => false, 'error' => 'No file uploaded or upload error.']);
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
 $fileTmpPath = $_FILES['avatar']['tmp_name'];
 $fileSize = $_FILES['avatar']['size'];
 
