@@ -71,7 +71,8 @@ function security_require_cli_or_token(string $tokenConstant = 'MAINTENANCE_TOKE
         $expected = constant($tokenConstant);
     }
 
-    $provided = $_SERVER['HTTP_X_MAINTENANCE_TOKEN'] ?? '';
+    $headerName = 'HTTP_X_' . $tokenConstant;
+    $provided = $_SERVER[$headerName] ?? ($_SERVER['HTTP_X_MAINTENANCE_TOKEN'] ?? '');
     if ($tokenConstant === 'CRON_SECRET') {
         $provided = $_SERVER['HTTP_X_CRON_SECRET'] ?? ($_GET['secret'] ?? $provided);
     }
