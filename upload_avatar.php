@@ -3,15 +3,7 @@ header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token');
 require_once __DIR__ . '/security.php';
 security_start_session();
-security_validate_same_origin([
-    'https://lexipaws.eu',
-    'https://lexipaws.hu',
-    'https://lexipaws.sk',
-    'https://neolix.studio',
-    'http://localhost',
-    'http://localhost:3000',
-    'http://localhost:8080'
-]);
+security_validate_same_origin(security_allowed_origins());
 require_once 'db_config.php';
 
 try {
