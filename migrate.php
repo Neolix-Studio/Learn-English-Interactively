@@ -16,6 +16,7 @@ if (!file_exists($configPath)) {
     exit(1);
 }
 require_once $configPath;
+require_once __DIR__ . '/security.php';
 
 // Determine if we are running in CLI or HTTP
 $isCli = (php_sapi_name() === 'cli');
@@ -32,28 +33,7 @@ function migration_log_error(string $message): void {
     error_log('[migration] ' . $message);
 }
 
-// Token authentication for HTTP runs
-if (!$isCli) {
-    // Define a secure migration token from environment variable or generated config.
-    $expectedToken = getenv('MIGRATION_TOKEN');
-    if (!$expectedToken && defined('MIGRATION_TOKEN')) {
-        $expectedToken = MIGRATION_TOKEN;
-    }
-    
-    // Fallback: If no token is configured, block remote execution
-    if (empty($expectedToken)) {
-        http_response_code(403);
-        echo json_encode(['success' => false, 'error' => 'Migration token is not configured on the server.']);
-        exit;
-    }
-
-    $providedToken = $_SERVER['HTTP_X_MIGRATION_TOKEN'] ?? '';
-    if (!hash_equals($expectedToken, $providedToken)) {
-        http_response_code(401);
-        echo json_encode(['success' => false, 'error' => 'Unauthorized migration attempt.']);
-        exit;
-    }
-}
+security_require_cli_or_token('MIGRATION_TOKEN');
 
 // Establish DB Connection
 try {

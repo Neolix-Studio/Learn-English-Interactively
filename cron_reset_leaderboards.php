@@ -4,19 +4,9 @@
 // URL: https://te-domained.com/cron_reset_leaderboards.php?type=weekly&secret=IDE_IRD_A_TITKOS_KULCSOT
 
 require_once __DIR__ . '/db_config.php';
+require_once __DIR__ . '/security.php';
 
-// Ellenőrizzük, hogy a db_config.php-ben definiálva van-e a CRON_SECRET konstans
-$CRON_SECRET = defined('CRON_SECRET') ? CRON_SECRET : getenv('CRON_SECRET');
-
-if (!$CRON_SECRET) {
-    http_response_code(403);
-    die("Cron secret is not configured.");
-}
-
-if (!isset($_GET['secret']) || $_GET['secret'] !== $CRON_SECRET) {
-    http_response_code(403);
-    die("Access denied.");
-}
+security_require_cli_or_token('CRON_SECRET');
 
 if (!isset($_GET['type']) || !in_array($_GET['type'], ['weekly', 'monthly'])) {
     http_response_code(400);

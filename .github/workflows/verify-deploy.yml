@@ -47,6 +47,9 @@ jobs:
         run: |
           find . -name "*.php" -not -path "*/vendor/*" | xargs -n 1 php -l
 
+      - name: Run PHP Security Smoke Scan
+        run: npm run security:php
+
       - name: Run ESLint (JS warnings)
         run: npm run lint
 
