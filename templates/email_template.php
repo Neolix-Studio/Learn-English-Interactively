@@ -16,6 +16,10 @@ if (!isset($bodyHtml)) $bodyHtml = "<p>No content provided.</p>";
 if (!isset($buttonText)) $buttonText = null;
 if (!isset($buttonLink)) $buttonLink = null;
 
+$logoUrl = function_exists('lexipawsAppUrl') ? lexipawsAppUrl('lexipaws-logo-email.png') : '#';
+$profileUrl = function_exists('lexipawsAppUrl') ? lexipawsAppUrl('profile') : '#';
+$privacyUrl = function_exists('lexipawsAppUrl') ? lexipawsAppUrl('privacy-policy') : '#';
+
 // Primary Colors:
 // Background: #F8F9FA
 // Primary Green: #14C864
@@ -118,8 +122,7 @@ if (!isset($buttonLink)) $buttonLink = null;
     <div style="background-color: #F8F9FA; padding: 20px;">
         <div class="container">
             <div class="header">
-                <!-- Replace with actual logo URL once hosted -->
-                <img src="https://dev.lexipaws.eu/lexipaws-logo-email.png" alt="Lexipaws" style="max-height: 40px; width: auto; font-size: 24px; font-weight: bold; color: #14C864;" />
+                <img src="<?php echo htmlspecialchars($logoUrl); ?>" alt="Lexipaws" style="max-height: 40px; width: auto; font-size: 24px; font-weight: bold; color: #14C864;" />
             </div>
 
             <div class="content">
@@ -139,8 +142,8 @@ if (!isset($buttonLink)) $buttonLink = null;
             <div class="footer">
                 <p>&copy; <?php echo date('Y'); ?> Lexipaws. All rights reserved.</p>
                 <p>
-                    <a href="https://dev.lexipaws.eu/profile">Notification Settings</a> |
-                    <a href="https://dev.lexipaws.eu/privacy-policy">Privacy Policy</a>
+                    <a href="<?php echo htmlspecialchars($profileUrl); ?>">Notification Settings</a> |
+                    <a href="<?php echo htmlspecialchars($privacyUrl); ?>">Privacy Policy</a>
                 </p>
                 <p>If you don't want to receive these emails, you can update your preferences in your account.</p>
             </div>
