@@ -2,7 +2,7 @@
 /**
  * Database Migration Runner Utility
  * Run locally via CLI: php migrate.php
- * Run remotely via HTTP: https://neolix.studio/migrate.php?token=YOUR_MIGRATION_TOKEN
+ * Run remotely via HTTP with the X-Migration-Token header.
  */
 
 // Prevent caching
@@ -19,6 +19,18 @@ require_once $configPath;
 
 // Determine if we are running in CLI or HTTP
 $isCli = (php_sapi_name() === 'cli');
+
+function migration_format_errors(array $errors, bool $isCli): array {
+    if ($isCli) {
+        return $errors;
+    }
+
+    return empty($errors) ? [] : ['Migration failed. Check server logs for details.'];
+}
+
+function migration_log_error(string $message): void {
+    error_log('[migration] ' . $message);
+}
 
 // Token authentication for HTTP runs
 if (!$isCli) {
@@ -52,8 +64,10 @@ try {
         PDO::ATTR_EMULATE_PREPARES => false
     ]);
 } catch (PDOException $e) {
+    migration_log_error('Database connection failed: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'Database connection failed: ' . $e->getMessage()]);
+    $message = $isCli ? 'Database connection failed: ' . $e->getMessage() : 'Database connection failed.';
+    echo json_encode(['success' => false, 'error' => $message]);
     exit(1);
 }
 
@@ -112,14 +126,18 @@ try {
                 if ($pdo->inTransaction()) {
                     $pdo->rollBack();
                 }
-                $errors[] = "Migration '$fileName' failed: " . $e->getMessage();
+                $errorMessage = "Migration '$fileName' failed: " . $e->getMessage();
+                migration_log_error($errorMessage);
+                $errors[] = $errorMessage;
                 break; // Stop running subsequent migrations on error
             }
         }
     }
 
 } catch (Exception $e) {
-    $errors[] = "Global migration manager error: " . $e->getMessage();
+    $errorMessage = "Global migration manager error: " . $e->getMessage();
+    migration_log_error($errorMessage);
+    $errors[] = $errorMessage;
 }
 
 // Response output
@@ -127,7 +145,7 @@ $status = empty($errors);
 $response = [
     'success' => $status,
     'applied' => $applied,
-    'errors' => $errors
+    'errors' => migration_format_errors($errors, $isCli)
 ];
 
 if (!$status) {

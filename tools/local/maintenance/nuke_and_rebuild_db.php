@@ -34,7 +34,7 @@ try {
     echo "<hr><h2>Running Migrations</h2>";
     
     // Include the migrate script
-    $_GET['token'] = MIGRATION_TOKEN;
+    $_SERVER['HTTP_X_MIGRATION_TOKEN'] = MIGRATION_TOKEN;
     ob_start();
     include $projectRoot . '/migrate.php';
     $migrationOutput = ob_get_clean();
