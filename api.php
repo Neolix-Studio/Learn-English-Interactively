@@ -217,6 +217,10 @@ function getAppBaseUrl(): string {
     return $scheme . '://' . $host;
 }
 
+function hashPasswordResetToken(string $token): string {
+    return hash('sha256', $token);
+}
+
 // 1. Sign Up
 function validateSignupData(PDO $pdo, string $email, string $password, string $username) {
     if (empty($email) || empty($password) || empty($username)) {
@@ -926,11 +930,12 @@ function handleForgotPassword(PDO $pdo, array $data) {
 
         // Generate token and expiry (1 hour)
         $token = bin2hex(random_bytes(32));
+        $tokenHash = hashPasswordResetToken($token);
         $expiry = date('Y-m-d H:i:s', time() + 3600);
 
-        // Update database with token
+        // Store only a token hash. The raw token exists only in the email link.
         $stmtUpdate = $pdo->prepare("UPDATE users SET reset_token = ?, reset_expires = ? WHERE id = ?");
-        $stmtUpdate->execute([$token, $expiry, $user['id']]);
+        $stmtUpdate->execute([$tokenHash, $expiry, $user['id']]);
 
         $resetLink = getAppBaseUrl() . "/index.html?" . http_build_query([
             'action' => 'reset_password',
@@ -955,10 +960,16 @@ function handleForgotPassword(PDO $pdo, array $data) {
 
 // 8. Execute Reset Password via Token
 function handleResetPassword(PDO $pdo, array $data) {
+    if (!security_rate_limit('reset_password_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 10, 900)) {
+        http_response_code(429);
+        echo json_encode(['error' => 'Túl sok jelszó-visszaállítási próbálkozás. Kérjük, próbáld újra később.']);
+        return;
+    }
+
     $token = isset($data['token']) ? trim($data['token']) : '';
     $newPassword = isset($data['password']) ? $data['password'] : ($data['new_password'] ?? '');
 
-    if (empty($token)) {
+    if (!preg_match('/^[a-f0-9]{64}$/i', $token)) {
         echo json_encode(['error' => 'Hiányzó vagy érvénytelen visszaállítási token!']);
         return;
     }
@@ -970,8 +981,9 @@ function handleResetPassword(PDO $pdo, array $data) {
 
     try {
         // Find token and check expiry
+        $tokenHash = hashPasswordResetToken($token);
         $stmt = $pdo->prepare("SELECT id FROM users WHERE reset_token = ? AND reset_expires > NOW()");
-        $stmt->execute([$token]);
+        $stmt->execute([$tokenHash]);
         $user = $stmt->fetch();
 
         if (!$user) {
