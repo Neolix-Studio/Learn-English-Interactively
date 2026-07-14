@@ -352,10 +352,10 @@ a {
    ========================================================================== */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
+    inset: 0;
+    width: 100%;
     height: 100vh;
+    height: 100dvh;
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
@@ -383,8 +383,9 @@ a {
     border-radius: 0;
     padding: 1.5rem;
     text-align: center;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
+    height: 100dvh;
     max-width: none;
     max-height: none;
     overflow-y: auto;
@@ -399,6 +400,254 @@ a {
 .glass-panel .btn-close-modal,
 .glass-panel .btn-close-icon {
     min-height: 44px;
+}
+
+/* ==========================================================================
+   WELCOME FLOW RESPONSIVE LAYOUT
+   ========================================================================== */
+.welcome-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    max-width: 100%;
+    background: #f9fafb;
+    overflow-x: hidden;
+}
+
+.welcome-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    padding: clamp(1rem, 4vw, 2rem);
+}
+
+.welcome-card {
+    width: min(100%, 600px);
+    min-width: 0;
+    max-width: 600px;
+    background: white;
+    border-radius: clamp(18px, 4vw, 24px);
+    padding: clamp(1.25rem, 5vw, 3rem);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-mascot {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    margin-bottom: clamp(1rem, 4vw, 2rem);
+}
+
+.welcome-step {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 0;
+}
+
+.welcome-start-step {
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-step-title {
+    font-size: clamp(1.35rem, 5vw, 1.5rem);
+    line-height: 1.15;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 clamp(1.25rem, 5vw, 2rem);
+    overflow-wrap: anywhere;
+}
+
+.welcome-option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    gap: 0.75rem;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+    align-content: start;
+}
+
+.welcome-option-stack {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 0;
+}
+
+.welcome-option-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: clamp(0.85rem, 3.5vw, 1rem);
+    border-radius: 16px;
+    font-size: clamp(0.95rem, 3.8vw, 1.05rem);
+    line-height: 1.25;
+    font-weight: 700;
+    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    overflow-wrap: anywhere;
+}
+
+.welcome-primary-button {
+    min-height: 48px;
+    padding: clamp(0.9rem, 3.5vw, 1rem);
+    border-radius: 16px;
+    font-size: clamp(1rem, 4vw, 1.1rem);
+    font-weight: 700;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.welcome-continue {
+    margin-top: 1rem;
+}
+
+.welcome-continue-spacious {
+    margin-top: clamp(1rem, 5vw, 2rem);
+}
+
+.welcome-paw-mark {
+    width: clamp(112px, 34vw, 150px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: clamp(1.25rem, 5vw, 2rem);
+    font-size: clamp(3rem, 14vw, 4rem);
+}
+
+.welcome-start-title {
+    font-size: clamp(1.45rem, 6vw, 1.8rem);
+    line-height: 1.15;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 1rem;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.welcome-start-copy {
+    max-width: 300px;
+    font-size: clamp(1rem, 4vw, 1.1rem);
+    line-height: 1.45;
+    color: #6b7280;
+    text-align: center;
+    margin: 0 0 clamp(2rem, 8vw, 3rem);
+}
+
+.welcome-start-action {
+    width: 100%;
+    margin-top: auto;
+}
+
+.welcome-auth-link {
+    margin-top: clamp(1.5rem, 6vw, 3rem);
+    padding-top: clamp(1.25rem, 5vw, 2rem);
+    border-top: 2px solid #f3f4f6;
+}
+
+.welcome-link-button,
+.welcome-back-button {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.welcome-back-button {
+    color: #9ca3af;
+    margin-top: 2rem;
+    text-decoration: none;
+}
+
+.welcome-placement-stack {
+    gap: 1rem;
+}
+
+.welcome-placement-button {
+    padding: clamp(1rem, 4vw, 1.5rem);
+}
+
+.welcome-placement-icon {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.welcome-placement-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.welcome-placement-copy span {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+    .welcome-main {
+        justify-content: flex-start;
+    }
+
+    .welcome-card {
+        min-height: calc(100dvh - 2rem);
+    }
+
+    .welcome-option-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-placement-button {
+        align-items: flex-start;
+    }
+
+    .hero-mascot-wrapper {
+        max-width: 100%;
+        overflow: visible;
+        transform: scale(0.78);
+        transform-origin: center top;
+    }
+
+    #landing-lexi-container {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    #landing-lexi-svg {
+        width: min(260px, 72vw) !important;
+        height: min(180px, 50vw) !important;
+    }
+
+    #lexi-welcome-bubble {
+        left: 50% !important;
+        top: -0.75rem !important;
+        transform: translateX(-50%) !important;
+        white-space: nowrap;
+    }
 }
 
 @media (min-width: 992px) {

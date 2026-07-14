@@ -32,12 +32,12 @@ export function ExperienceScreen() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1f2937', marginBottom: '2rem' }}>
+    <div className="welcome-step">
+      <h2 className="welcome-step-title">
         Mennyire tudsz angolul?
       </h2>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1 }}>
+      <div className="welcome-option-stack">
         {options.map((option) => {
           const isSelected = selectedOption === option.id;
           return (
@@ -45,19 +45,12 @@ export function ExperienceScreen() {
               key={option.id}
               onClick={() => setSelectedOption(option.id)}
               style={{
-                padding: '1rem',
                 border: `2px solid ${isSelected ? '#3b82f6' : '#e5e7eb'}`,
-                borderRadius: '16px',
                 background: isSelected ? '#eff6ff' : 'white',
-                fontSize: '1.05rem',
-                fontWeight: 700,
                 color: '#4b5563',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
-                textAlign: 'left',
-                display: 'flex',
-                alignItems: 'center',
               }}
+              className="welcome-option-button"
               onMouseOver={(e) => { 
                 if (!isSelected) {
                   e.currentTarget.style.borderColor = '#d1d5db'; 
@@ -78,24 +71,20 @@ export function ExperienceScreen() {
         })}
       </div>
 
-      <div style={{ marginTop: '2rem' }}>
+      <div className="welcome-continue welcome-continue-spacious">
         <button
           onClick={() => navigate('/welcome/placement')}
           disabled={selectedOption === null}
           style={{
             width: '100%',
-            padding: '1rem',
             border: 'none',
-            borderRadius: '16px',
             background: selectedOption !== null ? '#58cc02' : '#e5e7eb',
             color: selectedOption !== null ? 'white' : '#9ca3af',
-            fontSize: '1.1rem',
-            fontWeight: 700,
             cursor: selectedOption !== null ? 'pointer' : 'default',
-            transition: 'background 0.2s',
             boxShadow: selectedOption !== null ? '0 4px 0 #46a302' : 'none',
             marginBottom: '4px' // To account for the box-shadow active state
           }}
+          className="welcome-primary-button"
           onMouseDown={(e) => {
             if (selectedOption !== null) {
               e.currentTarget.style.transform = 'translateY(4px)';

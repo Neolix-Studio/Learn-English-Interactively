@@ -159,7 +159,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
 
   if (isPostLesson) {
     return (
-      <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
+      <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 1000 }}>
         <PostLesson 
           baseXp={30} // Bonus XP for Boss
           accuracy={Math.floor((playerHearts / 5) * 100)}
@@ -172,7 +172,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
 
   if (isDefeated) {
     return (
-      <div className="screen active interactive-active" style={{ background: '#1a1a2e', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
+      <div className="screen active interactive-active" style={{ background: '#1a1a2e', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 1000 }}>
         <h1 style={{ color: '#ef4444', fontSize: '3rem', marginBottom: '1rem' }}>A Főnök Legyőzött!</h1>
         <p style={{ fontSize: '1.2rem', opacity: 0.8, marginBottom: '3rem' }}>Nincs több életed. Próbáld újra!</p>
         <button className="btn btn-primary" onClick={onExit} style={{ background: '#ef4444', borderColor: '#b91c1c', padding: '1rem 3rem', fontSize: '1.2rem', borderRadius: '16px' }}>Vissza a Térképre</button>
@@ -181,7 +181,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
   }
 
   return (
-    <div className="screen active interactive-active" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
+    <div className="screen active interactive-active" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 1000 }}>
       
       <style>{`
         .boss-idle { animation: float 3s ease-in-out infinite; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }

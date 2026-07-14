@@ -4,48 +4,36 @@ export function WelcomeStartScreen() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+    <div className="welcome-step welcome-start-step">
       
       {/* Mock Mascot Image - You can replace this with your actual SVG or image */}
-      <div style={{
-        width: '150px',
-        height: '150px',
+      <div className="welcome-paw-mark" style={{
         backgroundColor: '#e5e7eb',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: '2rem',
-        fontSize: '4rem'
       }}>
         🐾
       </div>
 
-      <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#1f2937', marginBottom: '1rem', textAlign: 'center' }}>
+      <h2 className="welcome-start-title">
         Üdvözlünk a Lexipaws-nál!
       </h2>
       
-      <p style={{ fontSize: '1.1rem', color: '#6b7280', textAlign: 'center', marginBottom: '3rem', maxWidth: '300px' }}>
+      <p className="welcome-start-copy">
         A legszórakoztatóbb módja az angoltanulásnak.
       </p>
 
-      <div style={{ width: '100%', marginTop: 'auto' }}>
+      <div className="welcome-start-action">
         <button
           onClick={() => navigate('/welcome/hear-about-us')}
           style={{
             width: '100%',
-            padding: '1rem',
             border: 'none',
-            borderRadius: '16px',
             background: '#58cc02',
             color: 'white',
-            fontSize: '1.1rem',
-            fontWeight: 700,
             cursor: 'pointer',
-            transition: 'background 0.2s',
             boxShadow: '0 4px 0 #46a302',
             marginBottom: '4px'
           }}
+          className="welcome-primary-button"
           onMouseDown={(e) => {
             e.currentTarget.style.transform = 'translateY(4px)';
             e.currentTarget.style.boxShadow = 'none';

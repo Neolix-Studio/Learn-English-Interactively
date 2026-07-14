@@ -3,6 +3,8 @@
    ========================================================================== */
 .dashboard-container {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     margin: 70px 0 0 0;
     min-height: calc(100vh - 70px);
     display: flex;
@@ -11,6 +13,7 @@
     padding-bottom: 80px; /* Space for mobile bottom bar */
     position: relative;
     z-index: 1;
+    overflow-x: clip;
 }
 
 /* ==========================================================================
@@ -21,6 +24,7 @@
     top: 0;
     left: -100%; /* Hidden by default on mobile */
     width: 100%; /* Full screen drawer on mobile */
+    max-width: 100%;
     height: 100vh;
     background: var(--color-bg-surface);
     backdrop-filter: blur(12px);
@@ -31,6 +35,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     box-shadow: 10px 0 30px rgba(0,0,0,0.5);
 }
 
@@ -1031,7 +1036,7 @@ body.is-lesson-active {
 }
 body.is-lesson-active .dashboard-container {
     grid-template-columns: 1fr !important;
-    max-width: 100vw !important;
+    max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
 }
@@ -2599,10 +2604,9 @@ input:checked + .slider:before {
 /* Fullscreen Overlay for Shop Modal & Quiz */
 .auth-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -3062,6 +3066,8 @@ body.lesson-active {
     top: 0;
     left: 0;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     height: 100vh;
     height: 100dvh;
     background: white;
@@ -4146,18 +4152,25 @@ body {
     padding-top: 2rem;
     padding-bottom: 3rem;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #app.leaderboard-app {
+    width: 100%;
     max-width: 800px;
+    min-width: 0;
     padding: 0 1rem;
 }
 
 /* --- LIBRARY VIEW MODIFICATIONS --- */
 #app.library-active {
+    width: 100%;
     max-width: 900px;
+    min-width: 0;
     height: calc(100vh - 5rem);
     height: calc(100dvh - 5rem);
     overflow-y: auto;
