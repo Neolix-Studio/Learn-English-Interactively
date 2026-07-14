@@ -52,11 +52,16 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
     <div
       className="modal-overlay is-active"
       style={{ position: 'fixed', inset: 0, width: '100%', height: '100dvh', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', zIndex: 999999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
     >
+      <button
+        type="button"
+        aria-label="Bolt bezárása"
+        onClick={onClose}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', background: 'transparent', padding: 0, cursor: 'default' }}
+      />
       <div
         className="modal-content"
-        style={{ background: 'var(--color-bg-surface)', borderRadius: '24px', padding: '0', width: '100%', maxWidth: '480px', boxShadow: '0 25px 60px rgba(0,0,0,0.3)', position: 'relative', overflow: 'hidden', border: 'var(--glass-border)' }}
+        style={{ background: 'var(--color-bg-surface)', borderRadius: '24px', padding: '0', width: '100%', maxWidth: '480px', boxShadow: '0 25px 60px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1, overflow: 'hidden', border: 'var(--glass-border)' }}
       >
         {/* Header */}
         <div style={{ background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', padding: '1.5rem 2rem', position: 'relative' }}>
