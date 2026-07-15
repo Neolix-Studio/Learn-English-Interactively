@@ -378,6 +378,14 @@ body {
     font-weight: 600 !important;
 }
 
+.hero-user-welcome {
+    color: var(--color-text-main);
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 0;
+    text-align: center;
+}
+
 .hero-mascot-wrapper svg {
     max-width: 300px;
     width: 100%;
