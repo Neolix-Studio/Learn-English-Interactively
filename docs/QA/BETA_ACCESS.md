@@ -14,6 +14,12 @@ Invite codes are stored as SHA-256 hashes. Do not commit invite codes.
 
 Pending beta access requests are stored in `beta_access_requests`. The landing page request form also sends a Slack notification and a confirmation email to the requester.
 
+Manual Websupport/phpMyAdmin migration SQL is available at:
+
+```text
+docs/QA/beta_access_manual_migration.sql
+```
+
 To review pending requests:
 
 ```sql
