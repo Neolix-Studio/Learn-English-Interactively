@@ -22,6 +22,20 @@ if (!$googleApiKey) {
     exit;
 }
 
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if ($origin && !in_array($origin, security_allowed_origins(), true)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Invalid request origin.']);
+    exit;
+}
+
+$fetchSite = $_SERVER['HTTP_SEC_FETCH_SITE'] ?? '';
+if ($fetchSite && !in_array($fetchSite, ['same-origin', 'same-site', 'none'], true)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Cross-site request blocked.']);
+    exit;
+}
+
 // --- 2. INPUT VALIDATION ---
 $text = isset($_GET['text']) ? trim($_GET['text']) : '';
 
@@ -44,7 +58,9 @@ try {
     $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4", $dbUser, $dbPass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]);
+    error_log('TTS database connection failed: ' . security_sanitize_log_line($e->getMessage()));
+    http_response_code(500);
+    echo json_encode(['error' => 'Text-to-speech service is temporarily unavailable.']);
     exit;
 }
 
@@ -100,19 +116,26 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$curlError = curl_error($ch);
 // curl_close is deprecated in PHP 8.5+ and no longer needed
 
-if ($httpCode !== 200) {
-    echo json_encode(['error' => 'Google TTS API failed', 'details' => json_decode($response)]);
+if ($response === false || $httpCode !== 200) {
+    error_log('Google TTS API failed: http=' . $httpCode . ' curl=' . security_sanitize_log_line($curlError));
+    http_response_code(502);
+    echo json_encode(['error' => 'Generated audio is temporarily unavailable.']);
     exit;
 }
 
 $responseData = json_decode($response, true);
 if (!isset($responseData['audioContent'])) {
-    echo json_encode(['error' => 'No audio content received from Google']);
+    error_log('Google TTS API response missing audioContent.');
+    http_response_code(502);
+    echo json_encode(['error' => 'Generated audio is temporarily unavailable.']);
     exit;
 }
 
@@ -124,11 +147,18 @@ $filePath = $audioDir . '/' . $filename;
 
 // Ensure the audio directory exists
 if (!is_dir($audioDir)) {
-    mkdir($audioDir, 0755, true);
+    if (!mkdir($audioDir, 0755, true) && !is_dir($audioDir)) {
+        error_log('TTS audio directory could not be created.');
+        http_response_code(500);
+        echo json_encode(['error' => 'Generated audio is temporarily unavailable.']);
+        exit;
+    }
 }
 
 if (!file_put_contents($filePath, $audioContent)) {
-    echo json_encode(['error' => 'Failed to save audio file to server. Check folder permissions.']);
+    error_log('TTS audio file could not be saved.');
+    http_response_code(500);
+    echo json_encode(['error' => 'Generated audio is temporarily unavailable.']);
     exit;
 }
 
