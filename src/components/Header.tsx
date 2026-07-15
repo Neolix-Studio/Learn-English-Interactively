@@ -77,7 +77,7 @@ export function Header({ onLoginClick }: HeaderProps) {
                   onLoginClick();
                 }}
               >
-                Bejelentkezés / Regisztráció
+                Bejelentkezés
               </button>
             )}
           </div>

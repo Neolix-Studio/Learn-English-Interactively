@@ -136,6 +136,7 @@ jobs:
           SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          BETA_INVITES_ENABLED: ${{ secrets.BETA_INVITES_ENABLED }}
           APP_BASE_URL: ${{ steps.vars.outputs.site_url }}
           DB_CONFIG_PATH: release/db_config.php
         run: |
