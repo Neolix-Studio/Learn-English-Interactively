@@ -115,7 +115,7 @@ export const ProfilePage: React.FC = () => {
         </div>
       );
     }
-    return <h2 style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.8rem' }}>{data.username}</h2>;
+    return <h2 className="profile-username" style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.8rem' }}>{data.username}</h2>;
   };
 
   const achievements = data.scores?.achievements || [];
@@ -124,16 +124,18 @@ export const ProfilePage: React.FC = () => {
     <div className="profile-page-container" style={{ padding: '2rem', paddingBottom: '100px', maxWidth: '800px', margin: '0 auto', minHeight: '100vh', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       
       {/* Header with Back Button */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+      <div className="profile-page-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
         <button onClick={() => navigate(-1)} style={{ background: 'var(--color-bg-surface)', border: 'var(--glass-border)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-main)' }}>
           ←
         </button>
-        <h1 style={{ margin: 0, color: 'var(--color-text-main)', fontSize: '2rem', fontWeight: 800 }}>{t('profile.title')}</h1>
+        <h1 className="profile-page-title" style={{ margin: 0, color: 'var(--color-text-main)', fontSize: '2rem', fontWeight: 800 }}>{t('profile.title')}</h1>
       </div>
 
       {/* User Info Card */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
-        <div 
+      <div className="profile-user-card" style={{ display: 'flex', alignItems: 'center', gap: '2rem', background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+        <button
+          type="button"
+          className="profile-avatar-button"
           onClick={() => setIsAvatarModalOpen(true)}
           style={{ width: '100px', height: '100px', borderRadius: '50%', background: 'var(--color-bg-base)', border: '4px solid var(--color-bg-base)', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', overflow: 'hidden', position: 'relative' }}
         >
@@ -143,10 +145,10 @@ export const ProfilePage: React.FC = () => {
             <div style={{ fontSize: '3rem' }}>🧑‍🎓</div>
           )}
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.5)', color: 'white', fontSize: '0.7rem', textAlign: 'center', padding: '4px 0', fontWeight: 'bold' }}>EDIT</div>
-        </div>
-        <div>
+        </button>
+        <div className="profile-user-summary">
           {renderUsername()}
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <div className="profile-stat-chip-row" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <span style={{ padding: '0.4rem 0.8rem', background: 'color-mix(in srgb, var(--color-accent-in) 10%, transparent)', color: 'var(--color-accent-in)', borderRadius: '12px', fontWeight: 'bold' }}>{data.subscription_tier.toUpperCase()} PLAN</span>
             <span style={{ padding: '0.4rem 0.8rem', background: 'rgba(16, 185, 129, 0.1)', color: '#10B981', borderRadius: '12px', fontWeight: 'bold' }}>{data.points} XP</span>
             <span style={{ padding: '0.4rem 0.8rem', background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B', borderRadius: '12px', fontWeight: 'bold' }}>{data.scores?.bones || 0} 🦴 Lexi Treats</span>
@@ -155,7 +157,7 @@ export const ProfilePage: React.FC = () => {
         </div>
 
       {/* Action Buttons */}
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '-1rem' }}>
+      <div className="profile-action-row" style={{ display: 'flex', gap: '1rem', marginTop: '-1rem' }}>
         <button 
           onClick={() => navigate('/friends')}
           style={{ flex: 1, padding: '1rem', background: 'var(--color-bg-surface)', border: 'var(--glass-border)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', color: 'var(--color-text-main)', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', transition: 'all 0.2s' }}
@@ -168,7 +170,7 @@ export const ProfilePage: React.FC = () => {
 
 
       {/* Steam-Style Achievements */}
-      <div style={{ background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+      <div className="profile-section-card" style={{ background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--color-text-main)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             🏅 {t('profile.achievements')}
@@ -203,7 +205,7 @@ export const ProfilePage: React.FC = () => {
           )}
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' }}>
+        <div className="profile-achievement-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' }}>
           {ACHIEVEMENT_DEF.map(ach => {
             const isUnlocked = achievements.includes(ach.id);
             return (
@@ -248,10 +250,10 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* Settings Section */}
-      <div style={{ background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+      <div className="profile-section-card" style={{ background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
         <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.2rem', color: 'var(--color-text-main)' }}>{t('profile.settings')}</h3>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
           <span style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('settings.visual_theme')}</span>
           <select 
             value={(data.scores.active_theme === 'default' ? 'system' : data.scores.active_theme) || 'system'} 
@@ -270,7 +272,7 @@ export const ProfilePage: React.FC = () => {
           </select>
         </div>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
           <span style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>Nameplate</span>
           <select 
             value={activeNameplate} 
@@ -284,7 +286,7 @@ export const ProfilePage: React.FC = () => {
           </select>
         </div>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
           <span style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>Study Language / Domain</span>
           <select 
             value={data.base_language || 'hu'} 
@@ -306,7 +308,7 @@ export const ProfilePage: React.FC = () => {
           </select>
         </div>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
           <span style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('settings.sound_effects')}</span>
           <label style={{ position: 'relative', display: 'inline-block', width: '50px', height: '28px' }}>
             <input type="checkbox" defaultChecked style={{ opacity: 0, width: 0, height: 0 }} />
@@ -317,7 +319,7 @@ export const ProfilePage: React.FC = () => {
 
         <h3 style={{ margin: '1.5rem 0 1rem 0', fontSize: '1.1rem', color: 'var(--color-text-main)' }}>{t('settings.notifications_title')}</h3>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
           <div>
             <div style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('settings.notif_inactivity_title')}</div>
             <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('settings.notif_inactivity_desc')}</div>
@@ -334,7 +336,7 @@ export const ProfilePage: React.FC = () => {
           </label>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
           <div>
             <div style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('settings.notif_milestones_title')}</div>
             <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('settings.notif_milestones_desc')}</div>
@@ -351,7 +353,7 @@ export const ProfilePage: React.FC = () => {
           </label>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px', marginBottom: '1rem' }}>
           <div>
             <div style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('settings.notif_news_title')}</div>
             <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('settings.notif_news_desc')}</div>
@@ -368,7 +370,7 @@ export const ProfilePage: React.FC = () => {
           </label>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px' }}>
+        <div className="profile-settings-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--color-bg-base)', borderRadius: '12px' }}>
           <div>
             <div style={{ fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('settings.notif_weekly_title')}</div>
             <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t('settings.notif_weekly_desc')}</div>
@@ -387,7 +389,7 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* Account Actions Section */}
-      <div style={{ background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+      <div className="profile-section-card" style={{ background: 'var(--color-bg-surface)', padding: '2rem', borderRadius: '24px', border: 'var(--glass-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
         <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.2rem', color: 'var(--color-text-main)' }}>Account Actions</h3>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

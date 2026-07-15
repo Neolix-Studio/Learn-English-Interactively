@@ -11,3 +11,8 @@ define('SLACK_WEBHOOK_URL', 'YOUR_SLACK_WEBHOOK_URL_HERE');
 define('CRON_SECRET', 'YOUR_CRON_SECRET_HERE');
 define('MAINTENANCE_TOKEN', 'YOUR_MAINTENANCE_TOKEN_HERE');
 define('APP_BASE_URL', 'http://localhost:5173');
+define('SMTP_HOST', 'YOUR_SMTP_HOST_HERE');
+define('SMTP_PORT', 465);
+define('SMTP_SECURE', 'ssl'); // 'ssl' for 465, 'tls' for 587
+define('SMTP_USER', 'YOUR_SMTP_USER_HERE');
+define('SMTP_PASS', 'YOUR_SMTP_PASSWORD_HERE');

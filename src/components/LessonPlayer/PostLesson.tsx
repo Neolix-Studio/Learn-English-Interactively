@@ -104,7 +104,8 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
   };
 
   return (
-    <div 
+    <div
+      className="post-lesson-shell"
       style={{
         position: 'absolute',
         top: 0,
@@ -183,16 +184,143 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
           background: #eff6ff;
           box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
         }
+
+        .post-lesson-shell,
+        .post-lesson-shell * {
+          box-sizing: border-box;
+        }
+
+        .post-lesson-hero-image,
+        .post-lesson-reward-image {
+          transform: scale(2.35);
+          transform-origin: center;
+        }
+
+        @media (max-width: 600px), (max-height: 700px) {
+          .post-lesson-shell {
+            justify-content: flex-start !important;
+            align-items: stretch !important;
+            height: 100dvh !important;
+            padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)) !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+          }
+
+          .post-lesson-screen {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0;
+            margin: 0 auto !important;
+          }
+
+          .post-lesson-screen h1,
+          .post-lesson-screen h2 {
+            max-width: 100%;
+            line-height: 1.15 !important;
+            overflow-wrap: anywhere;
+          }
+
+          .post-lesson-screen h1 {
+            font-size: clamp(2rem, 11vw, 2.5rem) !important;
+            margin-bottom: 1.25rem !important;
+          }
+
+          .post-lesson-screen h2 {
+            font-size: clamp(1.55rem, 8vw, 2rem) !important;
+            margin-bottom: 1.25rem !important;
+          }
+
+          .post-lesson-hero-image {
+            width: clamp(92px, 34vw, 150px) !important;
+            height: clamp(92px, 34vw, 150px) !important;
+            margin-bottom: 0.75rem !important;
+          }
+
+          .post-lesson-xp-panel {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .post-lesson-xp-row {
+            font-size: clamp(0.95rem, 4.5vw, 1.1rem) !important;
+          }
+
+          .post-lesson-metric-grid {
+            display: grid !important;
+            grid-template-columns: 1fr;
+            gap: 0.75rem !important;
+            width: 100% !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .post-lesson-metric-card {
+            min-width: 0;
+            padding: 1rem !important;
+          }
+
+          .post-lesson-metric-value {
+            font-size: clamp(2rem, 12vw, 2.5rem) !important;
+            line-height: 1.05;
+          }
+
+          .post-lesson-stage {
+            width: min(100%, 240px) !important;
+            height: min(58vw, 240px) !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .post-lesson-stage img {
+            max-width: 100%;
+            max-height: 100%;
+          }
+
+          .post-lesson-card {
+            padding: 1.25rem !important;
+          }
+
+          .post-lesson-chat {
+            flex-direction: column;
+            align-items: center !important;
+            min-height: 0 !important;
+            margin-bottom: 1.25rem !important;
+            text-align: center;
+          }
+
+          .post-lesson-chat > div {
+            max-width: 100%;
+          }
+
+          .streak-option {
+            padding: 1rem !important;
+            font-size: 1rem !important;
+          }
+
+          .post-lesson-next-wrap {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-top: 1rem !important;
+            padding-top: 0 !important;
+          }
+
+          .post-lesson-next-wrap .btn,
+          .post-lesson-auth-actions .btn {
+            width: 100%;
+            min-height: 48px;
+            font-size: 1rem !important;
+            white-space: normal;
+          }
+        }
       `}</style>
 
       {/* Screen 1: Lesson Completed */}
       {currentScreen === 1 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'slideUp 0.5s ease-out' }}>
-          <img src="/assets/images/Transparent PNGs/lexi-head.png" alt="Lexi Happy" style={{ width: '200px', height: '200px', objectFit: 'contain', filter: 'drop-shadow(0px 10px 15px rgba(0,0,0,0.2))', marginBottom: '1rem' }} />
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'slideUp 0.5s ease-out' }}>
+          <img className="post-lesson-hero-image" src="/assets/images/Transparent PNGs/tyler-jump.png" alt="Lexi Happy" style={{ width: '200px', height: '200px', objectFit: 'contain', filter: 'drop-shadow(0px 10px 15px rgba(0,0,0,0.2))', marginBottom: '1rem' }} />
           <h1 style={{ color: 'var(--color-accent-in)', fontSize: '2.5rem', margin: '0 0 2rem 0' }}>{t('post_lesson.completed_title')}</h1>
           
-          <div style={{ width: '100%', maxWidth: '400px', marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--color-text-main)', fontWeight: 'bold', fontSize: '1.2rem' }}>
+          <div className="post-lesson-xp-panel" style={{ width: '100%', maxWidth: '400px', marginBottom: '2rem' }}>
+            <div className="post-lesson-xp-row" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: 'var(--color-text-main)', fontWeight: 'bold', fontSize: '1.2rem' }}>
                 <span>XP: {displayedTotalXp}</span>
                 <span style={{ color: 'var(--color-text-muted)' }}>/ {Math.floor(targetXp / 1000) * 1000 + 1000}</span>
             </div>
@@ -206,14 +334,14 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', width: '100%' }}>
-            <div style={{ background: 'rgba(245,158,11,0.1)', border: '2px solid #F59E0B', borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
+          <div className="post-lesson-metric-grid" style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', width: '100%' }}>
+            <div className="post-lesson-metric-card" style={{ background: 'rgba(245,158,11,0.1)', border: '2px solid #F59E0B', borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
               <div style={{ color: '#F59E0B', fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.earned_xp')}</div>
-              <div style={{ fontSize: '2.5rem', color: '#F59E0B', fontWeight: 800 }}>+{displayedXp}</div>
+              <div className="post-lesson-metric-value" style={{ fontSize: '2.5rem', color: '#F59E0B', fontWeight: 800 }}>+{displayedXp}</div>
             </div>
-            <div style={{ background: 'rgba(16,185,129,0.1)', border: '2px solid var(--color-success)', borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
+            <div className="post-lesson-metric-card" style={{ background: 'rgba(16,185,129,0.1)', border: '2px solid var(--color-success)', borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
               <div style={{ color: 'var(--color-success)', fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.accuracy')}</div>
-              <div style={{ fontSize: '2.5rem', color: 'var(--color-success)', fontWeight: 800 }}>{displayedAccuracy}%</div>
+              <div className="post-lesson-metric-value" style={{ fontSize: '2.5rem', color: 'var(--color-success)', fontWeight: 800 }}>{displayedAccuracy}%</div>
             </div>
           </div>
         </div>
@@ -221,11 +349,11 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 2: 3D/Parallax Level Up Animation */}
       {currentScreen === 2 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
           <h2 style={{ color: 'var(--color-text-main)', fontSize: '2.5rem', marginBottom: '3rem', textAlign: 'center', animation: 'slideUp 0.6s ease-out' }}>{t('post_lesson.level_up')}</h2>
           
           {/* CSS 3D Stage */}
-          <div style={{ position: 'relative', width: '300px', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '2rem', perspective: '1000px' }}>
+          <div className="post-lesson-stage" style={{ position: 'relative', width: '300px', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '2rem', perspective: '1000px' }}>
              
              {/* Back Glow Effect */}
              <div style={{ position: 'absolute', width: '250px', height: '250px', background: 'radial-gradient(circle, rgba(147, 51, 234, 0.6) 0%, rgba(147, 51, 234, 0) 70%)', borderRadius: '50%', zIndex: 0, animation: 'glowPulse3D 4s infinite linear' }}></div>
@@ -236,7 +364,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
              
              {/* Main Character Layer (Parallax Float) */}
              <div style={{ zIndex: 2, transformStyle: 'preserve-3d', animation: 'float3D 4s infinite ease-in-out' }}>
-                <img src="/assets/images/Transparent PNGs/lexi-jump.png" alt="Lexi Jump" style={{ width: '280px', height: '280px', objectFit: 'contain', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))', transform: 'translateZ(50px)' }} />
+                <img src="/assets/images/Transparent PNGs/tyler-jump.png" alt="Lexi Jump" style={{ width: '280px', height: '280px', objectFit: 'contain', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))', transform: 'translateZ(50px)' }} />
              </div>
              
              {/* Platform Layer */}
@@ -247,7 +375,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 3: LexiPaws Score Unlock */}
       {currentScreen === 3 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
           
           <div style={{ position: 'relative', animation: 'popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
             {/* Custom US Flag SVG Badge */}
@@ -287,7 +415,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 4: Score Explanation */}
       {currentScreen === 4 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '3rem' }}>
              <svg viewBox="0 0 100 100" width="60" height="60">
@@ -307,7 +435,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
              <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('post_lesson.scale_title')}</div>
           </div>
 
-          <div style={{ background: 'var(--color-bg-surface)', border: '2px solid rgba(0,0,0,0.05)', borderRadius: '1.5rem', padding: '2rem', width: '100%', marginBottom: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+          <div className="post-lesson-card" style={{ background: 'var(--color-bg-surface)', border: '2px solid rgba(0,0,0,0.05)', borderRadius: '1.5rem', padding: '2rem', width: '100%', marginBottom: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontWeight: 800, color: '#3B82F6', fontSize: '1.2rem' }}>
                   <span>1</span>
                   <span style={{ color: 'var(--color-text-muted)' }}>2</span>
@@ -352,7 +480,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 5: Streak Fire + Warning */}
       {currentScreen === 5 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
           <svg viewBox="0 0 100 100" width="180" height="180" style={{ animation: 'pulseFire 2s infinite' }}>
               <defs>
                   <linearGradient id="fireGrad2" x1="0%" y1="100%" x2="0%" y2="0%">
@@ -411,10 +539,10 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 6: Streak Commitment with Dopamine Hook */}
       {currentScreen === 6 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
           
           {/* Lexi Mascot Chat Bubble Area */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', width: '100%', marginBottom: '2rem', minHeight: '120px' }}>
+          <div className="post-lesson-chat" style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', width: '100%', marginBottom: '2rem', minHeight: '120px' }}>
              {/* Mascot SVG */}
              <div style={{ flexShrink: 0, animation: 'slideUp 0.6s ease-out' }}>
                  <svg viewBox="0 0 200 200" width="100" height="100">
@@ -502,9 +630,9 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 7: Daily Quest Progress */}
       {currentScreen === 7 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
           <h2 style={{ color: 'var(--color-text-main)', fontSize: '2rem', marginBottom: '3rem' }}>{t('post_lesson.daily_quest')}</h2>
-          <div style={{ background: 'var(--color-bg-surface)', border: '2px solid rgba(0,0,0,0.05)', borderRadius: '1.5rem', padding: '2rem', width: '100%', display: 'flex', alignItems: 'center', gap: '1.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+          <div className="post-lesson-card" style={{ background: 'var(--color-bg-surface)', border: '2px solid rgba(0,0,0,0.05)', borderRadius: '1.5rem', padding: '2rem', width: '100%', display: 'flex', alignItems: 'center', gap: '1.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
               <div style={{ fontSize: '3.5rem' }}>🎯</div>
               <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 'bold', marginBottom: '0.8rem', color: 'var(--color-text-main)', fontSize: '1.2rem' }}>{t('post_lesson.quests_completed')}</div>
@@ -549,7 +677,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 8: Bones Reward */}
       {currentScreen === 8 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
           <div style={{ position: 'relative', width: '100%', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', overflow: 'hidden', marginBottom: '2rem' }}>
               {[...Array(12)].map((_, i) => (
                 <div key={i} style={{ 
@@ -563,7 +691,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
                 </div>
               ))}
               <img src="/assets/images/Transparent PNGs/star-and-coin-explosion.png" alt="Explosion" style={{ position: 'absolute', width: '150%', height: '150%', objectFit: 'contain', zIndex: -1, opacity: 0.5 }} />
-              <img src="/assets/images/Transparent PNGs/lexi-head.png" alt="Lexi Reward" style={{ width: '220px', height: '220px', objectFit: 'contain', zIndex: 1, filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.2))', animation: 'popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
+              <img className="post-lesson-reward-image" src="/assets/images/Transparent PNGs/tyler-jump.png" alt="Lexi Reward" style={{ width: '220px', height: '220px', objectFit: 'contain', zIndex: 1, filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.2))', animation: 'popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
           </div>
           
           <h2 style={{ color: 'var(--color-accent-in)', fontSize: '2.5rem', textAlign: 'center', margin: '0' }}>{t('post_lesson.bones_reward')}</h2>
@@ -573,14 +701,14 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Screen 9: Profile Creation (Auth Wall) */}
       {currentScreen === 9 && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '500px', animation: 'fadeIn 0.5s' }}>
+        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '500px', animation: 'fadeIn 0.5s' }}>
           <div style={{ fontSize: '5rem', marginBottom: '1rem', animation: 'float3D 3s infinite ease-in-out' }}>🔒</div>
           <h2 style={{ color: 'var(--color-text-main)', fontSize: '2.5rem', marginBottom: '1rem', textAlign: 'center' }}>{t('post_lesson.save_progress_title')}</h2>
           <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', marginBottom: '3rem', fontSize: '1.2rem', lineHeight: '1.6' }}>
             {t('post_lesson.save_progress_desc')}
           </p>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+          <div className="post-lesson-auth-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
               <button 
                 className="btn btn-primary" 
                 style={{ padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }}
@@ -606,7 +734,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
 
       {/* Global Next Button (Hidden on Auth Screen) */}
       {currentScreen !== 9 && (
-        <div style={{ width: '100%', maxWidth: '600px', marginTop: 'auto', paddingTop: '2rem' }}>
+        <div className="post-lesson-next-wrap" style={{ width: '100%', maxWidth: '600px', marginTop: 'auto', paddingTop: '2rem' }}>
           <button 
             className="btn btn-primary" 
             style={{ width: '100%', padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }}

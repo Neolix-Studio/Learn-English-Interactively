@@ -20,6 +20,11 @@ define('SLACK_WEBHOOK_URL', ${esc(process.env.SLACK_WEBHOOK_URL)});
 define('CRON_SECRET', ${esc(process.env.CRON_SECRET)});
 define('MAINTENANCE_TOKEN', ${esc(process.env.MAINTENANCE_TOKEN)});
 define('APP_BASE_URL', ${esc(process.env.APP_BASE_URL)});
+define('SMTP_HOST', ${esc(process.env.SMTP_HOST)});
+define('SMTP_PORT', ${esc(process.env.SMTP_PORT)});
+define('SMTP_SECURE', ${esc(process.env.SMTP_SECURE)});
+define('SMTP_USER', ${esc(process.env.SMTP_USER)});
+define('SMTP_PASS', ${esc(process.env.SMTP_PASS)});
 	`;
 
 const outputPath = process.env.DB_CONFIG_PATH || 'db_config.php';

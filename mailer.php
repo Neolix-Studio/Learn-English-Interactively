@@ -50,6 +50,19 @@ function lexipawsAppUrl($path = '') {
     return $baseUrl . '/' . $path;
 }
 
+function lexipawsMailerConfig($constantName, $fallback = '') {
+    $envValue = getenv($constantName);
+    if ($envValue !== false && $envValue !== '') {
+        return $envValue;
+    }
+
+    if (defined($constantName)) {
+        return constant($constantName);
+    }
+
+    return $fallback;
+}
+
 /**
  * Sends an HTML email using the templates/email_template.php
  * 
@@ -78,13 +91,18 @@ function sendLexipawsEmail($to, $subject, $headerText, $bodyHtml, $buttonText = 
     try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host       = defined('SMTP_HOST') ? SMTP_HOST : 'smtp.m1.websupport.sk';
+        $mail->Host       = lexipawsMailerConfig('SMTP_HOST', 'smtp.m1.websupport.sk');
         $mail->SMTPAuth   = true;
-        $mail->Username   = defined('SMTP_USER') ? SMTP_USER : 'noreply@lexipaws.eu';
-        $mail->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';
+        $mail->Username   = lexipawsMailerConfig('SMTP_USER', 'noreply@lexipaws.eu');
+        $mail->Password   = lexipawsMailerConfig('SMTP_PASS');
+
+        if (empty($mail->Password)) {
+            error_log('Message could not be sent. SMTP_PASS is not configured.');
+            return false;
+        }
         
         // Handle encryption based on port/config
-        $secureType = defined('SMTP_SECURE') ? strtolower(SMTP_SECURE) : 'ssl';
+        $secureType = strtolower((string)lexipawsMailerConfig('SMTP_SECURE', 'ssl'));
         if ($secureType === 'ssl') {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         } else if ($secureType === 'tls') {
@@ -93,7 +111,7 @@ function sendLexipawsEmail($to, $subject, $headerText, $bodyHtml, $buttonText = 
             $mail->SMTPSecure = ''; // no encryption if not set to ssl/tls
         }
         
-        $mail->Port       = defined('SMTP_PORT') ? SMTP_PORT : 465;
+        $mail->Port       = (int)lexipawsMailerConfig('SMTP_PORT', 465);
 
         // Ensure proper encoding
         $mail->CharSet = 'UTF-8';

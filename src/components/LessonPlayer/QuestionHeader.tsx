@@ -26,16 +26,25 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, n
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', marginBottom: '2rem', gap: '20px' }}>
+    <div className="question-header-row" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', marginBottom: '2rem', gap: '20px' }}>
       {/* Mascot Side */}
       {!hideMascot && (
-        <div 
-          style={{ cursor: hideAudio ? 'default' : 'pointer', transform: 'translateY(-15px)' }} 
-          onClick={hideAudio ? undefined : handleSpeak}
-          title={hideAudio ? "" : "Kattints a felolvasáshoz!"}
-        >
-          <LexiMascot speaking={isSpeaking} size={100} />
-        </div>
+        hideAudio ? (
+          <div className="question-header-mascot" style={{ transform: 'translateY(-15px)' }}>
+            <LexiMascot speaking={isSpeaking} size={100} />
+          </div>
+        ) : (
+          <button
+            type="button"
+            className="question-header-mascot"
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', transform: 'translateY(-15px)' }} 
+            onClick={handleSpeak}
+            aria-label="Felolvasás indítása"
+            title="Kattints a felolvasáshoz!"
+          >
+            <LexiMascot speaking={isSpeaking} size={100} />
+          </button>
+        )
       )}
 
       {/* Speech Bubble Side */}
