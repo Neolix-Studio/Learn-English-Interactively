@@ -308,8 +308,10 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
             position: 'fixed',
             top: 0,
             left: 0,
-            width: '100vw',
-            height: '100vh',
+            right: 0,
+            bottom: 0,
+            width: '100%',
+            height: '100dvh',
             backgroundColor: 'rgba(15, 23, 42, 0.6)',
             display: 'flex',
             alignItems: 'center',
@@ -318,7 +320,22 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
             backdropFilter: 'blur(8px)',
             padding: '1.5rem',
             boxSizing: 'border-box'
-          }} onClick={() => setIsLevelModalOpen(false)}>
+          }}>
+            <button
+              type="button"
+              aria-label="Szintválasztó bezárása"
+              onClick={() => setIsLevelModalOpen(false)}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                border: 'none',
+                background: 'transparent',
+                padding: 0,
+                cursor: 'default'
+              }}
+            />
             <div style={{
               background: 'var(--color-bg-surface)',
               padding: '2rem',
@@ -329,8 +346,9 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
               overflowY: 'auto',
               boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              position: 'relative'
-            }} onClick={(e) => e.stopPropagation()}>
+              position: 'relative',
+              zIndex: 1
+            }}>
               <button 
                 type="button"
                 onClick={() => setIsLevelModalOpen(false)}
