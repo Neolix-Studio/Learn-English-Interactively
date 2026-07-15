@@ -45,6 +45,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [ageRange, setAgeRange] = useState('');
+  const [betaInviteCode, setBetaInviteCode] = useState('');
 
   // Reset fields
   const [forgotEmail, setForgotEmail] = useState('');
@@ -84,6 +85,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             password,
             username,
             age_range: ageRange,
+            beta_invite_code: betaInviteCode,
             base_language: baseLanguage,
             marketing_data: marketingData,
             guest_migration: guestMigration
@@ -337,6 +339,21 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                   <option value="45_54">45 - 54 év</option>
                   <option value="55_plus">55 év feletti</option>
                 </select>
+              </div>
+              <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label htmlFor="auth-beta-invite" style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Béta meghívó kód</label>
+                <input
+                  type="text"
+                  id="auth-beta-invite"
+                  placeholder="Pl. LEXI-2026"
+                  autoComplete="off"
+                  value={betaInviteCode}
+                  onChange={e => setBetaInviteCode(e.target.value)}
+                  style={inputStyle}
+                />
+                <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.78rem', lineHeight: 1.35 }}>
+                  Ha meghívóval érkeztél, itt add meg a kódot.
+                </p>
               </div>
             </>
           )}

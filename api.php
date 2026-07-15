@@ -221,6 +221,63 @@ function hashPasswordResetToken(string $token): string {
     return hash('sha256', $token);
 }
 
+function isConfigEnabled(string $name): bool {
+    $value = strtolower(trim(getOptionalConfigValue($name)));
+    return in_array($value, ['1', 'true', 'yes', 'on'], true);
+}
+
+function normalizeBetaInviteCode(string $code): string {
+    return strtoupper(trim($code));
+}
+
+function lockBetaInviteForSignup(PDO $pdo, string $inviteCode, string $email): array {
+    if (!isConfigEnabled('BETA_INVITES_ENABLED')) {
+        return ['id' => null, 'error' => null];
+    }
+
+    $normalizedCode = normalizeBetaInviteCode($inviteCode);
+    if ($normalizedCode === '') {
+        return ['id' => null, 'error' => 'A béta regisztrációhoz meghívó kód szükséges.'];
+    }
+
+    $inviteHash = hash('sha256', $normalizedCode);
+    $stmt = $pdo->prepare("
+        SELECT id, email
+        FROM beta_invites
+        WHERE invite_code_hash = ?
+          AND status = 'active'
+          AND (expires_at IS NULL OR expires_at > NOW())
+        LIMIT 1
+        FOR UPDATE
+    ");
+    $stmt->execute([$inviteHash]);
+    $invite = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$invite) {
+        return ['id' => null, 'error' => 'Érvénytelen vagy lejárt béta meghívó kód.'];
+    }
+
+    $inviteEmail = trim((string)($invite['email'] ?? ''));
+    if ($inviteEmail !== '' && strcasecmp($inviteEmail, $email) !== 0) {
+        return ['id' => null, 'error' => 'Ez a béta meghívó másik e-mail címhez tartozik.'];
+    }
+
+    return ['id' => (int)$invite['id'], 'error' => null];
+}
+
+function markBetaInviteUsed(PDO $pdo, ?int $inviteId, int $userId): void {
+    if ($inviteId === null) {
+        return;
+    }
+
+    $stmt = $pdo->prepare("
+        UPDATE beta_invites
+        SET status = 'used', used_by_user_id = ?, used_at = NOW()
+        WHERE id = ?
+    ");
+    $stmt->execute([$userId, $inviteId]);
+}
+
 // 1. Sign Up
 function validateSignupData(PDO $pdo, string $email, string $password, string $username) {
     if (empty($email) || empty($password) || empty($username)) {
@@ -265,6 +322,7 @@ function handleSignup(PDO $pdo, array $data) {
     $username = isset($data['username']) ? trim($data['username']) : '';
     $ageRange = isset($data['age_range']) ? trim($data['age_range']) : 'unknown';
     $baseLanguage = isset($data['base_language']) ? trim($data['base_language']) : 'hu';
+    $betaInviteCode = isset($data['beta_invite_code']) ? trim((string)$data['beta_invite_code']) : '';
     $guestMigration = isset($data['guest_migration']) ? $data['guest_migration'] : [];
     $marketingData = isset($data['marketing_data']) && !empty($data['marketing_data']) ? json_encode($data['marketing_data']) : null;
 
@@ -279,9 +337,17 @@ function handleSignup(PDO $pdo, array $data) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $pdo->beginTransaction();
 
+        $inviteResult = lockBetaInviteForSignup($pdo, $betaInviteCode, $email);
+        if ($inviteResult['error']) {
+            $pdo->rollBack();
+            echo json_encode(['error' => $inviteResult['error']]);
+            return;
+        }
+
         $stmt = $pdo->prepare("INSERT INTO users (email, password_hash, username, age_range, marketing_data, base_language) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$email, $passwordHash, $username, $ageRange, $marketingData, $baseLanguage]);
         $userId = $pdo->lastInsertId();
+        markBetaInviteUsed($pdo, $inviteResult['id'], (int)$userId);
 
         // Migrate guest progress data if available
         $points = isset($guestMigration['points']) ? intval($guestMigration['points']) : 0;
