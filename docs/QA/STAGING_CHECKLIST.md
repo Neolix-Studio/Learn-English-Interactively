@@ -2,6 +2,8 @@
 
 Use this checklist after a PR is merged into `dev` and deployed to `https://dev.lexipaws.eu`.
 
+Use `docs/QA/STAGING_TEST_ACCOUNTS.md` to choose the right staging account type before starting QA.
+
 ## Release Smoke Test
 
 - Open `https://dev.lexipaws.eu` in a normal browser window.
@@ -11,7 +13,8 @@ Use this checklist after a PR is merged into `dev` and deployed to `https://dev.
 
 ## Account And Session
 
-- Create a test account or log into an existing staging test account.
+- Log into the smoke test account for routine PR QA.
+- Create a fresh invite test account only when the PR touches registration, invite, onboarding, or first-run behavior.
 - Refresh the page and confirm the session stays active.
 - Log out and confirm private/progress UI is no longer available.
 - Try one failed login and confirm the error is user-friendly.
@@ -39,9 +42,12 @@ Use this checklist after a PR is merged into `dev` and deployed to `https://dev.
 
 ## Forms And Reporting
 
+Use `docs/QA/BETA_FEEDBACK_TRIAGE.md` to classify any feedback or problem reports found during staging QA.
+
 - Submit feedback or problem report with normal text.
 - Submit with unusual but safe characters, such as quotes or accents.
 - Confirm the form does not expose internal errors.
+- Confirm the message reaches the expected Slack or Jira destination.
 
 ## Security Smoke Test
 
@@ -49,8 +55,7 @@ Use this checklist after a PR is merged into `dev` and deployed to `https://dev.
   - `https://dev.lexipaws.eu/migrate.php`
   - `https://dev.lexipaws.eu/cron_notifications.php`
   - `https://dev.lexipaws.eu/cron_reset_leaderboards.php`
-- Confirm migration access uses `X-Migration-Token`, and cron access uses `X-Cron-Secret` or the Websupport `secret` query parameter.
-- Confirm upload flows reject unsupported file types.
+- Confirm avatar upload accepts JPG, PNG, or WebP and rejects unsupported file types.
 - Confirm password reset flow does not reveal whether an email exists.
 
 ## Responsive And Browser Pass
@@ -69,4 +74,4 @@ Record one of these in the PR:
 - `QA blocked`
 - `QA failed`
 
-Include browser, device/viewport, account used, and short notes for anything suspicious.
+Include browser, device/viewport, account type used, and short notes for anything suspicious. Do not include passwords or real invite codes.

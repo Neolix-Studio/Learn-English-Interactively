@@ -8,6 +8,12 @@ const esc = (val) => {
   return "'" + val.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 };
 
+const requiredEnv = ['APP_BASE_URL'];
+const missingRequired = requiredEnv.filter((name) => !process.env[name]?.trim());
+if (missingRequired.length > 0) {
+  throw new Error(`Missing required deployment config: ${missingRequired.join(', ')}`);
+}
+
 const content = `<?php
 // Automatically compiled by GitHub Actions
 define('DB_HOST', ${esc(process.env.DB_HOST)});
@@ -21,6 +27,7 @@ define('SLACK_WEBHOOK_URL_FEEDBACK', ${esc(process.env.SLACK_WEBHOOK_URL_FEEDBAC
 define('CRON_SECRET', ${esc(process.env.CRON_SECRET)});
 define('MAINTENANCE_TOKEN', ${esc(process.env.MAINTENANCE_TOKEN)});
 define('APP_BASE_URL', ${esc(process.env.APP_BASE_URL)});
+define('BETA_INVITES_ENABLED', ${esc(process.env.BETA_INVITES_ENABLED)});
 define('SMTP_HOST', ${esc(process.env.SMTP_HOST)});
 define('SMTP_PORT', ${esc(process.env.SMTP_PORT)});
 define('SMTP_SECURE', ${esc(process.env.SMTP_SECURE)});
