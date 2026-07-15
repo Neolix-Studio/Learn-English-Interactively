@@ -1455,6 +1455,147 @@ function handleUpdatePreferences(PDO $pdo, array $data) {
     }
 }
 
+function getOptionalConfigValue(string $name): string {
+    $envValue = getenv($name);
+    if ($envValue !== false && $envValue !== '') {
+        return $envValue;
+    }
+
+    if (defined($name)) {
+        return (string)constant($name);
+    }
+
+    return '';
+}
+
+function getFeedbackSlackWebhookUrl(): string {
+    $feedbackWebhookUrl = getOptionalConfigValue('SLACK_WEBHOOK_URL_FEEDBACK');
+    if ($feedbackWebhookUrl !== '') {
+        return $feedbackWebhookUrl;
+    }
+
+    return getOptionalConfigValue('SLACK_WEBHOOK_URL');
+}
+
+function sanitizeFeedbackAnswers(array $answers): array {
+    $cleanAnswers = [];
+
+    foreach ($answers as $question => $answer) {
+        $cleanQuestion = security_sanitize_log_line((string)$question, 200);
+        $answerText = is_scalar($answer) ? (string)$answer : json_encode($answer);
+        $cleanAnswer = security_sanitize_log_line($answerText, 1000);
+
+        if ($cleanQuestion !== '') {
+            $cleanAnswers[$cleanQuestion] = $cleanAnswer;
+        }
+    }
+
+    return $cleanAnswers;
+}
+
+function applyFeedbackReward(PDO $pdo, int $userId, string $type): bool {
+    if ($type === 'energy_refill') {
+        $stmt = $pdo->prepare("SELECT last_feedback_refill FROM user_metadata WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row && $row['last_feedback_refill']) {
+            $lastRefill = new DateTime($row['last_feedback_refill']);
+            $now = new DateTime();
+            if (($now->getTimestamp() - $lastRefill->getTimestamp()) < 3600) {
+                echo json_encode(['success' => false, 'error' => 'Cooldown active. Try again later.']);
+                return false;
+            }
+        }
+
+        $stmt = $pdo->prepare("UPDATE user_metadata SET last_feedback_refill = CURRENT_TIMESTAMP WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        $stmtEnergy = $pdo->prepare("UPDATE user_progress SET energy = 5, last_energy_refill = NOW() WHERE user_id = ?");
+        $stmtEnergy->execute([$userId]);
+    }
+
+    if ($type === 'widget') {
+        $stmtProgress = $pdo->prepare("SELECT scores FROM user_progress WHERE user_id = ? FOR UPDATE");
+        $pdo->beginTransaction();
+        $stmtProgress->execute([$userId]);
+        $progress = $stmtProgress->fetch(PDO::FETCH_ASSOC);
+        $scores = [];
+
+        if ($progress && $progress['scores']) {
+            $decodedScores = json_decode($progress['scores'], true);
+            $scores = is_array($decodedScores) ? $decodedScores : [];
+        }
+
+        $scores['bones'] = min(100000, (int)($scores['bones'] ?? 0) + 20);
+        $stmtUpdate = $pdo->prepare("UPDATE user_progress SET scores = ? WHERE user_id = ?");
+        $stmtUpdate->execute([json_encode($scores), $userId]);
+        $pdo->commit();
+    }
+
+    return true;
+}
+
+function buildFeedbackSlackBlocks(string $username, string $type, array $cleanAnswers): array {
+    $title = 'Lexi Feedback';
+    if ($type === 'energy_refill') {
+        $title = 'Energy Refill Feedback';
+    }
+
+    $blocks = [
+        [
+            'type' => 'header',
+            'text' => [
+                'type' => 'plain_text',
+                'text' => $title,
+                'emoji' => true
+            ]
+        ],
+        [
+            'type' => 'section',
+            'fields' => [
+                ['type' => 'mrkdwn', 'text' => "*User:*\n" . $username],
+                ['type' => 'mrkdwn', 'text' => "*Type:*\n" . $type]
+            ]
+        ]
+    ];
+
+    foreach ($cleanAnswers as $question => $answer) {
+        $blocks[] = [
+            'type' => 'section',
+            'text' => ['type' => 'mrkdwn', 'text' => '*' . $question . "*\n> " . $answer]
+        ];
+    }
+
+    return $blocks;
+}
+
+function sendFeedbackToSlack(array $blocks): void {
+    $slackWebhookUrl = getFeedbackSlackWebhookUrl();
+    if ($slackWebhookUrl === '') {
+        return;
+    }
+
+    $slackPayload = json_encode(['blocks' => $blocks]);
+    $ch = curl_init($slackWebhookUrl);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $slackPayload);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($slackPayload)
+    ]);
+    curl_exec($ch);
+}
+
+function logFeedbackSubmission(string $username, string $type, array $cleanAnswers): void {
+    $logDir = __DIR__ . '/logs';
+    if (!is_dir($logDir)) {
+        mkdir($logDir, 0750, true);
+    }
+
+    file_put_contents($logDir . '/feedback.log', date('Y-m-d H:i:s') . " - User: $username - Type: $type - Payload: " . json_encode($cleanAnswers) . "\n", FILE_APPEND | LOCK_EX);
+}
+
 function handleSubmitFeedback(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
@@ -1471,99 +1612,24 @@ function handleSubmitFeedback(PDO $pdo, array $data) {
     $userId = (int)$_SESSION['user_id'];
     $username = security_sanitize_log_line($_SESSION['username'] ?? 'Unknown User', 100);
     $type = security_sanitize_log_line($data['type'] ?? 'general', 50);
-    $answers = isset($data['answers']) && is_array($data['answers']) ? $data['answers'] : [];
+    $answers = [];
+    if (isset($data['answers']) && is_array($data['answers'])) {
+        $answers = $data['answers'];
+    }
 
     if (!in_array($type, ['energy_refill', 'widget', 'general'], true)) {
         $type = 'general';
     }
 
-    $cleanAnswers = [];
-    foreach ($answers as $question => $answer) {
-        $cleanQuestion = security_sanitize_log_line((string)$question, 200);
-        $cleanAnswer = security_sanitize_log_line(is_scalar($answer) ? (string)$answer : json_encode($answer), 1000);
-        if ($cleanQuestion !== '') {
-            $cleanAnswers[$cleanQuestion] = $cleanAnswer;
-        }
-    }
+    $cleanAnswers = sanitizeFeedbackAnswers($answers);
 
     try {
-        if ($type === 'energy_refill') {
-            $stmt = $pdo->prepare("SELECT last_feedback_refill FROM user_metadata WHERE user_id = ?");
-            $stmt->execute([$userId]);
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($row && $row['last_feedback_refill']) {
-                $lastRefill = new DateTime($row['last_feedback_refill']);
-                $now = new DateTime();
-                if (($now->getTimestamp() - $lastRefill->getTimestamp()) < 3600) {
-                    echo json_encode(['success' => false, 'error' => 'Cooldown active. Try again later.']);
-                    return;
-                }
-            }
-
-            $stmt = $pdo->prepare("UPDATE user_metadata SET last_feedback_refill = CURRENT_TIMESTAMP WHERE user_id = ?");
-            $stmt->execute([$userId]);
-            $stmtEnergy = $pdo->prepare("UPDATE user_progress SET energy = 5, last_energy_refill = NOW() WHERE user_id = ?");
-            $stmtEnergy->execute([$userId]);
-        } elseif ($type === 'widget') {
-            $stmtProgress = $pdo->prepare("SELECT scores FROM user_progress WHERE user_id = ? FOR UPDATE");
-            $pdo->beginTransaction();
-            $stmtProgress->execute([$userId]);
-            $progress = $stmtProgress->fetch(PDO::FETCH_ASSOC);
-            $scores = $progress && $progress['scores'] ? json_decode($progress['scores'], true) : [];
-            if (!is_array($scores)) {
-                $scores = [];
-            }
-            $scores['bones'] = min(100000, (int)($scores['bones'] ?? 0) + 20);
-            $stmtUpdate = $pdo->prepare("UPDATE user_progress SET scores = ? WHERE user_id = ?");
-            $stmtUpdate->execute([json_encode($scores), $userId]);
-            $pdo->commit();
+        if (!applyFeedbackReward($pdo, $userId, $type)) {
+            return;
         }
 
-        $blocks = [
-            [
-                'type' => 'header',
-                'text' => [
-                    'type' => 'plain_text',
-                    'text' => ($type === 'energy_refill' ? 'Energy Refill Feedback' : 'Lexi Feedback'),
-                    'emoji' => true
-                ]
-            ],
-            [
-                'type' => 'section',
-                'fields' => [
-                    ['type' => 'mrkdwn', 'text' => "*User:*\n" . $username],
-                    ['type' => 'mrkdwn', 'text' => "*Type:*\n" . $type]
-                ]
-            ]
-        ];
-
-        foreach ($cleanAnswers as $question => $answer) {
-            $blocks[] = [
-                'type' => 'section',
-                'text' => ['type' => 'mrkdwn', 'text' => '*' . $question . "*\n> " . $answer]
-            ];
-        }
-
-        $slackPayload = json_encode(['blocks' => $blocks]);
-        $slackWebhookUrl = getenv('SLACK_WEBHOOK_URL') ?: (defined('SLACK_WEBHOOK_URL') ? SLACK_WEBHOOK_URL : '');
-        if ($slackWebhookUrl) {
-            $ch = curl_init($slackWebhookUrl);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $slackPayload);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($slackPayload)
-            ]);
-            curl_exec($ch);
-        }
-
-        $logDir = __DIR__ . '/logs';
-        if (!is_dir($logDir)) {
-            mkdir($logDir, 0750, true);
-        }
-        file_put_contents($logDir . '/feedback.log', date('Y-m-d H:i:s') . " - User: $username - Type: $type - Payload: " . json_encode($cleanAnswers) . "\n", FILE_APPEND | LOCK_EX);
+        sendFeedbackToSlack(buildFeedbackSlackBlocks($username, $type, $cleanAnswers));
+        logFeedbackSubmission($username, $type, $cleanAnswers);
 
         echo json_encode(['success' => true]);
     } catch (Exception $e) {

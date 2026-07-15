@@ -128,6 +128,7 @@ jobs:
           MIGRATION_TOKEN: ${{ secrets.MIGRATION_TOKEN }}
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL_FEEDBACK: ${{ secrets.SLACK_WEBHOOK_URL_FEEDBACK }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           MAINTENANCE_TOKEN: ${{ secrets.MAINTENANCE_TOKEN }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
