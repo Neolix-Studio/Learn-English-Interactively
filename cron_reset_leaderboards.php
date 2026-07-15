@@ -1,7 +1,9 @@
 <?php
 // cron_reset_leaderboards.php
-// Ezt a fájlt a websupport.sk Cron Job rendszeréből kell meghívni.
-// URL: https://te-domained.com/cron_reset_leaderboards.php?type=weekly&secret=IDE_IRD_A_TITKOS_KULCSOT
+// Websupport cron can call this with type=weekly/monthly and CRON_SECRET.
+
+header('Content-Type: text/plain; charset=utf-8');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
 require_once __DIR__ . '/db_config.php';
 require_once __DIR__ . '/security.php';

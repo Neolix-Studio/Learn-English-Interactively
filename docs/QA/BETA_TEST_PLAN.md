@@ -9,6 +9,8 @@ Use it for:
 - deciding what your cousin should test or automate next
 - deciding whether `dev` is ready to promote to `main`
 
+Use `docs/QA/STAGING_TEST_ACCOUNTS.md` when choosing accounts for staging runs.
+
 ## QA Habit For Every PR
 
 Every PR should answer four questions:
@@ -75,6 +77,7 @@ Run after every merge to `dev`.
 - Confirm no repeated console errors.
 - Call `https://dev.lexipaws.eu/api.php?action=get_session`.
 - Confirm the response is JSON.
+- Log in with the smoke test account.
 - Confirm the main navigation is usable on desktop.
 - Confirm the main navigation is usable on mobile width.
 
@@ -84,7 +87,7 @@ Owner: QA owner or developer who merged.
 
 Run for auth/session/password changes and before beta.
 
-- Register a new test account.
+- Register a fresh invite test account when invite-only beta is enabled.
 - Log out.
 - Log in again.
 - Refresh and confirm the session persists.
@@ -145,6 +148,7 @@ Run for avatar upload, feedback, and report changes.
 - Submit feedback with normal text.
 - Submit feedback with quotes and accented characters.
 - Submit problem report.
+- Confirm feedback reaches Slack and problem reports reach Jira.
 - Confirm no internal stack trace or database error appears to user.
 
 Suggested automation priority: medium.
@@ -155,6 +159,8 @@ Run before beta and after endpoint/security changes.
 
 - Confirm `migrate.php` denies browser access without token.
 - Confirm cron endpoints deny browser access without token.
+- Confirm `migrate.php` accepts only the `X-Migration-Token` header.
+- Confirm cron endpoints accept `X-Cron-Secret` or the Websupport cron `secret` query parameter.
 - Confirm state-changing API calls require CSRF where applicable.
 - Confirm generated deployment config is not committed.
 - Confirm PHP security smoke scan passes.
