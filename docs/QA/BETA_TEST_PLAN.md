@@ -148,6 +148,7 @@ Run for avatar upload, feedback, and report changes.
 - Submit feedback with normal text.
 - Submit feedback with quotes and accented characters.
 - Submit problem report.
+- Confirm feedback reaches Slack and problem reports reach Jira.
 - Confirm no internal stack trace or database error appears to user.
 
 Suggested automation priority: medium.

@@ -42,9 +42,12 @@ Use `docs/QA/STAGING_TEST_ACCOUNTS.md` to choose the right staging account type 
 
 ## Forms And Reporting
 
+Use `docs/QA/BETA_FEEDBACK_TRIAGE.md` to classify any feedback or problem reports found during staging QA.
+
 - Submit feedback or problem report with normal text.
 - Submit with unusual but safe characters, such as quotes or accents.
 - Confirm the form does not expose internal errors.
+- Confirm the message reaches the expected Slack or Jira destination.
 
 ## Security Smoke Test
 
