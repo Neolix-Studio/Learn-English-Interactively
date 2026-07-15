@@ -105,11 +105,24 @@ foreach ($answers as $q => $a) {
 
 $slack_payload = json_encode(['blocks' => $blocks]);
 
+function get_feedback_config_value(string $name): string {
+    $env_value = getenv($name);
+    if ($env_value !== false && $env_value !== '') {
+        return $env_value;
+    }
+
+    if (defined($name)) {
+        return (string)constant($name);
+    }
+
+    return '';
+}
+
 // Prefer the dedicated feedback webhook, with the legacy shared webhook as fallback.
-$slack_webhook_url = getenv('SLACK_WEBHOOK_URL_FEEDBACK')
-    ?: (defined('SLACK_WEBHOOK_URL_FEEDBACK') ? SLACK_WEBHOOK_URL_FEEDBACK : '')
-    ?: getenv('SLACK_WEBHOOK_URL')
-    ?: (defined('SLACK_WEBHOOK_URL') ? SLACK_WEBHOOK_URL : '');
+$slack_webhook_url = get_feedback_config_value('SLACK_WEBHOOK_URL_FEEDBACK');
+if ($slack_webhook_url === '') {
+    $slack_webhook_url = get_feedback_config_value('SLACK_WEBHOOK_URL');
+}
 
 if (!empty($slack_webhook_url)) {
     $ch = curl_init($slack_webhook_url);
