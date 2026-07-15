@@ -46,6 +46,7 @@ Use `docs/QA/BETA_FEEDBACK_TRIAGE.md` to classify any feedback or problem report
 
 - Submit feedback or problem report with normal text.
 - Submit with unusual but safe characters, such as quotes or accents.
+- Submit a problem report containing Hungarian and Slovak letters, such as `őűáéíóöü` and `ľščťžýáíéúäň`.
 - Confirm the form does not expose internal errors.
 - Confirm the message reaches the expected Slack or Jira destination.
 
