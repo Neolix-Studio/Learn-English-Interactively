@@ -23,7 +23,15 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({ isOpen, on
     const selected = e.target.files?.[0];
     if (selected) {
       if (selected.size > 5 * 1024 * 1024) {
+        setFile(null);
+        setPreview(null);
         setError('File size must be under 5MB.');
+        return;
+      }
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(selected.type)) {
+        setFile(null);
+        setPreview(null);
+        setError('Allowed image types: JPG, PNG, or WebP.');
         return;
       }
       setFile(selected);
@@ -105,7 +113,7 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({ isOpen, on
             type="file" 
             ref={fileInputRef} 
             onChange={handleFileChange} 
-            accept="image/png, image/jpeg, image/gif, image/webp"
+            accept="image/png, image/jpeg, image/webp"
             style={{ display: 'none' }}
           />
 

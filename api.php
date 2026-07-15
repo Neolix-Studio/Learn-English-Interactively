@@ -545,6 +545,14 @@ function formatUserProgress(array $progress) {
     ];
 }
 
+function isAllowedAvatarValue(string $avatar): bool {
+    if ($avatar === 'default.png') {
+        return true;
+    }
+
+    return preg_match('/^[a-f0-9]{32}\.(jpg|png|webp)$/', $avatar) === 1;
+}
+
 // 4. Get Current Session State (Retrieves user data + progress details)
 function handleUpdateAvatar(PDO $pdo, array $inputData) {
     if (!isset($_SESSION['user_id'])) {
@@ -556,8 +564,9 @@ function handleUpdateAvatar(PDO $pdo, array $inputData) {
     $userId = $_SESSION['user_id'];
     $avatar = trim($inputData['avatar'] ?? '');
 
-    if (empty($avatar)) {
-        echo json_encode(["status" => "error", "message" => "Avatar name required"]);
+    if (empty($avatar) || !isAllowedAvatarValue($avatar)) {
+        http_response_code(400);
+        echo json_encode(["status" => "error", "message" => "Invalid avatar value"]);
         return;
     }
 

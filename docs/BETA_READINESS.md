@@ -84,7 +84,7 @@ Required before beta:
 - CSRF protections are active for state-changing requests.
 - Session cookies are `HttpOnly`, `Secure` on HTTPS, and `SameSite=Lax`.
 - Migration and cron endpoints require server-side tokens.
-- Uploads reject unsafe file types and generated names are used.
+- Avatar uploads reject unsafe file types, require server-validated images, and use generated filenames.
 - Password reset links are protected against host header abuse.
 - PHP security smoke scan or deeper PHP static analysis runs in CI.
 - No sensitive errors are shown to users.
