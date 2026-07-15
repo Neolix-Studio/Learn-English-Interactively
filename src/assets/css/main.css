@@ -703,7 +703,6 @@ a {
         max-width: 100%;
         margin-bottom: 0.6rem;
         overflow-wrap: anywhere;
-        word-break: break-word;
         text-wrap: balance;
     }
 
@@ -720,7 +719,7 @@ a {
         flex: 0 0 auto;
         overflow: hidden;
         text-overflow: clip;
-        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     .welcome-auth-link {

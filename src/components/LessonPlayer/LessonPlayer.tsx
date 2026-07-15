@@ -31,6 +31,102 @@ interface LessonPlayerProps {
   isTutorial?: boolean;
 }
 
+interface LessonSelection {
+  rawItems: any[];
+  currentSubLessonId?: string;
+  isLastSubLesson: boolean;
+  introducedWords?: string[];
+}
+
+function collectQuestionText(question: QuestionData): string {
+  const textParts = [
+    question.correctAnswer,
+    question.sentence,
+    question.word,
+    ...(question.options || []).map((opt: any) => opt.text),
+    ...(question.scrambledWords || [])
+  ];
+
+  return textParts.filter(Boolean).join(' ').toLowerCase();
+}
+
+function findNewWords(question: QuestionData, introducedWords: string[], learnedWords: string[] = []) {
+  const textContent = collectQuestionText(question);
+  const learnedWordSet = new Set(learnedWords.map(word => word.toLowerCase()));
+
+  return introducedWords.filter(word => {
+    const normalizedWord = word.toLowerCase();
+    return new RegExp(`\\b${normalizedWord}\\b`).test(textContent) && !learnedWordSet.has(normalizedWord);
+  });
+}
+
+function enrichQuestion(
+  question: QuestionData | undefined,
+  dictionary: Record<string, any>,
+  introducedWords: string[],
+  learnedWords: string[] = []
+) {
+  if (!question) return undefined;
+
+  const newWordsInQuestion = introducedWords.length > 0 ? findNewWords(question, introducedWords, learnedWords) : [];
+
+  return {
+    ...question,
+    dictionary,
+    newWord: newWordsInQuestion.length > 0,
+    newWords: newWordsInQuestion
+  };
+}
+
+function readLegacyCompletedLessons(lessonNodeId: string) {
+  try {
+    const localProgStr = localStorage.getItem('user_local_progress');
+    if (!localProgStr) return [];
+
+    const localProg = JSON.parse(localProgStr);
+    if (localProg.nodeId === lessonNodeId && localProg.completedLessonId) {
+      return [localProg.completedLessonId];
+    }
+  } catch (e) {
+    console.error("Could not parse local progress", e);
+  }
+
+  return [];
+}
+
+function getCompletedLessons(lessonNodeId: string, userData: any, isGuest: boolean) {
+  const nodeState = userData.scores?.node_state?.[lessonNodeId];
+  if (nodeState) {
+    return nodeState.completedLessons || [];
+  }
+
+  return isGuest ? readLegacyCompletedLessons(lessonNodeId) : [];
+}
+
+function selectLessonItems(data: any, lessonNode: any, userData: any, isGuest: boolean): LessonSelection {
+  if (data.lessons && Array.isArray(data.lessons)) {
+    const completedLessons = getCompletedLessons(lessonNode.id, userData, isGuest);
+    const targetLesson = data.lessons.find((lesson: any) => !completedLessons.includes(lesson.id)) || data.lessons[data.lessons.length - 1];
+
+    return {
+      rawItems: targetLesson.items || [],
+      currentSubLessonId: targetLesson.id,
+      isLastSubLesson: data.lessons.indexOf(targetLesson) === data.lessons.length - 1,
+      introducedWords: targetLesson.introducedWords
+    };
+  }
+
+  if (data.levels) {
+    return { rawItems: data.levels[0].exercises, isLastSubLesson: true };
+  }
+
+  if (data.items) {
+    return { rawItems: data.items, isLastSubLesson: true };
+  }
+
+  return { rawItems: Array.isArray(data) ? data : [], isLastSubLesson: true };
+}
+
 export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, onComplete, isTutorial = false }) => {
   const { isGuest, data: userData, activeLevel, syncLearnedWords } = useUser();
   const { t } = useTranslation();
@@ -68,47 +164,8 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const currentQuestion = questions[currentIndex];
   
   const enrichedQuestion = useMemo(() => {
-    if (!currentQuestion) return undefined;
-    
-    let isNew = false;
-    const newWordsInQuestion: string[] = [];
-    
-    if (introducedWords && introducedWords.length > 0) {
-      let textContent = "";
-      if (currentQuestion.correctAnswer) textContent += currentQuestion.correctAnswer + " ";
-      if (currentQuestion.sentence) textContent += currentQuestion.sentence + " ";
-      if (currentQuestion.options) {
-        currentQuestion.options.forEach((opt: any) => {
-          if (opt.text) textContent += opt.text + " ";
-        });
-      }
-      if (currentQuestion.scrambledWords) {
-         textContent += currentQuestion.scrambledWords.join(" ") + " ";
-      }
-      if (currentQuestion.word) {
-         textContent += currentQuestion.word + " ";
-      }
-      
-      const lowerText = textContent.toLowerCase();
-      introducedWords.forEach(word => {
-        const regex = new RegExp(`\\b${word.toLowerCase()}\\b`);
-        if (regex.test(lowerText)) {
-          // It's only a NEW word if the user hasn't learned it yet
-          if (!userData.learnedWords || !userData.learnedWords.includes(word.toLowerCase())) {
-            isNew = true;
-            newWordsInQuestion.push(word);
-          }
-        }
-      });
-    }
-    
-    return { 
-      ...currentQuestion, 
-      dictionary,
-      newWord: isNew,
-      newWords: newWordsInQuestion
-    };
-  }, [currentQuestion, dictionary, introducedWords]);
+    return enrichQuestion(currentQuestion, dictionary, introducedWords, userData.learnedWords);
+  }, [currentQuestion, dictionary, introducedWords, userData.learnedWords]);
 
   // Fetch and generate questions on mount
   useEffect(() => {
@@ -118,51 +175,10 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         // Use the pre-loaded data directly from Vite import.meta.glob
         const data = lessonNode;
         
-        let rawItems = [];
-        let currentSubLessonId = undefined;
-        let isLast = true;
-        
-        if (data.lessons && Array.isArray(data.lessons)) {
-            let completedLessons: string[] = [];
-            if (userData.scores?.node_state?.[lessonNode.id]) {
-                completedLessons = userData.scores.node_state[lessonNode.id].completedLessons || [];
-            } else if (isGuest) {
-                // Fallback for legacy user_local_progress just in case
-                try {
-                    const localProgStr = localStorage.getItem('user_local_progress');
-                    if (localProgStr) {
-                        const localProg = JSON.parse(localProgStr);
-                        if (localProg.nodeId === lessonNode.id && localProg.completedLessonId) {
-                            completedLessons = [localProg.completedLessonId];
-                        }
-                    }
-                } catch (e) {
-                    console.error("Could not parse local progress", e);
-                }
-            }
-            
-            let targetLesson = data.lessons.find((l: any) => !completedLessons.includes(l.id));
-            if (!targetLesson) {
-                // If all completed, just play the last one for practice
-                targetLesson = data.lessons[data.lessons.length - 1];
-            }
-            
-            rawItems = targetLesson.items || [];
-            currentSubLessonId = targetLesson.id;
-            setActiveSubLessonId(currentSubLessonId);
-            
-            isLast = data.lessons.indexOf(targetLesson) === data.lessons.length - 1;
-            setIsLastSubLesson(isLast);
-            
-            if (targetLesson.introducedWords) setIntroducedWords(targetLesson.introducedWords);
-            
-        } else if (data.levels) {
-            rawItems = data.levels[0].exercises;
-        } else if (data.items) {
-            rawItems = data.items;
-        } else if (Array.isArray(data)) {
-            rawItems = data;
-        }
+        const selection = selectLessonItems(data, lessonNode, userData, isGuest);
+        setActiveSubLessonId(selection.currentSubLessonId);
+        setIsLastSubLesson(selection.isLastSubLesson);
+        if (selection.introducedWords) setIntroducedWords(selection.introducedWords);
         
         // Also load dictionary and introduced words if they exist at the root level
         if (data.introducedWords) setIntroducedWords(data.introducedWords);
@@ -171,10 +187,10 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         let generatedQuestions: QuestionData[] = [];
         
         // Check if the items are already questions (have a 'type') or just vocabulary words
-        if (rawItems.length > 0 && rawItems[0].type) {
-            generatedQuestions = rawItems; // Already formatted as questions
+        if (selection.rawItems.length > 0 && selection.rawItems[0].type) {
+            generatedQuestions = selection.rawItems; // Already formatted as questions
         } else {
-            generatedQuestions = DynamicExerciseEngine.generate(rawItems);
+            generatedQuestions = DynamicExerciseEngine.generate(selection.rawItems);
         }
         
         setQuestions(generatedQuestions);
