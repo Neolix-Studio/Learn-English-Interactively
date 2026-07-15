@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { QuestionHeader } from '../QuestionHeader';
-import { playSoundEffect } from '../../../utils/audio';
+import React, { useState, useEffect, useCallback } from 'react';
+import { playAudioClip } from '../../../utils/audio';
 
 interface PhonicsListenChooseProps {
   question: any;
@@ -10,6 +9,11 @@ interface PhonicsListenChooseProps {
 export const PhonicsListenChoose: React.FC<PhonicsListenChooseProps> = ({ question, onAnswer }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  const handlePlayAudio = useCallback(() => {
+    const fallbackText = question.options.find((option: any) => option.correct)?.text || "";
+    playAudioClip(question.audioUrl, fallbackText);
+  }, [question]);
+
   useEffect(() => {
     setSelectedId(null);
     // Auto-play audio with slight delay
@@ -17,23 +21,11 @@ export const PhonicsListenChoose: React.FC<PhonicsListenChooseProps> = ({ questi
       handlePlayAudio();
     }, 500);
     return () => clearTimeout(timer);
-  }, [question]);
+  }, [question, handlePlayAudio]);
 
   const handleSelect = (id: string, isCorrect: boolean) => {
     setSelectedId(id);
     onAnswer(isCorrect);
-  };
-
-  const handlePlayAudio = () => {
-    if (question.audioUrl) {
-      const audio = new Audio(question.audioUrl);
-      audio.play().catch(e => console.error("Audio playback failed", e));
-    } else {
-      // Fallback to TTS if no audioUrl
-      const utterance = new SpeechSynthesisUtterance(question.options.find((o: any) => o.correct)?.text || "");
-      utterance.lang = 'en-US';
-      window.speechSynthesis.speak(utterance);
-    }
   };
 
   return (

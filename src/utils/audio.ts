@@ -99,12 +99,6 @@ export function setGlobalVolume(vol: number) {
     }
 }
 
-function secureRandom() {
-    const array = new Uint32Array(1);
-    window.crypto.getRandomValues(array);
-    return array[0] / (0xffffffff + 1);
-}
-
 export function stopAudio() {
     currentTTSId++; // Invalidate any pending fetches
     if (activeAudio) {
@@ -124,8 +118,8 @@ export function playTTS(text: string, lang: string = 'en-US'): Promise<void> {
             return;
         }
         
-        const ttsId = ++currentTTSId;
         stopAudio(); // Cut off any currently playing audio
+        const ttsId = ++currentTTSId;
         
         // Check cache first
         const cacheKey = text.toLowerCase().trim();
@@ -202,6 +196,36 @@ export function playTTS(text: string, lang: string = 'en-US'): Promise<void> {
                 utterance.onerror = () => resolve();
                 window.speechSynthesis.speak(utterance);
             });
+    });
+}
+
+export function playAudioClip(audioUrl: string | undefined, fallbackText: string = '', lang: string = 'en-US'): Promise<void> {
+    if (!audioUrl) {
+        return fallbackText ? playTTS(fallbackText, lang) : Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+        stopAudio();
+        const clipId = ++currentTTSId;
+
+        const audio = new Audio(audioUrl);
+        audio.volume = AudioSynth.volume;
+        activeAudio = audio;
+        audio.onended = () => resolve();
+        audio.onerror = () => {
+            if (currentTTSId === clipId && fallbackText) {
+                playTTS(fallbackText, lang).then(resolve);
+            } else {
+                resolve();
+            }
+        };
+        audio.play().catch(() => {
+            if (currentTTSId === clipId && fallbackText) {
+                playTTS(fallbackText, lang).then(resolve);
+            } else {
+                resolve();
+            }
+        });
     });
 }
 

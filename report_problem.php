@@ -8,21 +8,28 @@
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token');
+header('X-Content-Type-Options: nosniff');
 require_once __DIR__ . '/security.php';
 security_start_session();
 security_validate_same_origin(security_allowed_origins());
 
-// Only allow POST requests
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed']);
+function report_problem_error(int $statusCode, string $clientMessage, string $logMessage = ''): void {
+    if ($logMessage !== '') {
+        error_log('Report problem error: ' . security_sanitize_log_line($logMessage));
+    }
+
+    http_response_code($statusCode);
+    echo json_encode(['success' => false, 'error' => $clientMessage]);
     exit;
 }
 
+// Only allow POST requests
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    report_problem_error(405, 'Method not allowed');
+}
+
 if (!security_rate_limit('report_problem_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 10, 3600)) {
-    http_response_code(429);
-    echo json_encode(['error' => 'Too many reports. Please try again later.']);
-    exit;
+    report_problem_error(429, 'Túl sok jelentést küldtél. Kérjük, próbáld újra később.');
 }
 
 // Get JSON payload
@@ -30,9 +37,7 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
 if (!$data) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Invalid JSON']);
-    exit;
+    report_problem_error(400, 'Érvénytelen kérés.');
 }
 
 // Extract fields
@@ -40,9 +45,18 @@ $issueType = security_sanitize_log_line(isset($data['issueType']) ? (string)$dat
 $description = security_sanitize_log_line(isset($data['description']) ? (string)$data['description'] : 'No description provided', 4000);
 $steps = security_sanitize_log_line(isset($data['steps']) ? (string)$data['steps'] : 'No steps provided', 4000);
 $userEmail = isset($data['userEmail']) && filter_var($data['userEmail'], FILTER_VALIDATE_EMAIL) ? $data['userEmail'] : '';
-$contextData = isset($data['contextData']) ? $data['contextData'] : [];
-$browserInfo = isset($data['browserInfo']) ? $data['browserInfo'] : [];
+$contextData = isset($data['contextData']) && is_array($data['contextData']) ? $data['contextData'] : [];
+$browserInfo = isset($data['browserInfo']) && is_array($data['browserInfo']) ? $data['browserInfo'] : [];
 $timestamp = security_sanitize_log_line(isset($data['timestamp']) ? (string)$data['timestamp'] : date('c'), 100);
+
+$allowedIssueTypes = ['bug', 'typo', 'audio', 'feature', 'other'];
+if (!in_array($issueType, $allowedIssueTypes, true)) {
+    $issueType = 'other';
+}
+
+if (trim($description) === '' || $description === 'No description provided') {
+    report_problem_error(400, 'Kérjük, írd le a problémát.');
+}
 
 // =========================================================================
 // CONFIGURATION
@@ -106,6 +120,5 @@ $success = mail($jiraEmailAddress, $subject, $body, $headers);
 if ($success) {
     echo json_encode(['success' => true, 'message' => 'Report sent successfully']);
 } else {
-    http_response_code(500);
-    echo json_encode(['error' => 'Failed to send email. Check PHP mail configuration.']);
+    report_problem_error(500, 'A jelentést most nem sikerült elküldeni. Kérjük, próbáld újra később.', 'mail() returned false');
 }

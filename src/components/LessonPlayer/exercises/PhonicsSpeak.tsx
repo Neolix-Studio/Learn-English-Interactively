@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { playAudioClip } from '../../../utils/audio';
 
 interface PhonicsSpeakProps {
   question: any;
@@ -11,23 +12,16 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
   const [isListening, setIsListening] = useState(false);
   const [hasSpoken, setHasSpoken] = useState(false);
 
+  const handleListen = useCallback(() => {
+    playAudioClip(question.audioUrl, question.word);
+  }, [question]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       handleListen();
     }, 500);
     return () => clearTimeout(timer);
-  }, [question]);
-
-  const handleListen = () => {
-    if (question.audioUrl) {
-      const audio = new Audio(question.audioUrl);
-      audio.play().catch(e => console.error(e));
-    } else {
-      const utterance = new SpeechSynthesisUtterance(question.word);
-      utterance.lang = 'en-US';
-      window.speechSynthesis.speak(utterance);
-    }
-  };
+  }, [question, handleListen]);
 
   const handleSpeak = () => {
     if (isAnswered || hasSpoken) return;

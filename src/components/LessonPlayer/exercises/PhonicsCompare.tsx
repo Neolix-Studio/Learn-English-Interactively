@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { playAudioClip } from '../../../utils/audio';
 
 interface PhonicsCompareProps {
   question: any;
@@ -9,12 +10,16 @@ interface PhonicsCompareProps {
 export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   
-  // Use refs for audio to play them sequentially
-  const audio1Ref = useRef<HTMLAudioElement | null>(null);
-  const audio2Ref = useRef<HTMLAudioElement | null>(null);
-  
   const initialTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const playAudio1 = useCallback(() => {
+    playAudioClip(question.audioUrl1, question.word1);
+  }, [question]);
+
+  const playAudio2 = useCallback(() => {
+    playAudioClip(question.audioUrl2, question.word2);
+  }, [question]);
 
   useEffect(() => {
     setSelectedOption(null);
@@ -33,10 +38,8 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (initialTimeoutRef.current) clearTimeout(initialTimeoutRef.current);
-      if (audio1Ref.current) audio1Ref.current.pause();
-      if (audio2Ref.current) audio2Ref.current.pause();
     };
-  }, [question]);
+  }, [question, onAnswer, playAudio1, playAudio2]);
 
   const handleSelect = (option: 'same' | 'different') => {
     if (isAnswered) return;
@@ -59,34 +62,6 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     if (initialTimeoutRef.current) clearTimeout(initialTimeoutRef.current);
     playAudio2();
-  };
-
-  const playAudio1 = () => {
-    if (question.audioUrl1) {
-      if (!audio1Ref.current) {
-        audio1Ref.current = new Audio(question.audioUrl1);
-      }
-      audio1Ref.current.currentTime = 0;
-      audio1Ref.current.play().catch(e => console.error("Audio 1 play blocked", e));
-    } else if (question.word1) {
-      const u = new SpeechSynthesisUtterance(question.word1);
-      u.lang = 'en-US';
-      window.speechSynthesis.speak(u);
-    }
-  };
-
-  const playAudio2 = () => {
-    if (question.audioUrl2) {
-      if (!audio2Ref.current) {
-        audio2Ref.current = new Audio(question.audioUrl2);
-      }
-      audio2Ref.current.currentTime = 0;
-      audio2Ref.current.play().catch(e => console.error("Audio 2 play blocked", e));
-    } else if (question.word2) {
-      const u = new SpeechSynthesisUtterance(question.word2);
-      u.lang = 'en-US';
-      window.speechSynthesis.speak(u);
-    }
   };
 
   const getOptionStyle = (option: 'same' | 'different') => {
