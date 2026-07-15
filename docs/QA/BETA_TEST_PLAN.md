@@ -9,7 +9,7 @@ Use it for:
 - deciding what your cousin should test or automate next
 - deciding whether `dev` is ready to promote to `main`
 
-Use `docs/QA/BETA_FEEDBACK_TRIAGE.md` when feedback or problem reports create follow-up work.
+Use `docs/QA/STAGING_TEST_ACCOUNTS.md` when choosing accounts for staging runs.
 
 ## QA Habit For Every PR
 
@@ -77,6 +77,7 @@ Run after every merge to `dev`.
 - Confirm no repeated console errors.
 - Call `https://dev.lexipaws.eu/api.php?action=get_session`.
 - Confirm the response is JSON.
+- Log in with the smoke test account.
 - Confirm the main navigation is usable on desktop.
 - Confirm the main navigation is usable on mobile width.
 
@@ -86,7 +87,7 @@ Owner: QA owner or developer who merged.
 
 Run for auth/session/password changes and before beta.
 
-- Register a new test account.
+- Register a fresh invite test account when invite-only beta is enabled.
 - Log out.
 - Log in again.
 - Refresh and confirm the session persists.

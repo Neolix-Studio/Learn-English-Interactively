@@ -2,6 +2,8 @@
 
 Use this checklist after a PR is merged into `dev` and deployed to `https://dev.lexipaws.eu`.
 
+Use `docs/QA/STAGING_TEST_ACCOUNTS.md` to choose the right staging account type before starting QA.
+
 ## Release Smoke Test
 
 - Open `https://dev.lexipaws.eu` in a normal browser window.
@@ -11,7 +13,8 @@ Use this checklist after a PR is merged into `dev` and deployed to `https://dev.
 
 ## Account And Session
 
-- Create a test account or log into an existing staging test account.
+- Log into the smoke test account for routine PR QA.
+- Create a fresh invite test account only when the PR touches registration, invite, onboarding, or first-run behavior.
 - Refresh the page and confirm the session stays active.
 - Log out and confirm private/progress UI is no longer available.
 - Try one failed login and confirm the error is user-friendly.
@@ -71,4 +74,4 @@ Record one of these in the PR:
 - `QA blocked`
 - `QA failed`
 
-Include browser, device/viewport, account used, and short notes for anything suspicious.
+Include browser, device/viewport, account type used, and short notes for anything suspicious. Do not include passwords or real invite codes.

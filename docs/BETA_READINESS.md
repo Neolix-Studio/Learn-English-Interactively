@@ -31,9 +31,9 @@ Required before wider testing:
 - No direct pushes to `dev` or `main`.
 - Every PR has a short test plan.
 - Every behavior-changing PR has QA notes before or after staging deploy.
-- Staging has a known test account strategy.
+- Staging has a known test account strategy in `docs/QA/STAGING_TEST_ACCOUNTS.md`.
 
-Status: in progress.
+Status: in progress. Test account strategy is documented; staging credentials and invite codes still need to be created privately.
 
 ### Gate 2: Core Learning Loop Works
 
@@ -136,6 +136,7 @@ Status: not started. Planned for beta launch window.
 
 ### Week 2: Account And Session Audit
 
+- Create private staging smoke, progress, fresh invite, and negative-test accounts from `docs/QA/STAGING_TEST_ACCOUNTS.md`.
 - Test registration.
 - Test login.
 - Test logout.
