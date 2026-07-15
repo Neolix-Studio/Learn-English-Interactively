@@ -159,6 +159,8 @@ Run before beta and after endpoint/security changes.
 
 - Confirm `migrate.php` denies browser access without token.
 - Confirm cron endpoints deny browser access without token.
+- Confirm `migrate.php` accepts only the `X-Migration-Token` header.
+- Confirm cron endpoints accept `X-Cron-Secret` or the Websupport cron `secret` query parameter.
 - Confirm state-changing API calls require CSRF where applicable.
 - Confirm generated deployment config is not committed.
 - Confirm PHP security smoke scan passes.

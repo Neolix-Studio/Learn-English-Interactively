@@ -86,11 +86,18 @@ function security_require_cli_or_token(string $tokenConstant = 'MAINTENANCE_TOKE
         $expected = constant($tokenConstant);
     }
 
-    $headerName = 'HTTP_X_' . $tokenConstant;
-    $provided = $_SERVER[$headerName] ?? ($_SERVER['HTTP_X_MAINTENANCE_TOKEN'] ?? '');
-    if ($tokenConstant === 'CRON_SECRET') {
-        $provided = $_SERVER['HTTP_X_CRON_SECRET'] ?? ($_GET['secret'] ?? $provided);
+    $provided = '';
+    if ($tokenConstant === 'MIGRATION_TOKEN') {
+        $provided = $_SERVER['HTTP_X_MIGRATION_TOKEN'] ?? '';
+    } elseif ($tokenConstant === 'CRON_SECRET') {
+        $provided = $_SERVER['HTTP_X_CRON_SECRET'] ?? ($_GET['secret'] ?? '');
+    } elseif ($tokenConstant === 'MAINTENANCE_TOKEN') {
+        $provided = $_SERVER['HTTP_X_MAINTENANCE_TOKEN'] ?? '';
+    } else {
+        $headerName = 'HTTP_X_' . $tokenConstant;
+        $provided = $_SERVER[$headerName] ?? '';
     }
+
     if (!$expected || !$provided || !hash_equals($expected, $provided)) {
         http_response_code(403);
         echo 'Access denied.';
