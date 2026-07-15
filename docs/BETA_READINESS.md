@@ -85,7 +85,7 @@ Required before beta:
 - Session cookies are `HttpOnly`, `Secure` on HTTPS, and `SameSite=Lax`.
 - Migration and cron endpoints require server-side tokens.
 - Uploads reject unsafe file types and generated names are used.
-- Password reset links are protected against host header abuse.
+- Password reset links are built from configured `APP_BASE_URL`, not request host headers.
 - PHP security smoke scan or deeper PHP static analysis runs in CI.
 - No sensitive errors are shown to users.
 
