@@ -17,6 +17,11 @@ export function Home() {
   const [betaRequestMessage, setBetaRequestMessage] = useState('');
   const [betaRequestStatus, setBetaRequestStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [betaRequestError, setBetaRequestError] = useState('');
+  const currentSearch = window.location.search;
+  const searchParams = new URLSearchParams(currentSearch);
+  const inviteCode = searchParams.get('invite') || '';
+  const inviteEmail = searchParams.get('email') || '';
+  const shouldOpenLogin = searchParams.get('login') === 'true';
   const { data, isGuest, isLoading } = useUser();
   const isAuthenticated = !isLoading && !isGuest;
 
@@ -31,20 +36,26 @@ export function Home() {
 
     if (isAuthenticated) {
       localStorage.removeItem("forceRegisterModal");
+      localStorage.removeItem("forceBetaRequestModal");
       setIsAuthModalOpen(false);
       return;
     }
 
-    if (localStorage.getItem("forceRegisterModal") === "true") {
+    if (inviteCode) {
       setIsAuthModalOpen(true);
-      localStorage.removeItem("forceRegisterModal");
+      return;
     }
 
-    const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.get('login') === 'true') {
+    if (localStorage.getItem("forceRegisterModal") === "true" || localStorage.getItem("forceBetaRequestModal") === "true") {
+      setIsBetaRequestOpen(true);
+      localStorage.removeItem("forceRegisterModal");
+      localStorage.removeItem("forceBetaRequestModal");
+    }
+
+    if (shouldOpenLogin) {
       setIsAuthModalOpen(true);
     }
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, isLoading, inviteCode, shouldOpenLogin]);
 
   const handleBetaRequestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,7 +222,13 @@ export function Home() {
 
       <Footer />
       
-      <AuthModal isOpen={!isAuthenticated && isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal
+        isOpen={!isAuthenticated && isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        initialView={inviteCode ? 'register' : 'login'}
+        inviteCode={inviteCode}
+        initialEmail={inviteEmail}
+      />
 
       {isBetaRequestOpen && (
         <div id="beta-request-modal" className="modal-overlay is-active" aria-hidden="false">

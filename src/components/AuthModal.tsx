@@ -7,6 +7,8 @@ interface AuthModalProps {
   onClose: () => void;
   initialView?: 'login' | 'register' | 'forgot' | 'reset';
   resetToken?: string;
+  inviteCode?: string;
+  initialEmail?: string;
 }
 
 const inputStyle: React.CSSProperties = {
@@ -34,18 +36,19 @@ const btnPrimaryStyle: React.CSSProperties = {
   boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)'
 };
 
-export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '' }: AuthModalProps) {
-  const [tab, setTab] = useState<'login' | 'register'>(initialView === 'register' ? 'register' : 'login');
+export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '', inviteCode = '', initialEmail = '' }: AuthModalProps) {
+  const canRegister = inviteCode.trim() !== '';
+  const [tab, setTab] = useState<'login' | 'register'>(initialView === 'register' && canRegister ? 'register' : 'login');
   const [view, setView] = useState<'auth' | 'forgot' | 'forgot_sent' | 'reset' | 'reset_done'>(
     initialView === 'forgot' ? 'forgot' : initialView === 'reset' ? 'reset' : 'auth'
   );
 
   // Auth fields
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [ageRange, setAgeRange] = useState('');
-  const [betaInviteCode, setBetaInviteCode] = useState('');
+  const [betaInviteCode, setBetaInviteCode] = useState(inviteCode);
 
   // Reset fields
   const [forgotEmail, setForgotEmail] = useState('');
@@ -79,6 +82,12 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
         let baseLanguage = 'hu';
         if (hostname.endsWith('.sk')) baseLanguage = 'sk';
         else if (hostname.endsWith('.hu')) baseLanguage = 'hu';
+
+        if (!canRegister) {
+          setError('A béta regisztráció meghívóhoz kötött. Kérjük, kérj béta hozzáférést a főoldalon.');
+          setLoading(false);
+          return;
+        }
 
         const data = await api.fetch('signup', {
             email,
@@ -305,14 +314,16 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
           >
             Bejelentkezés
           </button>
-          <button 
-            type="button" 
-            className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
-            onClick={() => { setTab('register'); setError(''); }}
-            style={{ background: 'none', border: 'none', color: tab === 'register' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
-          >
-            Regisztráció
-          </button>
+          {canRegister && (
+            <button
+              type="button"
+              className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
+              onClick={() => { setTab('register'); setError(''); }}
+              style={{ background: 'none', border: 'none', color: tab === 'register' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
+            >
+              Regisztráció
+            </button>
+          )}
         </div>
         
         {error && (
@@ -349,10 +360,11 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                   autoComplete="off"
                   value={betaInviteCode}
                   onChange={e => setBetaInviteCode(e.target.value)}
-                  style={inputStyle}
+                  readOnly
+                  style={{ ...inputStyle, opacity: 0.85 }}
                 />
                 <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.78rem', lineHeight: 1.35 }}>
-                  Ha meghívóval érkeztél, itt add meg a kódot.
+                  A meghívó kódot az e-mailben kapott link tölti ki.
                 </p>
               </div>
             </>

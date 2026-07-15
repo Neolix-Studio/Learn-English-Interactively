@@ -88,6 +88,14 @@ LEXI-FAMILY-001
 Please create your account with this email address so the invite can be matched correctly.
 ```
 
+You can also send a prefilled invite link:
+
+```text
+https://dev.lexipaws.eu/?invite=LEXI-FAMILY-001&email=tester%40example.com
+```
+
+Public visitors and guest users should use the beta access request form. Direct registration is only shown when an invite code is present in the URL.
+
 ## Enabling on staging
 
 1. Add or update GitHub Actions secret `BETA_INVITES_ENABLED` to `true`.
