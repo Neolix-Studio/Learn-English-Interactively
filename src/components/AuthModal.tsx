@@ -7,6 +7,8 @@ interface AuthModalProps {
   onClose: () => void;
   initialView?: 'login' | 'register' | 'forgot' | 'reset';
   resetToken?: string;
+  inviteCode?: string;
+  initialEmail?: string;
 }
 
 const inputStyle: React.CSSProperties = {
@@ -34,17 +36,19 @@ const btnPrimaryStyle: React.CSSProperties = {
   boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)'
 };
 
-export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '' }: AuthModalProps) {
-  const [tab, setTab] = useState<'login' | 'register'>(initialView === 'register' ? 'register' : 'login');
+export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '', inviteCode = '', initialEmail = '' }: AuthModalProps) {
+  const canRegister = inviteCode.trim() !== '';
+  const [tab, setTab] = useState<'login' | 'register'>(initialView === 'register' && canRegister ? 'register' : 'login');
   const [view, setView] = useState<'auth' | 'forgot' | 'forgot_sent' | 'reset' | 'reset_done'>(
     initialView === 'forgot' ? 'forgot' : initialView === 'reset' ? 'reset' : 'auth'
   );
 
   // Auth fields
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [ageRange, setAgeRange] = useState('');
+  const [betaInviteCode, setBetaInviteCode] = useState(inviteCode);
 
   // Reset fields
   const [forgotEmail, setForgotEmail] = useState('');
@@ -79,11 +83,18 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
         if (hostname.endsWith('.sk')) baseLanguage = 'sk';
         else if (hostname.endsWith('.hu')) baseLanguage = 'hu';
 
+        if (!canRegister) {
+          setError('A béta regisztráció meghívóhoz kötött. Kérjük, kérj béta hozzáférést a főoldalon.');
+          setLoading(false);
+          return;
+        }
+
         const data = await api.fetch('signup', {
             email,
             password,
             username,
             age_range: ageRange,
+            beta_invite_code: betaInviteCode,
             base_language: baseLanguage,
             marketing_data: marketingData,
             guest_migration: guestMigration
@@ -303,14 +314,16 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
           >
             Bejelentkezés
           </button>
-          <button 
-            type="button" 
-            className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
-            onClick={() => { setTab('register'); setError(''); }}
-            style={{ background: 'none', border: 'none', color: tab === 'register' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
-          >
-            Regisztráció
-          </button>
+          {canRegister && (
+            <button
+              type="button"
+              className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
+              onClick={() => { setTab('register'); setError(''); }}
+              style={{ background: 'none', border: 'none', color: tab === 'register' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
+            >
+              Regisztráció
+            </button>
+          )}
         </div>
         
         {error && (
@@ -337,6 +350,22 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                   <option value="45_54">45 - 54 év</option>
                   <option value="55_plus">55 év feletti</option>
                 </select>
+              </div>
+              <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label htmlFor="auth-beta-invite" style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Béta meghívó kód</label>
+                <input
+                  type="text"
+                  id="auth-beta-invite"
+                  placeholder="Pl. LEXI-2026"
+                  autoComplete="off"
+                  value={betaInviteCode}
+                  onChange={e => setBetaInviteCode(e.target.value)}
+                  readOnly
+                  style={{ ...inputStyle, opacity: 0.85 }}
+                />
+                <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.78rem', lineHeight: 1.35 }}>
+                  A meghívó kódot az e-mailben kapott link tölti ki.
+                </p>
               </div>
             </>
           )}
