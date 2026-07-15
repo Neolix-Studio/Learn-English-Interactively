@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
 
 import svgDictionaryRaw from '../../../assets/svgDictionary.json';
@@ -26,7 +26,7 @@ export const ImageChoice: React.FC<ImageChoiceProps> = ({ question, onAnswer }) 
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div className="image-choice-container" style={{ width: '100%', maxWidth: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <QuestionHeader 
         text={instruction} 
         newWords={question.newWords} 
@@ -34,7 +34,7 @@ export const ImageChoice: React.FC<ImageChoiceProps> = ({ question, onAnswer }) 
         hideAudio={true}
       />
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', width: '100%' }}>
+      <div className="image-choice-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', width: '100%' }}>
         {question.options.map((opt: any) => {
           const isSelected = selectedId === opt.id;
           const optIdLower = opt.id ? opt.id.toLowerCase() : (opt.text ? opt.text.toLowerCase() : '');

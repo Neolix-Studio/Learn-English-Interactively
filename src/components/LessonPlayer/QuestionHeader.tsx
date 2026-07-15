@@ -26,10 +26,11 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, n
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', marginBottom: '2rem', gap: '20px' }}>
+    <div className="question-header-row" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', marginBottom: '2rem', gap: '20px' }}>
       {/* Mascot Side */}
       {!hideMascot && (
-        <div 
+        <div
+          className="question-header-mascot"
           style={{ cursor: hideAudio ? 'default' : 'pointer', transform: 'translateY(-15px)' }} 
           onClick={hideAudio ? undefined : handleSpeak}
           title={hideAudio ? "" : "Kattints a felolvasáshoz!"}

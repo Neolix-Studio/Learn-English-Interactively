@@ -553,7 +553,7 @@ function handleGetSession(PDO $pdo) {
 
     try {
         // Load User main details
-        $stmtUser = $pdo->prepare("SELECT email, username, age_range, notification_preferences, base_language FROM users WHERE id = ?");
+        $stmtUser = $pdo->prepare("SELECT email, username, age_range, avatar, notification_preferences, base_language FROM users WHERE id = ?");
         $stmtUser->execute([$userId]);
         $user = $stmtUser->fetch();
 
@@ -583,6 +583,7 @@ function handleGetSession(PDO $pdo) {
                     'user_metadata' => [
                         'username' => htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'),
                         'age_range' => $user['age_range'],
+                        'avatar' => $user['avatar'] ?? null,
                         'base_language' => $user['base_language'] ?? 'hu',
                         'notification_preferences' => $user['notification_preferences'] ? json_decode($user['notification_preferences'], true) : new stdClass()
                     ]

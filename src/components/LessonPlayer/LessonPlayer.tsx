@@ -483,7 +483,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
       </main>
 
       {/* FOOTER: Validation Banner & Check Button */}
-      <footer style={{ 
+      <footer className={`interactive-footer ${feedback !== 'none' ? 'has-feedback' : ''}`} style={{
         padding: '1.5rem 2rem', 
         borderTop: 'var(--glass-border)', 
         display: 'flex', 
@@ -492,9 +492,9 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         background: feedback === 'correct' ? 'rgba(16, 185, 129, 0.1)' : feedback === 'incorrect' ? 'rgba(239, 68, 68, 0.1)' : feedback === 'skipped' ? 'rgba(245, 158, 11, 0.1)' : 'var(--color-bg-surface)',
         transition: 'background 0.3s'
       }}>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+        <div className="interactive-feedback-slot" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           {feedback === 'correct' && (
-            <div style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="interactive-feedback-message" style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div style={{ width: '40px', height: '40px', background: '#10B981', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✓</div>
               <div>
                 <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lesson.correct_title')}</h3>
@@ -503,7 +503,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             </div>
           )}
           {feedback === 'incorrect' && (
-            <div style={{ color: '#B91C1C', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="interactive-feedback-message" style={{ color: '#B91C1C', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                <div style={{ width: '40px', height: '40px', background: '#EF4444', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✖</div>
                <div>
                  <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lesson.incorrect_title')}</h3>
@@ -512,7 +512,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             </div>
           )}
           {feedback === 'skipped' && (
-            <div style={{ color: '#D97706', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="interactive-feedback-message" style={{ color: '#D97706', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div style={{ width: '40px', height: '40px', background: '#F59E0B', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✓</div>
               <div>
                 <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lesson.skipped_title')}</h3>
@@ -523,7 +523,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         </div>
         
         <button 
-          className="btn btn-primary" 
+          className="btn btn-primary interactive-submit-btn"
           onClick={handleCheck}
           style={{ 
             background: (feedback === 'correct' || isInterstitial) ? '#10B981' : feedback === 'incorrect' ? '#EF4444' : feedback === 'skipped' ? '#F59E0B' : 'var(--color-accent-in)',
