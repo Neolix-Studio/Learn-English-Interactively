@@ -49,6 +49,7 @@ Use this checklist after a PR is merged into `dev` and deployed to `https://dev.
   - `https://dev.lexipaws.eu/migrate.php`
   - `https://dev.lexipaws.eu/cron_notifications.php`
   - `https://dev.lexipaws.eu/cron_reset_leaderboards.php`
+- Confirm migration access uses `X-Migration-Token`, and cron access uses `X-Cron-Secret` or the Websupport `secret` query parameter.
 - Confirm upload flows reject unsupported file types.
 - Confirm password reset flow does not reveal whether an email exists.
 
