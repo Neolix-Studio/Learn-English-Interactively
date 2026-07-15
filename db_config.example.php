@@ -11,6 +11,7 @@ define('SLACK_WEBHOOK_URL', 'YOUR_SLACK_WEBHOOK_URL_HERE');
 define('SLACK_WEBHOOK_URL_FEEDBACK', 'YOUR_FEEDBACK_SLACK_WEBHOOK_URL_HERE');
 define('CRON_SECRET', 'YOUR_CRON_SECRET_HERE');
 define('MAINTENANCE_TOKEN', 'YOUR_MAINTENANCE_TOKEN_HERE');
+// Required for password reset links. Production/staging must use an allowed HTTPS app URL.
 define('APP_BASE_URL', 'http://localhost:5173');
 define('SMTP_HOST', 'YOUR_SMTP_HOST_HERE');
 define('SMTP_PORT', 465);

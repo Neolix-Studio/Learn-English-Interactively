@@ -8,6 +8,12 @@ const esc = (val) => {
   return "'" + val.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 };
 
+const requiredEnv = ['APP_BASE_URL'];
+const missingRequired = requiredEnv.filter((name) => !process.env[name]?.trim());
+if (missingRequired.length > 0) {
+  throw new Error(`Missing required deployment config: ${missingRequired.join(', ')}`);
+}
+
 const content = `<?php
 // Automatically compiled by GitHub Actions
 define('DB_HOST', ${esc(process.env.DB_HOST)});
