@@ -63,8 +63,9 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.error || 'Hiba történt a küldés során.');
       }
 
       setStatus('success');
@@ -72,9 +73,8 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
         onClose();
       }, 3000);
     } catch (err) {
-      console.error(err);
       setStatus('error');
-      setErrorMsg('Hiba történt a küldés során. Kérjük, próbáld újra később.');
+      setErrorMsg(err instanceof Error ? err.message : 'Hiba történt a küldés során. Kérjük, próbáld újra később.');
     }
   };
 
