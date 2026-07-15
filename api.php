@@ -86,6 +86,7 @@ $csrfExemptActions = [
     'login',
     'forgot_password',
     'reset_password',
+    'request_beta_access',
     'get_session',
     'get_leaderboard',
     'search_leaderboard',
@@ -139,6 +140,10 @@ switch ($action) {
 
     case 'reset_password':
         handleResetPassword($pdo, $inputData);
+        break;
+
+    case 'request_beta_access':
+        handleRequestBetaAccess($pdo, $inputData);
         break;
 
     case 'get_leaderboard':
@@ -276,6 +281,123 @@ function markBetaInviteUsed(PDO $pdo, ?int $inviteId, int $userId): void {
         WHERE id = ?
     ");
     $stmt->execute([$userId, $inviteId]);
+}
+
+function betaRequestClientIpHash(): string {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    return hash('sha256', $ip);
+}
+
+function buildBetaRequestSlackBlocks(string $name, string $email, string $baseLanguage, string $message, string $sourcePath): array {
+    $fields = [
+        ['type' => 'mrkdwn', 'text' => "*Email:*\n" . $email],
+        ['type' => 'mrkdwn', 'text' => "*Language:*\n" . $baseLanguage],
+    ];
+
+    if ($name !== '') {
+        $fields[] = ['type' => 'mrkdwn', 'text' => "*Name:*\n" . $name];
+    }
+    if ($sourcePath !== '') {
+        $fields[] = ['type' => 'mrkdwn', 'text' => "*Source:*\n" . $sourcePath];
+    }
+
+    $blocks = [
+        [
+            'type' => 'header',
+            'text' => [
+                'type' => 'plain_text',
+                'text' => 'New Beta Access Request',
+                'emoji' => true
+            ]
+        ],
+        [
+            'type' => 'section',
+            'fields' => $fields
+        ]
+    ];
+
+    if ($message !== '') {
+        $blocks[] = [
+            'type' => 'section',
+            'text' => ['type' => 'mrkdwn', 'text' => "*Message:*\n> " . $message]
+        ];
+    }
+
+    return $blocks;
+}
+
+function sendBetaRequestReceiptEmail(string $email, string $name, string $baseLanguage): void {
+    $displayName = $name !== '' ? $name : 'there';
+    $subject = 'Lexipaws beta request received';
+    $header = 'Beta request received';
+    $body = '<p>Hi ' . htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8') . ',</p>'
+        . '<p>Thanks for requesting beta access to Lexipaws. We received your request and will review it soon.</p>'
+        . '<p>If your request is approved, we will send you an invite code or invite link so you can create your account and choose your own password.</p>'
+        . '<p>Please do not reply with sensitive personal information.</p>';
+
+    if ($baseLanguage === 'hu') {
+        $subject = 'Megkaptuk a Lexipaws béta jelentkezésedet';
+        $header = 'Béta jelentkezés fogadva';
+        $body = '<p>Szia ' . htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8') . '!</p>'
+            . '<p>Köszönjük, hogy béta hozzáférést kértél a Lexipawshoz. Megkaptuk a jelentkezésedet, és hamarosan átnézzük.</p>'
+            . '<p>Ha jóváhagyjuk, meghívó kódot vagy meghívó linket küldünk, amellyel létrehozhatod a fiókodat és beállíthatod a saját jelszavadat.</p>'
+            . '<p>Kérjük, ne küldj érzékeny személyes adatokat válaszban.</p>';
+    }
+
+    sendLexipawsEmail($email, $subject, $header, $body);
+}
+
+function handleRequestBetaAccess(PDO $pdo, array $data): void {
+    if (!security_rate_limit('beta_request_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 5, 3600)) {
+        http_response_code(429);
+        echo json_encode(['error' => 'Túl sok kérés. Kérjük, próbáld újra később.']);
+        return;
+    }
+
+    $email = isset($data['email']) ? trim((string)$data['email']) : '';
+    $name = security_sanitize_log_line(isset($data['name']) ? (string)$data['name'] : '', 100);
+    $message = security_sanitize_log_line(isset($data['message']) ? (string)$data['message'] : '', 1000);
+    $baseLanguage = isset($data['base_language']) ? trim((string)$data['base_language']) : 'hu';
+    $sourcePath = security_sanitize_log_line(isset($data['source_path']) ? (string)$data['source_path'] : '', 255);
+    $userAgent = security_sanitize_log_line($_SERVER['HTTP_USER_AGENT'] ?? '', 255);
+
+    if (!in_array($baseLanguage, ['hu', 'sk'], true)) {
+        $baseLanguage = 'hu';
+    }
+    if ($email === '' || mb_strlen($email) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['error' => 'Adj meg egy érvényes e-mail címet.']);
+        return;
+    }
+
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO beta_access_requests
+                (email, name, base_language, message, status, source_path, user_agent, ip_hash)
+            VALUES
+                (?, ?, ?, ?, 'pending', ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                name = VALUES(name),
+                base_language = VALUES(base_language),
+                message = VALUES(message),
+                status = IF(status = 'rejected', 'pending', status),
+                source_path = VALUES(source_path),
+                user_agent = VALUES(user_agent),
+                ip_hash = VALUES(ip_hash),
+                updated_at = CURRENT_TIMESTAMP
+        ");
+        $stmt->execute([$email, $name, $baseLanguage, $message, $sourcePath, $userAgent, betaRequestClientIpHash()]);
+
+        sendFeedbackToSlack(buildBetaRequestSlackBlocks($name, $email, $baseLanguage, $message, $sourcePath));
+        sendBetaRequestReceiptEmail($email, $name, $baseLanguage);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Köszönjük! Megkaptuk a béta hozzáférési kérelmedet.'
+        ]);
+    } catch (Exception $e) {
+        error_log('Beta access request error: ' . $e->getMessage());
+        echo json_encode(['error' => 'Nem sikerült elküldeni a kérelmet. Kérjük, próbáld újra később.']);
+    }
 }
 
 // 1. Sign Up
