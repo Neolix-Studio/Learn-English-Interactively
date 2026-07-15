@@ -1546,7 +1546,10 @@ function handleSubmitFeedback(PDO $pdo, array $data) {
         }
 
         $slackPayload = json_encode(['blocks' => $blocks]);
-        $slackWebhookUrl = getenv('SLACK_WEBHOOK_URL') ?: (defined('SLACK_WEBHOOK_URL') ? SLACK_WEBHOOK_URL : '');
+        $slackWebhookUrl = getenv('SLACK_WEBHOOK_URL_FEEDBACK')
+            ?: (defined('SLACK_WEBHOOK_URL_FEEDBACK') ? SLACK_WEBHOOK_URL_FEEDBACK : '')
+            ?: getenv('SLACK_WEBHOOK_URL')
+            ?: (defined('SLACK_WEBHOOK_URL') ? SLACK_WEBHOOK_URL : '');
         if ($slackWebhookUrl) {
             $ch = curl_init($slackWebhookUrl);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');

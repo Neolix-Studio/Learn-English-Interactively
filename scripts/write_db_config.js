@@ -17,6 +17,7 @@ define('DB_PASS', ${esc(process.env.DB_PASS)});
 define('MIGRATION_TOKEN', ${esc(process.env.MIGRATION_TOKEN)});
 define('GOOGLE_TTS_API_KEY', ${esc(process.env.GOOGLE_TTS_API_KEY)});
 define('SLACK_WEBHOOK_URL', ${esc(process.env.SLACK_WEBHOOK_URL)});
+define('SLACK_WEBHOOK_URL_FEEDBACK', ${esc(process.env.SLACK_WEBHOOK_URL_FEEDBACK)});
 define('CRON_SECRET', ${esc(process.env.CRON_SECRET)});
 define('MAINTENANCE_TOKEN', ${esc(process.env.MAINTENANCE_TOKEN)});
 define('APP_BASE_URL', ${esc(process.env.APP_BASE_URL)});
