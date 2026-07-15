@@ -6,7 +6,7 @@
  * Receives JSON from the frontend, formats it, and emails it to Jira Service Management.
  */
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token');
 header('X-Content-Type-Options: nosniff');
 require_once __DIR__ . '/security.php';
@@ -88,7 +88,7 @@ if (trim($steps) !== '') {
 $body .= "--- CONTEXT DATA ---\n";
 if (!empty($contextData)) {
     foreach ($contextData as $key => $value) {
-        $valStr = security_sanitize_log_line(is_array($value) ? json_encode($value) : (string)$value, 1000);
+        $valStr = security_sanitize_log_line(is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : (string)$value, 1000);
         $body .= ucfirst($key) . ": " . $valStr . "\n";
     }
 } else {
@@ -111,11 +111,15 @@ $replyTo = !empty($userEmail) ? $userEmail : $fromEmail;
 $headers = [
     'From' => $fromEmail,
     'Reply-To' => $replyTo,
+    'MIME-Version' => '1.0',
+    'Content-Type' => 'text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding' => '8bit',
     'X-Mailer' => 'PHP/' . phpversion()
 ];
 
 // Send Email
-$success = mail($jiraEmailAddress, $subject, $body, $headers);
+$encodedSubject = mb_encode_mimeheader($subject, 'UTF-8', 'B', "\r\n");
+$success = mail($jiraEmailAddress, $encodedSubject, $body, $headers);
 
 if ($success) {
     echo json_encode(['success' => true, 'message' => 'Report sent successfully']);

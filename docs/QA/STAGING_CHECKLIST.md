@@ -41,6 +41,7 @@ Use this checklist after a PR is merged into `dev` and deployed to `https://dev.
 
 - Submit feedback or problem report with normal text.
 - Submit with unusual but safe characters, such as quotes or accents.
+- Submit a problem report containing Hungarian and Slovak letters, such as `őűáéíóöü` and `ľščťžýáíéúäň`.
 - Confirm the form does not expose internal errors.
 
 ## Security Smoke Test
