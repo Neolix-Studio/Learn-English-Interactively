@@ -31,9 +31,9 @@ Required before wider testing:
 - No direct pushes to `dev` or `main`.
 - Every PR has a short test plan.
 - Every behavior-changing PR has QA notes before or after staging deploy.
-- Staging has a known test account strategy.
+- Staging has a known test account strategy in `docs/QA/STAGING_TEST_ACCOUNTS.md`.
 
-Status: in progress.
+Status: in progress. Test account strategy is documented; staging credentials and invite codes still need to be created privately.
 
 ### Gate 2: Core Learning Loop Works
 
@@ -98,9 +98,9 @@ Required before beta:
 - Feedback/problem report form works.
 - Slack or email notifications reach the right person.
 - User-facing errors explain what happened without leaking internals.
-- There is a simple issue triage process for beta feedback.
+- There is a simple issue triage process for beta feedback in `docs/QA/BETA_FEEDBACK_TRIAGE.md`.
 
-Status: needs staging QA.
+Status: needs staging QA. Feedback triage process is documented.
 
 ### Gate 7: Production Release Is Intentional
 
@@ -136,6 +136,7 @@ Status: not started. Planned for beta launch window.
 
 ### Week 2: Account And Session Audit
 
+- Create private staging smoke, progress, fresh invite, and negative-test accounts from `docs/QA/STAGING_TEST_ACCOUNTS.md`.
 - Test registration.
 - Test login.
 - Test logout.
@@ -172,6 +173,7 @@ Status: not started. Planned for beta launch window.
 - Run security smoke checks.
 - Review upload, feedback, report, cron, migration, and password reset flows.
 - Confirm feedback routing.
+- Review feedback triage with the QA owner using `docs/QA/BETA_FEEDBACK_TRIAGE.md`.
 - Prepare known-issues list.
 
 ### Week 7: Beta Release Prep

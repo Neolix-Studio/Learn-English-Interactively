@@ -86,6 +86,7 @@ $csrfExemptActions = [
     'login',
     'forgot_password',
     'reset_password',
+    'request_beta_access',
     'get_session',
     'get_leaderboard',
     'search_leaderboard',
@@ -139,6 +140,10 @@ switch ($action) {
 
     case 'reset_password':
         handleResetPassword($pdo, $inputData);
+        break;
+
+    case 'request_beta_access':
+        handleRequestBetaAccess($pdo, $inputData);
         break;
 
     case 'get_leaderboard':
@@ -252,6 +257,180 @@ function hashPasswordResetToken(string $token): string {
     return hash('sha256', $token);
 }
 
+function isConfigEnabled(string $name): bool {
+    $value = strtolower(trim(getOptionalConfigValue($name)));
+    return in_array($value, ['1', 'true', 'yes', 'on'], true);
+}
+
+function normalizeBetaInviteCode(string $code): string {
+    return strtoupper(trim($code));
+}
+
+function lockBetaInviteForSignup(PDO $pdo, string $inviteCode, string $email): array {
+    if (!isConfigEnabled('BETA_INVITES_ENABLED')) {
+        return ['id' => null, 'error' => null];
+    }
+
+    $normalizedCode = normalizeBetaInviteCode($inviteCode);
+    if ($normalizedCode === '') {
+        return ['id' => null, 'error' => 'A béta regisztrációhoz meghívó kód szükséges.'];
+    }
+
+    $inviteHash = hash('sha256', $normalizedCode);
+    $stmt = $pdo->prepare("
+        SELECT id, email
+        FROM beta_invites
+        WHERE invite_code_hash = ?
+          AND status = 'active'
+          AND (expires_at IS NULL OR expires_at > NOW())
+        LIMIT 1
+        FOR UPDATE
+    ");
+    $stmt->execute([$inviteHash]);
+    $invite = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$invite) {
+        return ['id' => null, 'error' => 'Érvénytelen vagy lejárt béta meghívó kód.'];
+    }
+
+    $inviteEmail = trim((string)($invite['email'] ?? ''));
+    if ($inviteEmail !== '' && strcasecmp($inviteEmail, $email) !== 0) {
+        return ['id' => null, 'error' => 'Ez a béta meghívó másik e-mail címhez tartozik.'];
+    }
+
+    return ['id' => (int)$invite['id'], 'error' => null];
+}
+
+function markBetaInviteUsed(PDO $pdo, ?int $inviteId, int $userId): void {
+    if ($inviteId === null) {
+        return;
+    }
+
+    $stmt = $pdo->prepare("
+        UPDATE beta_invites
+        SET status = 'used', used_by_user_id = ?, used_at = NOW()
+        WHERE id = ?
+    ");
+    $stmt->execute([$userId, $inviteId]);
+}
+
+function betaRequestClientIpHash(): string {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    return hash('sha256', $ip);
+}
+
+function buildBetaRequestSlackBlocks(string $name, string $email, string $baseLanguage, string $message, string $sourcePath): array {
+    $fields = [
+        ['type' => 'mrkdwn', 'text' => "*Email:*\n" . $email],
+        ['type' => 'mrkdwn', 'text' => "*Language:*\n" . $baseLanguage],
+    ];
+
+    if ($name !== '') {
+        $fields[] = ['type' => 'mrkdwn', 'text' => "*Name:*\n" . $name];
+    }
+    if ($sourcePath !== '') {
+        $fields[] = ['type' => 'mrkdwn', 'text' => "*Source:*\n" . $sourcePath];
+    }
+
+    $blocks = [
+        [
+            'type' => 'header',
+            'text' => [
+                'type' => 'plain_text',
+                'text' => 'New Beta Access Request',
+                'emoji' => true
+            ]
+        ],
+        [
+            'type' => 'section',
+            'fields' => $fields
+        ]
+    ];
+
+    if ($message !== '') {
+        $blocks[] = [
+            'type' => 'section',
+            'text' => ['type' => 'mrkdwn', 'text' => "*Message:*\n> " . $message]
+        ];
+    }
+
+    return $blocks;
+}
+
+function sendBetaRequestReceiptEmail(string $email, string $name, string $baseLanguage): void {
+    $displayName = $name !== '' ? $name : 'there';
+    $subject = 'Lexipaws beta request received';
+    $header = 'Beta request received';
+    $body = '<p>Hi ' . htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8') . ',</p>'
+        . '<p>Thanks for requesting beta access to Lexipaws. We received your request and will review it soon.</p>'
+        . '<p>If your request is approved, we will send you an invite code or invite link so you can create your account and choose your own password.</p>'
+        . '<p>Please do not reply with sensitive personal information.</p>';
+
+    if ($baseLanguage === 'hu') {
+        $subject = 'Megkaptuk a Lexipaws béta jelentkezésedet';
+        $header = 'Béta jelentkezés fogadva';
+        $body = '<p>Szia ' . htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8') . '!</p>'
+            . '<p>Köszönjük, hogy béta hozzáférést kértél a Lexipawshoz. Megkaptuk a jelentkezésedet, és hamarosan átnézzük.</p>'
+            . '<p>Ha jóváhagyjuk, meghívó kódot vagy meghívó linket küldünk, amellyel létrehozhatod a fiókodat és beállíthatod a saját jelszavadat.</p>'
+            . '<p>Kérjük, ne küldj érzékeny személyes adatokat válaszban.</p>';
+    }
+
+    sendLexipawsEmail($email, $subject, $header, $body);
+}
+
+function handleRequestBetaAccess(PDO $pdo, array $data): void {
+    if (!security_rate_limit('beta_request_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 5, 3600)) {
+        http_response_code(429);
+        echo json_encode(['error' => 'Túl sok kérés. Kérjük, próbáld újra később.']);
+        return;
+    }
+
+    $email = isset($data['email']) ? trim((string)$data['email']) : '';
+    $name = security_sanitize_log_line(isset($data['name']) ? (string)$data['name'] : '', 100);
+    $message = security_sanitize_log_line(isset($data['message']) ? (string)$data['message'] : '', 1000);
+    $baseLanguage = isset($data['base_language']) ? trim((string)$data['base_language']) : 'hu';
+    $sourcePath = security_sanitize_log_line(isset($data['source_path']) ? (string)$data['source_path'] : '', 255);
+    $userAgent = security_sanitize_log_line($_SERVER['HTTP_USER_AGENT'] ?? '', 255);
+
+    if (!in_array($baseLanguage, ['hu', 'sk'], true)) {
+        $baseLanguage = 'hu';
+    }
+    if ($email === '' || mb_strlen($email) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['error' => 'Adj meg egy érvényes e-mail címet.']);
+        return;
+    }
+
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO beta_access_requests
+                (email, name, base_language, message, status, source_path, user_agent, ip_hash)
+            VALUES
+                (?, ?, ?, ?, 'pending', ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                name = VALUES(name),
+                base_language = VALUES(base_language),
+                message = VALUES(message),
+                status = IF(status = 'rejected', 'pending', status),
+                source_path = VALUES(source_path),
+                user_agent = VALUES(user_agent),
+                ip_hash = VALUES(ip_hash),
+                updated_at = CURRENT_TIMESTAMP
+        ");
+        $stmt->execute([$email, $name, $baseLanguage, $message, $sourcePath, $userAgent, betaRequestClientIpHash()]);
+
+        sendFeedbackToSlack(buildBetaRequestSlackBlocks($name, $email, $baseLanguage, $message, $sourcePath));
+        sendBetaRequestReceiptEmail($email, $name, $baseLanguage);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Köszönjük! Megkaptuk a béta hozzáférési kérelmedet.'
+        ]);
+    } catch (Exception $e) {
+        error_log('Beta access request error: ' . $e->getMessage());
+        echo json_encode(['error' => 'Nem sikerült elküldeni a kérelmet. Kérjük, próbáld újra később.']);
+    }
+}
+
 // 1. Sign Up
 function validateSignupData(PDO $pdo, string $email, string $password, string $username) {
     if (empty($email) || empty($password) || empty($username)) {
@@ -296,6 +475,7 @@ function handleSignup(PDO $pdo, array $data) {
     $username = isset($data['username']) ? trim($data['username']) : '';
     $ageRange = isset($data['age_range']) ? trim($data['age_range']) : 'unknown';
     $baseLanguage = isset($data['base_language']) ? trim($data['base_language']) : 'hu';
+    $betaInviteCode = isset($data['beta_invite_code']) ? trim((string)$data['beta_invite_code']) : '';
     $guestMigration = isset($data['guest_migration']) ? $data['guest_migration'] : [];
     $marketingData = isset($data['marketing_data']) && !empty($data['marketing_data']) ? json_encode($data['marketing_data']) : null;
 
@@ -310,9 +490,17 @@ function handleSignup(PDO $pdo, array $data) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $pdo->beginTransaction();
 
+        $inviteResult = lockBetaInviteForSignup($pdo, $betaInviteCode, $email);
+        if ($inviteResult['error']) {
+            $pdo->rollBack();
+            echo json_encode(['error' => $inviteResult['error']]);
+            return;
+        }
+
         $stmt = $pdo->prepare("INSERT INTO users (email, password_hash, username, age_range, marketing_data, base_language) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$email, $passwordHash, $username, $ageRange, $marketingData, $baseLanguage]);
         $userId = $pdo->lastInsertId();
+        markBetaInviteUsed($pdo, $inviteResult['id'], (int)$userId);
 
         // Migrate guest progress data if available
         $points = isset($guestMigration['points']) ? intval($guestMigration['points']) : 0;
