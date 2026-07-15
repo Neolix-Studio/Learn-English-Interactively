@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { MobileBottomBar } from '../components/MobileBottomBar';
 import { AvatarUploadModal } from '../components/modals/AvatarUploadModal';
 import { api } from '../utils/api';
+import { clearGuestMigrationStorage } from '../utils/guestProgress';
 import { SkeletonProfile } from '../components/SkeletonLoader';
 
 const ACHIEVEMENT_DEF = [
@@ -46,7 +47,8 @@ export const ProfilePage: React.FC = () => {
 
   const handleLogout = async () => {
     if (window.confirm('Are you sure you want to log out?')) {
-      await fetch('/logout.php');
+      await api.fetch('logout');
+      clearGuestMigrationStorage();
       window.location.href = '/';
     }
   };

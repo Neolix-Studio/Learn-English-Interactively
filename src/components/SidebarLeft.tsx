@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../context/UserContext';
 import { AudioSynth, setGlobalVolume } from '../utils/audio';
 import { api } from '../utils/api';
+import { clearGuestMigrationStorage } from '../utils/guestProgress';
 import { ReportProblemModal } from './modals/ReportProblemModal';
 
 interface SidebarLeftProps {
@@ -105,10 +106,8 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
   const handleLogout = async () => {
     try {
       await api.fetch('logout');
-    } catch(e) {}
-    localStorage.removeItem("user_local_progress");
-    localStorage.removeItem("neolix_guest_progress");
-    localStorage.removeItem("ftue_marketing_data");
+    } catch {}
+    clearGuestMigrationStorage();
     window.location.href = '/';
   };
 
