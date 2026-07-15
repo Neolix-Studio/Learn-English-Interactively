@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { api } from '../utils/api';
+import { clearGuestMigrationStorage, readGuestMigrationPayload } from '../utils/guestProgress';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -61,34 +62,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     
     try {
       if (tab === 'register') {
-        const guestDataRaw = localStorage.getItem('neolix_guest_progress');
-        const legacyGuestDataRaw = localStorage.getItem('user_local_progress');
-        let initialPoints = 0;
-        let initialCompleted: Record<string, any> = {};
-        let initialScores: Record<string, any> = {};
-
-        if (guestDataRaw) {
-            try {
-                const guestData = JSON.parse(guestDataRaw);
-                initialPoints = guestData.points || 0;
-                initialCompleted = guestData.completed || {};
-                initialScores = guestData.scores || {};
-            } catch(err) {
-                console.warn("Hiba a vendég adatok beolvasásakor", err);
-            }
-        } else if (legacyGuestDataRaw) {
-            try {
-                const legacyData = JSON.parse(legacyGuestDataRaw);
-                initialPoints = legacyData.xpEarned || 0;
-                if (legacyData.nodeId && legacyData.completedLessonId) {
-                  initialCompleted[legacyData.nodeId] = [legacyData.completedLessonId];
-                  initialScores[legacyData.nodeId] = {
-                    completedLessons: [legacyData.completedLessonId],
-                    isComplete: legacyData.isNodeComplete
-                  };
-                }
-            } catch(err) {}
-        }
+        const guestMigration = readGuestMigrationPayload();
 
         const marketingDataRaw = localStorage.getItem('ftue_marketing_data');
         let marketingData = {};
@@ -112,11 +86,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             age_range: ageRange,
             base_language: baseLanguage,
             marketing_data: marketingData,
-            guest_migration: {
-                points: initialPoints,
-                completed: initialCompleted,
-                scores: initialScores
-            }
+            guest_migration: guestMigration
         });
 
         if (data.error) {
@@ -127,16 +97,14 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
         if (data.success) {
             localStorage.setItem("selectedLevel", "A1");
-            localStorage.removeItem("user_local_progress");
-            localStorage.removeItem("neolix_guest_progress");
-            localStorage.removeItem("ftue_marketing_data");
+            clearGuestMigrationStorage();
             const searchParams = new URLSearchParams(window.location.search);
             const redirectUrl = searchParams.get('redirect') || '/dashboard';
             window.location.href = redirectUrl;
         }
       } else {
         // Login flow
-        const data = await api.fetch('login', { email, password });
+        const data = await api.fetch('login', { email, password, guest_migration: readGuestMigrationPayload() });
 
         if (data.error) {
             setError(data.error);
@@ -146,8 +114,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
         if (data.success) {
             localStorage.setItem("selectedLevel", "A1");
-            localStorage.removeItem("user_local_progress");
-            localStorage.removeItem("neolix_guest_progress");
+            clearGuestMigrationStorage();
             const searchParams = new URLSearchParams(window.location.search);
             const redirectUrl = searchParams.get('redirect') || '/dashboard';
             window.location.href = redirectUrl;

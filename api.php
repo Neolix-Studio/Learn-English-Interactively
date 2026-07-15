@@ -333,6 +333,109 @@ function handleSignup(PDO $pdo, array $data) {
     }
 }
 
+function hasGuestMigrationData(array $guestMigration) {
+    $points = isset($guestMigration['points']) ? intval($guestMigration['points']) : 0;
+    $completed = isset($guestMigration['completed']) && is_array($guestMigration['completed']) ? $guestMigration['completed'] : [];
+    $scores = isset($guestMigration['scores']) && is_array($guestMigration['scores']) ? $guestMigration['scores'] : [];
+
+    return $points > 0 || !empty($completed) || !empty($scores);
+}
+
+function decodeProgressJson($value) {
+    if (empty($value)) {
+        return [];
+    }
+
+    $decoded = json_decode($value, true);
+    return is_array($decoded) ? $decoded : [];
+}
+
+function isListArray(array $value) {
+    if (function_exists('array_is_list')) {
+        return array_is_list($value);
+    }
+
+    return array_keys($value) === range(0, count($value) - 1);
+}
+
+function mergeProgressValue($current, $incoming) {
+    if (is_array($current) && is_array($incoming)) {
+        if (isListArray($current) && isListArray($incoming)) {
+            return array_values(array_unique(array_merge($current, $incoming), SORT_REGULAR));
+        }
+
+        $merged = $current;
+        foreach ($incoming as $key => $incomingValue) {
+            if (array_key_exists($key, $merged)) {
+                $merged[$key] = mergeProgressValue($merged[$key], $incomingValue);
+            } else {
+                $merged[$key] = $incomingValue;
+            }
+        }
+        return $merged;
+    }
+
+    if (is_numeric($current) && is_numeric($incoming)) {
+        return max($current, $incoming);
+    }
+
+    if ($incoming === null || $incoming === '') {
+        return $current;
+    }
+
+    return $incoming;
+}
+
+function mergeGuestProgressIntoUser(PDO $pdo, int $userId, array $guestMigration) {
+    if (!hasGuestMigrationData($guestMigration)) {
+        return;
+    }
+
+    $guestPoints = max(0, intval($guestMigration['points'] ?? 0));
+    $guestCompleted = isset($guestMigration['completed']) && is_array($guestMigration['completed']) ? $guestMigration['completed'] : [];
+    $guestScores = isset($guestMigration['scores']) && is_array($guestMigration['scores']) ? $guestMigration['scores'] : [];
+
+    $pdo->beginTransaction();
+    try {
+        $stmt = $pdo->prepare("SELECT points, completed, scores FROM user_progress WHERE user_id = ? FOR UPDATE");
+        $stmt->execute([$userId]);
+        $progress = $stmt->fetch();
+
+        if (!$progress) {
+            $stmtInsert = $pdo->prepare("INSERT INTO user_progress
+                (user_id, points, completed, scores, level, streak_count, streak_shields, active_theme)
+                VALUES (?, ?, ?, ?, 1, 0, 2, 'system')");
+            $stmtInsert->execute([
+                $userId,
+                $guestPoints,
+                json_encode($guestCompleted),
+                json_encode($guestScores)
+            ]);
+            $pdo->commit();
+            return;
+        }
+
+        $mergedPoints = max(intval($progress['points'] ?? 0), $guestPoints);
+        $mergedCompleted = mergeProgressValue(decodeProgressJson($progress['completed'] ?? ''), $guestCompleted);
+        $mergedScores = mergeProgressValue(decodeProgressJson($progress['scores'] ?? ''), $guestScores);
+
+        $stmtUpdate = $pdo->prepare("UPDATE user_progress SET points = ?, completed = ?, scores = ? WHERE user_id = ?");
+        $stmtUpdate->execute([
+            $mergedPoints,
+            json_encode($mergedCompleted),
+            json_encode($mergedScores),
+            $userId
+        ]);
+
+        $pdo->commit();
+    } catch (Exception $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        throw $e;
+    }
+}
+
 // 2. Log In
 function handleLogin(PDO $pdo, array $data) {
     if (!security_rate_limit('login_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 10, 900)) {
@@ -343,6 +446,7 @@ function handleLogin(PDO $pdo, array $data) {
 
     $email = isset($data['email']) ? trim($data['email']) : '';
     $password = isset($data['password']) ? $data['password'] : '';
+    $guestMigration = isset($data['guest_migration']) && is_array($data['guest_migration']) ? $data['guest_migration'] : [];
 
     if (empty($email) || empty($password)) {
         echo json_encode(['error' => 'Add meg az e-mail címed és a jelszavad!']);
@@ -368,6 +472,7 @@ function handleLogin(PDO $pdo, array $data) {
         // Update last login & reset inactivity nudges
         $stmtUpdateLogin = $pdo->prepare("UPDATE users SET last_login_at = NOW(), inactivity_email_count = 0 WHERE id = ?");
         $stmtUpdateLogin->execute([$user['id']]);
+        mergeGuestProgressIntoUser($pdo, intval($user['id']), $guestMigration);
 
         echo json_encode([
             'success' => true,

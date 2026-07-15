@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 interface HeaderProps {
   onLoginClick: () => void;
@@ -7,6 +8,10 @@ interface HeaderProps {
 
 export function Header({ onLoginClick }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { data, isGuest, isLoading } = useUser();
+  const isAuthenticated = !isLoading && !isGuest;
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <header className="site-header" style={{ zIndex: 9999 }}>
@@ -33,10 +38,10 @@ export function Header({ onLoginClick }: HeaderProps) {
         <div className={`nav-drawer ${isMobileMenuOpen ? 'is-active' : ''}`} id="nav-drawer">
           <nav className="main-nav" aria-label="Fő navigáció">
             <ul className="nav-list">
-              <li><a href="/#levels" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>A1 Kezdő</a></li>
-              <li><a href="/#levels" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>A2 Alapfok</a></li>
-              <li><a href="/#levels" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>B1 Középfok</a></li>
-              <li><a href="/#levels" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>B2 Haladó</a></li>
+              <li><a href="/#levels" className="nav-link" onClick={closeMobileMenu}>A1 Kezdő</a></li>
+              <li><a href="/#levels" className="nav-link" onClick={closeMobileMenu}>A2 Alapfok</a></li>
+              <li><a href="/#levels" className="nav-link" onClick={closeMobileMenu}>B1 Középfok</a></li>
+              <li><a href="/#levels" className="nav-link" onClick={closeMobileMenu}>B2 Haladó</a></li>
             </ul>
           </nav>
 
@@ -55,16 +60,26 @@ export function Header({ onLoginClick }: HeaderProps) {
               </svg>
             </Link>
             
-            <button 
-              className="btn btn-logout" 
-              id="nav-auth-btn"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                onLoginClick();
-              }}
-            >
-              Bejelentkezés / Regisztráció
-            </button>
+            {isAuthenticated ? (
+              <div className="header-authenticated-actions">
+                <span className="user-welcome">Szia, {data.username}!</span>
+                <Link to="/dashboard" className="btn btn-dashboard-return" onClick={closeMobileMenu}>
+                  Vissza a felületre
+                </Link>
+              </div>
+            ) : (
+              <button 
+                className="btn btn-logout" 
+                id="nav-auth-btn"
+                disabled={isLoading}
+                onClick={() => {
+                  closeMobileMenu();
+                  onLoginClick();
+                }}
+              >
+                Bejelentkezés / Regisztráció
+              </button>
+            )}
           </div>
         </div>
       </div>

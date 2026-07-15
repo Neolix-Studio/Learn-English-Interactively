@@ -5,12 +5,29 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { AuthModal } from '../components/AuthModal';
 import { LexiAnimation } from '../components/LexiAnimation';
+import { useUser } from '../context/UserContext';
 
 export function Home() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isWipModalOpen, setIsWipModalOpen] = useState(false);
+  const { data, isGuest, isLoading } = useUser();
+  const isAuthenticated = !isLoading && !isGuest;
+
+  const openAuthModal = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+    }
+  };
 
   useEffect(() => {
+    if (isLoading) return;
+
+    if (isAuthenticated) {
+      localStorage.removeItem("forceRegisterModal");
+      setIsAuthModalOpen(false);
+      return;
+    }
+
     if (localStorage.getItem("forceRegisterModal") === "true") {
       setIsAuthModalOpen(true);
       localStorage.removeItem("forceRegisterModal");
@@ -20,7 +37,7 @@ export function Home() {
     if (searchParams.get('login') === 'true') {
       setIsAuthModalOpen(true);
     }
-  }, []);
+  }, [isAuthenticated, isLoading]);
 
   return (
     <>
@@ -35,7 +52,7 @@ export function Home() {
           "url": "https://lexipaws.eu"
         }}
       />
-      <Header onLoginClick={() => setIsAuthModalOpen(true)} />
+      <Header onLoginClick={openAuthModal} />
       
       <main style={{ marginTop: '70px' }}>
         <section className="hero-section" style={{ position: 'relative', zIndex: 1000 }}>
@@ -43,11 +60,20 @@ export function Home() {
             <div className="hero-text-content">
               <h1 className="hero-title">Tanulj angolul <span>egyszerűen</span>, a saját tempódban!</h1>
               <p className="hero-subtitle">Magyar nyelvű nyelvtani magyarázatok, gyakorlati feladatok és szintfelmérő tesztek. Minden egy helyen, ami a magabiztos nyelvtudáshoz kell.</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto', marginTop: '2rem' }}>
-                <Link to="/welcome/start" className="btn-start" style={{ width: '100%', textAlign: 'center' }}>Kezdés</Link>
-                <button onClick={() => setIsAuthModalOpen(true)} className="btn-secondary" style={{ width: '100%', padding: '1rem 2.5rem', fontSize: '1.1rem', fontWeight: 800, borderRadius: '16px', border: '2px solid var(--color-bg-base)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', transition: 'all 0.2s' }}>
-                  Már van profilom
-                </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '320px', margin: '0 auto', marginTop: '2rem' }}>
+                {isAuthenticated ? (
+                  <>
+                    <p className="hero-user-welcome">Szia, {data.username}!</p>
+                    <Link to="/dashboard" className="btn-start" style={{ width: '100%', textAlign: 'center' }}>Vissza a felületre</Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/welcome/start" className="btn-start" style={{ width: '100%', textAlign: 'center' }}>Kezdés</Link>
+                    <button onClick={openAuthModal} className="btn-secondary" style={{ width: '100%', padding: '1rem 2.5rem', fontSize: '1.1rem', fontWeight: 800, borderRadius: '16px', border: '2px solid var(--color-bg-base)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', transition: 'all 0.2s' }}>
+                      Már van profilom
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             
@@ -144,7 +170,7 @@ export function Home() {
 
       <Footer />
       
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal isOpen={!isAuthenticated && isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
 
       {/* WIP Modal */}
       {isWipModalOpen && (
