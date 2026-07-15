@@ -713,7 +713,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
                 className="btn btn-primary" 
                 style={{ padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }}
                 onClick={() => {
-                  localStorage.setItem("forceRegisterModal", "true");
+                  localStorage.setItem("forceBetaRequestModal", "true");
                   window.location.href = "/";
                 }}
               >

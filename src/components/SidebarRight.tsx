@@ -177,7 +177,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
             <div style={{ display: 'flex', flexDirection: 'column', padding: '1.2rem', background: 'var(--color-bg-surface)', borderRadius: '16px', border: 'var(--glass-border)', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
               <h4 style={{ fontSize: '1.1rem', color: 'var(--color-text-main)', marginBottom: '1.5rem', lineHeight: '1.4', fontWeight: 800, textAlign: 'center' }}>{t('sidebar_right.save_progress_msg')}</h4>
               <button 
-                onClick={() => { localStorage.setItem("forceRegisterModal", "true"); window.location.href = "/"; }}
+                onClick={() => { localStorage.setItem("forceBetaRequestModal", "true"); window.location.href = "/"; }}
                 style={{ width: '100%', padding: '0.9rem', background: '#58cc02', color: '#fff', border: 'none', borderRadius: '14px', fontWeight: 'bold', fontSize: '0.95rem', marginBottom: '1rem', cursor: 'pointer', boxShadow: '0 4px 0 #46a302', textTransform: 'uppercase', letterSpacing: '0.5px', transition: 'all 0.2s' }}
                 onMouseOver={(e) => (e.currentTarget.style.filter = 'brightness(1.1)')}
                 onMouseOut={(e) => (e.currentTarget.style.filter = 'none')}
