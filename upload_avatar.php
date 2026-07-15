@@ -92,12 +92,25 @@ $fileExtension = $allowedMimeTypes[$detectedMime];
 $newFileName = bin2hex(random_bytes(16)) . '.' . $fileExtension;
 $dest_path = $uploadFileDir . $newFileName;
 
-if(move_uploaded_file($fileTmpPath, $dest_path)) {
-    // Update database
-    $stmt = $pdo->prepare("UPDATE user_metadata SET avatar = ? WHERE user_id = ?");
-    $stmt->execute([$newFileName, $user_id]);
-    
-    echo json_encode(['success' => true, 'avatar' => $newFileName]);
+if (move_uploaded_file($fileTmpPath, $dest_path)) {
+    try {
+        $stmt = $pdo->prepare("UPDATE users SET avatar = ? WHERE id = ?");
+        $stmt->execute([$newFileName, $user_id]);
+
+        if ($stmt->rowCount() < 1) {
+            @unlink($dest_path);
+            http_response_code(404);
+            echo json_encode(['success' => false, 'error' => 'User not found.']);
+            exit;
+        }
+
+        echo json_encode(['success' => true, 'avatar' => $newFileName]);
+    } catch (PDOException $e) {
+        @unlink($dest_path);
+        error_log('Avatar database update failed: ' . $e->getMessage());
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => 'Avatar upload failed. Please try again later.']);
+    }
 } else {
     echo json_encode(['success' => false, 'error' => 'There was an error moving the uploaded file.']);
 }
