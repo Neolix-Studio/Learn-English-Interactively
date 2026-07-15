@@ -55,7 +55,7 @@ Use `docs/QA/BETA_FEEDBACK_TRIAGE.md` to classify any feedback or problem report
   - `https://dev.lexipaws.eu/migrate.php`
   - `https://dev.lexipaws.eu/cron_notifications.php`
   - `https://dev.lexipaws.eu/cron_reset_leaderboards.php`
-- Confirm upload flows reject unsupported file types.
+- Confirm avatar upload accepts JPG, PNG, or WebP and rejects unsupported file types.
 - Confirm password reset flow does not reveal whether an email exists.
 
 ## Responsive And Browser Pass
