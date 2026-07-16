@@ -319,6 +319,57 @@ function betaRequestClientIpHash(): string {
     return hash('sha256', $ip);
 }
 
+function normalizeBetaRequestEmail(string $email): string {
+    return strtolower(trim($email));
+}
+
+function betaRequestEmailDomainCanReceiveMail(string $email): bool {
+    $atPosition = strrpos($email, '@');
+    if ($atPosition === false) {
+        return false;
+    }
+
+    $domain = strtolower(trim(substr($email, $atPosition + 1), ". \t\n\r\0\x0B"));
+    if ($domain === '' || !str_contains($domain, '.')) {
+        return false;
+    }
+
+    if (function_exists('idn_to_ascii')) {
+        $asciiDomain = idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+        if ($asciiDomain !== false) {
+            $domain = $asciiDomain;
+        }
+    }
+
+    return checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A') || checkdnsrr($domain, 'AAAA');
+}
+
+function betaRequestDatabaseRateLimitError(PDO $pdo, string $ipHash): ?string {
+    $stmtHour = $pdo->prepare("
+        SELECT COUNT(*)
+        FROM beta_access_requests
+        WHERE ip_hash = ?
+          AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)
+    ");
+    $stmtHour->execute([$ipHash]);
+    if ((int)$stmtHour->fetchColumn() >= 10) {
+        return 'Túl sok béta hozzáférési kérelem érkezett erről a hálózatról. Kérjük, próbáld újra később.';
+    }
+
+    $stmtDay = $pdo->prepare("
+        SELECT COUNT(*)
+        FROM beta_access_requests
+        WHERE ip_hash = ?
+          AND created_at > DATE_SUB(NOW(), INTERVAL 1 DAY)
+    ");
+    $stmtDay->execute([$ipHash]);
+    if ((int)$stmtDay->fetchColumn() >= 30) {
+        return 'Elértük a napi béta hozzáférési kérelmi limitet erről a hálózatról. Kérjük, próbáld újra holnap.';
+    }
+
+    return null;
+}
+
 function buildBetaRequestSlackBlocks(string $name, string $email, string $baseLanguage, string $message, string $sourcePath): array {
     $fields = [
         ['type' => 'mrkdwn', 'text' => "*Email:*\n" . $email],
@@ -385,12 +436,13 @@ function handleRequestBetaAccess(PDO $pdo, array $data): void {
         return;
     }
 
-    $email = isset($data['email']) ? trim((string)$data['email']) : '';
+    $email = isset($data['email']) ? normalizeBetaRequestEmail((string)$data['email']) : '';
     $name = security_sanitize_log_line(isset($data['name']) ? (string)$data['name'] : '', 100);
     $message = security_sanitize_log_line(isset($data['message']) ? (string)$data['message'] : '', 1000);
     $baseLanguage = isset($data['base_language']) ? trim((string)$data['base_language']) : 'hu';
     $sourcePath = security_sanitize_log_line(isset($data['source_path']) ? (string)$data['source_path'] : '', 255);
     $userAgent = security_sanitize_log_line($_SERVER['HTTP_USER_AGENT'] ?? '', 255);
+    $ipHash = betaRequestClientIpHash();
 
     if (!in_array($baseLanguage, ['hu', 'sk'], true)) {
         $baseLanguage = 'hu';
@@ -399,8 +451,19 @@ function handleRequestBetaAccess(PDO $pdo, array $data): void {
         echo json_encode(['error' => 'Adj meg egy érvényes e-mail címet.']);
         return;
     }
+    if (!betaRequestEmailDomainCanReceiveMail($email)) {
+        echo json_encode(['error' => 'Kérjük, olyan e-mail címet adj meg, amelynek domainje fogadni tud e-maileket.']);
+        return;
+    }
 
     try {
+        $databaseRateLimitError = betaRequestDatabaseRateLimitError($pdo, $ipHash);
+        if ($databaseRateLimitError !== null) {
+            http_response_code(429);
+            echo json_encode(['error' => $databaseRateLimitError]);
+            return;
+        }
+
         $stmt = $pdo->prepare("
             INSERT INTO beta_access_requests
                 (email, name, base_language, message, status, source_path, user_agent, ip_hash)
@@ -416,7 +479,7 @@ function handleRequestBetaAccess(PDO $pdo, array $data): void {
                 ip_hash = VALUES(ip_hash),
                 updated_at = CURRENT_TIMESTAMP
         ");
-        $stmt->execute([$email, $name, $baseLanguage, $message, $sourcePath, $userAgent, betaRequestClientIpHash()]);
+        $stmt->execute([$email, $name, $baseLanguage, $message, $sourcePath, $userAgent, $ipHash]);
 
         sendFeedbackToSlack(buildBetaRequestSlackBlocks($name, $email, $baseLanguage, $message, $sourcePath));
         sendBetaRequestReceiptEmail($email, $name, $baseLanguage);
