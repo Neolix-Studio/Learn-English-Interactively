@@ -1,9 +1,10 @@
 import { SkeletonLeaderboardRow } from '../components/SkeletonLoader';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarLeft } from '../components/SidebarLeft';
 import { SidebarRight } from '../components/SidebarRight';
 import { api } from '../utils/api';
+import { useUser } from '../context/UserContext';
 import '../assets/css/dashboard.css';
 
 interface LeaderboardUser {
@@ -24,6 +25,7 @@ export const LeaderboardPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const navigate = useNavigate();
+  const { data } = useUser();
 
   // ── Weekly countdown timer ──────────────────────────────────────────────
   const [weeklyCountdown, setWeeklyCountdown] = useState('');
@@ -51,12 +53,12 @@ export const LeaderboardPage: React.FC = () => {
     return () => clearInterval(id);
   }, []);
   
-  const currentUsername = localStorage.getItem('guest_username'); // Optional if not logged in
+  const currentUsername = data.username;
   
   // Refs for scrolling
   const listRef = useRef<HTMLDivElement>(null);
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await api.fetch(`get_leaderboard&timeframe=${timeframe}&league_id=${leagueId}`);
@@ -69,11 +71,13 @@ export const LeaderboardPage: React.FC = () => {
       console.error(e);
     }
     setIsLoading(false);
-  };
+  }, [timeframe, leagueId]);
 
   useEffect(() => {
     fetchLeaderboard();
-  }, [timeframe, leagueId]);
+    window.addEventListener('lexipawsProgressSaved', fetchLeaderboard);
+    return () => window.removeEventListener('lexipawsProgressSaved', fetchLeaderboard);
+  }, [fetchLeaderboard]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();

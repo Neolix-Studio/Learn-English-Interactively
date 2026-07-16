@@ -392,6 +392,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         scores: updated.scores,
                         quest_progress: updated.quest_progress,
                         completed_quests_today: updated.completed_quests_today
+                    }).then((res) => {
+                        if (res?.success) {
+                            window.dispatchEvent(new CustomEvent('lexipawsProgressSaved'));
+                        }
                     });
                 }, 1500);
             }
