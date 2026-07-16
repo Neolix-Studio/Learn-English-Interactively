@@ -47,6 +47,7 @@ copyFile('libs/PHPMailer/VERSION');
 
 copyFile('.htaccess');
 copyFile('api.php');
+copyFile('beta_admin.php');
 copyFile('api/tts.php');
 copyFile('security.php');
 copyFile('logout.php');

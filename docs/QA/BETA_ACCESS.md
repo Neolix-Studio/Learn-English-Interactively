@@ -14,6 +14,21 @@ Invite codes are stored as SHA-256 hashes. Do not commit invite codes.
 
 Pending beta access requests are stored in `beta_access_requests`. The landing page request form also sends a Slack notification and a confirmation email to the requester.
 
+## Approval flow
+
+The preferred approval flow is:
+
+1. Open `https://dev.lexipaws.eu/beta_admin.php`.
+2. Enter the `MAINTENANCE_TOKEN`.
+3. Review pending requests.
+4. Click `Approve + email`.
+
+The approval page creates a 30-day, single-use, email-bound invite, marks the request as `invited`, and sends the requester an approval email with a button that opens the prefilled invite link.
+
+If the email fails to send, the page shows the generated invite link so it can be copied manually.
+
+## Manual fallback
+
 For Websupport/phpMyAdmin, use the same SQL file that deployment runs:
 
 ```text
@@ -57,7 +72,7 @@ VALUES (
 
 After signup, the invite is marked `used` and linked to the created user.
 
-## Manual approval flow
+### Manual approval flow
 
 1. Pick one pending request from `beta_access_requests`.
 2. Choose a one-time invite code, for example `LEXI-FAMILY-001`.
