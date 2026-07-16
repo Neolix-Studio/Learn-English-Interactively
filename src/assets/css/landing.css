@@ -128,13 +128,16 @@
 /* Card Call to Action Buttons */
 .btn-card {
     display: block;
+    width: 100%;
     text-align: center;
     background: oklch(1 0 0 / 0.05);
     border: 1px solid oklch(1 0 0 / 0.1);
     padding: 0.8rem 1rem;
     border-radius: 12px;
+    font-family: inherit;
     font-weight: 600;
     font-size: 0.9rem;
+    cursor: pointer;
     transition: all var(--transition-base);
 }
 

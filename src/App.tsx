@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import type { ReactElement } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Home } from './pages/Home';
 import { Dashboard } from './pages/Dashboard';
@@ -27,7 +28,22 @@ import { AchievementPopup } from './components/AchievementPopup';
 import { AuthModal } from './components/AuthModal';
 
 import { UserProvider } from './context/UserContext';
+import { useUser } from './context/UserContext';
 import { ShopProvider } from './context/ShopContext';
+
+function RequireAuthenticated({ children }: { children: ReactElement }) {
+  const { isGuest, isLoading } = useUser();
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (isGuest) {
+    return <Navigate to="/?login=true" replace />;
+  }
+
+  return children;
+}
 
 function App() {
   const isGatewayDomain = window.location.hostname === 'lexipaws.eu' || window.location.hostname === 'www.lexipaws.eu';
@@ -50,7 +66,7 @@ function App() {
             <Route path="/" element={isGatewayDomain ? <Gateway /> : <Home />} />
             
             {/* Welcome Flow */}
-            <Route path="/welcome" element={<WelcomeLayout />}>
+            <Route path="/welcome" element={<RequireAuthenticated><WelcomeLayout /></RequireAuthenticated>}>
               <Route path="start" element={<WelcomeStartScreen />} />
               <Route path="hear-about-us" element={<HearAboutUsScreen />} />
               <Route path="why-learning" element={<WhyLearningScreen />} />
@@ -59,15 +75,15 @@ function App() {
             </Route>
             
             {/* FTUE Lesson */}
-            <Route path="/lesson/ftue" element={<FTUELesson />} />
-            <Route path="/lesson/characters/:id" element={<CharacterLesson />} />
+            <Route path="/lesson/ftue" element={<RequireAuthenticated><FTUELesson /></RequireAuthenticated>} />
+            <Route path="/lesson/characters/:id" element={<RequireAuthenticated><CharacterLesson /></RequireAuthenticated>} />
 
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/friends" element={<FriendsPage />} />
-            <Route path="/practice" element={<PracticePage />} />
-            <Route path="/characters" element={<CharactersPage />} />
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/dashboard" element={<RequireAuthenticated><Dashboard /></RequireAuthenticated>} />
+            <Route path="/profile" element={<RequireAuthenticated><ProfilePage /></RequireAuthenticated>} />
+            <Route path="/friends" element={<RequireAuthenticated><FriendsPage /></RequireAuthenticated>} />
+            <Route path="/practice" element={<RequireAuthenticated><PracticePage /></RequireAuthenticated>} />
+            <Route path="/characters" element={<RequireAuthenticated><CharactersPage /></RequireAuthenticated>} />
+            <Route path="/leaderboard" element={<RequireAuthenticated><LeaderboardPage /></RequireAuthenticated>} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />

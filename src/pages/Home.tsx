@@ -150,7 +150,6 @@ export function Home() {
                   </>
                 ) : (
                   <>
-                    <Link to="/welcome/start" className="btn-start" style={{ width: '100%', textAlign: 'center' }}>Kezdés</Link>
                     <button onClick={() => setIsBetaRequestOpen(true)} className="btn-secondary" style={{ width: '100%', padding: '1rem 2.5rem', fontSize: '1.1rem', fontWeight: 800, borderRadius: '16px', border: '2px solid var(--color-accent-in)', background: 'var(--color-bg-base)', color: 'var(--color-accent-in)', cursor: 'pointer', transition: 'all 0.2s' }}>
                       Béta hozzáférés kérése
                     </button>
@@ -177,7 +176,11 @@ export function Home() {
               </header>
               <p className="card-description">Teljesen az alapoktól indulunk. Megtanulod a betűzést, a számokat, a legegyszerűbb mondatszerkezeteket és az alapvető kifejezéseket.</p>
               <footer className="card-footer">
-                <Link to="/dashboard" className="btn-card landing-level-btn">Belépés az A1 tananyaghoz</Link>
+                {isAuthenticated ? (
+                  <Link to="/dashboard" className="btn-card landing-level-btn">Belépés az A1 tananyaghoz</Link>
+                ) : (
+                  <button type="button" onClick={openAuthModal} className="btn-card landing-level-btn">Belépés az A1 tananyaghoz</button>
+                )}
               </footer>
             </article>
 
