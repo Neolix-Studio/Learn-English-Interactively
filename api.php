@@ -198,28 +198,59 @@ switch ($action) {
 
 // --- API ACTIONS HANDLERS ---
 
+function isAllowedAppBaseUrl(string $configured): bool {
+    $parts = parse_url($configured);
+    if (!is_array($parts)) {
+        return false;
+    }
+
+    $scheme = strtolower($parts['scheme'] ?? '');
+    $host = strtolower($parts['host'] ?? '');
+    $port = isset($parts['port']) ? (int)$parts['port'] : null;
+    $hostWithPort = $port ? $host . ':' . $port : $host;
+
+    if (!in_array($host, APP_ALLOWED_HOSTS, true) && !in_array($hostWithPort, APP_ALLOWED_HOSTS, true)) {
+        return false;
+    }
+
+    $isLocalhost = $host === 'localhost' || str_starts_with($host, 'localhost:');
+    if ($scheme === 'http') {
+        return $isLocalhost;
+    }
+
+    return $scheme === 'https';
+}
+
+function normalizeAppBaseUrl(string $configured): string {
+    $parts = parse_url($configured);
+    if (!is_array($parts)) {
+        return '';
+    }
+
+    $scheme = strtolower($parts['scheme'] ?? '');
+    $host = strtolower($parts['host'] ?? '');
+    $port = isset($parts['port']) ? ':' . (int)$parts['port'] : '';
+    $path = isset($parts['path']) ? '/' . trim($parts['path'], '/') : '';
+
+    return rtrim($scheme . '://' . $host . $port . $path, '/');
+}
+
 function getAppBaseUrl(): string {
     $configured = getenv('APP_BASE_URL');
     if (!$configured && defined('APP_BASE_URL')) {
         $configured = APP_BASE_URL;
     }
 
-    if ($configured) {
-        $parts = parse_url($configured);
-        $scheme = $parts['scheme'] ?? '';
-        $host = $parts['host'] ?? '';
-        if (in_array($scheme, ['https', 'http'], true) && in_array($host, APP_ALLOWED_HOSTS, true)) {
-            return rtrim($configured, '/');
-        }
+    $configured = trim((string)$configured);
+    if ($configured === '') {
+        throw new RuntimeException('APP_BASE_URL is required for password reset links.');
     }
 
-    $host = $_SERVER['HTTP_HOST'] ?? 'lexipaws.eu';
-    if (!in_array($host, APP_ALLOWED_HOSTS, true)) {
-        $host = 'lexipaws.eu';
+    if (!isAllowedAppBaseUrl($configured)) {
+        throw new RuntimeException('APP_BASE_URL must use an allowed HTTPS origin or localhost HTTP origin.');
     }
 
-    $scheme = str_starts_with($host, 'localhost') ? 'http' : 'https';
-    return $scheme . '://' . $host;
+    return normalizeAppBaseUrl($configured);
 }
 
 function hashPasswordResetToken(string $token): string {
@@ -733,6 +764,14 @@ function formatUserProgress(array $progress) {
     ];
 }
 
+function isAllowedAvatarValue(string $avatar): bool {
+    if ($avatar === 'default.png') {
+        return true;
+    }
+
+    return preg_match('/^[a-f0-9]{32}\.(jpg|png|webp)$/', $avatar) === 1;
+}
+
 // 4. Get Current Session State (Retrieves user data + progress details)
 function handleUpdateAvatar(PDO $pdo, array $inputData) {
     if (!isset($_SESSION['user_id'])) {
@@ -744,8 +783,9 @@ function handleUpdateAvatar(PDO $pdo, array $inputData) {
     $userId = $_SESSION['user_id'];
     $avatar = trim($inputData['avatar'] ?? '');
 
-    if (empty($avatar)) {
-        echo json_encode(["status" => "error", "message" => "Avatar name required"]);
+    if (empty($avatar) || !isAllowedAvatarValue($avatar)) {
+        http_response_code(400);
+        echo json_encode(["status" => "error", "message" => "Invalid avatar value"]);
         return;
     }
 
@@ -1222,6 +1262,8 @@ function handleForgotPassword(PDO $pdo, array $data) {
             return;
         }
 
+        $appBaseUrl = getAppBaseUrl();
+
         // Generate token and expiry (1 hour)
         $token = bin2hex(random_bytes(32));
         $tokenHash = hashPasswordResetToken($token);
@@ -1231,7 +1273,7 @@ function handleForgotPassword(PDO $pdo, array $data) {
         $stmtUpdate = $pdo->prepare("UPDATE users SET reset_token = ?, reset_expires = ? WHERE id = ?");
         $stmtUpdate->execute([$tokenHash, $expiry, $user['id']]);
 
-        $resetLink = getAppBaseUrl() . "/index.html?" . http_build_query([
+        $resetLink = $appBaseUrl . "/index.html?" . http_build_query([
             'action' => 'reset_password',
             'token' => $token
         ]);

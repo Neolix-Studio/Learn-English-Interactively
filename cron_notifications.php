@@ -5,6 +5,9 @@
  * Usage (CLI): php cron_notifications.php
  */
 
+header('Content-Type: text/plain; charset=utf-8');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+
 require_once __DIR__ . '/db_config.php';
 require_once __DIR__ . '/security.php';
 security_require_cli_or_token('CRON_SECRET');

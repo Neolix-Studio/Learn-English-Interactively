@@ -39,13 +39,29 @@ if (!security_rate_limit('avatar_upload_' . $user_id, 10, 3600)) {
     exit;
 }
 
-if (!isset($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
+if (!isset($_FILES['avatar']) || !is_array($_FILES['avatar'])) {
     echo json_encode(['success' => false, 'error' => 'No file uploaded or upload error.']);
+    exit;
+}
+
+if (is_array($_FILES['avatar']['tmp_name'] ?? null)) {
+    echo json_encode(['success' => false, 'error' => 'Only one avatar file can be uploaded at a time.']);
     exit;
 }
 
 $fileTmpPath = $_FILES['avatar']['tmp_name'];
 $fileSize = $_FILES['avatar']['size'];
+$uploadError = $_FILES['avatar']['error'];
+
+if ($uploadError !== UPLOAD_ERR_OK) {
+    echo json_encode(['success' => false, 'error' => 'No file uploaded or upload error.']);
+    exit;
+}
+
+if (!is_uploaded_file($fileTmpPath)) {
+    echo json_encode(['success' => false, 'error' => 'Upload failed. Invalid temporary file.']);
+    exit;
+}
 
 // Max 5MB
 if ($fileSize <= 0 || $fileSize > 5 * 1024 * 1024) {
@@ -83,9 +99,16 @@ if (!is_dir($uploadFileDir)) {
     mkdir($uploadFileDir, 0755, true);
 }
 
+if (!is_writable($uploadFileDir)) {
+    error_log('Avatar upload directory is not writable: ' . $uploadFileDir);
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'Avatar upload failed. Please try again later.']);
+    exit;
+}
+
 $avatarHtaccess = $uploadFileDir . '.htaccess';
 if (!file_exists($avatarHtaccess)) {
-    file_put_contents($avatarHtaccess, "<FilesMatch \"\\.(php|phtml|phar|cgi|pl|sh)$\">\nRequire all denied\n</FilesMatch>\nOptions -Indexes\n");
+    file_put_contents($avatarHtaccess, "<FilesMatch \"\\.(php|phtml|phar|cgi|pl|sh)$\">\nRequire all denied\n</FilesMatch>\nOptions -Indexes\nAddType text/plain .php .phtml .phar .cgi .pl .sh\n");
 }
 
 $fileExtension = $allowedMimeTypes[$detectedMime];
@@ -93,6 +116,8 @@ $newFileName = bin2hex(random_bytes(16)) . '.' . $fileExtension;
 $dest_path = $uploadFileDir . $newFileName;
 
 if (move_uploaded_file($fileTmpPath, $dest_path)) {
+    chmod($dest_path, 0644);
+
     try {
         $stmt = $pdo->prepare("UPDATE users SET avatar = ? WHERE id = ?");
         $stmt->execute([$newFileName, $user_id]);
