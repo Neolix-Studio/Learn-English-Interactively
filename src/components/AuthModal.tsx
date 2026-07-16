@@ -185,11 +185,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     }
   };
 
-  const handleGuest = () => {
-    localStorage.setItem("selectedLevel", "A1");
-    window.location.href = '/dashboard';
-  };
-
   if (!isOpen) return null;
 
   // --- FORGOT PASSWORD VIEW ---
@@ -395,13 +390,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             {loading ? 'Kérjük várjon...' : (tab === 'login' ? 'Bejelentkezés' : 'Regisztráció')}
           </button>
         </form>
-        
-        {tab === 'login' && (
-          <button type="button" onClick={handleGuest} style={{ marginTop: '1.5rem', width: '100%', padding: '0.75rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', border: '1px solid var(--color-accent-in)', background: 'transparent', color: 'var(--color-accent-in)' }}>
-            Folytatás Vendégként (Próba)
-          </button>
-        )}
-        
+
         <button className="btn-close-modal" onClick={onClose} style={{ marginTop: '1rem', width: '100%' }}>Bezárás</button>
       </div>
     </div>
