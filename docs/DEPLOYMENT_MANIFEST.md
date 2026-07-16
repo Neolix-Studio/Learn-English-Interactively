@@ -22,6 +22,7 @@ These are needed on Websupport for the React/PHP app to run.
 | `dist/` output | Yes | Built React/Vite frontend. Prefer deploying built output, not raw `src/`, once workflow is corrected. |
 | `.htaccess` | Yes | SPA routing and security headers/access blocks. |
 | `api.php` | Yes | Main PHP API router. |
+| `beta_admin.php` | Yes, restricted | Internal beta request approval page. Requires `MAINTENANCE_TOKEN`. |
 | `api/tts.php` | Yes | TTS endpoint. |
 | `security.php` | Yes, but blocked by `.htaccess` | Shared PHP security helpers required by backend scripts. |
 | `logout.php` | Yes | Standalone logout endpoint if still used by frontend. |
