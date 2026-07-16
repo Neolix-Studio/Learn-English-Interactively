@@ -315,10 +315,10 @@ export function Home() {
                       onChange={e => setBetaRequestMessage(e.target.value)}
                       maxLength={1000}
                       placeholder="Például: szülőként tesztelném, vagy saját tanuláshoz kérnék hozzáférést."
-                      style={{ ...betaRequestControlStyle, minHeight: '96px', resize: 'vertical', fontFamily: 'inherit' }}
+                      style={{ ...betaRequestControlStyle, minHeight: '76px', resize: 'vertical', fontFamily: 'inherit' }}
                     />
                   </BetaRequestField>
-                  <button type="submit" disabled={betaRequestStatus === 'loading'} className="btn btn-submit-auth" style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', fontWeight: 600, border: 'none', background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', color: 'white', cursor: betaRequestStatus === 'loading' ? 'not-allowed' : 'pointer', opacity: betaRequestStatus === 'loading' ? 0.7 : 1 }}>
+                  <button type="submit" disabled={betaRequestStatus === 'loading'} className="btn btn-submit-auth" style={{ width: '100%', padding: '0.85rem 1.25rem', borderRadius: '14px', fontWeight: 800, border: 'none', background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', color: 'white', cursor: betaRequestStatus === 'loading' ? 'not-allowed' : 'pointer', opacity: betaRequestStatus === 'loading' ? 0.7 : 1 }}>
                     {betaRequestStatus === 'loading' ? 'Küldés...' : 'Kérelem elküldése'}
                   </button>
                 </form>
