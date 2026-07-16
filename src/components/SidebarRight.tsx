@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../context/UserContext';
 import { useShop } from '../context/ShopContext';
@@ -24,15 +24,18 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
 
 
 
+  const fetchLeaderboard = useCallback(async () => {
+    const res = await api.fetch('get_leaderboard');
+    if (res && res.leaderboard) {
+      setLeaderboard(res.leaderboard);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchLeaderboard = async () => {
-      const res = await api.fetch('get_leaderboard');
-      if (res && res.leaderboard) {
-        setLeaderboard(res.leaderboard);
-      }
-    };
     fetchLeaderboard();
-  }, [data.points]); // Refetch if points change
+    window.addEventListener('lexipawsProgressSaved', fetchLeaderboard);
+    return () => window.removeEventListener('lexipawsProgressSaved', fetchLeaderboard);
+  }, [fetchLeaderboard]);
 
   // Helper to calculate XP progress visually
   const xp = data.points || 0;
@@ -238,7 +241,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
                           </div>
                           <span style={{ fontWeight: isCurrent ? 600 : 400, color: isCurrent ? 'var(--color-text-main)' : 'var(--color-text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '90px', display: 'inline-block', flex: 1 }} title={user.username}>{isCurrent ? `${user.username} ${t('sidebar_right.you')}` : user.username}</span>
                         </div>
-                        <span style={{ fontWeight: isCurrent ? 'bold' : 'normal', color: isCurrent ? 'var(--color-accent-in)' : 'var(--color-text-muted)', whiteSpace: 'nowrap', paddingLeft: '0.5rem' }}>{user.points} XP</span>
+                        <span style={{ fontWeight: isCurrent ? 'bold' : 'normal', color: isCurrent ? 'var(--color-accent-in)' : 'var(--color-text-muted)', whiteSpace: 'nowrap', paddingLeft: '0.5rem' }}>{user.xp} XP</span>
                       </div>
                     </React.Fragment>
                   );
