@@ -60,3 +60,4 @@ Before September 1, 2026 beta/payment preparation, add checks for:
 - no payment secrets in frontend code
 - no payment secrets in logs
 - rate limiting for auth and payment-sensitive endpoints
+- beta access request throttling and email-domain validation
