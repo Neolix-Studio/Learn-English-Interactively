@@ -257,7 +257,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             .replace(/A:\s*/g, '')
             .replace(/B:\s*/g, '')
             .replace(/<br\s*\/?>/gi, '. ')
-            .replace(/<[^>]*>?/gm, '');
+            .replace(/[<>]/g, '');
 
         playTTS(cleanText);
       }
