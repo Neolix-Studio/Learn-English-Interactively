@@ -76,22 +76,31 @@ try {
             $stmtSub = $pdo->prepare("INSERT INTO user_subscriptions (user_id, role, subscription_tier) VALUES (?, 'user', 'free')");
             $stmtSub->execute([$userId]);
 
-            $rand = mt_rand(1, 100);
-            if ($rand <= 50) $points = mt_rand(50, 499);
-            elseif ($rand <= 80) $points = mt_rand(500, 1499);
-            elseif ($rand <= 95) $points = mt_rand(1500, 4999);
-            else $points = mt_rand(5000, 12000);
+            $rand = random_int(1, 100);
+            if ($rand <= 50) {
+                $points = random_int(50, 499);
+            } elseif ($rand <= 80) {
+                $points = random_int(500, 1499);
+            } elseif ($rand <= 95) {
+                $points = random_int(1500, 4999);
+            } else {
+                $points = random_int(5000, 12000);
+            }
 
             $stmtProg = $pdo->prepare("INSERT INTO user_progress (user_id, points, completed, scores, level, streak_count, streak_shields, active_theme) VALUES (?, ?, '{}', '{}', 1, ?, 2, 'system')");
-            $stmtProg->execute([$userId, $points, mt_rand(0, 15)]);
+            $stmtProg->execute([$userId, $points, random_int(0, 15)]);
 
             $leagueId = 1;
-            if ($points >= 5000) $leagueId = 4;
-            elseif ($points >= 1500) $leagueId = 3;
-            elseif ($points >= 500) $leagueId = 2;
+            if ($points >= 5000) {
+                $leagueId = 4;
+            } elseif ($points >= 1500) {
+                $leagueId = 3;
+            } elseif ($points >= 500) {
+                $leagueId = 2;
+            }
 
             $stmtLeague = $pdo->prepare("INSERT INTO user_leagues (user_id, league_id, weekly_xp, monthly_xp) VALUES (?, ?, ?, ?)");
-            $stmtLeague->execute([$userId, $leagueId, mt_rand(0, $points), $points]);
+            $stmtLeague->execute([$userId, $leagueId, random_int(0, $points), $points]);
         }
 
         $pdo->commit();
@@ -141,9 +150,13 @@ foreach ($jsonFiles as $file) {
     $content = file_get_contents($file);
     $data = json_decode($content, true);
 
-    if (!$data) continue;
+    if (!$data) {
+        continue;
+    }
 
-    if (isset($data['targetLang']) && $data['targetLang'] === 'hu') continue;
+    if (isset($data['targetLang']) && $data['targetLang'] === 'hu') {
+        continue;
+    }
 
     if (isset($data['questions']) && is_array($data['questions'])) {
         foreach ($data['questions'] as $q) {

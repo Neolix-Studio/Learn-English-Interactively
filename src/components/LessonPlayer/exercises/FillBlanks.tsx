@@ -156,7 +156,7 @@ export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer }) =>
                 transition: 'all 0.2s',
                 fontWeight: 'bold',
                 background: isSelected ? 'rgba(16, 185, 129, 0.16)' : 'var(--color-bg-surface)',
-                color: isSelected ? 'var(--color-text-main)' : 'var(--color-text-main)',
+                color: 'var(--color-text-main)',
                 border: isSelected ? '2px solid #86EFAC' : '2px solid var(--glass-border)',
                 boxShadow: isSelected ? '0 0 18px rgba(134, 239, 172, 0.42), 0 3px 0 rgba(134, 239, 172, 0.55)' : '0 4px 0 var(--glass-border)',
                 transform: isSelected ? 'translateY(2px)' : 'none'

@@ -60,4 +60,63 @@ try {
     $appliedMigrations = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
     $migrationsDir = __DIR__ . '/data/migrations';
-    $files = glob($migrationsDir . '
+    $files = glob($migrationsDir . '/*.sql');
+    sort($files);
+
+    foreach ($files as $file) {
+        $fileName = basename($file);
+
+        if ($fileName === '03_create_migration_history.sql') {
+            continue;
+        }
+
+        if (!in_array($fileName, $appliedMigrations)) {
+            $sqlContent = file_get_contents($file);
+            if (empty(trim($sqlContent))) {
+                continue;
+            }
+
+            try {
+                $pdo->beginTransaction();
+                $pdo->exec($sqlContent);
+                $logStmt = $pdo->prepare("INSERT INTO migration_history (migration_name) VALUES (?)");
+                $logStmt->execute([$fileName]);
+
+                if ($pdo->inTransaction()) {
+                    $pdo->commit();
+                }
+
+                $applied[] = $fileName;
+            } catch (Exception $e) {
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack();
+                }
+                $errorMessage = "Migration '$fileName' failed: " . $e->getMessage();
+                migration_log_error($errorMessage);
+                $errors[] = $errorMessage;
+                break;
+            }
+        }
+    }
+} catch (Exception $e) {
+    $errorMessage = "Global migration manager error: " . $e->getMessage();
+    migration_log_error($errorMessage);
+    $errors[] = $errorMessage;
+}
+
+$status = empty($errors);
+$response = [
+    'success' => $status,
+    'applied' => $applied,
+    'errors' => migration_format_errors($errors, $isCli)
+];
+
+if (!$status) {
+    http_response_code(500);
+}
+
+echo json_encode($response, JSON_PRETTY_PRINT);
+if (!$status && $isCli) {
+    exit(1);
+}
+exit(0);

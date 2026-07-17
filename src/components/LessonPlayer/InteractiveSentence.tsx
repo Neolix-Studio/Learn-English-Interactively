@@ -130,6 +130,8 @@ export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ senten
                 <div
                   key={subIndex}
                   style={{ position: 'relative', display: 'inline-block', cursor: 'pointer' }}
+                  role="button"
+                  tabIndex={0}
                   onClick={(event) => {
                     handleDismissGuide();
                     if (activeTooltip === tooltipId) {
@@ -141,6 +143,12 @@ export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ senten
                         if (isNewWord && !disableAudio) {
                             playTTS(cleanWord);
                         }
+                    }
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      event.currentTarget.click();
                     }
                   }}
                   onMouseLeave={() => {

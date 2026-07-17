@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SidebarLeft } from '../components/SidebarLeft';
 import { SidebarRight } from '../components/SidebarRight';
@@ -13,8 +13,7 @@ import { useShop } from '../context/ShopContext';
 import RewardPopup from '../components/RewardPopup';
 import { MobileBottomBar } from '../components/MobileBottomBar';
 import { LexiFeedbackWidget } from '../components/LexiFeedbackWidget';
-import { DashboardLeaderboardSummaryTour, ProductTour } from '../components/ProductTour';
-import { isLeaderboardUnlocked } from '../utils/featureUnlocks';
+import { ProductTour } from '../components/ProductTour';
 import '../assets/css/dashboard.css';
 import '../assets/css/interactive.css';
 
@@ -29,90 +28,23 @@ export const Dashboard: React.FC = () => {
   const [isMobileStatsOpen, setIsMobileStatsOpen] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [runTour, setRunTour] = useState(false);
-  const [runLeaderboardSummaryTour, setRunLeaderboardSummaryTour] = useState(false);
-  const [tourLevelModalOpen, setTourLevelModalOpen] = useState(false);
-  const [highlightLeaderboardUnlock, setHighlightLeaderboardUnlock] = useState(false);
-  const isMobileViewport = () => window.matchMedia('(max-width: 991px)').matches;
 
   useEffect(() => {
     if (!isLoading && data?.onboarding_completed === true) {
       const tourCompleted = localStorage.getItem('lexipaws_tour_completed');
       if (!tourCompleted) {
-        if (isMobileViewport()) {
-          setIsMobileNavOpen(true);
-          setTourLevelModalOpen(false);
-        } else {
-          setTourLevelModalOpen(true);
-        }
         setRunTour(true);
       }
     }
   }, [isLoading, data?.onboarding_completed]);
 
-  useEffect(() => {
-    if (!isLoading && isLeaderboardUnlocked(data.points)) {
-      const tourCompleted = localStorage.getItem('lexipaws_leaderboard_tour_completed');
-      const tourPending = localStorage.getItem('lexipaws_leaderboard_tour_pending');
-      if (!tourCompleted && !tourPending) {
-        localStorage.setItem('lexipaws_leaderboard_tour_pending', 'true');
-        setHighlightLeaderboardUnlock(true);
-      } else if (tourPending && !tourCompleted) {
-        setHighlightLeaderboardUnlock(true);
-      }
-    }
-  }, [isLoading, data.points]);
-
-  useEffect(() => {
-    if (!isLoading && isLeaderboardUnlocked(data.points)) {
-      const pending = localStorage.getItem('lexipaws_dashboard_leaderboard_summary_pending');
-      if (pending) {
-        if (isMobileViewport()) {
-          setIsMobileNavOpen(false);
-          setIsMobileStatsOpen(true);
-        }
-        setRunLeaderboardSummaryTour(true);
-      }
-    }
-  }, [isLoading, data.points]);
-
   const handleTourEnd = () => {
     setRunTour(false);
-    setTourLevelModalOpen(false);
-    setIsMobileNavOpen(false);
-    setIsMobileStatsOpen(false);
     localStorage.setItem('lexipaws_tour_completed', 'true');
   };
 
-  const handleLeaderboardSummaryTourEnd = () => {
-    setRunLeaderboardSummaryTour(false);
-    setIsMobileStatsOpen(false);
-    setHighlightLeaderboardUnlock(false);
-    localStorage.removeItem('lexipaws_dashboard_leaderboard_summary_pending');
-  };
-
-  const handleDashboardTourStepChange = useCallback((index: number) => {
-    if (!isMobileViewport()) return;
-
-    const leftSidebarSteps = new Set([0, 1, 2]);
-    const rightSidebarSteps = new Set([5, 6]);
-
-    if (leftSidebarSteps.has(index)) {
-      setIsMobileNavOpen(true);
-      setIsMobileStatsOpen(false);
-      return;
-    }
-
-    if (rightSidebarSteps.has(index)) {
-      setIsMobileNavOpen(false);
-      setIsMobileStatsOpen(true);
-      return;
-    }
-
-    setIsMobileNavOpen(false);
-    setIsMobileStatsOpen(false);
-  }, []);
-
   useEffect(() => {
+    // Scroll to top on mount
     window.scrollTo(0, 0);
   }, []);
 
@@ -129,14 +61,10 @@ export const Dashboard: React.FC = () => {
         setIsMobileNavOpen(false);
         setIsMobileStatsOpen(false);
       }
+      // Clear state so it doesn't reopen if refreshed
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
-
-  useEffect(() => {
-    document.body.classList.toggle('has-mobile-drawer-open', isMobileNavOpen || isMobileStatsOpen);
-    return () => document.body.classList.remove('has-mobile-drawer-open');
-  }, [isMobileNavOpen, isMobileStatsOpen]);
 
   useEffect(() => {
     if (!isLoading && data.onboarding_completed === false) {
@@ -147,13 +75,14 @@ export const Dashboard: React.FC = () => {
   const handleNodeClick = (nodeData: any) => {
     const isPremium = data.subscription_tier === 'premium' || data.subscription_tier === 'lifetime';
     const energy = data.energy ?? 5;
-
+    
     const lastStartedLesson = localStorage.getItem('neolix_active_lesson');
     const isReentering = lastStartedLesson === nodeData.id;
-
+    
     if (!isPremium && !isReentering && energy <= 0) {
       const lastRefill = localStorage.getItem('last_feedback_refill');
       const now = Date.now();
+      // 1 hour cooldown = 3600000 ms
       if (!lastRefill || (now - parseInt(lastRefill)) > 3600000) {
         setIsFeedbackModalOpen(true);
       } else {
@@ -161,45 +90,39 @@ export const Dashboard: React.FC = () => {
       }
       return;
     }
-
+    
     if (!isPremium && !isReentering) {
       const updates: any = { energy: energy - 1 };
+      // If energy was full, start the regeneration timer now
       if (energy === 5) {
         updates.last_energy_refill = new Date().toISOString();
       }
       updateProgress(updates);
     }
-
+    
     localStorage.setItem('neolix_active_lesson', nodeData.id);
     setActiveLesson(nodeData);
   };
 
+
+
   return (
     <>
-      <ProductTour
-        run={runTour}
-        onTourEnd={handleTourEnd}
-        onFirstStepDone={() => setTourLevelModalOpen(false)}
-        onStepChange={handleDashboardTourStepChange}
-      />
-      <DashboardLeaderboardSummaryTour
-        run={runLeaderboardSummaryTour}
-        onTourEnd={handleLeaderboardSummaryTourEnd}
-      />
+      <ProductTour run={runTour} onTourEnd={handleTourEnd} />
       <div className="dashboard-container">
-        <SidebarLeft
+        {/* LEFT SIDEBAR (Phase 2) */}
+        <SidebarLeft 
             isOpen={isMobileNavOpen}
             onClose={() => setIsMobileNavOpen(false)}
-            onOpenProfile={() => navigate('/profile')}
-            tourLevelModalOpen={tourLevelModalOpen}
-            onTourLevelModalClose={() => setTourLevelModalOpen(false)}
-            highlightLeaderboardUnlock={highlightLeaderboardUnlock}
+            onOpenProfile={() => navigate('/profile')} 
         />
 
+        {/* MAIN CONTENT AREA */}
         <main className="main-stage-track">
           <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', border: 0 }}>{t('dashboard.title', 'Tanulási Útvonal')}</h1>
           <div id="app">
-
+            
+            {/* Roadmap Screen (Native React) */}
             <div id="roadmap-screen" className="screen active">
               <Roadmap onNodeClick={handleNodeClick} />
             </div>
@@ -207,13 +130,15 @@ export const Dashboard: React.FC = () => {
           </div>
         </main>
 
-        <SidebarRight
+        {/* RIGHT SIDEBAR (Phase 1) */}
+        <SidebarRight 
             isOpen={isMobileStatsOpen}
             onClose={() => setIsMobileStatsOpen(false)}
-            onOpenShop={openShop}
+            onOpenShop={openShop} 
         />
 
-        <MobileBottomBar
+        {/* MOBILE BOTTOM BAR (Phase 1) */}
+        <MobileBottomBar 
           activeTab={isMobileNavOpen ? 'levels' : isMobileStatsOpen ? 'stats' : 'curriculum'}
           onTabClick={(tab) => {
             if (tab === 'levels') {
@@ -231,21 +156,23 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <RewardPopup />
-
+      
+      {/* Full Screen Interactive Player */}
       {activeLesson && activeLesson.id !== 'Boss' && (
-        <LessonPlayer
+        <LessonPlayer 
           lessonNode={activeLesson}
           onExit={() => setActiveLesson(null)}
           onComplete={(scoreData) => {
             localStorage.removeItem('neolix_active_lesson');
-            completeLesson(activeLesson.id, scoreData.xpEarned, 100, scoreData.completedLessonId, scoreData.isNodeComplete, scoreData.isTutorial);
+            completeLesson(activeLesson.id, scoreData.xpEarned, 100, scoreData.completedLessonId, scoreData.isNodeComplete, scoreData.isTutorial); 
             setActiveLesson(null);
           }}
         />
       )}
 
+      {/* Boss Encounter Player */}
       {activeLesson && activeLesson.id === 'Boss' && (
-        <BossEncounter
+        <BossEncounter 
           lessonNode={activeLesson}
           onExit={() => setActiveLesson(null)}
           onComplete={(scoreData) => {
@@ -255,9 +182,12 @@ export const Dashboard: React.FC = () => {
           }}
         />
       )}
-
-
+      
+      {/* Onboarding overlay removed in favor of /welcome/start redirection */}
+      
+      {/* Modals */}
       <FeedbackRefillModal isOpen={isFeedbackModalOpen} onClose={() => setIsFeedbackModalOpen(false)} onSuccess={() => {
+         // They got a refill, so we can just let them click again or automatically start the lesson.
       }} />
       <LexiFeedbackWidget />
     </>
