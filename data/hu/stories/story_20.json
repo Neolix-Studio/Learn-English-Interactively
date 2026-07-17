@@ -1,0 +1,150 @@
+{
+    "title": "Levente piknikje a tóparton",
+    "type": "reading_node",
+    "story": {
+        "en": "On Wednesday, Levente goes to the park with his cousin. The weather is windy. They sit next to a bench. They eat chicken sandwiches and drink orange juice. Levente brings a kite. After lunch, they fly the kite. They go home at half past five.",
+        "hu": "Szerdán Levente elmegy a parkba az unokatestvérével. Az idő szeles. Egy pad mellett ülnek le. Csirkés szendvicseket esznek, és narancslevet isznak. Levente egy sárkányt visz magával. Ebéd után sárkányt eregetnek. Fél hatkor mennek haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Levente goes to the park on Wednesday.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The picnic is on Wednesday."
+        },
+        {
+            "type": "true_false",
+            "statement": "The weather is rainy.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The weather is windy."
+        },
+        {
+            "type": "true_false",
+            "statement": "They sit next to a bench.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They sit next to a bench."
+        },
+        {
+            "type": "true_false",
+            "statement": "They drink coffee.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They drink orange juice."
+        },
+        {
+            "type": "true_false",
+            "statement": "They go home at half past five.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They go home at half past five."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to the park with the child?",
+            "correctAnswer": "A cousin",
+            "options": [
+                "Two friends",
+                "The grandparents",
+                "The family",
+                "A cousin"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the weather like?",
+            "correctAnswer": "Windy",
+            "options": [
+                "Warm",
+                "Rainy",
+                "Cloudy",
+                "Windy"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where do they sit?",
+            "correctAnswer": "Next to a bench",
+            "options": [
+                "By the playground",
+                "On the grass",
+                "Next to a bench",
+                "Under a tree"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child bring?",
+            "correctAnswer": "A kite",
+            "options": [
+                "A ball",
+                "A kite",
+                "A frisbee",
+                "A book"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they do after lunch?",
+            "correctAnswer": "Fly a kite",
+            "options": [
+                "Take photos",
+                "Play football",
+                "Fly a kite",
+                "Feed the ducks"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Hová mennek? (Where do they go?)",
+            "sentence": "Levente goes to the ____.",
+            "correctAnswer": "park",
+            "hint": "park"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen az idő? (What is the weather like?)",
+            "sentence": "The weather is ____.",
+            "correctAnswer": "windy",
+            "hint": "szeles"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit esznek? (What do they eat?)",
+            "sentence": "They eat ____.",
+            "correctAnswer": "sandwiches",
+            "hint": "szendvicsek"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit visz magával a gyerek? (What does the child bring?)",
+            "sentence": "Levente brings a ____.",
+            "correctAnswer": "kite",
+            "hint": "sárkány"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor mennek haza? (When do they go home?)",
+            "sentence": "They go home at ____.",
+            "correctAnswer": "five",
+            "hint": "öt (a half past five kifejezésben)"
+        }
+    ]
+}

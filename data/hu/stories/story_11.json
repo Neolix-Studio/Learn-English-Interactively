@@ -1,0 +1,150 @@
+{
+    "title": "Zsófi keddi tanítási napja",
+    "type": "reading_node",
+    "story": {
+        "en": "Zsófi is in class 1C. She sits next to Péter. Their teacher is Miss Nagy. Today they study Science and English. At lunch, Zsófi eats pasta. After school, she plays chess with Péter. She goes home at four o'clock.",
+        "hu": "Zsófi az 1C osztályba jár. Péter mellett ül. A tanáruk Miss Nagy. Ma természetismeretet és angolt tanulnak. Ebédre tésztát eszik. Iskola után sakkot játszik Péterrel. Négy órakor megy haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Zsófi is in class 1C.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Zsófi is in class 1C."
+        },
+        {
+            "type": "true_false",
+            "statement": "She sits next to Miss Nagy.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She sits next to Péter."
+        },
+        {
+            "type": "true_false",
+            "statement": "They study Science today.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They study Science and English."
+        },
+        {
+            "type": "true_false",
+            "statement": "Zsófi eats pizza for lunch.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Zsófi eats pasta."
+        },
+        {
+            "type": "true_false",
+            "statement": "She goes home at four o'clock.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She goes home at four o'clock."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who sits next to the student?",
+            "correctAnswer": "Péter",
+            "options": [
+                "Emma",
+                "Péter",
+                "Dávid",
+                "Máté"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who is the teacher?",
+            "correctAnswer": "Miss Nagy",
+            "options": [
+                "Mr Brown",
+                "Mrs Green",
+                "Mrs White",
+                "Miss Nagy"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they study first?",
+            "correctAnswer": "Science",
+            "options": [
+                "Science",
+                "Art",
+                "History",
+                "Music"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the student eat for lunch?",
+            "correctAnswer": "Pasta",
+            "options": [
+                "Rice",
+                "Pizza",
+                "A sandwich",
+                "Pasta"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do the children play after school?",
+            "correctAnswer": "Chess",
+            "options": [
+                "Basketball",
+                "Chess",
+                "Football",
+                "Cards"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Ki mellett ül a tanuló? (Who does the student sit next to?)",
+            "sentence": "She sits next to ____.",
+            "correctAnswer": "Péter",
+            "hint": "Péter"
+        },
+        {
+            "type": "type_in",
+            "question": "Ki a tanáruk? (Who is their teacher?)",
+            "sentence": "Their teacher is ____.",
+            "correctAnswer": "Miss Nagy",
+            "hint": "Miss Nagy"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit tanulnak először? (What do they study first?)",
+            "sentence": "They study ____ first.",
+            "correctAnswer": "Science",
+            "hint": "természetismeretet"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik ebédre? (What does the student eat for lunch?)",
+            "sentence": "Zsófi eats ____.",
+            "correctAnswer": "pasta",
+            "hint": "tészta"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor megy haza? (When does the student go home?)",
+            "sentence": "She goes home at ____.",
+            "correctAnswer": "four",
+            "hint": "négy"
+        }
+    ]
+}

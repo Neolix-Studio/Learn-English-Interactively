@@ -1,0 +1,150 @@
+{
+    "title": "Tamás vasárnapi bevásárlása",
+    "type": "reading_node",
+    "story": {
+        "en": "On Sunday, Tamás goes to the supermarket. He needs cheese, pasta, and carrots. He puts the food in a basket. At the checkout, it costs ten euros. Tamás pays with a phone. Then he carries the shopping home.",
+        "hu": "Vasárnap Tamás elmegy a szupermarketbe. Sajtot, tésztát és sárgarépát szeretne venni. Az élelmiszereket egy kosárba teszi. A pénztárnál a vásárlás tíz euró. Telefonnal fizet. Ezután hazaviszi a bevásárlást."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Tamás goes shopping on Sunday.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The story starts with 'On Sunday'."
+        },
+        {
+            "type": "true_false",
+            "statement": "He buys chocolate.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Tamás buys cheese, pasta, and carrots."
+        },
+        {
+            "type": "true_false",
+            "statement": "He uses a basket.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The food goes in a basket."
+        },
+        {
+            "type": "true_false",
+            "statement": "The shopping costs five euros.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "It costs ten euros."
+        },
+        {
+            "type": "true_false",
+            "statement": "Tamás carries the shopping home.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He carries it home."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where does the person go?",
+            "correctAnswer": "To the supermarket",
+            "options": [
+                "To the park",
+                "To the school",
+                "To the library",
+                "To the supermarket"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Which item does the person buy?",
+            "correctAnswer": "Cheese",
+            "options": [
+                "Apples",
+                "Cheese",
+                "Tomatoes",
+                "Rice"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the person put the food in?",
+            "correctAnswer": "A basket",
+            "options": [
+                "A basket",
+                "A backpack",
+                "A box",
+                "A bag"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "How much does the shopping cost?",
+            "correctAnswer": "Ten euros",
+            "options": [
+                "Five euros",
+                "Six euros",
+                "Ten euros",
+                "Twelve euros"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "How does the person pay?",
+            "correctAnswer": "With a phone",
+            "options": [
+                "By card",
+                "With cash",
+                "With a voucher",
+                "With a phone"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Hová megy vásárolni? (Where does the person go shopping?)",
+            "sentence": "Tamás goes to the ____.",
+            "correctAnswer": "supermarket",
+            "hint": "szupermarket"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit vesz először? (What does the person buy first?)",
+            "sentence": "He needs ____.",
+            "correctAnswer": "cheese",
+            "hint": "sajt"
+        },
+        {
+            "type": "type_in",
+            "question": "Mibe teszi az élelmiszert? (What does the person put the food in?)",
+            "sentence": "He puts the food in a ____.",
+            "correctAnswer": "basket",
+            "hint": "kosár"
+        },
+        {
+            "type": "type_in",
+            "question": "Mennyibe kerül a vásárlás? (How much does the shopping cost?)",
+            "sentence": "It costs ____ euros.",
+            "correctAnswer": "ten",
+            "hint": "tíz"
+        },
+        {
+            "type": "type_in",
+            "question": "Hová viszi a bevásárlást? (Where does the person take the shopping?)",
+            "sentence": "He carries the shopping ____.",
+            "correctAnswer": "home",
+            "hint": "haza"
+        }
+    ]
+}
