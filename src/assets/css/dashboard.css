@@ -16,6 +16,11 @@
     overflow-x: clip;
 }
 
+body.has-mobile-drawer-open {
+    overflow: hidden;
+    overscroll-behavior: contain;
+}
+
 /* ==========================================================================
    2. STICKY VERTICAL SIDEBAR MENU PANEL
    ========================================================================== */
@@ -4410,4 +4415,39 @@ a.logo {
     color: var(--color-text-main) !important;
     font-size: 0.75rem !important;
     cursor: pointer !important;
+}
+
+/* Joyride mobile guardrails: keep tutorial bubbles visible above drawers and bottom nav. */
+.react-joyride__floater {
+    z-index: 100000 !important;
+}
+
+@media (max-width: 991px) {
+    #react-joyride-portal {
+        position: fixed !important;
+        inset: 0 !important;
+        pointer-events: none !important;
+        z-index: 100000 !important;
+    }
+
+    #react-joyride-portal .react-joyride__floater {
+        max-width: calc(100vw - 28px) !important;
+        width: calc(100vw - 28px) !important;
+        min-width: 0 !important;
+        pointer-events: auto !important;
+    }
+
+    #react-joyride-portal [data-testid="tooltip"] {
+        max-height: calc(100dvh - 118px) !important;
+        max-width: calc(100vw - 28px) !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain !important;
+        width: calc(100vw - 28px) !important;
+    }
+
+    #react-joyride-portal [data-testid="tooltip"] * {
+        max-width: 100% !important;
+        word-break: normal !important;
+        overflow-wrap: anywhere !important;
+    }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SidebarLeft } from '../components/SidebarLeft';
 import { SidebarRight } from '../components/SidebarRight';
@@ -28,11 +28,16 @@ export const Dashboard: React.FC = () => {
   const [isMobileStatsOpen, setIsMobileStatsOpen] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [runTour, setRunTour] = useState(false);
+  const isMobileViewport = () => window.matchMedia('(max-width: 991px)').matches;
 
   useEffect(() => {
     if (!isLoading && data?.onboarding_completed === true) {
       const tourCompleted = localStorage.getItem('lexipaws_tour_completed');
       if (!tourCompleted) {
+        if (isMobileViewport()) {
+          setIsMobileNavOpen(true);
+          setIsMobileStatsOpen(false);
+        }
         setRunTour(true);
       }
     }
@@ -40,8 +45,24 @@ export const Dashboard: React.FC = () => {
 
   const handleTourEnd = () => {
     setRunTour(false);
+    setIsMobileNavOpen(false);
+    setIsMobileStatsOpen(false);
     localStorage.setItem('lexipaws_tour_completed', 'true');
   };
+
+  const handleDashboardTourStepChange = useCallback((index: number) => {
+    if (!isMobileViewport()) return;
+
+    const sidebarSteps = new Set([0, 2, 3]);
+    if (sidebarSteps.has(index)) {
+      setIsMobileNavOpen(true);
+      setIsMobileStatsOpen(false);
+      return;
+    }
+
+    setIsMobileNavOpen(false);
+    setIsMobileStatsOpen(false);
+  }, []);
 
   useEffect(() => {
     // Scroll to top on mount
@@ -65,6 +86,11 @@ export const Dashboard: React.FC = () => {
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
+
+  useEffect(() => {
+    document.body.classList.toggle('has-mobile-drawer-open', isMobileNavOpen || isMobileStatsOpen);
+    return () => document.body.classList.remove('has-mobile-drawer-open');
+  }, [isMobileNavOpen, isMobileStatsOpen]);
 
   useEffect(() => {
     if (!isLoading && data.onboarding_completed === false) {
@@ -108,7 +134,11 @@ export const Dashboard: React.FC = () => {
 
   return (
     <>
-      <ProductTour run={runTour} onTourEnd={handleTourEnd} />
+      <ProductTour
+        run={runTour}
+        onTourEnd={handleTourEnd}
+        onStepChange={handleDashboardTourStepChange}
+      />
       <div className="dashboard-container">
         {/* LEFT SIDEBAR (Phase 2) */}
         <SidebarLeft 
