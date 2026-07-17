@@ -14,6 +14,14 @@ Invite codes are stored as SHA-256 hashes. Do not commit invite codes.
 
 Pending beta access requests are stored in `beta_access_requests`. The landing page request form also sends a Slack notification and a confirmation email to the requester.
 
+Beta access requests are accepted only when:
+
+- the email address has a valid format
+- the email domain has DNS records that can receive mail (`MX`, `A`, or `AAAA`)
+- the request is within the per-session and per-IP beta request limits
+
+The per-IP limit is enforced with the existing hashed `ip_hash` column, so raw IP addresses are not stored in the beta request table.
+
 ## Approval flow
 
 The preferred approval flow is:

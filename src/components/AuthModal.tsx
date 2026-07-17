@@ -27,9 +27,9 @@ const inputStyle: React.CSSProperties = {
 const btnPrimaryStyle: React.CSSProperties = {
   marginTop: '0.5rem',
   width: '100%',
-  padding: '0.75rem',
-  borderRadius: '8px',
-  fontWeight: 600,
+  padding: '0.85rem 1.25rem',
+  borderRadius: '14px',
+  fontWeight: 800,
   border: 'none',
   background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))',
   color: 'white',
