@@ -43,14 +43,12 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     initialView === 'forgot' ? 'forgot' : initialView === 'reset' ? 'reset' : 'auth'
   );
 
-  // Auth fields
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [ageRange, setAgeRange] = useState('');
   const [betaInviteCode, setBetaInviteCode] = useState(inviteCode);
 
-  // Reset fields
   const [forgotEmail, setForgotEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
@@ -63,7 +61,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     try {
       if (tab === 'register') {
         const guestMigration = readGuestMigrationPayload();
@@ -114,7 +112,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             window.location.href = redirectUrl;
         }
       } else {
-        // Login flow
         const data = await api.fetch('login', { email, password, guest_migration: readGuestMigrationPayload() });
 
         if (data.error) {
@@ -175,7 +172,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
         setError(data.error);
       } else {
         setView('reset_done');
-        // Clean the URL
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     } catch (err) {
@@ -187,7 +183,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
   if (!isOpen) return null;
 
-  // --- FORGOT PASSWORD VIEW ---
   if (view === 'forgot') {
     return (
       <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
@@ -227,7 +222,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     );
   }
 
-  // --- FORGOT SENT CONFIRMATION ---
   if (view === 'forgot_sent') {
     return (
       <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
@@ -245,7 +239,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     );
   }
 
-  // --- RESET PASSWORD VIEW (arriving from email link) ---
   if (view === 'reset') {
     return (
       <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
@@ -278,7 +271,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     );
   }
 
-  // --- RESET DONE ---
   if (view === 'reset_done') {
     return (
       <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
@@ -296,13 +288,12 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     );
   }
 
-  // --- DEFAULT: Login / Register ---
   return (
     <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
       <div className="modal-content glass-panel">
         <div className="auth-tabs" style={{ display: 'flex', gap: '1rem', borderBottom: 'var(--glass-border)', marginBottom: '1.5rem' }}>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
             onClick={() => { setTab('login'); setError(''); }}
             style={{ background: 'none', border: 'none', color: tab === 'login' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
@@ -320,7 +311,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             </button>
           )}
         </div>
-        
+
         {error && (
           <div style={{ padding: '0.8rem', marginBottom: '1rem', background: 'oklch(0.65 0.2 25 / 0.1)', color: 'var(--color-error)', borderRadius: '8px', fontSize: '0.9rem', textAlign: 'center' }}>
             {error}

@@ -25,16 +25,13 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
 
   const handleSpeak = () => {
     if (isAnswered || hasSpoken) return;
-    
+
     setIsListening(true);
-    
-    // Simulate speech recognition delay
+
     setTimeout(() => {
       setIsListening(false);
       setHasSpoken(true);
-      
-      // We assume correct for this prototype, or we could randomize
-      // For a real app, this would use SpeechRecognition API
+
       onAnswer(true);
     }, 2000);
   };
@@ -44,7 +41,6 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
     if (onSkip) {
       onSkip();
     } else {
-      // Fallback if onSkip not provided
       onAnswer(true);
     }
   };
@@ -54,18 +50,16 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
       <h2 style={{ fontSize: '1.8rem', color: 'var(--color-text-main)', marginBottom: '2rem', fontWeight: 'bold' }}>
         {question.instruction || 'Mondd ki ezt a szót!'}
       </h2>
-      
-      {/* Character and Speech Bubble */}
+
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '4rem' }}>
         <div style={{ width: '100px', height: '100px' }}>
           <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Simple character avatar */}
             <circle cx="50" cy="50" r="45" fill="#4B5563" />
             <circle cx="50" cy="40" r="20" fill="#E5E7EB" />
             <path d="M25 80 C25 60, 75 60, 75 80" fill="#E5E7EB" />
           </svg>
         </div>
-        
+
         <div style={{
           background: 'var(--color-bg-surface)',
           padding: '1.5rem',
@@ -90,8 +84,7 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
         </div>
       </div>
 
-      {/* Mic Button */}
-      <button 
+      <button
         onClick={handleSpeak}
         disabled={isAnswered || hasSpoken}
         style={{
@@ -123,8 +116,7 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
         </span>
       </button>
 
-      {/* Can't talk now button */}
-      <button 
+      <button
         onClick={handleSkip}
         disabled={isAnswered || hasSpoken || isListening}
         style={{

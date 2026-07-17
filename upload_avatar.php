@@ -24,7 +24,6 @@ try {
     exit;
 }
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'error' => 'Not authenticated']);
     exit;
@@ -63,7 +62,6 @@ if (!is_uploaded_file($fileTmpPath)) {
     exit;
 }
 
-// Max 5MB
 if ($fileSize <= 0 || $fileSize > 5 * 1024 * 1024) {
     echo json_encode(['success' => false, 'error' => 'File size exceeds 5MB limit.']);
     exit;

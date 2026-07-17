@@ -1,11 +1,5 @@
 <?php
 
-/**
- * report_problem.php
- * Endpoint for the "Report a Problem" feature.
- * Receives JSON from the frontend, formats it, and emails it to Jira Service Management.
- */
-
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token');
 header('X-Content-Type-Options: nosniff');
@@ -23,7 +17,6 @@ function report_problem_error(int $statusCode, string $clientMessage, string $lo
     exit;
 }
 
-// Only allow POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     report_problem_error(405, 'Method not allowed');
 }
@@ -32,7 +25,6 @@ if (!security_rate_limit('report_problem_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknow
     report_problem_error(429, 'Túl sok jelentést küldtél. Kérjük, próbáld újra később.');
 }
 
-// Get JSON payload
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
@@ -40,7 +32,6 @@ if (!$data) {
     report_problem_error(400, 'Érvénytelen kérés.');
 }
 
-// Extract fields
 $issueType = security_sanitize_log_line(isset($data['issueType']) ? (string)$data['issueType'] : 'Unknown', 50);
 $description = security_sanitize_log_line(isset($data['description']) ? (string)$data['description'] : 'No description provided', 4000);
 $steps = security_sanitize_log_line(isset($data['steps']) ? (string)$data['steps'] : 'No steps provided', 4000);
@@ -58,21 +49,11 @@ if (trim($description) === '' || $description === 'No description provided') {
     report_problem_error(400, 'Kérjük, írd le a problémát.');
 }
 
-// =========================================================================
-// CONFIGURATION
-// =========================================================================
-// Replace this with your Jira Service Management inbound email address!
-// Example: lexipaws@lexipaws.atlassian.net
 $jiraEmailAddress = 'support@lexipaws.atlassian.net';
 $fromEmail = 'noreply@lexipaws.eu';
-// =========================================================================
 
-// Set Email Subject
-// Jira uses the subject as the ticket summary.
 $subject = "[Lexipaws " . ucfirst($issueType) . "] Problem Report";
 
-// Build Email Body
-// Jira Service Management accepts plain text or HTML. Plain text is often safer for Jira parsing.
 $body = "A new problem has been reported from the Lexipaws app.\n\n";
 $body .= "--- ISSUE DETAILS ---\n";
 $body .= "Type: " . ucfirst($issueType) . "\n";
@@ -105,7 +86,6 @@ if (!empty($browserInfo)) {
 $body .= "\n";
 $body .= "Reported At: " . $timestamp . "\n";
 
-// Build Headers
 $replyTo = !empty($userEmail) ? $userEmail : $fromEmail;
 
 $headers = [
@@ -117,7 +97,6 @@ $headers = [
     'X-Mailer' => 'PHP/' . phpversion()
 ];
 
-// Send Email
 $encodedSubject = mb_encode_mimeheader($subject, 'UTF-8', 'B', "\r\n");
 $success = mail($jiraEmailAddress, $encodedSubject, $body, $headers);
 

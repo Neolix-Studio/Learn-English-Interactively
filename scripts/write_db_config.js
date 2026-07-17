@@ -1,5 +1,3 @@
-// Helper script executed during GitHub Actions CD deployment to generate db_config.php.
-// Uses secure single-quoted PHP variables to avoid variable interpolation issues.
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -15,7 +13,6 @@ if (missingRequired.length > 0) {
 }
 
 const content = `<?php
-// Automatically compiled by GitHub Actions
 define('DB_HOST', ${esc(process.env.DB_HOST)});
 define('DB_NAME', ${esc(process.env.DB_NAME)});
 define('DB_USER', ${esc(process.env.DB_USER)});

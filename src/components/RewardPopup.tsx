@@ -26,20 +26,7 @@ const RewardPopup: React.FC = () => {
           setRewards(response.rewards);
           setIsOpen(true);
         } else {
-          // --- LOCAL TESTING MOCK ---
-          // Comment this block out before pushing to production!
-          /*
-          setRewards([{
-            id: 999,
-            reward_type: 'weekly_leaderboard',
-            league_id: 4,
-            placement: 1,
-            bones_reward: 150,
-            shields_reward: 3,
-            title_reward: '🏆 Gyémánt Bajnok'
-          }]);
-          setIsOpen(true);
-          */
+
         }
       } catch (error) {
         console.error('Error fetching pending rewards:', error);
@@ -56,7 +43,6 @@ const RewardPopup: React.FC = () => {
     try {
       const reward = rewards[currentRewardIndex];
       if (reward.id === 999) {
-          // mock local test handling
           if (currentRewardIndex < rewards.length - 1) {
             setCurrentRewardIndex(prev => prev + 1);
           } else {
@@ -72,7 +58,7 @@ const RewardPopup: React.FC = () => {
           setCurrentRewardIndex(prev => prev + 1);
         } else {
           setIsOpen(false);
-          window.location.reload(); // Refresh the page to reflect new data
+          window.location.reload();
         }
       }
     } catch (error) {
@@ -91,7 +77,7 @@ const RewardPopup: React.FC = () => {
     <div className="reward-popup-overlay">
       <div className="reward-popup-content">
         <div className="reward-glow-bg"></div>
-        
+
         <div className="reward-chest" style={{ animation: 'bounceIn 0.6s ease-out' }}>
           🎁
         </div>
@@ -108,7 +94,7 @@ const RewardPopup: React.FC = () => {
               <span className="reward-amount">+{reward.bones_reward} Lexi Treats</span>
             </div>
           )}
-          
+
           {reward.shields_reward > 0 && (
             <div className="reward-item" style={{ animation: 'slideIn 0.5s ease-out 0.4s both' }}>
               <span className="reward-icon">🛡️</span>
@@ -124,7 +110,7 @@ const RewardPopup: React.FC = () => {
           )}
         </div>
 
-        <button 
+        <button
           className="claim-reward-btn"
           onClick={handleClaim}
           disabled={claiming}

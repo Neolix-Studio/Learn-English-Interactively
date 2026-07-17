@@ -20,7 +20,6 @@
     max-width: 400px;
 }
 
-/* Zig-Zag Positioning */
 .roadmap-node-container {
     display: flex;
     justify-content: center;
@@ -36,11 +35,6 @@
     transform: translateX(40px);
 }
 
-/* The Line connecting nodes (Replaced by dynamic SVG in Roadmap.tsx) */
-
-/* We can do advanced SVG lines later, for now we will just use a vertical dashed line connecting them if needed */
-
-/* Node Button */
 .roadmap-node {
     width: 80px;
     height: 80px;
@@ -73,7 +67,6 @@
     height: 80px;
 }
 
-/* Status Variants (Lovely 3D Nodes) */
 .roadmap-node.current .node-icon-wrapper {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
@@ -106,7 +99,6 @@
     box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.1), inset 0 4px 0 rgba(255, 255, 255, 0.5), 0 8px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Floating Chat Bubble */
 .node-chat-bubble {
     position: absolute;
     top: -55px;
@@ -143,7 +135,6 @@
     50% { transform: translateX(-50%) translateY(-6px); }
 }
 
-/* Floating Title Bubble (Tooltip) - Duolingo Style */
 .node-tooltip {
     position: absolute;
     top: -140px;
@@ -165,7 +156,6 @@
     flex-direction: column;
 }
 
-/* Arrow pointing down */
 .node-tooltip::after {
     content: '';
     position: absolute;
@@ -177,7 +167,6 @@
     background: var(--color-accent-in);
 }
 
-/* Modifiers for tooltip pointing up (rendered below the node) */
 .node-tooltip.tooltip-bottom {
     top: 100%;
     margin-top: 15px;
@@ -188,7 +177,6 @@
     top: -8px;
 }
 
-/* Modifiers for tooltip pointing up (rendered below the node) */
 .node-tooltip.tooltip-bottom {
     top: 100%;
     margin-top: 15px;
@@ -249,7 +237,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* Module Banner Styles */
 .module-banner-container {
     width: 100%;
     border-radius: 20px;
@@ -291,7 +278,7 @@
 .module-banner-grammar-btn {
     background-color: var(--banner-color, #58CC02);
     color: white;
-    /* Simulate the darker stroke from the SVG using color-mix */
+
     border: 4px solid color-mix(in srgb, var(--banner-color) 60%, black);
     border-radius: 16px;
     padding: 0.8rem 1.5rem;
@@ -319,10 +306,43 @@
 }
 
 @media (max-width: 768px) {
+    .roadmap-container {
+        padding: 1rem 0 4rem 0;
+        margin-top: 0;
+        overflow-x: clip;
+    }
+
+    .roadmap-nodes-wrapper {
+        max-width: min(360px, 100vw - 32px);
+        gap: 2.75rem;
+        margin-top: 2.5rem;
+    }
+
+    .roadmap-node-container.node-left {
+        transform: translateX(-28px);
+    }
+
+    .roadmap-node-container.node-right {
+        transform: translateX(28px);
+    }
+
+    .node-tooltip {
+        min-width: min(260px, calc(100vw - 40px));
+        max-width: calc(100vw - 40px);
+    }
+
+    .node-chat-bubble {
+        top: -48px;
+        font-size: 0.88rem;
+        padding: 7px 13px;
+    }
+
     .module-banner-container {
         flex-direction: column;
-        padding: 1.5rem;
-        gap: 1.5rem;
+        padding: 1.15rem;
+        gap: 1rem;
+        width: min(100%, calc(100vw - 24px));
+        border-radius: 18px;
     }
 
     .module-banner-content {
@@ -332,16 +352,22 @@
     }
 
     .module-banner-title {
-        font-size: 1.8rem;
+        font-size: clamp(1.3rem, 7vw, 1.65rem);
+        line-height: 1.12;
+    }
+
+    .module-banner-desc {
+        font-size: 0.92rem;
+        line-height: 1.45;
     }
 
     .module-banner-grammar-btn {
         width: 100%;
         justify-content: center;
+        min-height: 48px;
     }
 }
 
-/* Treasure Chest Animations */
 .treasure-chest-wrapper {
     position: relative;
     width: 80px;
@@ -357,7 +383,7 @@
 }
 
 .treasure-chest-wrapper svg {
-    transform: translateY(-3px); /* Visually center the chest which has a bottom shadow */
+    transform: translateY(-3px);
 }
 
 .treasure-chest-wrapper.ready-to-open {

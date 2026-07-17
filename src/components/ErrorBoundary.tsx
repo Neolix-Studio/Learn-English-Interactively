@@ -25,11 +25,11 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div style={{ 
-          minHeight: '100vh', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
+        <div style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           justifyContent: 'center',
           padding: '2rem',
           textAlign: 'center',
@@ -45,14 +45,14 @@ export class ErrorBoundary extends Component<Props, State> {
             Elnézést kérünk, váratlan hiba történt a rendszerben. Kérjük, frissítsd az oldalt, vagy térj vissza a főoldalra.
           </p>
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <button 
-              onClick={() => window.location.reload()} 
+            <button
+              onClick={() => window.location.reload()}
               style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '16px', border: 'none', background: 'var(--color-accent-in)', color: 'white', fontWeight: 800, cursor: 'pointer' }}
             >
               Oldal frissítése
             </button>
-            <button 
-              onClick={() => window.location.href = '/'} 
+            <button
+              onClick={() => window.location.href = '/'}
               style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '16px', border: 'var(--glass-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', fontWeight: 800, cursor: 'pointer' }}
             >
               Vissza a főoldalra

@@ -17,9 +17,8 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
   const [activeGrammarModule, setActiveGrammarModule] = useState<string | null>(null);
   const [openingChestId, setOpeningChestId] = useState<string | null>(null);
 
-  // Load the curriculum once
   const curriculum = useMemo(() => getCurriculum(), []);
-  
+
   if (activeLevel === 'A2' || activeLevel === 'B1' || activeLevel === 'B2') {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6rem 2rem', textAlign: 'center', color: 'var(--color-text-muted)', minHeight: '50vh' }}>
@@ -37,19 +36,17 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
 
   const modules = levelData.modules;
   const nodeHeight = 80;
-  const gap = 48; // 3rem = 48px
-  const stepY = nodeHeight + gap; // 128px
-  const initialY = nodeHeight / 2; // 40px
+  const gap = 48;
+  const stepY = nodeHeight + gap;
+  const initialY = nodeHeight / 2;
   const centerX = 200;
 
   const handleChestClick = (node: any, status: string, totalNodes: number) => {
     if (status !== 'current' || openingChestId === node.id) return;
-    
+
     setOpeningChestId(node.id);
 
-    // Wait for the shake animation to finish before popping open
     setTimeout(() => {
-      // Fire confetti from the middle-bottom of the screen
       confetti({
         particleCount: 150,
         spread: 80,
@@ -57,19 +54,15 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
         colors: ['#FDE047', '#3B82F6', '#10B981', '#EF4444', '#8B5CF6']
       });
 
-      // Calculate rewards
       let xpReward = 50;
       let energyReward = 0;
       let bonesReward = 0;
-      
-      // If module is hard (e.g. 5 or more learning nodes)
-      // The chest node is included in totalNodes, so a module with 5 regular nodes has 6 totalNodes
+
       if (totalNodes >= 6) {
           energyReward = 1;
           bonesReward = 25;
       }
 
-      // Update progress using existing updateProgress
       const newScores = { ...userProgress.scores };
       if (!newScores.node_state) newScores.node_state = {};
       newScores.node_state[node.id] = { completedLessons: ['chest_opened'] };
@@ -96,68 +89,61 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
   return (
     <div className="roadmap-container">
       {modules.map((mod, moduleIndex) => {
-        // SVG paths for this module
         const pathSegments: { d: string, isCompleted: boolean }[] = [];
         const moduleNodes = mod.nodes;
 
         moduleNodes.forEach((_, index) => {
           if (index === 0) return;
-          
+
           const cycle = index % 4;
           let offsetX = 0;
           if (cycle === 1) offsetX = 40;
           if (cycle === 3) offsetX = -40;
           const x = centerX + offsetX;
           const y = initialY + (index * stepY);
-          
+
           const prevCycle = (index - 1) % 4;
           let prevOffsetX = 0;
           if (prevCycle === 1) prevOffsetX = 40;
           if (prevCycle === 3) prevOffsetX = -40;
           const prevX = centerX + prevOffsetX;
           const prevY = initialY + ((index - 1) * stepY);
-          
+
           const cp1y = prevY + (stepY / 2);
           const cp2y = y - (stepY / 2);
-          
+
           const dPath = `M ${prevX} ${prevY} C ${prevX} ${cp1y}, ${x} ${cp2y}, ${x} ${y}`;
-          
+
           const prevNode = moduleNodes[index - 1];
           const isPrevCompleted = isNodeFinished(prevNode.id, prevNode.totalLessons || 1);
-          
+
           pathSegments.push({
             d: dPath,
-            isCompleted: isPrevCompleted || (moduleIndex === 0 && index === 1) // first node unlocked visual test
+            isCompleted: isPrevCompleted || (moduleIndex === 0 && index === 1)
           });
         });
 
-        // Add 1.5rem bottom margin logic mapped in CSS anyway, but we just need the path to stop at the last node.
-        const totalHeight = moduleNodes.length * stepY - gap; // Exactly to the bottom of the last node!
+        const totalHeight = moduleNodes.length * stepY - gap;
 
         return (
           <React.Fragment key={mod.id}>
-            {/* The Module Banner */}
             <ModuleBanner module={mod} onOpenGrammar={setActiveGrammarModule} />
-            
-            {/* Inline Grammar Accordion */}
+
             {activeGrammarModule === mod.id && (
               <div style={{ width: '90%', margin: '0 auto 2rem auto', zIndex: 10, position: 'relative' }}>
-                <GrammarModal 
-                  moduleId={mod.id} 
-                  onClose={() => setActiveGrammarModule(null)} 
+                <GrammarModal
+                  moduleId={mod.id}
+                  onClose={() => setActiveGrammarModule(null)}
                   isInline={true}
                 />
               </div>
             )}
-            
-            {/* The nodes wrapper for this module */}
+
             <div className="roadmap-nodes-wrapper">
-              
-              {/* SVG Background for this module only */}
+
               <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: '400px', height: `${totalHeight}px`, zIndex: 1, pointerEvents: 'none' }}>
                 <svg viewBox={`0 0 400 ${totalHeight}`} width="100%" height="100%" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
-                  
-                  {/* Progress Rings (Lowest layer) */}
+
                   {moduleNodes.map((node, index) => {
                     const cycle = index % 4;
                     let offsetX = 0;
@@ -165,7 +151,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                     if (cycle === 3) offsetX = -40;
                     const cx = centerX + offsetX;
                     const cy = initialY + (index * stepY);
-                    
+
                     const completedCount = userProgress.scores?.node_state?.[node.id]?.completedLessons?.length || 0;
                     const totalLessons = node.totalLessons || 1;
                     let progressFraction = Math.min(completedCount / totalLessons, 1);
@@ -175,10 +161,10 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
 
                     return (
                       <g key={`ring-${node.id}`}>
-                        <circle 
-                          cx={cx} cy={cy} r="44" 
-                          stroke="#F59E0B" strokeWidth="8" fill="none" 
-                          strokeDasharray="276.46" 
+                        <circle
+                          cx={cx} cy={cy} r="44"
+                          stroke="#F59E0B" strokeWidth="8" fill="none"
+                          strokeDasharray="276.46"
                           strokeDashoffset={276.46 - (276.46 * progressFraction)}
                           strokeLinecap="round"
                           style={{ transition: 'stroke-dashoffset 0.5s', transform: 'rotate(-90deg)', transformOrigin: `${cx}px ${cy}px` }}
@@ -187,14 +173,12 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                     );
                   })}
 
-                  {/* Path Lines (Over rings, under nodes) */}
                   {pathSegments.map((seg, i) => (
                     <path key={i} d={seg.d} stroke={seg.isCompleted ? "#F59E0B" : "#E5E7EB"} strokeWidth="16" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                   ))}
                 </svg>
               </div>
 
-              {/* Render Nodes */}
               {moduleNodes.map((node, index) => {
                 const cycle = index % 4;
                 let offsetClass = 'node-center';
@@ -204,7 +188,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                 const completedCount = userProgress.scores?.node_state?.[node.id]?.completedLessons?.length || 0;
                 const totalLessons = node.totalLessons || 1;
                 let progressFraction = Math.min(completedCount / totalLessons, 1);
-                
+
                 let isNodeCompleted = isNodeFinished(node.id, totalLessons);
 
                 let status = 'locked';
@@ -216,8 +200,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                 } else if (moduleIndex === 0 && index === 0) {
                   status = 'current';
                 }
-                
-                // Sequential unlock check
+
                 if (status === 'locked') {
                   if (index > 0) {
                     const prevNode = moduleNodes[index - 1];
@@ -231,7 +214,6 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
 
                 const isBelowFold = moduleIndex > 0 || index >= 3;
 
-                // Handle Reward type icons
                 let defaultIcon: React.ReactNode = <img src="/single-star.svg" alt="Star" width={56} height={56} loading={isBelowFold ? "lazy" : undefined} style={{ width: '70%', height: '70%', objectFit: 'contain', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />;
                 if (userProgress?.scores?.active_theme === 'halloween') {
                     defaultIcon = (
@@ -246,17 +228,16 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                 else if (node.id === 'Boss' || node.title.includes('Boss')) icon = '👹';
                 else if (status === 'completed') icon = defaultIcon;
 
-                // Render Chest Node separately
                 if (node.type === 'chest') {
                   const isOpening = openingChestId === node.id;
                   const wrapperClass = status === 'current' && !isOpening ? 'ready-to-open' : (isOpening ? 'opening' : '');
-                  
+
                   return (
                     <div key={node.id} className={`roadmap-node-container ${offsetClass}`} style={{ position: 'relative', zIndex: 2 }}>
                       {status === 'current' && !isOpening && (
                         <div className="node-chat-bubble" style={{ zIndex: 10 }}>Nyisd ki!</div>
                       )}
-                      <div 
+                      <div
                         className={`treasure-chest-wrapper ${wrapperClass}`}
                         onClick={() => handleChestClick(node, status, moduleNodes.length)}
                         style={{ background: 'none', boxShadow: 'none' }}
@@ -271,7 +252,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
 
                 return (
                   <div key={node.id} className={`roadmap-node-container ${offsetClass}`} style={{ position: 'relative', zIndex: activeTooltipId === node.id ? 50 : 2 }}>
-                    <div 
+                    <div
                       className={`roadmap-node ${status} ${activeTooltipId === node.id ? 'active-tooltip' : ''}`}
                       title={node.title}
                       role="button"
@@ -289,8 +270,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                         <img src="/new-icon.svg" alt="Platform" width={80} height={80} loading={isBelowFold ? "lazy" : undefined} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80px', height: '80px', zIndex: -1, filter: status === 'locked' ? 'grayscale(100%) opacity(0.5)' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }} />
                         <span className="node-icon" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>{icon}</span>
                       </div>
-                      
-                      {/* Tooltip */}
+
                       <div className={`node-tooltip ${index === 0 ? 'tooltip-bottom' : ''}`}>
                         <div className="tooltip-header">
                           <div className="tooltip-title">{node.title}</div>
@@ -300,7 +280,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                             </div>
                           )}
                         </div>
-                        <button 
+                        <button
                           className="tooltip-start-btn"
                           onClick={(e) => {
                             e.stopPropagation();

@@ -15,37 +15,35 @@ export const Dictation: React.FC<DictationProps> = ({ question, onAnswer }) => {
   useEffect(() => {
     setInputValue('');
     onAnswer(false);
-    
-    // Auto-play on mount
+
     const timer = setTimeout(() => {
       playTTS(sentence);
     }, 500);
-    
+
     return () => clearTimeout(timer);
   }, [question, sentence]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setInputValue(val);
-    
-    // Check answer (ignore case and punctuation)
+
     const cleanAnswer = val.trim().toLowerCase().replace(/[.,!?]/g, '');
     const cleanCorrect = sentence.trim().toLowerCase().replace(/[.,!?]/g, '');
-    
+
     onAnswer(cleanAnswer === cleanCorrect);
   };
 
   return (
     <div style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <QuestionHeader 
-        text="Írd le, amit hallasz!" 
+      <QuestionHeader
+        text="Írd le, amit hallasz!"
         ttsText={sentence}
-        newWords={question.newWords} 
+        newWords={question.newWords}
         dictionary={question.dictionary}
         hideAudio={true}
       />
-      
-      <button 
+
+      <button
         onClick={() => playTTS(sentence)}
         style={{
           width: '80px',
@@ -68,12 +66,12 @@ export const Dictation: React.FC<DictationProps> = ({ question, onAnswer }) => {
       >
         🔊
       </button>
-      
-      <input 
-        type="text" 
+
+      <input
+        type="text"
         value={inputValue}
         onChange={handleChange}
-        placeholder="Kattints ide a gépeléshez..." 
+        placeholder="Kattints ide a gépeléshez..."
         style={{
           width: '100%',
           padding: '1.5rem',

@@ -18,7 +18,7 @@ export function WelcomeLayout() {
     <div className="welcome-layout">
       <main className="welcome-main">
         <div className="welcome-card">
-          
+
           <div className="welcome-mascot">
             <LexiAnimation />
           </div>
@@ -26,7 +26,7 @@ export function WelcomeLayout() {
           <Outlet />
 
           <div className="welcome-auth-link">
-            <button 
+            <button
               onClick={handleSkip}
               className="welcome-link-button"
             >
@@ -35,7 +35,7 @@ export function WelcomeLayout() {
           </div>
         </div>
       </main>
-      
+
       <AuthModal isOpen={isAuthModalOpen} onClose={handleAuthClose} />
     </div>
   );

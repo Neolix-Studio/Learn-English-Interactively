@@ -6,16 +6,14 @@ import fs from 'node:fs';
 const GH_PATHS = ['/usr/bin/gh', '/usr/local/bin/gh', '/opt/homebrew/bin/gh'];
 const GH_PATH = GH_PATHS.find(p => fs.existsSync(p)) || 'gh';
 
-// Configuration
 const PROJECT_KEY = 'Neolix-Studio_Learn-English-Interactively';
 const SONAR_TOKEN = process.env.SONAR_TOKEN || ''; // Optional: for private repos
 
 // Fetch issues from SonarCloud API
 function fetchSonarIssues() {
   return new Promise((resolve, reject) => {
-    // Fetch all unresolved issues
     const url = `https://sonarcloud.io/api/issues/search?componentKeys=${PROJECT_KEY}&resolved=false&ps=100`;
-    
+
     const headers = {
       'User-Agent': 'NodeJS/SonarSync'
     };
@@ -54,26 +52,22 @@ function fetchExistingGitHubIssues() {
   }
 }
 
-// Create a new GitHub issue
 function createGitHubIssue(issue) {
   const severity = (issue.severity || '').toLowerCase();
-  
-  // Define tags and labels based on severity
+
   const labels = ['bug', 'sonarcloud'];
   if (severity === 'blocker') labels.push('severity/blocker');
   else if (severity === 'critical') labels.push('severity/high');
   else if (severity === 'major') labels.push('severity/medium');
-  else return; // Skip minor/info issues
+  else return;
 
-  // Add security label for security vulnerabilities or security-tagged issues
   const isSecurity = issue.type === 'VULNERABILITY' || issue.tags?.includes('security');
   if (isSecurity) {
     labels.push('security');
   }
 
   const title = `[SonarCloud] ${issue.message}`;
-  
-  // Format body with issue details and trailing metadata key for tracking
+
   const body = `
 ### SonarCloud Issue Detail
 * **Message:** ${issue.message}
@@ -84,7 +78,6 @@ function createGitHubIssue(issue) {
 
 [View on SonarCloud](https://sonarcloud.io/project/issues?id=${PROJECT_KEY}&open=${issue.key})
 
-<!-- SonarCloudKey: ${issue.key} -->
 `;
 
   try {
@@ -97,8 +90,7 @@ function createGitHubIssue(issue) {
     if (result.status === 0) {
       const issueUrl = result.stdout.trim();
       console.log(`Created GitHub issue: ${issueUrl} for SonarCloud key: ${issue.key}`);
-      
-      // Route the issue to the project board
+
       addIssueToProject(issueUrl, isSecurity);
     } else {
       console.error(`Failed to create issue for SonarCloud key ${issue.key}: ${result.stderr}`);
@@ -108,13 +100,11 @@ function createGitHubIssue(issue) {
   }
 }
 
-// Add issue to project and set Status
 function addIssueToProject(issueUrl, isSecurity) {
-  const projectNumber = process.env.PROJECT_NUMBER || '1'; // Default to project 1
+  const projectNumber = process.env.PROJECT_NUMBER || '1';
   const owner = 'Neolix-Studio';
-  
+
   try {
-    // 0. Resolve Project Node ID
     console.log(`Resolving project details...`);
     const projectResult = spawnSync(GH_PATH, ['project', 'view', projectNumber, '--owner', owner, '--format', 'json'], { encoding: 'utf8' });
     if (projectResult.status !== 0) {
@@ -124,7 +114,6 @@ function addIssueToProject(issueUrl, isSecurity) {
     const project = JSON.parse(projectResult.stdout);
     const projectId = project.id;
 
-    // 0b. Resolve Field & Option IDs
     const fieldsResult = spawnSync(GH_PATH, ['project', 'field-list', projectNumber, '--owner', owner, '--format', 'json'], { encoding: 'utf8' });
     if (fieldsResult.status !== 0) {
       console.error(`Failed to resolve project fields: ${fieldsResult.stderr}`);
@@ -146,7 +135,6 @@ function addIssueToProject(issueUrl, isSecurity) {
     }
     const optionId = option.id;
 
-    // 1. Add item to project
     console.log(`Adding issue to project #${projectNumber}...`);
     const addResult = spawnSync(GH_PATH, ['project', 'item-add', projectNumber, '--owner', owner, '--url', issueUrl], { encoding: 'utf8' });
     if (addResult.status !== 0) {
@@ -154,7 +142,6 @@ function addIssueToProject(issueUrl, isSecurity) {
       return;
     }
 
-    // Extract item ID (e.g. PVTI_...) from output
     const match = addResult.stdout.match(/PVTI_[A-Za-z0-9_-]+/);
     if (!match) {
       console.error(`Could not parse project item ID from output: ${addResult.stdout}`);
@@ -162,7 +149,6 @@ function addIssueToProject(issueUrl, isSecurity) {
     }
     const itemId = match[0];
 
-    // 2. Set status using node IDs
     console.log(`Setting status of item ${itemId} to '${targetStatusName}' (${optionId})...`);
     const editResult = spawnSync(GH_PATH, [
       'project', 'item-edit',
@@ -191,7 +177,7 @@ async function run() {
     console.log('Fetching existing GitHub issues...');
     const existingIssues = fetchExistingGitHubIssues();
     const existingKeys = new Set();
-    
+
     // Extract SonarCloud keys from HTML comments in existing issue bodies
     existingIssues.forEach(issue => {
       const match = (issue.body || '').match(/<!-- SonarCloudKey:\s*([A-Za-z0-9_-]+)\s*-->/);
@@ -201,10 +187,8 @@ async function run() {
     });
     console.log(`Found ${existingKeys.size} tracked SonarCloud issues already open on GitHub.`);
 
-    // Filter and process new issues
     let createdCount = 0;
-    
-    // Sort issues so that security-related issues are prioritized and processed first
+
     const getIssuePriority = (issue) => {
       const isSecurity = issue.type === 'VULNERABILITY' || (issue.tags && issue.tags.includes('security'));
       return isSecurity ? 1 : 0;
@@ -213,17 +197,16 @@ async function run() {
 
     for (const issue of sonarIssues) {
       if (existingKeys.has(issue.key)) {
-        continue; // Already tracked
+        continue;
       }
-      
+
       const severity = (issue.severity || '').toLowerCase();
-      // Only process Blocker, Critical (High), and Major (Medium)
       if (['blocker', 'critical', 'major'].includes(severity)) {
         createGitHubIssue(issue);
         createdCount++;
       }
     }
-    
+
     console.log(`Sync completed. Created ${createdCount} new issues.`);
   } catch (e) {
     console.error('Error running sync:', e.message);

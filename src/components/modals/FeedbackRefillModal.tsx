@@ -15,14 +15,13 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const [answers, setAnswers] = useState({
     rating: '',
     pacing: '',
     bugs: ''
   });
 
-  // Reset state when opened
   useEffect(() => {
     if (isOpen) {
       setStep(1);
@@ -41,15 +40,14 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
         type: 'energy_refill',
         answers
       });
-      
+
       if (res.success) {
-        // Refill energy immediately locally!
         updateProgress({
           energy: 5,
           last_energy_refill: new Date().toISOString()
         });
         localStorage.setItem('last_feedback_refill', Date.now().toString());
-        setStep(4); // Success step
+        setStep(4);
         setTimeout(() => {
           onSuccess();
           onClose();
@@ -66,13 +64,11 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
       <div style={{ background: 'var(--color-bg-surface)', padding: '2.5rem', borderRadius: '24px', maxWidth: '450px', width: '100%', border: 'var(--glass-border)', boxShadow: '0 20px 50px rgba(0,0,0,0.2)', position: 'relative', animation: 'scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
-        
-        {/* Close Button */}
+
         <button onClick={onClose} style={{ position: 'absolute', top: '15px', right: '15px', background: 'var(--color-bg-base)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-main)' }}>
           ✕
         </button>
 
-        {/* Header with Lexi */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '1.5rem' }}>
            <img src="/assets/images/lexi-mascot.png" alt="Lexi" style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'contain', background: 'var(--color-accent-in)' }} />
            <div>
@@ -83,13 +79,12 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
 
         {error && <div style={{ color: '#EF4444', background: 'rgba(239, 68, 68, 0.1)', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontWeight: 'bold', fontSize: '0.9rem', textAlign: 'center' }}>{error}</div>}
 
-        {/* Step 1 */}
         {step === 1 && (
           <div style={{ animation: 'fadeIn 0.3s' }}>
             <h3 style={{ margin: '0 0 1rem 0', color: 'var(--color-text-main)' }}>How are you finding the lessons so far?</h3>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
               {[{e: '😡', label: 'Frustrating'}, {e: '😐', label: 'Okay'}, {e: '😍', label: 'Awesome!'}].map(item => (
-                <button 
+                <button
                   key={item.label}
                   onClick={() => { setAnswers({...answers, rating: item.label}); setStep(2); }}
                   style={{ flex: 1, padding: '1.5rem 0', background: 'var(--color-bg-base)', border: 'var(--glass-border)', borderRadius: '16px', cursor: 'pointer', fontSize: '2.5rem', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}
@@ -104,11 +99,10 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
           </div>
         )}
 
-        {/* Step 2 */}
         {step === 2 && (
           <div style={{ animation: 'slideInRight 0.3s' }}>
             <h3 style={{ margin: '0 0 1rem 0', color: 'var(--color-text-main)' }}>Is the grammar pacing too fast or just right?</h3>
-            <textarea 
+            <textarea
               value={answers.pacing}
               onChange={(e) => setAnswers({...answers, pacing: e.target.value})}
               placeholder="Tell us what you think..."
@@ -121,11 +115,10 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
           </div>
         )}
 
-        {/* Step 3 */}
         {step === 3 && (
           <div style={{ animation: 'slideInRight 0.3s' }}>
             <h3 style={{ margin: '0 0 1rem 0', color: 'var(--color-text-main)' }}>Did you run into any bugs or weird glitches?</h3>
-            <textarea 
+            <textarea
               value={answers.bugs}
               onChange={(e) => setAnswers({...answers, bugs: e.target.value})}
               placeholder="e.g. A button didn't work..."
@@ -140,7 +133,6 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
           </div>
         )}
 
-        {/* Step 4 - Success */}
         {step === 4 && (
           <div style={{ textAlign: 'center', animation: 'scaleUp 0.3s' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎉</div>

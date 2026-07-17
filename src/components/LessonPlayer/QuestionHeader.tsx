@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { LexiMascot } from '../LexiMascot';
 import { InteractiveSentence } from './InteractiveSentence';
 import { playTTS } from '../../utils/audio';
 
@@ -10,9 +9,10 @@ interface QuestionHeaderProps {
   dictionary?: Record<string, string>;
   hideAudio?: boolean;
   hideMascot?: boolean;
+  disableWordAudio?: boolean;
 }
 
-export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, newWords = [], dictionary = {}, hideAudio = false, hideMascot = false }) => {
+export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, newWords = [], dictionary = {}, hideAudio = false, disableWordAudio = false }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const handleSpeak = () => {
@@ -27,28 +27,7 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, n
 
   return (
     <div className="question-header-row" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', marginBottom: '2rem', gap: '20px' }}>
-      {/* Mascot Side */}
-      {!hideMascot && (
-        hideAudio ? (
-          <div className="question-header-mascot" style={{ transform: 'translateY(-15px)' }}>
-            <LexiMascot speaking={isSpeaking} size={100} />
-          </div>
-        ) : (
-          <button
-            type="button"
-            className="question-header-mascot"
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', transform: 'translateY(-15px)' }} 
-            onClick={handleSpeak}
-            aria-label="Felolvasás indítása"
-            title="Kattints a felolvasáshoz!"
-          >
-            <LexiMascot speaking={isSpeaking} size={100} />
-          </button>
-        )
-      )}
-
-      {/* Speech Bubble Side */}
-      <div 
+      <div
         className="question-header-bubble"
         style={{
           position: 'relative',
@@ -63,34 +42,8 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, n
           gap: '10px'
         }}
       >
-        {/* Tail pointing left */}
-        <div 
-          style={{
-            position: 'absolute',
-            top: '20px',
-            left: '-12px',
-            width: '0',
-            height: '0',
-            borderTop: '10px solid transparent',
-            borderBottom: '10px solid transparent',
-            borderRight: '12px solid var(--glass-border)',
-          }}
-        ></div>
-        <div 
-          style={{
-            position: 'absolute',
-            top: '20px',
-            left: '-9px',
-            width: '0',
-            height: '0',
-            borderTop: '10px solid transparent',
-            borderBottom: '10px solid transparent',
-            borderRight: '12px solid var(--color-bg-surface)',
-          }}
-        ></div>
-
         {!hideAudio && (
-          <button 
+          <button
             onClick={handleSpeak}
             style={{
               background: 'none',
@@ -109,10 +62,11 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, n
           </button>
         )}
 
-        <InteractiveSentence 
-          sentence={text} 
-          newWords={newWords} 
-          dictionary={dictionary} 
+        <InteractiveSentence
+          sentence={text}
+          newWords={newWords}
+          dictionary={dictionary}
+          disableAudio={disableWordAudio}
         />
       </div>
     </div>

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../context/UserContext';
 import { useShop } from '../context/ShopContext';
 import { api } from '../utils/api';
+import { isLeaderboardUnlocked, LEADERBOARD_UNLOCK_XP } from '../utils/featureUnlocks';
 
 interface SidebarRightProps {
   onOpenShop?: () => void;
@@ -22,8 +23,6 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
     return () => clearInterval(interval);
   }, []);
 
-
-
   const fetchLeaderboard = useCallback(async () => {
     const res = await api.fetch('get_leaderboard');
     if (res && res.leaderboard) {
@@ -37,28 +36,24 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
     return () => window.removeEventListener('lexipawsProgressSaved', fetchLeaderboard);
   }, [fetchLeaderboard]);
 
-  // Helper to calculate XP progress visually
   const xp = data.points || 0;
-  // Temporary logic for XP thresholds (mocked for now based on legacy logic)
+  const leaderboardUnlocked = isLeaderboardUnlocked(xp);
   const nextTier = Math.floor(xp / 1000) * 1000 + 1000;
   const progressPercent = Math.min(100, Math.max(0, (xp % 1000) / 10));
 
-  // Determine Level text
   const personalLevel = data.scores?.level || 1;
 
-  // Determine active streak and shields
   const streakCount = data.scores?.streak_count || 0;
-  
-  // Energy Calculation
+
   const energy = data.energy ?? 5;
   const isPremium = data.subscription_tier === 'premium' || data.subscription_tier === 'lifetime';
-  
+
   let nextEnergyIn = "";
   if (!isPremium && energy < 5 && data.last_energy_refill) {
       const refillTime = new Date(data.last_energy_refill).getTime();
-      const nextRefillTime = refillTime + (2 * 60 * 60 * 1000); // 2 hours
+      const nextRefillTime = refillTime + (2 * 60 * 60 * 1000);
       const diff = Math.max(0, nextRefillTime - now);
-      
+
       const h = Math.floor(diff / (1000 * 60 * 60));
       const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       nextEnergyIn = `${h}h ${m}m`;
@@ -69,9 +64,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
     <aside className={`dashboard-right-sidebar ${isOpen ? 'is-active' : ''}`} aria-label={t('sidebar_right.stats_panel_aria')}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
 
-        {/* TOP STATS BAR */}
         <div className="top-stats-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.3rem 0.8rem', background: 'var(--color-bg-surface)', borderBottom: 'var(--glass-border)', marginBottom: '0.2rem' }}>
-          {/* Flag Icon */}
           <div className="stat-icon-group" title="US/Hungarian" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800, color: 'var(--color-text-main)' }}>
             <svg width="28" height="28" viewBox="0 0 100 100" style={{ borderRadius: '50%', overflow: 'hidden', border: 'var(--glass-border)' }}>
               <defs>
@@ -90,7 +83,6 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
             </svg>
             <span>ENG</span>
           </div>
-          {/* Fire Streak */}
           <div className="stat-icon-group" title={t('sidebar_right.daily_streak_title')} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800, color: '#FF9800' }}>
             <svg width="24" height="24" viewBox="0 0 100 100">
               <path d="M50,10 C50,10 20,40 20,70 C20,86.5 33.5,100 50,100 C66.5,100 80,86.5 80,70 C80,40 50,10 50,10 Z" fill="#FF9800"/>
@@ -98,7 +90,6 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
             </svg>
             <span>{streakCount}</span>
           </div>
-          {/* Energy */}
           <div className="stat-icon-group" title={t('sidebar_right.energy_title')} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800, color: '#3B82F6' }}>
             <img src="/assets/images/energy.svg" alt="Energy" width="24" height="24" style={{ filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.1))' }} />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -106,7 +97,6 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
               {nextEnergyIn && <span style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', marginTop: '-2px', fontWeight: 'bold' }}>{nextEnergyIn}</span>}
             </div>
           </div>
-          {/* Dog Treat Currency */}
           <div className="stat-icon-group" title={t('sidebar_right.dog_treats_title')} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800, color: '#8D6E63' }}>
             <svg width="24" height="24" viewBox="0 0 100 100" style={{ marginRight: '2px', filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.1))' }}>
               <g transform="rotate(-30 50 50)">
@@ -120,16 +110,14 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
           </div>
         </div>
 
-        {/* SHOP BUTTON */}
-        <div style={{ padding: '0 0.8rem', margin: '0.2rem 0' }}>
+        <div className="shop-tour-target" style={{ padding: '0 0.8rem', margin: '0.2rem 0' }}>
           <button type="button" className="btn" style={{ width: '100%', justifyContent: 'center', background: 'linear-gradient(135deg, #F59E0B, #D97706)', color: '#fff', border: 'none', padding: '0.6rem', borderRadius: '10px', fontWeight: 'bold' }} onClick={openShop}>
             {t('sidebar_right.shop_btn')}
           </button>
         </div>
 
         <button className="mobile-close-stats-btn" onClick={onClose}>✕ {t('sidebar.close')}</button>
-        
-        {/* XP és Szint progresszió */}
+
         <div className="stats-widget" style={{ padding: '0.4rem 0.8rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
             <h3 style={{ fontSize: '0.8rem', color: 'var(--color-text-main)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t('sidebar_right.personal_level')}</h3>
@@ -140,19 +128,18 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
             <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-main)' }}>{activeLevel} {t('sidebar_right.learner')}</span>
           </div>
           <div className="xp-level-bar" style={{ width: '100%', height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden' }}>
-            <div className="xp-level-fill" id="xp-fill-bar" style={{ 
-                height: '100%', 
-                width: '100%', 
+            <div className="xp-level-fill" id="xp-fill-bar" style={{
+                height: '100%',
+                width: '100%',
                 transform: `scaleX(${progressPercent / 100})`,
                 transformOrigin: 'left',
-                background: 'linear-gradient(180deg, var(--color-accent-on) 0%, var(--color-accent-in) 100%)', 
+                background: 'linear-gradient(180deg, var(--color-accent-on) 0%, var(--color-accent-in) 100%)',
                 transition: 'transform 0.5s ease',
                 borderRadius: '8px',
                 boxShadow: 'inset 0 2px 3px rgba(255,255,255,0.5), inset 0 -2px 3px rgba(0,0,0,0.2), 0 2px 6px rgba(59, 130, 246, 0.4)',
                 position: 'relative',
                 overflow: 'hidden'
             }}>
-                {/* Glossy Overlay */}
                 <div style={{
                     position: 'absolute',
                     top: 0, left: 0, right: 0, height: '40%',
@@ -165,21 +152,18 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
 
         <hr style={{ border: 0, borderTop: '1px solid rgba(255,255,255,0.08)', margin: '0.8rem 0' }} />
 
-
-
-        {/* Heti Ranglista (Leaderboard) */}
-        <div className="stats-widget" style={{ padding: '0.4rem 0.8rem' }}>
+        <div className={`stats-widget leaderboard-summary-tour-target ${leaderboardUnlocked ? '' : 'leaderboard-summary-locked'}`} style={{ padding: '0.4rem 0.8rem' }}>
           {!isGuest && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
               <h3 style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t('sidebar_right.weekly_leaderboard_title')}</h3>
-              <span style={{ fontSize: '0.9rem' }}>🔒</span>
+              {!leaderboardUnlocked && <span style={{ fontSize: '0.9rem' }}>🔒</span>}
             </div>
           )}
-          
+
           {isGuest ? (
             <div style={{ display: 'flex', flexDirection: 'column', padding: '1.2rem', background: 'var(--color-bg-surface)', borderRadius: '16px', border: 'var(--glass-border)', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
               <h4 style={{ fontSize: '1.1rem', color: 'var(--color-text-main)', marginBottom: '1.5rem', lineHeight: '1.4', fontWeight: 800, textAlign: 'center' }}>{t('sidebar_right.save_progress_msg')}</h4>
-              <button 
+              <button
                 onClick={() => { localStorage.setItem("forceBetaRequestModal", "true"); window.location.href = "/"; }}
                 style={{ width: '100%', padding: '0.9rem', background: '#58cc02', color: '#fff', border: 'none', borderRadius: '14px', fontWeight: 'bold', fontSize: '0.95rem', marginBottom: '1rem', cursor: 'pointer', boxShadow: '0 4px 0 #46a302', textTransform: 'uppercase', letterSpacing: '0.5px', transition: 'all 0.2s' }}
                 onMouseOver={(e) => (e.currentTarget.style.filter = 'brightness(1.1)')}
@@ -189,7 +173,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
               >
                 {t('sidebar_right.create_profile_btn')}
               </button>
-              <button 
+              <button
                 onClick={() => { localStorage.setItem("forceLoginModal", "true"); window.location.href = "/"; }}
                 style={{ width: '100%', padding: '0.9rem', background: '#1cb0f6', color: '#fff', border: 'none', borderRadius: '14px', fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', boxShadow: '0 4px 0 #1899d6', textTransform: 'uppercase', letterSpacing: '0.5px', transition: 'all 0.2s' }}
                 onMouseOver={(e) => (e.currentTarget.style.filter = 'brightness(1.1)')}
@@ -200,18 +184,18 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
                 {t('sidebar_right.login_btn')}
               </button>
             </div>
-          ) : xp < 150 ? (
+          ) : !leaderboardUnlocked ? (
             <div style={{ textAlign: 'center', padding: '0.6rem', background: 'var(--color-bg-surface)', borderRadius: '8px', border: '1px dashed var(--color-text-muted)' }}>
-              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.4rem' }}>{t('sidebar_right.gather_xp_msg', { amount: 150 - xp })}</p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.4rem' }}>{t('sidebar_right.gather_xp_msg', { amount: LEADERBOARD_UNLOCK_XP - xp })}</p>
               <div style={{ width: '100%', height: '8px', background: 'var(--color-bg-main)', borderRadius: '4px', overflow: 'hidden' }}>
-                <div style={{ width: `${(xp / 150) * 100}%`, height: '100%', background: 'var(--color-accent-in)', transition: 'width 0.3s' }}></div>
+                <div style={{ width: `${(xp / LEADERBOARD_UNLOCK_XP) * 100}%`, height: '100%', background: 'var(--color-accent-in)', transition: 'width 0.3s' }}></div>
               </div>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
               {(() => {
                 if (leaderboard.length === 0) return <div style={{ textAlign: 'center', padding: '1rem', color: 'var(--color-text-muted)' }}>{t('sidebar_right.no_data')}</div>;
-                
+
                 const userIndex = leaderboard.findIndex((u: any) => u.username === data.username);
                 let visibleIndices: number[] = [];
                 if (userIndex === -1) {
@@ -227,7 +211,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
                   const user = leaderboard[idx];
                   const isCurrent = user.username === data.username;
                   const showDivider = i > 0 && visibleIndices[i] - visibleIndices[i - 1] > 1;
-                  
+
                   return (
                     <React.Fragment key={idx}>
                       {showDivider && (
@@ -253,17 +237,16 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
 
         <hr style={{ border: 0, borderTop: '1px solid rgba(255,255,255,0.08)', margin: '0.3rem 0' }} />
 
-        {/* Napi Küldetések (Daily Quests) */}
-        <div className="stats-widget" style={{ padding: '0.4rem 0.8rem' }}>
+        <div className="stats-widget quests-tour-target" style={{ padding: '0.4rem 0.8rem' }}>
           <h3 style={{ fontSize: '0.8rem', color: 'var(--color-text-main)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.4rem', fontWeight: 700 }}>{t('sidebar_right.daily_quests_title')}</h3>
-          
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             {data.active_quests && data.active_quests.length > 0 ? (
               data.active_quests.map((quest: any, idx: number) => {
                 const progress = data.quest_progress?.[quest.id] || 0;
                 const isCompleted = progress >= quest.target;
                 const progressPercent = Math.min(100, (progress / quest.target) * 100);
-                
+
                 return (
                   <div key={idx} style={{ padding: '0.5rem 0.6rem', borderRadius: '10px', background: isCompleted ? 'rgba(16, 185, 129, 0.1)' : 'var(--color-bg-surface)', border: isCompleted ? '1px solid #10B981' : 'var(--glass-border)' }}>
                     <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-text-main)' }}>{quest.title || quest.description}</span>
@@ -272,26 +255,23 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
                         <span style={{ fontSize: '0.85rem', color: 'var(--color-text-main)', fontWeight: 'bold' }}>{t('sidebar_right.progress')}</span>
                         <span style={{ fontSize: '0.75rem', color: isCompleted ? '#10B981' : 'var(--color-text-muted)', fontWeight: 'bold' }}>{progress} / {quest.target}</span>
                       </div>
-                      {/* 3D Progress Bar Track */}
-                      <div style={{ 
-                          width: '100%', 
-                          height: '10px', 
-                          background: 'rgba(255,255,255,0.05)', 
-                          borderRadius: '5px', 
+                      <div style={{
+                          width: '100%',
+                          height: '10px',
+                          background: 'rgba(255,255,255,0.05)',
+                          borderRadius: '5px',
                           overflow: 'hidden',
                           position: 'relative',
-                          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.2)' 
+                          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.2)'
                       }}>
-                        {/* 3D Progress Bar Fill */}
-                        <div style={{ 
-                            width: `${progressPercent}%`, 
-                            height: '100%', 
+                        <div style={{
+                            width: `${progressPercent}%`,
+                            height: '100%',
                             background: isCompleted ? 'linear-gradient(180deg, #34D399 0%, #10B981 100%)' : 'linear-gradient(180deg, var(--color-accent-on) 0%, var(--color-accent-in) 100%)',
                             borderRadius: '5px',
                             boxShadow: isCompleted ? 'inset 0 1px 2px rgba(255,255,255,0.5), inset 0 -1px 2px rgba(0,0,0,0.2)' : 'inset 0 1px 2px rgba(255,255,255,0.5), inset 0 -1px 2px rgba(0,0,0,0.2)',
                             position: 'relative'
                         }}>
-                            {/* Glossy Overlay */}
                             <div style={{
                                 position: 'absolute',
                                 top: 0, left: 0, right: 0, height: '40%',

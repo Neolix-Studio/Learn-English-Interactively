@@ -9,22 +9,20 @@ interface PhonicsMatchProps {
 export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }) => {
   const [audioItems, setAudioItems] = useState<any[]>([]);
   const [textItems, setTextItems] = useState<any[]>([]);
-  
+
   const [selectedAudioId, setSelectedAudioId] = useState<string | null>(null);
   const [selectedTextId, setSelectedTextId] = useState<string | null>(null);
-  
-  const [matchedIds, setMatchedIds] = useState<string[]>([]); // pair IDs
-  const [errorIds, setErrorIds] = useState<string[]>([]); // pair IDs that just failed
+
+  const [matchedIds, setMatchedIds] = useState<string[]>([]);
+  const [errorIds, setErrorIds] = useState<string[]>([]);
 
   useEffect(() => {
-    // Generate items
     const audios = question.pairs.map((p: any) => ({ ...p, id: `audio-${p.text}`, pairId: p.text }));
     const texts = question.pairs.map((p: any) => ({ ...p, id: `text-${p.text}`, pairId: p.text }));
-    
-    // Shuffle separately
+
     setAudioItems([...audios].sort(() => Math.random() - 0.5));
     setTextItems([...texts].sort(() => Math.random() - 0.5));
-    
+
     setMatchedIds([]);
     setSelectedAudioId(null);
     setSelectedTextId(null);
@@ -34,8 +32,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
 
   const handleAudioClick = (item: any) => {
     if (matchedIds.includes(item.pairId)) return;
-    
-    // Play audio
+
     if (item.audioUrl) {
       const audio = new Audio(item.audioUrl);
       audio.play().catch(e => console.error(e));
@@ -55,7 +52,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
 
   const handleTextClick = (item: any) => {
     if (matchedIds.includes(item.pairId)) return;
-    
+
     setSelectedTextId(item.id);
     setErrorIds([]);
 
@@ -69,17 +66,15 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
     const textItem = textItems.find(t => t.id === textId);
 
     if (audioItem && textItem && audioItem.pairId === textItem.pairId) {
-      // Match
       const newMatched = [...matchedIds, audioItem.pairId];
       setMatchedIds(newMatched);
       setSelectedAudioId(null);
       setSelectedTextId(null);
-      
+
       if (newMatched.length === question.pairs.length) {
         onAnswer(true);
       }
     } else {
-      // Mismatch
       setErrorIds([audioId, textId]);
       setTimeout(() => {
         setSelectedAudioId(null);
@@ -102,7 +97,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
       border = '2px solid rgba(255,255,255,0.05)';
       color = 'var(--color-text-muted)';
     } else if (isError) {
-      background = '#FEE2E2'; // light red
+      background = '#FEE2E2';
       border = '2px solid #EF4444';
       color = '#EF4444';
     } else if (isSelected) {
@@ -147,9 +142,8 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
       <h2 style={{ fontSize: '1.8rem', color: 'var(--color-text-main)', marginBottom: '2rem', fontWeight: 'bold' }}>
         {question.instruction || 'Válaszd ki az összetartozó párokat!'}
       </h2>
-      
+
       <div style={{ display: 'flex', width: '100%', gap: '2rem' }}>
-        {/* Left Column - Audio */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {audioItems.map((item, idx) => {
             const isMatched = matchedIds.includes(item.pairId);
@@ -164,7 +158,6 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
           })}
         </div>
 
-        {/* Right Column - Text */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {textItems.map((item, idx) => {
             const isMatched = matchedIds.includes(item.pairId);

@@ -1,27 +1,21 @@
-/* ==========================================================================
-   1. FONTS & COLOR SYSTEM SETUP
-   ========================================================================== */
+
 :root {
-    /* Fonts definitions */
+
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
 
-    /* System Color Palette (Bright Gamified Theme) */
     --color-bg-base: #F9FAFB;
     --color-bg-surface: #FFFFFF;
     --color-text-main: #111827;
     --color-text-muted: #6B7280;
-    
-    /* Neon Accents */
+
     --color-accent-in: #3b82f6;
     --color-accent-on: #60a5fa;
     --color-accent-at: #2563eb;
-    
-    /* Statuses */
+
     --color-success: oklch(0.75 0.2 150);
     --color-error: oklch(0.65 0.2 25);
 
-    /* Animation & Glassmorphism Defaults */
     --transition-base: 0.3s ease;
     --transition-theme: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     --glass-border: 1px solid #E5E7EB;
@@ -31,13 +25,10 @@
                    var(--color-bg-base);
 }
 
-/* --------------------------------------------------------------------------
-   DARK MODE DEFINITION
-   -------------------------------------------------------------------------- */
 :root[data-theme="dark"],
 :root[data-theme="dark"] body {
-    --color-bg-base: #111827; /* Dark slate */
-    --color-bg-surface: #1F2937; /* Lighter slate for cards */
+    --color-bg-base: #111827;
+    --color-bg-surface: #1F2937;
     --color-text-main: #F9FAFB;
     --color-text-muted: #9CA3AF;
     --glass-border: 1px solid rgba(255, 255, 255, 0.1);
@@ -46,7 +37,6 @@
                    var(--color-bg-base);
 }
 
-/* System Dark Mode (Active when no explicit theme is set) */
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]),
     :root:not([data-theme="light"]) body {
@@ -61,9 +51,6 @@
     }
 }
 
-/* ==========================================================================
-   2. GLOBAL BODY & RESET LOGIC
-   ========================================================================== */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -81,7 +68,6 @@ body {
     transition: var(--transition-theme);
 }
 
-/* Transition for elements that use theme variables */
 .site-header, .site-footer, .legal-card, .nav-drawer, .glass-panel {
     transition: var(--transition-theme), transform var(--transition-base), opacity var(--transition-base);
 }
@@ -96,9 +82,6 @@ a {
     text-decoration: none;
 }
 
-/* ==========================================================================
-   3. GLOBAL STATIC TOP HEADER NAVBAR (MOBILE-FIRST)
-   ========================================================================== */
 .site-header {
     background: var(--color-bg-surface);
     backdrop-filter: blur(12px);
@@ -117,19 +100,18 @@ a {
     max-width: 1400px;
     height: 100%;
     margin: 0 auto;
-    padding: 0 1.5rem; /* Slightly smaller padding for mobile */
+    padding: 0 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative; /* Context for drawer if needed */
+    position: relative;
 }
 
-/* Logo Alignment */
 .logo {
     display: flex;
     align-items: center;
     transition: transform var(--transition-base);
-    z-index: 1001; /* Keep logo above drawer */
+    z-index: 1001;
 }
 
 .logo:hover {
@@ -144,7 +126,6 @@ a {
     -webkit-text-fill-color: transparent;
 }
 
-/* Hamburger Menu Toggle */
 .mobile-menu-toggle {
     display: flex;
     flex-direction: column;
@@ -154,7 +135,7 @@ a {
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 1001; /* Keep toggle above drawer */
+    z-index: 1001;
     padding: 0;
 }
 
@@ -167,7 +148,6 @@ a {
     transform-origin: left center;
 }
 
-/* Hamburger active state */
 .mobile-menu-toggle.is-active .hamburger-line:nth-child(1) {
     transform: rotate(45deg);
 }
@@ -179,7 +159,6 @@ a {
     transform: rotate(-45deg);
 }
 
-/* Nav Drawer (Mobile Default) */
 .nav-drawer {
     position: fixed;
     top: 70px;
@@ -195,7 +174,7 @@ a {
     opacity: 0;
     visibility: hidden;
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out, visibility 0.4s;
-    z-index: 990; /* Below modals (2000), above page */
+    z-index: 990;
     box-shadow: var(--glass-shadow);
 }
 
@@ -205,7 +184,6 @@ a {
     visibility: visible;
 }
 
-/* Navigation List Row */
 .nav-list {
     display: flex;
     flex-direction: column;
@@ -228,7 +206,6 @@ a {
     color: var(--color-text-main);
 }
 
-/* Glowing Neon Indicator Line under links */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -245,7 +222,6 @@ a {
     width: 100%;
 }
 
-/* User Actions Layout */
 .header-actions {
     display: flex;
     flex-direction: column;
@@ -305,18 +281,15 @@ a {
     box-shadow: 0 0 12px oklch(0.72 0.17 160 / 0.35);
 }
 
-/* DESKTOP VIEWS (>= 768px) */
 @media (min-width: 768px) {
     .header-container {
         padding: 0 2rem;
     }
 
-    /* Hide Hamburger */
     .mobile-menu-toggle {
         display: none;
     }
 
-    /* Reset Drawer to Static Row */
     .nav-drawer {
         position: static;
         flex-direction: row;
@@ -375,7 +348,6 @@ a {
     }
 }
 
-/* Accessibility Guard: Motion Safeguard */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-delay: -1ms !important;
@@ -387,9 +359,6 @@ a {
     }
 }
 
-/* ==========================================================================
-   WIP MODAL GLASSMORPHISM POPUP ACCENTS
-   ========================================================================== */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -437,7 +406,6 @@ a {
     box-sizing: border-box;
 }
 
-/* Touch Targets for Mobile */
 .glass-panel input,
 .glass-panel select,
 .glass-panel button,
@@ -446,9 +414,6 @@ a {
     min-height: 48px;
 }
 
-/* ==========================================================================
-   WELCOME FLOW RESPONSIVE LAYOUT
-   ========================================================================== */
 .welcome-layout {
     display: flex;
     flex-direction: column;
@@ -960,15 +925,11 @@ a {
     }
 }
 
-/* Pulse animation for neon badge */
 @keyframes pulse {
     0%, 100% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 18px var(--color-accent-on); }
 }
 
-/* ==========================================================================
-   GLOBAL GLASSMORPHISM FOOTER LAYOUT DESIGN
-   ========================================================================== */
 .site-footer {
     background: var(--color-bg-surface);
     backdrop-filter: blur(12px);
@@ -976,7 +937,7 @@ a {
     border-top: var(--glass-border);
     box-shadow: var(--glass-shadow);
     padding: 3.5rem 2rem 2rem 2rem;
-    margin-top: auto; /* Ensures footer sticks to bottom if content is short */
+    margin-top: auto;
     width: 100%;
 }
 
@@ -1012,7 +973,6 @@ a {
     line-height: 1.5;
 }
 
-/* Footer Link Columns alignment */
 .footer-links {
     list-style: none;
     display: flex;
@@ -1033,7 +993,6 @@ a {
     transform: translateX(-4px);
 }
 
-/* Legal Copyright Bottom Bar */
 .footer-bottom {
     max-width: 1400px;
     margin: 0 auto;
@@ -1044,7 +1003,6 @@ a {
     color: oklch(0.6 0.01 260);
 }
 
-/* Responsive Footer Layout Strategy for Tablets/Mobile */
 @media (max-width: 768px) {
     .footer-container {
         flex-direction: column;
@@ -1052,17 +1010,16 @@ a {
         text-align: center;
         gap: 2rem;
     }
-    
+
     .footer-links {
         text-align: center;
     }
 
     .footer-links a:hover {
-        transform: translateY(-2px); /* Changes direction to match layout orientation */
+        transform: translateY(-2px);
     }
 }
 
-/* Gamification Themes */
 [data-theme="cyberpunk"] {
     --color-bg-base: oklch(0.12 0.05 320);
     --color-bg-surface: oklch(0.18 0.08 320 / 0.7);
@@ -1081,7 +1038,7 @@ a {
     --color-bg-base: oklch(0.15 0.05 140);
     --color-bg-surface: oklch(0.2 0.08 140 / 0.6);
     --color-text-main: #FFFFFF;
-    --color-text-muted: #A3E635; /* slight green tint */
+    --color-text-muted: #A3E635;
     --color-accent-in: oklch(0.75 0.2 140);
     --color-accent-on: oklch(0.8 0.15 100);
     --color-accent-at: oklch(0.7 0.15 60);
@@ -1092,13 +1049,13 @@ a {
 }
 
 :root[data-theme="fall"], :root[data-theme="fall"] body {
-    --color-bg-base: oklch(0.2 0.05 45); /* Dark brown */
+    --color-bg-base: oklch(0.2 0.05 45);
     --color-bg-surface: oklch(0.25 0.08 45 / 0.8);
-    --color-text-main: #FEF3C7; /* Soft gold text */
-    --color-text-muted: #FBBF24; /* Amber */
-    --color-accent-in: oklch(0.65 0.2 45); /* Burnt orange */
-    --color-accent-on: oklch(0.75 0.18 55); /* Lighter orange */
-    --color-accent-at: oklch(0.8 0.15 70); /* Warm gold */
+    --color-text-main: #FEF3C7;
+    --color-text-muted: #FBBF24;
+    --color-accent-in: oklch(0.65 0.2 45);
+    --color-accent-on: oklch(0.75 0.18 55);
+    --color-accent-at: oklch(0.8 0.15 70);
     --glass-border: 1px solid rgba(245, 158, 11, 0.2);
     --bg-gradient: radial-gradient(circle at top left, oklch(0.3 0.15 45 / 0.5), transparent 60%),
                    radial-gradient(circle at bottom right, oklch(0.25 0.1 30 / 0.4), transparent 60%),
@@ -1106,20 +1063,19 @@ a {
 }
 
 :root[data-theme="halloween"], :root[data-theme="halloween"] body {
-    --color-bg-base: oklch(0.12 0.05 300); /* Very dark purple */
+    --color-bg-base: oklch(0.12 0.05 300);
     --color-bg-surface: oklch(0.18 0.08 300 / 0.7);
-    --color-text-main: #F3E8FF; /* Light purple text */
-    --color-text-muted: #A855F7; /* Purple */
-    --color-accent-in: oklch(0.6 0.25 140); /* Slime green */
-    --color-accent-on: oklch(0.65 0.2 45); /* Pumpkin orange */
-    --color-accent-at: oklch(0.7 0.2 300); /* Magic purple */
+    --color-text-main: #F3E8FF;
+    --color-text-muted: #A855F7;
+    --color-accent-in: oklch(0.6 0.25 140);
+    --color-accent-on: oklch(0.65 0.2 45);
+    --color-accent-at: oklch(0.7 0.2 300);
     --glass-border: 1px solid rgba(168, 85, 247, 0.2);
     --bg-gradient: radial-gradient(circle at top left, oklch(0.25 0.15 300 / 0.5), transparent 60%),
                    radial-gradient(circle at bottom right, oklch(0.2 0.1 140 / 0.3), transparent 60%),
                    var(--color-bg-base);
 }
 
-/* Shared Legal & Information Page Layouts */
 .legal-wrapper {
     max-width: 950px;
     margin: 100px auto 40px auto;
@@ -1196,7 +1152,6 @@ a {
     }
 }
 
-/* Hungarian flag vertical text gradient with scrolling animation */
 @keyframes scrollGradient {
     0% {
         background-position: 0% 100%;
@@ -1210,26 +1165,21 @@ a {
 .hero-title.hungarian-gradient-text {
     background: linear-gradient(
         to bottom,
-        #C8102E 0%, #C8102E 17.5%, 
-        #FFFFFF 17.5%, #FFFFFF 32.5%, 
+        #C8102E 0%, #C8102E 17.5%,
+        #FFFFFF 17.5%, #FFFFFF 32.5%,
         #43B02A 32.5%, #43B02A 50%,
-        #C8102E 50%, #C8102E 67.5%, 
-        #FFFFFF 67.5%, #FFFFFF 82.5%, 
+        #C8102E 50%, #C8102E 67.5%,
+        #FFFFFF 67.5%, #FFFFFF 82.5%,
         #43B02A 82.5%, #43B02A 100%
     );
     background-size: 100% 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: #FFFFFF; /* Fallback for older browsers */
+    color: #FFFFFF;
     animation: scrollGradient 8s linear infinite;
 }
 
-
-/* Seasonal Theme Micro-Animations - Premium Overhaul */
-
-
-/* --- HALLOWEEN THEME --- */
 @keyframes fogRolling {
     0% { background-position: 0% 100%; opacity: 0.3; }
     50% { background-position: 100% 100%; opacity: 0.5; }
@@ -1262,7 +1212,7 @@ a {
 :root[data-theme="halloween"] .btn-primary,
 :root[data-theme="halloween"] .button,
 :root[data-theme="halloween"] button[class*="btn"] {
-    box-shadow: 0 0 15px oklch(0.65 0.2 45 / 0.5); /* Pumpkin orange glow */
+    box-shadow: 0 0 15px oklch(0.65 0.2 45 / 0.5);
     border: 1px solid oklch(0.65 0.2 45 / 0.8);
 }
 :root[data-theme="halloween"] .btn-primary:hover,
@@ -1274,7 +1224,7 @@ a {
 :root[data-theme="fall"] .btn-primary,
 :root[data-theme="fall"] .button,
 :root[data-theme="fall"] button[class*="btn"] {
-    box-shadow: 0 0 15px oklch(0.75 0.18 55 / 0.5); /* Warm orange glow */
+    box-shadow: 0 0 15px oklch(0.75 0.18 55 / 0.5);
     border: 1px solid oklch(0.75 0.18 55 / 0.8);
 }
 :root[data-theme="fall"] .btn-primary:hover,
@@ -1283,14 +1233,13 @@ a {
     box-shadow: 0 0 25px oklch(0.75 0.18 55 / 0.8);
 }
 
-
 :root[data-theme="halloween"] body::before {
-    /* Corner top lights glowing down */
+
     content: "";
     position: fixed;
     top: -10vh; left: -10vw; right: -10vw;
     height: 40vh;
-    background: 
+    background:
         radial-gradient(circle at 10% 10%, oklch(0.65 0.2 45 / 0.2) 0%, transparent 40%),
         radial-gradient(circle at 90% 10%, oklch(0.65 0.2 45 / 0.2) 0%, transparent 40%);
     pointer-events: none;
@@ -1299,11 +1248,11 @@ a {
 }
 
 :root[data-theme="halloween"] body::after {
-    /* Lots of pumpkins SVG in background */
+
     content: "";
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: 
+    background-image:
         url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M0,0 L200,0 C150,50 50,150 0,200 Z" fill="none" stroke="rgba(168,85,247,0.15)" stroke-width="2"/><path d="M0,50 Q50,50 100,0 M0,100 Q100,100 150,0 M0,150 Q150,150 200,0" fill="none" stroke="rgba(168,85,247,0.15)" stroke-width="1"/></svg>'),
         url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M12 2c-1.5 0-3 1-3 2s1 2 1 2c-2.5.5-5 2.5-5 6s2 8 7 8 7-4 7-8-2.5-5.5-5-6c0 0 1-1 1-2s-1.5-2-3-2zm-3 9l2 2-2 2v-4zm6 0v4l-2-2 2-2zm-3 3l2 2h-4l2-2z" fill="%23f97316" transform="scale(3) translate(5,5)" opacity="0.1"/></svg>'),
         url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M12 2c-1.5 0-3 1-3 2s1 2 1 2c-2.5.5-5 2.5-5 6s2 8 7 8 7-4 7-8-2.5-5.5-5-6c0 0 1-1 1-2s-1.5-2-3-2zm-3 9l2 2-2 2v-4zm6 0v4l-2-2 2-2zm-3 3l2 2h-4l2-2z" fill="%23f97316" transform="scale(2) translate(15,20)" opacity="0.05"/></svg>');
@@ -1314,8 +1263,6 @@ a {
     z-index: -2;
 }
 
-
-/* --- FALL THEME (ANIMATIONS) --- */
 @keyframes leavesFall {
     0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
     10% { opacity: 0.8; }
@@ -1335,15 +1282,15 @@ a {
 }
 
 :root[data-theme="fall"] body::before {
-    /* Advanced particle engine for leaves using box-shadow on a tiny invisible element */
+
     content: "";
     position: fixed;
     top: 0; left: 0;
     width: 10px; height: 10px;
     background: transparent;
     border-radius: 50% 0 50% 50%;
-    /* Create dozens of leaves */
-    box-shadow: 
+
+    box-shadow:
         10vw 10vh 0 2px #d97706,
         25vw 30vh 0 1px #b45309,
         45vw 15vh 0 3px #f59e0b,
@@ -1360,14 +1307,14 @@ a {
 }
 
 :root[data-theme="fall"] body::after {
-    /* Second layer of leaves for parallax depth */
+
     content: "";
     position: fixed;
     top: -20vh; left: -10vw;
     width: 15px; height: 15px;
     background: transparent;
     border-radius: 50% 0 50% 50%;
-    box-shadow: 
+    box-shadow:
         5vw 15vh 0 2px #d97706,
         20vw 40vh 0 1px #b45309,
         40vw 80vh 0 3px #f59e0b,
@@ -1381,7 +1328,6 @@ a {
     opacity: 0.6;
 }
 
-/* Reduced Motion Override */
 @media (prefers-reduced-motion: reduce) {
     :root[data-theme="fall"] body::before,
     :root[data-theme="fall"] body::after,
@@ -1398,7 +1344,6 @@ a {
     }
 }
 
-/* If the manual reduced-motion class is on the body element */
 body.reduced-motion::before,
 body.reduced-motion::after {
     animation: none !important;
@@ -1410,7 +1355,6 @@ body.reduced-motion .lesson-node.completed {
     animation: none !important;
 }
 
-/* --- GAME TAGS / NAMEPLATES --- */
 .game-tag {
   display: inline-flex;
   align-items: center;
@@ -1429,7 +1373,6 @@ body.reduced-motion .lesson-node.completed {
   text-shadow: 0 0 5px rgba(255,255,255,0.5);
 }
 
-/* The animated neon border wrapper */
 .cyber-tag::before {
   content: '';
   position: absolute;
@@ -1441,7 +1384,6 @@ body.reduced-motion .lesson-node.completed {
   animation: borderGlow 2s linear infinite;
 }
 
-/* Keeps the inner area dark so only the edge glows */
 .cyber-tag::after {
   content: '';
   position: absolute;
@@ -1475,16 +1417,15 @@ body.reduced-motion .lesson-node.completed {
   cursor: pointer;
 }
 
-/* Animated fire textures layered over the oval background using CSS gradients to avoid missing image errors */
 .fire-tag::before {
   content: '';
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: 
+  background:
     radial-gradient(circle at 20% 120%, rgba(255, 68, 0, 0.8) 0%, transparent 40%),
     radial-gradient(circle at 80% 120%, rgba(255, 136, 0, 0.8) 0%, transparent 40%),
     radial-gradient(circle at 50% 150%, rgba(255, 0, 0, 0.6) 0%, transparent 50%);
-  opacity: 0.6; 
+  opacity: 0.6;
   mix-blend-mode: screen;
   pointer-events: none;
   z-index: -1;
@@ -1497,7 +1438,6 @@ body.reduced-motion .lesson-node.completed {
   100% { transform: translateY(0) scale(1); opacity: 0.5; }
 }
 
-/* 1. RPG Title Badge Base */
 .rpg-title-badge {
   position: relative;
   display: inline-flex;
@@ -1508,7 +1448,6 @@ body.reduced-motion .lesson-node.completed {
   user-select: none;
 }
 
-/* 2. The Spiky Background Crest (Using a clip-path pseudo-element) */
 .rpg-title-badge::before {
   content: '';
   position: absolute;
@@ -1518,20 +1457,18 @@ body.reduced-motion .lesson-node.completed {
   height: 45px;
   transform: translate(-50%, -50%);
   background: linear-gradient(180deg, #3a4454 0%, #12161f 100%);
-  
-  /* Creates a sharp, spiky wing/crest profile similar to the screenshot */
+
   clip-path: polygon(
-    0% 50%, 20% 20%, 35% 35%, 50% 10%, 65% 35%, 80% 20%, 100% 50%, 
+    0% 50%, 20% 20%, 35% 35%, 50% 10%, 65% 35%, 80% 20%, 100% 50%,
     80% 80%, 65% 65%, 50% 90%, 35% 65%, 20% 80%
   );
-  
+
   border: 1px solid #5a6982;
   box-shadow: 0 0 15px rgba(110, 140, 180, 0.4);
   z-index: 1;
   transition: transform 0.3s ease;
 }
 
-/* 3. The Metal/Gradient Text Effect */
 .rpg-title-badge .title-text {
   font-family: 'Nunito', sans-serif;
   font-size: 16px;
@@ -1539,13 +1476,11 @@ body.reduced-motion .lesson-node.completed {
   letter-spacing: 0.5px;
   position: relative;
   z-index: 2;
-  
-  /* Metallic Gradient Color */
+
   background: linear-gradient(180deg, #ffffff 30%, #a3b8cc 60%, #465a6e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
-  /* Thick Dark Outline for visibility */
+
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.9))
           drop-shadow(-1px -1px 0px #000)
           drop-shadow(1px -1px 0px #000)
@@ -1553,20 +1488,17 @@ body.reduced-motion .lesson-node.completed {
           drop-shadow(1px 1px 0px #000);
 }
 
-/* 4. Idle Hover Animation */
 .rpg-title-badge:hover::before {
   transform: translate(-50%, -50%) scale(1.08);
   background: linear-gradient(180deg, #4f5d75 0%, #1a202c 100%);
   filter: brightness(1.2);
 }
 
-/* ─── Skeleton loader shimmer ──────────────────────────────────────────── */
 @keyframes skeleton-shimmer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* ─── Profile page responsive layout ───────────────────────────────────── */
 .profile-page-container,
 .profile-page-container * {
   box-sizing: border-box;

@@ -6,7 +6,6 @@ interface MoraleBoostProps {
 }
 
 export const MoraleBoost: React.FC<MoraleBoostProps> = ({ question, onAnswer }) => {
-  // Automatically mark as correct so the user can just click continue
   useEffect(() => {
     onAnswer(true);
   }, []);

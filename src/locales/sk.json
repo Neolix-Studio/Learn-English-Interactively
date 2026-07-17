@@ -18,7 +18,8 @@
     "report_problem": "Nahlásiť problém",
     "changelog": "Novinky",
     "select_level": "Výber úrovne",
-    "journey_modal_desc": "Vyber si úroveň pre pokračovanie v štúdiu:"
+    "journey_modal_desc": "Vyber si úroveň pre pokračovanie v štúdiu:",
+    "leaderboard_locked": "Nazbieraj ešte {{amount}} XP na odomknutie rebríčka."
   },
   "sidebar_right": {
     "stats_panel_aria": "Panel štatistík a nastavení",
@@ -142,7 +143,67 @@
     "nav_levels": "Úrovne",
     "nav_curriculum": "Učivo",
     "nav_stats": "Štatistiky",
-    "nav_profile": "Profil"
+    "nav_profile": "Profil",
+    "nav_shop": "Obchod"
+  },
+  "leaderboard": {
+    "title": "Rebríček",
+    "subtitle": "Súťaž s ostatnými a posúvaj sa vyššie v ligách!",
+    "back_to_dashboard": "Späť na domov",
+    "weekly": "Týždenný",
+    "monthly": "Mesačný",
+    "weekly_reset": "Týždenný reset",
+    "search_placeholder": "Hľadať podľa mena hráča...",
+    "search_btn": "Hľadať",
+    "no_points": "V tejto lige ešte nikto nezískal body.",
+    "you": "Ty",
+    "soon": "Už čoskoro...",
+    "user_not_found": "Používateľ sa nenašiel.",
+    "league_bronze": "Bronzová",
+    "league_silver": "Strieborná",
+    "league_gold": "Zlatá",
+    "league_diamond": "Diamantová"
+  },
+  "tour": {
+    "controls": {
+      "back": "Späť",
+      "close": "Zavrieť",
+      "last": "Hotovo",
+      "next": "Ďalej",
+      "skip": "Preskočiť"
+    },
+    "dashboard": {
+      "level_title": "Vyber si svoju úroveň",
+      "level_content": "Tu otvoríš výber úrovne a zvolíš si, či chceš pokračovať na úrovni A1, A2, B1 alebo B2.",
+      "practice_title": "Precvičovanie",
+      "practice_content": "Tu si môžeš precvičiť chyby z lekcií, učiť sa znaky a výslovnosť, čítať príbehy a neskôr pribudnú aj ďalšie režimy.",
+      "profile_title": "Profil",
+      "profile_content": "Tu nájdeš svoj profil, avatar, nastavenia, témy a ďalšie osobné možnosti.",
+      "banner_title": "Prehľad modulu",
+      "banner_content": "Banner ti ukáže, čo sa budeš v tomto module učiť ešte pred začiatkom lekcií.",
+      "guide_title": "Sprievodca",
+      "guide_content": "V Sprievodcovi si pozrieš gramatiku modulu a najdôležitejšie pravidlá, ktoré sa objavia v lekciách.",
+      "shop_title": "Obchod",
+      "shop_content": "V obchode si môžeš zaobstarať pekné kozmetické predmety, energiu alebo ochranu série.",
+      "quests_title": "Denné úlohy",
+      "quests_content": "Tu vidíš denné a týždenné ciele. Plň ich pre extra odmeny a motiváciu."
+    },
+    "leaderboard": {
+      "nav_title": "Rebríček odomknutý",
+      "nav_content": "Z ľavého menu môžeš odteraz kedykoľvek otvoriť rebríček.",
+      "weekly_title": "Týždenný rebríček",
+      "weekly_content": "Tu vidíš aktuálnu týždennú súťaž a umiestnenia hráčov.",
+      "timer_title": "Čas do resetu",
+      "timer_content": "Toto ukazuje, koľko času zostáva do obnovenia týždenného rebríčka.",
+      "search_title": "Hľadanie hráča",
+      "search_content": "Pomocou vyhľadávania rýchlo nájdeš hráča podľa mena.",
+      "monthly_title": "Mesačný rebríček",
+      "monthly_content": "Mesačný pohľad ukazuje dlhodobejšie, kto nazbieral najviac XP.",
+      "back_title": "Späť na domov",
+      "back_content": "Vráť sa na domovskú obrazovku a ukážem ti, kde rýchlo uvidíš svoju pozíciu.",
+      "summary_title": "Rýchly náhľad rebríčka",
+      "summary_content": "Tu rýchlo uvidíš svoje aktuálne miesto, hráčov okolo seba a svoju týždennú pozíciu."
+    }
   },
   "common": {
     "loading": "Načítavanie...",

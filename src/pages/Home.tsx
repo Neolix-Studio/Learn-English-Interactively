@@ -7,6 +7,7 @@ import { AuthModal } from '../components/AuthModal';
 import { LexiAnimation } from '../components/LexiAnimation';
 import { useUser } from '../context/UserContext';
 import { api } from '../utils/api';
+import { isLocalDevHost } from '../utils/devEnvironment';
 
 const betaRequestFieldStyle: CSSProperties = {
   display: 'flex',
@@ -57,6 +58,7 @@ export function Home() {
   const shouldOpenLogin = searchParams.get('login') === 'true';
   const { data, isGuest, isLoading } = useUser();
   const isAuthenticated = !isLoading && !isGuest;
+  const isLocalDev = isLocalDevHost();
 
   const openAuthModal = () => {
     if (!isAuthenticated) {
@@ -66,6 +68,14 @@ export function Home() {
 
   useEffect(() => {
     if (isLoading) return;
+    if (isLocalDev) {
+      localStorage.removeItem("forceRegisterModal");
+      localStorage.removeItem("forceBetaRequestModal");
+      localStorage.removeItem("forceLoginModal");
+      setIsAuthModalOpen(false);
+      setIsBetaRequestOpen(false);
+      return;
+    }
 
     if (isAuthenticated) {
       localStorage.removeItem("forceRegisterModal");
@@ -88,7 +98,7 @@ export function Home() {
     if (shouldOpenLogin) {
       setIsAuthModalOpen(true);
     }
-  }, [isAuthenticated, isLoading, inviteCode, shouldOpenLogin]);
+  }, [isAuthenticated, isLoading, inviteCode, shouldOpenLogin, isLocalDev]);
 
   const handleBetaRequestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,7 +133,7 @@ export function Home() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Online Angol Nyelvtanulás Magyaroknak | Neolix"
         description="Tanulj angolul egyszerűen, a saját tempódban! Magyar nyelvű nyelvtani magyarázatok, gyakorlati feladatok és szintfelmérő tesztek."
         canonicalPath="/"
@@ -135,7 +145,7 @@ export function Home() {
         }}
       />
       <Header onLoginClick={openAuthModal} />
-      
+
       <main style={{ marginTop: '70px' }}>
         <section className="hero-section" style={{ position: 'relative', zIndex: 1000 }}>
           <div className="hero-container">
@@ -147,6 +157,11 @@ export function Home() {
                   <>
                     <p className="hero-user-welcome">Szia, {data.username}!</p>
                     <Link to="/dashboard" className="btn-start" style={{ width: '100%', textAlign: 'center' }}>Vissza a felületre</Link>
+                  </>
+                ) : isLocalDev ? (
+                  <>
+                    <p className="hero-user-welcome" style={{ fontSize: '0.95rem', color: 'var(--color-text-muted)' }}>Localhost teszt mód</p>
+                    <Link to="/dashboard" className="btn-start" style={{ width: '100%', textAlign: 'center' }}>Belépés a dashboardra</Link>
                   </>
                 ) : (
                   <>
@@ -160,14 +175,14 @@ export function Home() {
                 )}
               </div>
             </div>
-            
+
             <LexiAnimation />
           </div>
         </section>
 
         <section id="levels" className="levels-section">
           <h2 className="section-title">Válaszd ki a szinted, és kezdd el a tanulást!</h2>
-          
+
           <div className="cards-grid">
             <article className="level-card border-a1">
               <header className="card-header">
@@ -176,7 +191,7 @@ export function Home() {
               </header>
               <p className="card-description">Teljesen az alapoktól indulunk. Megtanulod a betűzést, a számokat, a legegyszerűbb mondatszerkezeteket és az alapvető kifejezéseket.</p>
               <footer className="card-footer">
-                {isAuthenticated ? (
+                {isAuthenticated || isLocalDev ? (
                   <Link to="/dashboard" className="btn-card landing-level-btn">Belépés az A1 tananyaghoz</Link>
                 ) : (
                   <button type="button" onClick={openAuthModal} className="btn-card landing-level-btn">Belépés az A1 tananyaghoz</button>
@@ -221,7 +236,7 @@ export function Home() {
 
         <section className="how-it-works-section">
           <h2 className="section-title">Így épül fel a tananyag:</h2>
-          
+
           <div className="steps-grid">
             <div className="step-item">
               <div className="step-icon">
@@ -257,16 +272,16 @@ export function Home() {
       </main>
 
       <Footer />
-      
+
       <AuthModal
-        isOpen={!isAuthenticated && isAuthModalOpen}
+        isOpen={!isLocalDev && !isAuthenticated && isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         initialView={inviteCode ? 'register' : 'login'}
         inviteCode={inviteCode}
         initialEmail={inviteEmail}
       />
 
-      {isBetaRequestOpen && (
+      {!isLocalDev && isBetaRequestOpen && (
         <div id="beta-request-modal" className="modal-overlay is-active" aria-hidden="false">
           <div className="modal-content glass-panel">
             {betaRequestStatus === 'success' ? (
@@ -329,7 +344,6 @@ export function Home() {
         </div>
       )}
 
-      {/* WIP Modal */}
       {isWipModalOpen && (
         <div id="wip-modal" className="modal-overlay is-active" aria-hidden="false">
           <div className="modal-content glass-panel">

@@ -4,7 +4,6 @@ ini_set('session.cookie_lifetime', 60 * 60 * 24 * 30);
 ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
 security_start_session();
 
-// CORS Configuration
 $allowed_origins = [
     'https://dev.lexipaws.eu',
     'https://lexipaws.eu',
@@ -28,7 +27,6 @@ if (in_array($origin, $allowed_origins)) {
 
 security_validate_same_origin($allowed_origins);
 
-// Handle preflight OPTIONS requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit(0);
@@ -40,7 +38,6 @@ header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
 header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 
-// Include database configuration
 if (!file_exists(__DIR__ . '/db_config.php')) {
     echo json_encode(['error' => 'Database configuration file is missing. Please create db_config.php.']);
     exit;
@@ -48,12 +45,10 @@ if (!file_exists(__DIR__ . '/db_config.php')) {
 require_once __DIR__ . '/db_config.php';
 require_once __DIR__ . '/mailer.php';
 
-// Constants
 define('PASSWORD_REGEX', '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/');
 define('PASSWORD_ERR_MSG', 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.');
 define('APP_ALLOWED_HOSTS', ['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'neolix.studio', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
 
-// Initialize Database Connection
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
     $pdo = new PDO($dsn, DB_USER, DB_PASS, [
@@ -67,7 +62,6 @@ try {
     exit;
 }
 
-// Read JSON input payloads (from POST requests)
 $inputData = [];
 $rawInput = file_get_contents('php://input');
 if (!empty($rawInput)) {
@@ -77,7 +71,6 @@ if (!empty($rawInput)) {
     }
 }
 
-// Router
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 $csrfExemptActions = [
@@ -195,8 +188,6 @@ switch ($action) {
         echo json_encode(['error' => 'Invalid action']);
         break;
 }
-
-// --- API ACTIONS HANDLERS ---
 
 function isAllowedAppBaseUrl(string $configured): bool {
     $parts = parse_url($configured);
@@ -494,7 +485,6 @@ function handleRequestBetaAccess(PDO $pdo, array $data): void {
     }
 }
 
-// 1. Sign Up
 function validateSignupData(PDO $pdo, string $email, string $password, string $username) {
     if (empty($email) || empty($password) || empty($username)) {
         return 'Minden mező kitöltése kötelező (felhasználónév, e-mail, jelszó)!';
@@ -511,13 +501,11 @@ function validateSignupData(PDO $pdo, string $email, string $password, string $u
     if (!preg_match(PASSWORD_REGEX, $password)) {
         return PASSWORD_ERR_MSG;
     }
-    // Check if email already exists
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
     $stmt->execute([$email]);
     if ($stmt->fetch()) {
         return 'Ez az e-mail cím már regisztrálva van!';
     }
-    // Check if username already exists
     $stmtUser = $pdo->prepare("SELECT id FROM users WHERE username = ?");
     $stmtUser->execute([$username]);
     if ($stmtUser->fetch()) {
@@ -549,7 +537,6 @@ function handleSignup(PDO $pdo, array $data) {
             return;
         }
 
-        // Insert new user
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $pdo->beginTransaction();
 
@@ -565,31 +552,25 @@ function handleSignup(PDO $pdo, array $data) {
         $userId = $pdo->lastInsertId();
         markBetaInviteUsed($pdo, $inviteResult['id'], (int)$userId);
 
-        // Migrate guest progress data if available
         $points = isset($guestMigration['points']) ? intval($guestMigration['points']) : 0;
         $completed = isset($guestMigration['completed']) ? json_encode($guestMigration['completed']) : json_encode(new stdClass());
         $scores = isset($guestMigration['scores']) ? json_encode($guestMigration['scores']) : json_encode(new stdClass());
 
-        // Create user_progress (with default gamification values)
         $stmtProgress = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, active_theme)
             VALUES (?, ?, ?, ?, 1, 0, 2, 'system')");
         $stmtProgress->execute([$userId, $points, $completed, $scores]);
 
-        // Create default free subscription
         $stmtSub = $pdo->prepare("INSERT INTO user_subscriptions (user_id, role, subscription_tier) VALUES (?, 'user', 'free')");
         $stmtSub->execute([$userId]);
 
         $pdo->commit();
 
-        // --- Send Welcome Email ---
         sendTemplateEmail($email, 'welcome', [
             'username' => $username,
             'language' => $baseLanguage
         ]);
-        // --------------------------
 
-        // Establish PHP session right away (direct sign-up)
         session_regenerate_id(true);
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $username;
@@ -718,7 +699,6 @@ function mergeGuestProgressIntoUser(PDO $pdo, int $userId, array $guestMigration
     }
 }
 
-// 2. Log In
 function handleLogin(PDO $pdo, array $data) {
     if (!security_rate_limit('login_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 10, 900)) {
         http_response_code(429);
@@ -745,13 +725,11 @@ function handleLogin(PDO $pdo, array $data) {
             return;
         }
 
-        // Establish session
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];
 
-        // Update last login & reset inactivity nudges
         $stmtUpdateLogin = $pdo->prepare("UPDATE users SET last_login_at = NOW(), inactivity_email_count = 0 WHERE id = ?");
         $stmtUpdateLogin->execute([$user['id']]);
         mergeGuestProgressIntoUser($pdo, intval($user['id']), $guestMigration);
@@ -773,7 +751,6 @@ function handleLogin(PDO $pdo, array $data) {
     }
 }
 
-// 3. Log Out
 function handleLogout() {
     $_SESSION = [];
     if (ini_get("session.use_cookies")) {
@@ -787,7 +764,6 @@ function handleLogout() {
     echo json_encode(['success' => true]);
 }
 
-// 4. Get Current Session State (Retrieves user data + progress details)
 function formatUserProgress(array $progress) {
     if (!$progress) {
         return [
@@ -835,7 +811,6 @@ function isAllowedAvatarValue(string $avatar): bool {
     return preg_match('/^[a-f0-9]{32}\.(jpg|png|webp)$/', $avatar) === 1;
 }
 
-// 4. Get Current Session State (Retrieves user data + progress details)
 function handleUpdateAvatar(PDO $pdo, array $inputData) {
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
@@ -859,10 +834,6 @@ function handleUpdateAvatar(PDO $pdo, array $inputData) {
         echo json_encode(["status" => "error", "message" => "Failed to update avatar"]);
     }
 }
-
-// ==========================================
-// SRS / Weak Words endpoints
-// ==========================================
 
 function handleLogFailedExercise(PDO $pdo, array $inputData) {
     if (!isset($_SESSION['user_id'])) {
@@ -922,14 +893,12 @@ function handleGetWeakWords(PDO $pdo) {
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Decode JSON strings back to objects
     foreach ($results as &$row) {
         $row['question_data'] = json_decode($row['question_data'], true);
     }
 
     echo json_encode(["status" => "success", "data" => $results]);
 }
-
 
 function getUnlockedThemes(PDO $pdo, $userId) {
     $stmt = $pdo->prepare("SELECT item_id FROM user_inventory WHERE user_id = ? AND item_type = 'theme'");
@@ -948,25 +917,21 @@ function handleGetSession(PDO $pdo) {
     $userId = $_SESSION['user_id'];
 
     try {
-        // Load User main details
         $stmtUser = $pdo->prepare("SELECT email, username, age_range, avatar, notification_preferences, base_language FROM users WHERE id = ?");
         $stmtUser->execute([$userId]);
         $user = $stmtUser->fetch();
 
         if (!$user) {
-            // Clean up invalid session
             session_destroy();
             echo json_encode(['session' => null]);
             return;
         }
 
-        // Load progress details
         $stmtProgress = $pdo->prepare("SELECT points, completed, scores, level, streak_count, streak_shields, last_active_date, unlocked_items, active_theme, earned_xp_per_node, daily_quests_date, active_quests, quest_progress, completed_quests_today, energy, last_energy_refill FROM user_progress WHERE user_id = ?");
         $stmtProgress->execute([$userId]);
         $progress = $stmtProgress->fetch();
         $unlockedThemes = getUnlockedThemes($pdo, $userId);
 
-        // Load subscription details
         $stmtSub = $pdo->prepare("SELECT role, subscription_tier FROM user_subscriptions WHERE user_id = ?");
         $stmtSub->execute([$userId]);
         $sub = $stmtSub->fetch();
@@ -1019,7 +984,6 @@ function parseProgressData(array $data) {
     ];
 }
 
-// 5. Save Progress
 function handleSaveProgress(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Munkamenet lejárt! Kérjük, jelentkezz be újra.']);
@@ -1030,7 +994,6 @@ function handleSaveProgress(PDO $pdo, array $data) {
     $parsed = parseProgressData($data);
 
     try {
-        // SECURITY CHECK & MILESTONE DATA FETCH
         $stmtCheck = $pdo->prepare("
             SELECT up.scores, up.points, up.streak_count, u.email, u.username, u.marketing_data, u.notification_preferences, u.base_language
             FROM user_progress up
@@ -1083,11 +1046,8 @@ function handleSaveProgress(PDO $pdo, array $data) {
                         $currentLevel = intval($currentScores['node_state'][$nodeId]['current_level']);
                     }
 
-                    // Allow replay of same level, or advancing by exactly 1 level.
-                    // If they try to skip ahead by more than 1, we block it.
                     if ($incomingLevel > $currentLevel + 1) {
                         error_log("Security: User $userId attempted to skip $nodeId from $currentLevel to $incomingLevel. Blocked.");
-                        // Force it back to current valid state
                         $incomingScores['node_state'][$nodeId]['current_level'] = $currentLevel;
                     }
 		            }
@@ -1124,7 +1084,6 @@ function handleSaveProgress(PDO $pdo, array $data) {
             $parsed['energy'], $parsed['last_energy_refill']
         ]);
 
-        // Calculate XP earned to update leagues
         $xpEarned = 0;
         if ($currentDbProgress && isset($currentDbProgress['points'])) {
             $xpEarned = max(0, $parsed['points'] - intval($currentDbProgress['points']));
@@ -1133,11 +1092,10 @@ function handleSaveProgress(PDO $pdo, array $data) {
         }
 
         if ($xpEarned > 0) {
-            // Determine league based on total points
-            $leagueId = 1; // Bronze
-            if ($parsed['points'] >= 5000) $leagueId = 4; // Diamond
-            elseif ($parsed['points'] >= 1500) $leagueId = 3; // Gold
-            elseif ($parsed['points'] >= 500) $leagueId = 2; // Silver
+            $leagueId = 1;
+            if ($parsed['points'] >= 5000) $leagueId = 4;
+            elseif ($parsed['points'] >= 1500) $leagueId = 3;
+            elseif ($parsed['points'] >= 500) $leagueId = 2;
 
             $stmtLeague = $pdo->prepare("INSERT INTO user_leagues
                 (user_id, league_id, weekly_xp, monthly_xp)
@@ -1152,7 +1110,6 @@ function handleSaveProgress(PDO $pdo, array $data) {
             ]);
         }
 
-        // --- MILESTONE LOGIC (Streak) ---
         if ($currentDbProgress && isset($currentDbProgress['streak_count'])) {
             $oldStreak = intval($currentDbProgress['streak_count']);
             $newStreak = intval($parsed['streak_count']);
@@ -1162,7 +1119,6 @@ function handleSaveProgress(PDO $pdo, array $data) {
             $prefs = json_decode($currentDbProgress['notification_preferences'] ?? '{}', true);
             $milestonePref = $prefs['milestones'] ?? true;
 
-            // Check if they just hit a standard milestone
             if ($milestonePref && $newStreak > $oldStreak && in_array($newStreak, $milestones)) {
                 sendTemplateEmail($currentDbProgress['email'], 'milestone', [
                     'username' => $currentDbProgress['username'],
@@ -1171,12 +1127,8 @@ function handleSaveProgress(PDO $pdo, array $data) {
                 ]);
             }
 
-            // Check FTUE commitment milestone
-            // Marketing data contains onboarding answers.
             if ($currentDbProgress['marketing_data'] && $newStreak > $oldStreak) {
                 $marketingData = json_decode($currentDbProgress['marketing_data'], true);
-                // The FTUE questions are stored here. For example 'streak_commitment' might be "7 days" or just "7".
-                // We will parse it simply by finding the number.
                 if (isset($marketingData['streak_commitment'])) {
                     preg_match('/\d+/', $marketingData['streak_commitment'], $matches);
                     if (!empty($matches)) {
@@ -1192,7 +1144,6 @@ function handleSaveProgress(PDO $pdo, array $data) {
                 }
             }
         }
-        // --------------------------------
 
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
@@ -1201,7 +1152,6 @@ function handleSaveProgress(PDO $pdo, array $data) {
     }
 }
 
-// 5.b. Update Progress (XP only)
 function handleUpdateProgress(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Munkamenet lejárt!']);
@@ -1217,21 +1167,18 @@ function handleUpdateProgress(PDO $pdo, array $data) {
 
     if ($xpToAdd > 0) {
         try {
-            // Update user's points in user_progress
             $stmt = $pdo->prepare("UPDATE user_progress SET points = points + ? WHERE user_id = ?");
             $stmt->execute([$xpToAdd, $userId]);
 
-            // Get total points to determine league
             $stmtPoints = $pdo->prepare("SELECT points FROM user_progress WHERE user_id = ?");
             $stmtPoints->execute([$userId]);
             $totalPoints = $stmtPoints->fetchColumn();
 
-            $leagueId = 1; // Bronze
-            if ($totalPoints >= 5000) $leagueId = 4; // Diamond
-            elseif ($totalPoints >= 1500) $leagueId = 3; // Gold
-            elseif ($totalPoints >= 500) $leagueId = 2; // Silver
+            $leagueId = 1;
+            if ($totalPoints >= 5000) $leagueId = 4;
+            elseif ($totalPoints >= 1500) $leagueId = 3;
+            elseif ($totalPoints >= 500) $leagueId = 2;
 
-            // Update user_leagues
             $stmtLeague = $pdo->prepare("INSERT INTO user_leagues
                 (user_id, league_id, weekly_xp, monthly_xp)
                 VALUES (?, ?, ?, ?)
@@ -1254,7 +1201,6 @@ function handleUpdateProgress(PDO $pdo, array $data) {
     }
 }
 
-// 6. Update Password (profile page password change verification)
 function handleUpdatePassword(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Munkamenet lejárt! Kérjük, jelentkezz be újra.']);
@@ -1276,7 +1222,6 @@ function handleUpdatePassword(PDO $pdo, array $data) {
     }
 
     try {
-        // Verify current password first
         $stmt = $pdo->prepare("SELECT password_hash FROM users WHERE id = ?");
         $stmt->execute([$userId]);
         $user = $stmt->fetch();
@@ -1286,7 +1231,6 @@ function handleUpdatePassword(PDO $pdo, array $data) {
             return;
         }
 
-        // Update to new password
         $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
         $stmtUpdate = $pdo->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
         $stmtUpdate->execute([$newHash, $userId]);
@@ -1298,7 +1242,6 @@ function handleUpdatePassword(PDO $pdo, array $data) {
     }
 }
 
-// 7. Request Forgot Password (generates token and mails it)
 function handleForgotPassword(PDO $pdo, array $data) {
     if (!security_rate_limit('forgot_password_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 5, 3600)) {
         http_response_code(429);
@@ -1319,20 +1262,16 @@ function handleForgotPassword(PDO $pdo, array $data) {
         $user = $stmt->fetch();
 
         if (!$user) {
-            // Security best practice: don't explicitly say "email does not exist"
-            // to avoid email harvesting, just return success.
             echo json_encode(['success' => true, 'message' => 'Ha az e-mail cím létezik a rendszerünkben, kiküldtük a visszaállítási linket.']);
             return;
         }
 
         $appBaseUrl = getAppBaseUrl();
 
-        // Generate token and expiry (1 hour)
         $token = bin2hex(random_bytes(32));
         $tokenHash = hashPasswordResetToken($token);
         $expiry = date('Y-m-d H:i:s', time() + 3600);
 
-        // Store only a token hash. The raw token exists only in the email link.
         $stmtUpdate = $pdo->prepare("UPDATE users SET reset_token = ?, reset_expires = ? WHERE id = ?");
         $stmtUpdate->execute([$tokenHash, $expiry, $user['id']]);
 
@@ -1341,10 +1280,8 @@ function handleForgotPassword(PDO $pdo, array $data) {
             'token' => $token
         ]);
 
-        // Email details
         $to = $email;
 
-        // Send email using our new HTML template
         if (sendTemplateEmail($to, 'password_reset', ['username' => $user['username'], 'resetLink' => $resetLink, 'language' => $user['base_language'] ?? 'hu'])) {
             echo json_encode(['success' => true, 'message' => 'Ha az e-mail cím létezik a rendszerünkben, kiküldtük a visszaállítási linket.']);
         } else {
@@ -1357,7 +1294,6 @@ function handleForgotPassword(PDO $pdo, array $data) {
     }
 }
 
-// 8. Execute Reset Password via Token
 function handleResetPassword(PDO $pdo, array $data) {
     if (!security_rate_limit('reset_password_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 10, 900)) {
         http_response_code(429);
@@ -1379,7 +1315,6 @@ function handleResetPassword(PDO $pdo, array $data) {
     }
 
     try {
-        // Find token and check expiry
         $tokenHash = hashPasswordResetToken($token);
         $stmt = $pdo->prepare("SELECT id FROM users WHERE reset_token = ? AND reset_expires > NOW()");
         $stmt->execute([$tokenHash]);
@@ -1390,7 +1325,6 @@ function handleResetPassword(PDO $pdo, array $data) {
             return;
         }
 
-        // Update password and clear token
         $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
         $stmtUpdate = $pdo->prepare("UPDATE users SET password_hash = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?");
         $stmtUpdate->execute([$passwordHash, $user['id']]);
@@ -1403,7 +1337,6 @@ function handleResetPassword(PDO $pdo, array $data) {
     }
 }
 
-// 10. Get Leaderboard
 function handleGetLeaderboard(PDO $pdo) {
     $timeframe = isset($_GET['timeframe']) ? $_GET['timeframe'] : 'weekly';
     $leagueId = isset($_GET['league_id']) ? intval($_GET['league_id']) : 1;
@@ -1412,7 +1345,6 @@ function handleGetLeaderboard(PDO $pdo) {
     $xpColumn = $timeframe === 'monthly' ? 'monthly_xp' : 'weekly_xp';
 
     try {
-        // Fetch top users in the specified league
         $stmt = $pdo->prepare("
             SELECT u.username, ul.$xpColumn as xp, up.active_title, up.active_border
             FROM users u
@@ -1427,20 +1359,17 @@ function handleGetLeaderboard(PDO $pdo) {
         $stmt->execute();
         $leaderboard = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Fetch current user's rank if logged in
         $userRank = null;
         $userXp = null;
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
 
-            // Get user's XP and League
             $stmtUser = $pdo->prepare("SELECT league_id, $xpColumn as xp FROM user_leagues WHERE user_id = ?");
             $stmtUser->execute([$userId]);
             $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
 
             if ($userData && intval($userData['league_id']) === $leagueId) {
                 $userXp = $userData['xp'];
-                // Calculate Rank
                 $stmtRank = $pdo->prepare("
                     SELECT COUNT(*) + 1 as rank
                     FROM user_leagues
@@ -1463,7 +1392,6 @@ function handleGetLeaderboard(PDO $pdo) {
     }
 }
 
-// 11. Search Leaderboard
 function handleSearchLeaderboard(PDO $pdo) {
     if (!isset($_GET['username']) || !isset($_GET['timeframe']) || !isset($_GET['league_id'])) {
         echo json_encode(['error' => 'Hiányzó paraméterek.']);
@@ -1644,7 +1572,6 @@ function handleSyncVocabulary($pdo, $inputData) {
     }
 }
 
-
 function handleBuyCosmetic(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['status' => 'error', 'message' => 'Munkamenet lejárt!']);
@@ -1670,7 +1597,6 @@ function handleBuyCosmetic(PDO $pdo, array $data) {
     try {
         $pdo->beginTransaction();
 
-        // Lock user progress to safely update bones
         $stmtProgress = $pdo->prepare("SELECT scores FROM user_progress WHERE user_id = ? FOR UPDATE");
         $stmtProgress->execute([$userId]);
         $progressRow = $stmtProgress->fetch();
@@ -1690,18 +1616,15 @@ function handleBuyCosmetic(PDO $pdo, array $data) {
             return;
         }
 
-        // Deduct bones
         $scores['bones'] = $bones - $cost;
         $updateProgress = $pdo->prepare("UPDATE user_progress SET scores = ? WHERE user_id = ?");
         $updateProgress->execute([json_encode($scores), $userId]);
 
-        // Insert into inventory
         $insertInv = $pdo->prepare("INSERT IGNORE INTO user_inventory (user_id, item_type, item_id) VALUES (?, ?, ?)");
         $insertInv->execute([$userId, $itemType, $itemId]);
 
         $pdo->commit();
 
-        // Get updated unlocked themes
         $unlockedThemes = getUnlockedThemes($pdo, $userId);
 
         echo json_encode([
@@ -1720,7 +1643,6 @@ function handleBuyCosmetic(PDO $pdo, array $data) {
     }
 }
 
-// Update Notification Preferences
 function handleUpdatePreferences(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Munkamenet lejárt!']);
@@ -1934,8 +1856,6 @@ function handleSubmitFeedback(PDO $pdo, array $data) {
     }
 }
 
-// --- Friends API Handlers ---
-
 function handleSendFriendRequest(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Unauthorized']);
@@ -1951,7 +1871,6 @@ function handleSendFriendRequest(PDO $pdo, array $data) {
     }
 
     try {
-        // Find target user
         $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $stmt->execute([$targetQuery, $targetQuery]);
         $targetId = $stmt->fetchColumn();
@@ -1966,7 +1885,6 @@ function handleSendFriendRequest(PDO $pdo, array $data) {
             return;
         }
 
-        // Check existing request
         $stmtCheck = $pdo->prepare("SELECT status FROM user_friends WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)");
         $stmtCheck->execute([$userId, $targetId, $targetId, $userId]);
         $existing = $stmtCheck->fetchColumn();
@@ -1982,7 +1900,6 @@ function handleSendFriendRequest(PDO $pdo, array $data) {
             return;
         }
 
-        // Insert pending request
         $stmtInsert = $pdo->prepare("INSERT INTO user_friends (user_id, friend_id, status) VALUES (?, ?, 'pending')");
         $stmtInsert->execute([$userId, $targetId]);
 
@@ -2008,7 +1925,6 @@ function handleAcceptFriendRequest(PDO $pdo, array $data) {
     }
 
     try {
-        // The request must have been sent TO the current user
         $stmt = $pdo->prepare("UPDATE user_friends SET status = 'accepted' WHERE user_id = ? AND friend_id = ? AND status = 'pending'");
         $stmt->execute([$friendId, $userId]);
 
@@ -2057,7 +1973,6 @@ function handleGetFriends(PDO $pdo) {
     $userId = $_SESSION['user_id'];
 
     try {
-        // Get accepted friends
         $stmtAccepted = $pdo->prepare("
             SELECT u.id, u.username, u.avatar,
                    IFNULL(up.points, 0) as points,
@@ -2073,7 +1988,6 @@ function handleGetFriends(PDO $pdo) {
         $stmtAccepted->execute([$userId, $userId]);
         $friends = $stmtAccepted->fetchAll();
 
-        // Calculate rank within league for each friend
         foreach ($friends as &$friend) {
             if ($friend['league_id']) {
                 $stmtRank = $pdo->prepare("
@@ -2091,7 +2005,6 @@ function handleGetFriends(PDO $pdo) {
             }
         }
 
-        // Get pending requests (received by current user)
         $stmtPending = $pdo->prepare("
             SELECT u.id, u.username, u.avatar
             FROM user_friends uf

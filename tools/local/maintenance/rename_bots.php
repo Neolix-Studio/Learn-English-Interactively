@@ -14,23 +14,22 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ]);
-    
-    // Find all users that look like our bots
+
     $stmt = $pdo->query("SELECT id FROM users WHERE email LIKE 'bot%@lexipaws.local' OR username LIKE 'LexiBot_%'");
     $bots = $stmt->fetchAll();
-    
+
     if (!$bots) {
         echo json_encode(["status" => "info", "message" => "No bots found to rename!"]);
         exit;
     }
-    
+
     $updateStmt = $pdo->prepare("UPDATE users SET username = ? WHERE id = ?");
-    
+
     $count = 0;
     foreach ($bots as $bot) {
         $success = false;
         $attempts = 0;
-        
+
         while (!$success && $attempts < 10) {
             $type = mt_rand(1, 4);
             if ($type === 1) {
@@ -42,24 +41,23 @@ try {
             } else {
                 $newName = $names[array_rand($names)] . mt_rand(80, 99);
             }
-            
+
             try {
                 $updateStmt->execute([$newName, $bot['id']]);
                 $success = true;
                 $count++;
             } catch (PDOException $e) {
-                // If it's a duplicate entry error (1062), just try again
                 if ($e->getCode() == 23000) {
                     $attempts++;
                 } else {
-                    throw $e; // Rethrow other errors
+                    throw $e;
                 }
             }
         }
     }
-    
+
     echo json_encode(["status" => "success", "message" => "Successfully renamed $count bots to normal player names!"]);
-    
+
 } catch (Exception $e) {
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }

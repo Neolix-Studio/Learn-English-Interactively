@@ -12,7 +12,6 @@ export const GrammarModal: React.FC<GrammarModalProps> = ({ moduleId, onClose, i
   const [isClosing, setIsClosing] = useState(false);
   const data = (grammarData as any)[moduleId];
 
-  // Prevent background scrolling only if full-screen modal
   useEffect(() => {
     if (!isInline) {
       document.body.style.overflow = 'hidden';
@@ -26,15 +25,15 @@ export const GrammarModal: React.FC<GrammarModalProps> = ({ moduleId, onClose, i
     setIsClosing(true);
     setTimeout(() => {
       onClose();
-    }, 400); // matches animation duration
+    }, 400);
   };
 
   if (!data) return null;
 
   if (isInline) {
     return (
-      <div 
-        className={`grammar-modal-content ${isClosing ? 'roll-up' : 'roll-down'}`} 
+      <div
+        className={`grammar-modal-content ${isClosing ? 'roll-up' : 'roll-down'}`}
         onClick={(e) => e.stopPropagation()}
         style={{ width: '100%', maxWidth: 'none', margin: 0, maxHeight: 'none', boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
       >
@@ -56,8 +55,8 @@ export const GrammarModal: React.FC<GrammarModalProps> = ({ moduleId, onClose, i
 
   return (
     <div className={`grammar-modal-overlay ${isClosing ? 'closing' : ''}`} onClick={handleClose}>
-      <div 
-        className={`grammar-modal-content ${isClosing ? 'roll-up' : 'roll-down'}`} 
+      <div
+        className={`grammar-modal-content ${isClosing ? 'roll-up' : 'roll-down'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="grammar-modal-header">

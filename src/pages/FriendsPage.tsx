@@ -115,7 +115,7 @@ export const FriendsPage: React.FC = () => {
 
   return (
     <div className="profile-container" style={{ paddingBottom: '80px', maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      
+
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px' }}>
         <button className="back-btn" onClick={() => navigate(-1)} style={{ marginRight: '15px' }}>
           <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
@@ -126,9 +126,9 @@ export const FriendsPage: React.FC = () => {
       <div className="friends-section card" style={{ padding: '20px', borderRadius: '15px', background: 'var(--color-bg-surface)', border: 'var(--glass-border)', boxShadow: 'var(--glass-shadow)', marginBottom: '30px' }}>
         <h2>Add Friend</h2>
         <form onSubmit={handleSendRequest} style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-          <input 
-            type="text" 
-            placeholder="Search by username or email..." 
+          <input
+            type="text"
+            placeholder="Search by username or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'var(--glass-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '1rem' }}
@@ -151,9 +151,9 @@ export const FriendsPage: React.FC = () => {
             {pending.map((p: PendingRequest) => (
               <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: 'var(--glass-border)', borderRadius: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  <img 
-                    src={p.avatar ? `/avatars/${p.avatar}` : '/avatars/default.png'} 
-                    alt="avatar" 
+                  <img
+                    src={p.avatar ? `/avatars/${p.avatar}` : '/avatars/default.png'}
+                    alt="avatar"
                     style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
                     onError={(e) => { (e.target as HTMLImageElement).src = '/avatars/default.png'; }}
                   />
@@ -180,9 +180,9 @@ export const FriendsPage: React.FC = () => {
             {friends.map((f: FriendData) => (
               <div key={f.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: '1px solid var(--border-color, #eee)', borderRadius: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  <img 
-                    src={f.avatar ? `/avatars/${f.avatar}` : '/avatars/default.png'} 
-                    alt="avatar" 
+                  <img
+                    src={f.avatar ? `/avatars/${f.avatar}` : '/avatars/default.png'}
+                    alt="avatar"
                     style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover' }}
                     onError={(e) => { (e.target as HTMLImageElement).src = '/avatars/default.png'; }}
                   />

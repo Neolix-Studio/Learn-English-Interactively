@@ -36,7 +36,7 @@ export function ExperienceScreen() {
       <h2 className="welcome-step-title">
         Mennyire tudsz angolul?
       </h2>
-      
+
       <div className="welcome-option-stack">
         {options.map((option) => {
           const isSelected = selectedOption === option.id;
@@ -51,16 +51,16 @@ export function ExperienceScreen() {
                 cursor: 'pointer',
               }}
               className="welcome-option-button"
-              onMouseOver={(e) => { 
+              onMouseOver={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#d1d5db'; 
-                  e.currentTarget.style.background = '#f9fafb'; 
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.background = '#f9fafb';
                 }
               }}
-              onMouseOut={(e) => { 
+              onMouseOut={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#e5e7eb'; 
-                  e.currentTarget.style.background = 'white'; 
+                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.background = 'white';
                 }
               }}
             >
@@ -82,7 +82,7 @@ export function ExperienceScreen() {
             color: selectedOption !== null ? 'white' : '#9ca3af',
             cursor: selectedOption !== null ? 'pointer' : 'default',
             boxShadow: selectedOption !== null ? '0 4px 0 #46a302' : 'none',
-            marginBottom: '4px' // To account for the box-shadow active state
+            marginBottom: '4px'
           }}
           className="welcome-primary-button"
           onMouseDown={(e) => {

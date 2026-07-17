@@ -26,22 +26,23 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({ question, onAnsw
   const options = question.options || [];
 
   return (
-    <div style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <QuestionHeader 
-        text={title} 
-        newWords={question.newWords} 
+    <div className="multiple-choice-exercise" style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <QuestionHeader
+        text={title}
+        newWords={question.newWords}
         dictionary={question.dictionary}
         hideAudio={true}
       />
-      
-      <div 
+
+      <div
+        className="lesson-question-card"
         dangerouslySetInnerHTML={{ __html: sanitizeHtml(questionText) }}
-        style={{ 
-          fontSize: '1.5rem', 
-          marginBottom: '3rem', 
-          background: 'var(--color-bg-surface)', 
-          padding: '2rem', 
-          borderRadius: '12px', 
+        style={{
+          fontSize: '1.5rem',
+          marginBottom: '3rem',
+          background: 'var(--color-bg-surface)',
+          padding: '2rem',
+          borderRadius: '12px',
           border: '1px solid rgba(255,255,255,0.1)',
           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           width: '100%',
@@ -49,14 +50,15 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({ question, onAnsw
           lineHeight: '2rem'
         }}
       />
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+
+      <div className="lesson-options-stack" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
         {options.map((opt: string, i: number) => {
           const isSelected = selectedOpt === opt;
           return (
             <button
               key={`${opt}-${i}`}
               onClick={() => handleSelect(opt)}
+              className="lesson-option-btn"
               style={{
                 padding: '1.2rem',
                 fontSize: '1.2rem',

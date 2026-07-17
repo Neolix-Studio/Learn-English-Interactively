@@ -30,15 +30,17 @@ import { AuthModal } from './components/AuthModal';
 import { UserProvider } from './context/UserContext';
 import { useUser } from './context/UserContext';
 import { ShopProvider } from './context/ShopContext';
+import { isLocalDevHost } from './utils/devEnvironment';
 
 function RequireAuthenticated({ children }: { children: ReactElement }) {
   const { isGuest, isLoading } = useUser();
+  const allowLocalGuestAccess = isLocalDevHost();
 
   if (isLoading) {
     return null;
   }
 
-  if (isGuest) {
+  if (isGuest && !allowLocalGuestAccess) {
     return <Navigate to="/?login=true" replace />;
   }
 
@@ -48,7 +50,6 @@ function RequireAuthenticated({ children }: { children: ReactElement }) {
 function App() {
   const isGatewayDomain = window.location.hostname === 'lexipaws.eu' || window.location.hostname === 'www.lexipaws.eu';
 
-  // Detect password reset link: ?action=reset_password&token=...
   const searchParams = new URLSearchParams(window.location.search);
   const urlAction = searchParams.get('action');
   const urlToken = searchParams.get('token') || '';
@@ -62,10 +63,8 @@ function App() {
         <ShopProvider>
         <Router>
           <Routes>
-            {/* Render Gateway on .eu domain, else render Home */}
             <Route path="/" element={isGatewayDomain ? <Gateway /> : <Home />} />
-            
-            {/* Welcome Flow */}
+
             <Route path="/welcome" element={<RequireAuthenticated><WelcomeLayout /></RequireAuthenticated>}>
               <Route path="start" element={<WelcomeStartScreen />} />
               <Route path="hear-about-us" element={<HearAboutUsScreen />} />
@@ -73,8 +72,7 @@ function App() {
               <Route path="experience" element={<ExperienceScreen />} />
               <Route path="placement" element={<PlacementScreen />} />
             </Route>
-            
-            {/* FTUE Lesson */}
+
             <Route path="/lesson/ftue" element={<RequireAuthenticated><FTUELesson /></RequireAuthenticated>} />
             <Route path="/lesson/characters/:id" element={<RequireAuthenticated><CharacterLesson /></RequireAuthenticated>} />
 
@@ -88,17 +86,14 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/impressum" element={<Impressum />} />
-            
-            {/* Manual gateway route for testing on localhost */}
+
             <Route path="/gateway" element={<Gateway />} />
 
-            {/* 404 Catch-all */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <AchievementPopup />
         </Router>
 
-        {/* Password reset modal — triggered by email link (?action=reset_password&token=...) */}
         {isResetLink && (
           <AuthModal
             isOpen={resetModalOpen}

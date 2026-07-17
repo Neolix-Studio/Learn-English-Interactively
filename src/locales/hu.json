@@ -18,7 +18,8 @@
     "report_problem": "Probléma jelentése",
     "changelog": "Újdonságok",
     "select_level": "Szintválasztó",
-    "journey_modal_desc": "Válassz ki egy szintet a tanulás folytatásához:"
+    "journey_modal_desc": "Válassz ki egy szintet a tanulás folytatásához:",
+    "leaderboard_locked": "Gyűjts még {{amount}} XP-t a ranglista feloldásához."
   },
   "sidebar_right": {
     "stats_panel_aria": "Statisztikák és Beállítások panel",
@@ -142,7 +143,67 @@
     "nav_levels": "Szintek",
     "nav_curriculum": "Tananyag",
     "nav_stats": "Statisztika",
-    "nav_profile": "Profil"
+    "nav_profile": "Profil",
+    "nav_shop": "Bolt"
+  },
+  "leaderboard": {
+    "title": "Ranglista",
+    "subtitle": "Versenyezz másokkal és juss feljebb a ligákban!",
+    "back_to_dashboard": "Vissza a kezdőlapra",
+    "weekly": "Heti",
+    "monthly": "Havi",
+    "weekly_reset": "Heti reset",
+    "search_placeholder": "Keresés játékosnév alapján...",
+    "search_btn": "Keresés",
+    "no_points": "Még senki sem szerzett pontot ebben a ligában.",
+    "you": "Te",
+    "soon": "Hamarosan...",
+    "user_not_found": "Felhasználó nem található.",
+    "league_bronze": "Bronz",
+    "league_silver": "Ezüst",
+    "league_gold": "Arany",
+    "league_diamond": "Gyémánt"
+  },
+  "tour": {
+    "controls": {
+      "back": "Vissza",
+      "close": "Bezárás",
+      "last": "Kész",
+      "next": "Tovább",
+      "skip": "Kihagyás"
+    },
+    "dashboard": {
+      "level_title": "Válaszd ki a szinted",
+      "level_content": "Itt tudod kinyitni a szintválasztót, és kiválasztani, hogy A1, A2, B1 vagy B2 szinten szeretnél tanulni.",
+      "practice_title": "Gyakorlás",
+      "practice_content": "Itt gyakorolhatod a leckékben elrontott feladatokat, tanulhatod a betűket és hangokat, olvashatsz történeteket, és később még több gyakorlási mód is érkezik.",
+      "profile_title": "Profil",
+      "profile_content": "Itt látod a profilodat, az avatarodat, a beállításaidat, a témákat és a személyes adataidat.",
+      "banner_title": "Modul áttekintése",
+      "banner_content": "A banner megmutatja, mit fogsz megtanulni ebben a modulban, mielőtt belevágsz a leckékbe.",
+      "guide_title": "Útmutató",
+      "guide_content": "Az Útmutatóban megnézheted a modul nyelvtanát és a legfontosabb szabályokat, amelyek a leckékben előkerülnek.",
+      "shop_title": "Bolt",
+      "shop_content": "A boltban menő kozmetikai elemeket, energiát és szériavédelmet szerezhetsz.",
+      "quests_title": "Napi küldetések",
+      "quests_content": "Itt látod a napi és heti célokat. Teljesítsd őket extra jutalmakért és lendületért."
+    },
+    "leaderboard": {
+      "nav_title": "Ranglista feloldva",
+      "nav_content": "A bal oldali menüből mostantól bármikor megnyithatod a ranglistát.",
+      "weekly_title": "Heti ranglista",
+      "weekly_content": "Itt látod az aktuális heti versenyt és a játékosok helyezéseit.",
+      "timer_title": "Reset időzítő",
+      "timer_content": "Ez mutatja, mennyi idő van hátra a heti ranglista újraindulásáig.",
+      "search_title": "Játékos keresése",
+      "search_content": "A keresővel gyorsan megtalálhatsz egy játékost név alapján.",
+      "monthly_title": "Havi ranglista",
+      "monthly_content": "A havi nézet hosszabb távon mutatja, kik gyűjtötték a legtöbb XP-t.",
+      "back_title": "Vissza a kezdőlapra",
+      "back_content": "Menj vissza a kezdőlapra, és megmutatom, hol látod gyorsan a saját rangodat.",
+      "summary_title": "Gyors ranglista nézet",
+      "summary_content": "Itt gyorsan láthatod az aktuális helyezésedet, a körülötted lévő játékosokat és a heti pozíciódat."
+    }
   },
   "common": {
     "loading": "Betöltés...",

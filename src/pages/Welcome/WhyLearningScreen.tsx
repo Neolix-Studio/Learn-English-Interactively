@@ -16,11 +16,10 @@ export function WhyLearningScreen() {
 
   const handleContinue = () => {
     if (selectedOption) {
-      // Save for marketing data
       const existingData = JSON.parse(localStorage.getItem('ftue_marketing_data') || '{}');
       existingData.whyLearning = selectedOption;
       localStorage.setItem('ftue_marketing_data', JSON.stringify(existingData));
-      
+
       navigate('/welcome/experience');
     }
   };
@@ -30,7 +29,7 @@ export function WhyLearningScreen() {
       <h2 className="welcome-step-title">
         Miért tanulsz angolul?
       </h2>
-      
+
       <div className="welcome-option-grid">
         {options.map((option) => {
           const isSelected = selectedOption === option.id;
@@ -46,16 +45,16 @@ export function WhyLearningScreen() {
                 gap: '1rem',
               }}
               className="welcome-option-button"
-              onMouseOver={(e) => { 
+              onMouseOver={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#d1d5db'; 
-                  e.currentTarget.style.background = '#f9fafb'; 
+                  e.currentTarget.style.borderColor = '#d1d5db';
+                  e.currentTarget.style.background = '#f9fafb';
                 }
               }}
-              onMouseOut={(e) => { 
+              onMouseOut={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#e5e7eb'; 
-                  e.currentTarget.style.background = 'white'; 
+                  e.currentTarget.style.borderColor = '#e5e7eb';
+                  e.currentTarget.style.background = 'white';
                 }
               }}
             >

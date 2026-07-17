@@ -41,7 +41,7 @@ export function Footer() {
           <span className="footer-logo">NeolixStudio</span>
           <p>Online angol nyelvtanulás magyaroknak, egyszerűen és hatékonyan.</p>
         </div>
-        
+
         <nav className="footer-nav" aria-label="Lábléc navigáció">
           <ul className="footer-links">
             <li><a href="#">Gyakran Ismételt Kérdések (GYIK)</a></li>

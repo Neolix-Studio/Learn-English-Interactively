@@ -18,7 +18,6 @@ try {
     exit;
 }
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'error' => 'Not authenticated']);
     exit;
@@ -39,31 +38,26 @@ $input = json_decode(file_get_contents('php://input'), true);
 $type = security_sanitize_log_line($input['type'] ?? 'general', 50);
 $answers = isset($input['answers']) && is_array($input['answers']) ? $input['answers'] : [];
 
-// Exploit Prevention for Energy Refill
 if ($type === 'energy_refill') {
-    // Check last refill time
     $stmt = $pdo->prepare("SELECT last_feedback_refill FROM user_metadata WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     if ($row && $row['last_feedback_refill']) {
         $last_refill = new DateTime($row['last_feedback_refill']);
         $now = new DateTime();
         $diff = $now->getTimestamp() - $last_refill->getTimestamp();
-        
-        // 1 hour cooldown (3600 seconds)
+
         if ($diff < 3600) {
             echo json_encode(['success' => false, 'error' => 'Cooldown active. Try again later.']);
             exit;
         }
     }
-    
-    // Update last_feedback_refill timestamp
+
     $stmt = $pdo->prepare("UPDATE user_metadata SET last_feedback_refill = CURRENT_TIMESTAMP WHERE user_id = ?");
     $stmt->execute([$user_id]);
 }
 
-// Format the feedback for Slack
 $blocks = [
     [
         "type" => "header",
@@ -118,7 +112,6 @@ function get_feedback_config_value(string $name): string {
     return '';
 }
 
-// Prefer the dedicated feedback webhook, with the legacy shared webhook as fallback.
 $slack_webhook_url = get_feedback_config_value('SLACK_WEBHOOK_URL_FEEDBACK');
 if ($slack_webhook_url === '') {
     $slack_webhook_url = get_feedback_config_value('SLACK_WEBHOOK_URL');
@@ -137,7 +130,6 @@ if (!empty($slack_webhook_url)) {
     curl_close($ch);
 }
 
-// Log it to a protected local folder as well just in case Slack fails
 $logDir = __DIR__ . '/logs';
 if (!is_dir($logDir)) {
     mkdir($logDir, 0750, true);

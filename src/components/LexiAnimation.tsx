@@ -19,24 +19,20 @@ export function LexiAnimation() {
     const timer = setInterval(() => {
       const elapsed = Date.now() - start;
 
-      // Hide all frames
       f1.style.display = 'none';
       f2.style.display = 'none';
       fk.style.display = 'none';
       fs.style.display = 'none';
 
       if (elapsed < 1600) {
-        // Running phase (0 - 1.6s) - Swap every 200ms
         if (Math.floor(elapsed / 200) % 2 === 0) {
           f1.style.display = 'block';
         } else {
           f2.style.display = 'block';
         }
       } else if (elapsed < 1900) {
-        // Skidding phase (1.6s - 1.9s)
         fk.style.display = 'block';
       } else {
-        // Sitting phase (1.9s onwards)
         fs.style.display = 'block';
         clearInterval(timer);
       }
@@ -48,16 +44,13 @@ export function LexiAnimation() {
   return (
     <div className="hero-mascot-wrapper" style={{ position: 'relative', zIndex: 999 }}>
       <div id="landing-lexi-container" style={{ position: 'relative', animation: 'runTranslate 2s ease-out forwards', zIndex: 999 }}>
-        {/* Speech Bubble */}
         <div id="lexi-welcome-bubble" style={{ position: 'absolute', top: '-20px', left: '-80px', background: 'white', padding: '10px 20px', borderRadius: '20px', border: '2px solid #E5E7EB', fontWeight: 800, color: '#1F2937', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', opacity: 0, animation: 'popIn 0.5s ease forwards 2.5s', zIndex: 10 }}>
           Üdvözöllek!
           <div style={{ position: 'absolute', bottom: '-8px', right: '-10px', width: '20px', height: '20px', background: 'white', borderBottom: '2px solid #E5E7EB', borderRight: '2px solid #E5E7EB', transform: 'rotate(45deg)', zIndex: -1 }}></div>
         </div>
 
-        {/* Sprite Wrapper */}
         <div style={{ position: 'relative', width: '300px', height: '200px', animation: 'float 4s ease-in-out infinite', animationDelay: '2s' }} id="landing-lexi-svg">
-          
-          {/* FRAME 1: Run Stride */}
+
           <svg ref={f1Ref} className="lexi-frame frame-run-1" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', width: '100%', height: '100%', top: '30px', display: 'none' }}>
             <g>
               <path d="M50,100 C50,60 140,60 160,100 Z" fill="#5a5e66" />
@@ -75,7 +68,6 @@ export function LexiAnimation() {
             </g>
           </svg>
 
-          {/* FRAME 2: Run Extended */}
           <svg ref={f2Ref} className="lexi-frame frame-run-2" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', width: '100%', height: '100%', top: '20px', display: 'none' }}>
             <g>
               <path d="M40,100 C40,70 150,60 170,90 Z" fill="#5a5e66" />
@@ -93,7 +85,6 @@ export function LexiAnimation() {
             </g>
           </svg>
 
-          {/* FRAME 3: Skid */}
           <svg ref={fkRef} className="lexi-frame frame-skid" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', width: '100%', height: '100%', top: '10px', display: 'none' }}>
             <g transform="rotate(-15) translate(0, 30)">
               <path d="M50,100 C50,60 130,70 150,110 Z" fill="#5a5e66" />
@@ -103,7 +94,7 @@ export function LexiAnimation() {
             <circle cx="30" cy="140" r="10" fill="#E5E7EB" opacity="0.8" />
             <circle cx="10" cy="135" r="15" fill="#E5E7EB" opacity="0.6" />
             <circle cx="45" cy="130" r="8" fill="#E5E7EB" opacity="0.4" />
-            
+
             <g className="dog-head" transform="translate(110, 20) rotate(-10)">
               <circle cx="40" cy="40" r="35" fill="#6e737b" />
               <path d="M50,40 Q65,40 70,60 Q50,70 40,60 Z" fill="#f5f5f5" />
@@ -115,7 +106,6 @@ export function LexiAnimation() {
             </g>
           </svg>
 
-          {/* FRAME 4: Sit & Wave */}
           <svg ref={fsRef} className="lexi-frame frame-sit" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', width: '100%', height: '100%', overflow: 'visible', top: 0, display: 'none' }}>
             <defs>
               <linearGradient id="heroBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -132,11 +122,11 @@ export function LexiAnimation() {
               <path d="M80,190 C80,100 160,100 160,190 Z" fill="url(#heroBodyGrad)" />
               <path d="M95,190 C85,140 105,110 120,110 C135,110 155,140 145,190 Z" fill="#f5f5f5" />
               <path d="M95,150 C110,140 130,140 145,150 Z" fill="url(#heroBodyGrad)" />
-              
+
               <path d="M45,115 C25,130 20,160 35,175 C50,190 60,160 60,140 Z" fill="#5a5e66" />
               <circle cx="35" cy="175" r="10" fill="#f5f5f5" />
             </g>
-            
+
             <g className="dog-head body-bounce" transform="translate(10, -5)">
               <path className="ear-left" d="M45,70 C25,45 20,75 45,95 Z" fill="#5a5e66" />
               <path className="ear-right" d="M175,70 C195,45 200,75 175,95 Z" fill="#5a5e66" />

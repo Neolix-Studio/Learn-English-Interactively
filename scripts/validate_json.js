@@ -192,7 +192,6 @@ function walkDir(dir) {
   });
 }
 
-// Start validation
 console.log('Starting JSON schema validation...');
 const dataDir = path.join(__dirname, '..', 'data');
 if (fs.existsSync(dataDir)) {

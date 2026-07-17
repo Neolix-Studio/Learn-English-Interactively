@@ -16,7 +16,6 @@ export const PhonicsListenChoose: React.FC<PhonicsListenChooseProps> = ({ questi
 
   useEffect(() => {
     setSelectedId(null);
-    // Auto-play audio with slight delay
     const timer = setTimeout(() => {
       handlePlayAudio();
     }, 500);
@@ -33,9 +32,8 @@ export const PhonicsListenChoose: React.FC<PhonicsListenChooseProps> = ({ questi
       <h2 style={{ fontSize: '1.8rem', color: 'var(--color-text-main)', marginBottom: '3rem', fontWeight: 'bold' }}>
         {question.instruction || 'Mit hallasz?'}
       </h2>
-      
-      {/* Big Audio Button */}
-      <button 
+
+      <button
         onClick={handlePlayAudio}
         style={{
           width: '120px',
@@ -70,11 +68,10 @@ export const PhonicsListenChoose: React.FC<PhonicsListenChooseProps> = ({ questi
         </svg>
       </button>
 
-      {/* Options */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', width: '100%' }}>
         {question.options.map((opt: any) => {
           const isSelected = selectedId === opt.id;
-          
+
           return (
             <button
               key={opt.id}

@@ -1,7 +1,3 @@
-/**
- * Dynamically loads all stories from data/stories folder
- */
-
 export interface StoryNode {
     id: string;
     title: string;
@@ -20,7 +16,6 @@ export function getAllStories(lang: string = 'hu'): StoryNode[] {
     for (const path in modules) {
         if (!path.includes(`/data/${lang}/stories/`)) continue;
         const data = (modules[path] as any).default || modules[path];
-        // Extract filename without extension for id
         const filename = path.split('/').pop()?.replace('.json', '') || 'unknown_story';
         stories.push({
             id: `story_${filename}`,
