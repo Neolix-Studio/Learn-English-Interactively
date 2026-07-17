@@ -16,6 +16,11 @@
     overflow-x: clip;
 }
 
+body.has-mobile-drawer-open {
+    overflow: hidden;
+    overscroll-behavior: contain;
+}
+
 /* ==========================================================================
    2. STICKY VERTICAL SIDEBAR MENU PANEL
    ========================================================================== */
