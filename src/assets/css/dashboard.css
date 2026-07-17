@@ -4417,37 +4417,46 @@ a.logo {
     cursor: pointer !important;
 }
 
-/* Joyride mobile guardrails: keep tutorial bubbles visible above drawers and bottom nav. */
-.react-joyride__floater {
-    z-index: 100000 !important;
+/* Keep desktop sidebars pinned while the roadmap page scrolls. */
+@media (min-width: 992px) {
+    .dashboard-container {
+        display: block !important;
+        min-height: 100vh !important;
+        padding-left: 250px !important;
+        padding-right: 320px !important;
+    }
+
+    .dashboard-left-sidebar,
+    .dashboard-right-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        z-index: 900 !important;
+    }
+
+    .dashboard-left-sidebar {
+        left: 0 !important;
+        width: 250px !important;
+    }
+
+    .dashboard-right-sidebar {
+        right: 0 !important;
+        width: 320px !important;
+    }
+
+    .main-stage-track {
+        min-height: 100vh !important;
+        overflow: visible !important;
+    }
 }
 
-@media (max-width: 991px) {
-    #react-joyride-portal {
-        position: fixed !important;
-        inset: 0 !important;
-        pointer-events: none !important;
-        z-index: 100000 !important;
+@media (min-width: 1200px) {
+    .dashboard-container {
+        padding-right: 350px !important;
     }
 
-    #react-joyride-portal .react-joyride__floater {
-        max-width: calc(100vw - 28px) !important;
-        width: calc(100vw - 28px) !important;
-        min-width: 0 !important;
-        pointer-events: auto !important;
-    }
-
-    #react-joyride-portal [data-testid="tooltip"] {
-        max-height: calc(100dvh - 118px) !important;
-        max-width: calc(100vw - 28px) !important;
-        overflow-y: auto !important;
-        overscroll-behavior: contain !important;
-        width: calc(100vw - 28px) !important;
-    }
-
-    #react-joyride-portal [data-testid="tooltip"] * {
-        max-width: 100% !important;
-        word-break: normal !important;
-        overflow-wrap: anywhere !important;
+    .dashboard-right-sidebar {
+        width: 350px !important;
     }
 }
