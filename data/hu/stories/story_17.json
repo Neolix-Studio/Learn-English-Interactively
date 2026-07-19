@@ -1,0 +1,150 @@
+{
+    "title": "Nóri piknikje",
+    "type": "reading_node",
+    "story": {
+        "en": "On Sunday, Nóri goes to the park with her family. The weather is sunny. They sit under a big tree. They eat sandwiches and drink apple juice. Nóri brings a ball. After lunch, they feed the ducks. They go home at five o'clock.",
+        "hu": "Vasárnap Nóri elmegy a parkba a családjával. Az idő napos. Egy nagy fa alatt ülnek le. Szendvicseket esznek, és almalevet isznak. Nóri egy labdát visz magával. Ebéd után megetetik a kacsákat. Öt órakor mennek haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Nóri goes to the park on Sunday.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The picnic is on Sunday."
+        },
+        {
+            "type": "true_false",
+            "statement": "The weather is rainy.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The weather is sunny."
+        },
+        {
+            "type": "true_false",
+            "statement": "They sit under a big tree.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They sit under a big tree."
+        },
+        {
+            "type": "true_false",
+            "statement": "They drink coffee.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They drink apple juice."
+        },
+        {
+            "type": "true_false",
+            "statement": "They go home at five o'clock.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They go home at five o'clock."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to the park with the child?",
+            "correctAnswer": "The family",
+            "options": [
+                "A cousin",
+                "A brother",
+                "The grandparents",
+                "The family"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the weather like?",
+            "correctAnswer": "Sunny",
+            "options": [
+                "Windy",
+                "Sunny",
+                "Cloudy",
+                "Warm"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where do they sit?",
+            "correctAnswer": "Under a tree",
+            "options": [
+                "Under a tree",
+                "Near the lake",
+                "On the grass",
+                "Next to a bench"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child bring?",
+            "correctAnswer": "A ball",
+            "options": [
+                "A ball",
+                "A camera",
+                "A frisbee",
+                "A kite"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they do after lunch?",
+            "correctAnswer": "Feed the ducks",
+            "options": [
+                "Take photos",
+                "Feed the ducks",
+                "Play football",
+                "Fly a kite"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Hová mennek? (Where do they go?)",
+            "sentence": "Nóri goes to the ____.",
+            "correctAnswer": "park",
+            "hint": "park"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen az idő? (What is the weather like?)",
+            "sentence": "The weather is ____.",
+            "correctAnswer": "sunny",
+            "hint": "napos"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit esznek? (What do they eat?)",
+            "sentence": "They eat ____.",
+            "correctAnswer": "sandwiches",
+            "hint": "szendvicsek"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit visz magával a gyerek? (What does the child bring?)",
+            "sentence": "Nóri brings a ____.",
+            "correctAnswer": "ball",
+            "hint": "labda"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor mennek haza? (When do they go home?)",
+            "sentence": "They go home at ____.",
+            "correctAnswer": "five",
+            "hint": "öt"
+        }
+    ]
+}

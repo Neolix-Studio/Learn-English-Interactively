@@ -1,0 +1,150 @@
+{
+    "title": "Lili reggele",
+    "type": "reading_node",
+    "story": {
+        "en": "Lili gets up at eight o'clock. She washes her face and gets dressed. She drinks orange juice and eats a banana for breakfast. She goes to school by bike with her friend. The first lesson is Art. Lili has a red bag. She feels excited.",
+        "hu": "Lili nyolc órakor kel fel. Megmossa az arcát és felöltözik. Reggelire narancslevet iszik, és egy banánt eszik. Kerékpárral megy iskolába a barátjával. Az első órája rajz. Lili táskája piros. Izgatottnak érzi magát."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Lili gets up at eight o'clock.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Lili gets up at eight o'clock."
+        },
+        {
+            "type": "true_false",
+            "statement": "She drinks coffee for breakfast.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She drinks orange juice."
+        },
+        {
+            "type": "true_false",
+            "statement": "She goes to school with her friend.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She goes with her friend."
+        },
+        {
+            "type": "true_false",
+            "statement": "The first lesson is music.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The first lesson is Art."
+        },
+        {
+            "type": "true_false",
+            "statement": "Lili has a red bag.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The bag is red."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child drink?",
+            "correctAnswer": "Orange juice",
+            "options": [
+                "Coffee",
+                "Orange juice",
+                "Water",
+                "Tea"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child eat for breakfast?",
+            "correctAnswer": "A banana",
+            "options": [
+                "An egg",
+                "Cereal",
+                "A banana",
+                "Yogurt"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to school with the child?",
+            "correctAnswer": "A friend",
+            "options": [
+                "A father",
+                "A brother",
+                "A mother",
+                "A friend"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the first lesson?",
+            "correctAnswer": "Art",
+            "options": [
+                "Science",
+                "English",
+                "Art",
+                "Music"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What colour is the bag?",
+            "correctAnswer": "Red",
+            "options": [
+                "Blue",
+                "Green",
+                "Yellow",
+                "Red"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor kel fel Lili? (When does Lili get up?)",
+            "sentence": "Lili gets up at ____.",
+            "correctAnswer": "eight",
+            "hint": "nyolc"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit iszik reggelire? (What does the child drink for breakfast?)",
+            "sentence": "She drinks ____.",
+            "correctAnswer": "juice",
+            "hint": "gyümölcslé"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik reggelire? (What does the child eat for breakfast?)",
+            "sentence": "She eats a ____.",
+            "correctAnswer": "banana",
+            "hint": "banán"
+        },
+        {
+            "type": "type_in",
+            "question": "Mi az első tanóra? (What is the first lesson?)",
+            "sentence": "The first lesson is ____.",
+            "correctAnswer": "Art",
+            "hint": "rajz"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen színű a táska? (What colour is the bag?)",
+            "sentence": "Lili has a ____ bag.",
+            "correctAnswer": "red",
+            "hint": "piros"
+        }
+    ]
+}

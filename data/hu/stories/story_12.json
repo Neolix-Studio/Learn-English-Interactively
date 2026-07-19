@@ -1,0 +1,150 @@
+{
+    "title": "Máté pénteki iskolanapja",
+    "type": "reading_node",
+    "story": {
+        "en": "Máté is in class 2A. He sits next to Lili. Their teacher is Mr Kiss. Today they study History and Maths. At lunch, Máté eats rice. After school, he plays basketball with Lili. He goes home at quarter past three.",
+        "hu": "Máté a 2A osztályba jár. Lili mellett ül. A tanáruk Mr Kiss. Ma történelmet és matematikát tanulnak. Ebédre rizst eszik. Iskola után kosárlabdát játszik Lilivel. Negyed négykor megy haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Máté is in class 2A.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Máté is in class 2A."
+        },
+        {
+            "type": "true_false",
+            "statement": "He sits next to Mr Kiss.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He sits next to Lili."
+        },
+        {
+            "type": "true_false",
+            "statement": "They study History today.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They study History and Maths."
+        },
+        {
+            "type": "true_false",
+            "statement": "Máté eats pizza for lunch.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Máté eats rice."
+        },
+        {
+            "type": "true_false",
+            "statement": "He goes home at quarter past three.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He goes home at quarter past three."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who sits next to the student?",
+            "correctAnswer": "Lili",
+            "options": [
+                "Dávid",
+                "Zsófi",
+                "Lili",
+                "Péter"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who is the teacher?",
+            "correctAnswer": "Mr Kiss",
+            "options": [
+                "Mrs Green",
+                "Mr Brown",
+                "Miss Nagy",
+                "Mr Kiss"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they study first?",
+            "correctAnswer": "History",
+            "options": [
+                "Music",
+                "English",
+                "History",
+                "Art"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the student eat for lunch?",
+            "correctAnswer": "Rice",
+            "options": [
+                "Rice",
+                "Pasta",
+                "A sandwich",
+                "Soup"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do the children play after school?",
+            "correctAnswer": "Basketball",
+            "options": [
+                "Football",
+                "Basketball",
+                "Tag",
+                "Chess"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Ki mellett ül a tanuló? (Who does the student sit next to?)",
+            "sentence": "He sits next to ____.",
+            "correctAnswer": "Lili",
+            "hint": "Lili"
+        },
+        {
+            "type": "type_in",
+            "question": "Ki a tanáruk? (Who is their teacher?)",
+            "sentence": "Their teacher is ____.",
+            "correctAnswer": "Mr Kiss",
+            "hint": "Mr Kiss"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit tanulnak először? (What do they study first?)",
+            "sentence": "They study ____ first.",
+            "correctAnswer": "History",
+            "hint": "történelmet"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik ebédre? (What does the student eat for lunch?)",
+            "sentence": "Máté eats ____.",
+            "correctAnswer": "rice",
+            "hint": "rizs"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor megy haza? (When does the student go home?)",
+            "sentence": "He goes home at ____.",
+            "correctAnswer": "three",
+            "hint": "három (a quarter past three kifejezésben)"
+        }
+    ]
+}

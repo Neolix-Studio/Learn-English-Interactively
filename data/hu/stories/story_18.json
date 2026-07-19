@@ -1,0 +1,150 @@
+{
+    "title": "Ákos délutánja a parkban",
+    "type": "reading_node",
+    "story": {
+        "en": "On Saturday, Ákos goes to the park with two friends. The weather is warm. They sit near the lake. They eat cheese rolls and drink water. Ákos brings a frisbee. After lunch, they play football. They go home at six o'clock.",
+        "hu": "Szombaton Ákos elmegy a parkba két barátjával. Az idő meleg. A tó közelében ülnek le. Sajtos kiflit esznek, és vizet isznak. Ákos egy frizbit visz magával. Ebéd után fociznak. Hat órakor mennek haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Ákos goes to the park on Saturday.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The picnic is on Saturday."
+        },
+        {
+            "type": "true_false",
+            "statement": "The weather is rainy.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The weather is warm."
+        },
+        {
+            "type": "true_false",
+            "statement": "They sit near the lake.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They sit near the lake."
+        },
+        {
+            "type": "true_false",
+            "statement": "They drink coffee.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They drink water."
+        },
+        {
+            "type": "true_false",
+            "statement": "They go home at six o'clock.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They go home at six o'clock."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to the park with the child?",
+            "correctAnswer": "Two friends",
+            "options": [
+                "The grandparents",
+                "A brother",
+                "The family",
+                "Two friends"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the weather like?",
+            "correctAnswer": "Warm",
+            "options": [
+                "Sunny",
+                "Warm",
+                "Windy",
+                "Cloudy"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where do they sit?",
+            "correctAnswer": "Near the lake",
+            "options": [
+                "On the grass",
+                "Next to a bench",
+                "By the playground",
+                "Near the lake"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child bring?",
+            "correctAnswer": "A frisbee",
+            "options": [
+                "A frisbee",
+                "A ball",
+                "A kite",
+                "A book"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they do after lunch?",
+            "correctAnswer": "Play football",
+            "options": [
+                "Feed the ducks",
+                "Walk by the lake",
+                "Play football",
+                "Fly a kite"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Hová mennek? (Where do they go?)",
+            "sentence": "Ákos goes to the ____.",
+            "correctAnswer": "park",
+            "hint": "park"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen az idő? (What is the weather like?)",
+            "sentence": "The weather is ____.",
+            "correctAnswer": "warm",
+            "hint": "meleg"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit esznek? (What do they eat?)",
+            "sentence": "They eat ____.",
+            "correctAnswer": "rolls",
+            "hint": "kiflik"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit visz magával a gyerek? (What does the child bring?)",
+            "sentence": "Ákos brings a ____.",
+            "correctAnswer": "frisbee",
+            "hint": "frizbi"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor mennek haza? (When do they go home?)",
+            "sentence": "They go home at ____.",
+            "correctAnswer": "six",
+            "hint": "hat"
+        }
+    ]
+}

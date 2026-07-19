@@ -1,0 +1,150 @@
+{
+    "title": "Márk reggele",
+    "type": "reading_node",
+    "story": {
+        "en": "Márk gets up at quarter past seven. He washes his face and gets dressed. He drinks water and eats an egg for breakfast. He goes to school by car with his father. The first lesson is Science. Márk has a black bag. He feels calm.",
+        "hu": "Márk negyed nyolckor kel fel. Megmossa az arcát és felöltözik. Reggelire vizet iszik, és egy tojást eszik. Autóval megy iskolába az apukájával. Az első órája természetismeret. Márk táskája fekete. Nyugodtnak érzi magát."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Márk gets up at quarter past seven.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Márk gets up at quarter past seven."
+        },
+        {
+            "type": "true_false",
+            "statement": "He drinks coffee for breakfast.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He drinks water."
+        },
+        {
+            "type": "true_false",
+            "statement": "He goes to school with his father.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He goes with his father."
+        },
+        {
+            "type": "true_false",
+            "statement": "The first lesson is music.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The first lesson is Science."
+        },
+        {
+            "type": "true_false",
+            "statement": "Márk has a black bag.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The bag is black."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child drink?",
+            "correctAnswer": "Water",
+            "options": [
+                "Coffee",
+                "Water",
+                "Tea",
+                "Milk"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child eat for breakfast?",
+            "correctAnswer": "An egg",
+            "options": [
+                "A banana",
+                "Yogurt",
+                "An egg",
+                "Bread with cheese"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to school with the child?",
+            "correctAnswer": "A father",
+            "options": [
+                "A mother",
+                "A sister",
+                "A father",
+                "A friend"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the first lesson?",
+            "correctAnswer": "Science",
+            "options": [
+                "Art",
+                "Science",
+                "English",
+                "Maths"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What colour is the bag?",
+            "correctAnswer": "Black",
+            "options": [
+                "Yellow",
+                "Blue",
+                "Black",
+                "Green"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor kel fel Márk? (When does Márk get up?)",
+            "sentence": "Márk gets up at ____.",
+            "correctAnswer": "seven",
+            "hint": "hét (a quarter past seven kifejezésben)"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit iszik reggelire? (What does the child drink for breakfast?)",
+            "sentence": "He drinks ____.",
+            "correctAnswer": "water",
+            "hint": "víz"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik reggelire? (What does the child eat for breakfast?)",
+            "sentence": "He eats an ____.",
+            "correctAnswer": "egg",
+            "hint": "tojás"
+        },
+        {
+            "type": "type_in",
+            "question": "Mi az első tanóra? (What is the first lesson?)",
+            "sentence": "The first lesson is ____.",
+            "correctAnswer": "Science",
+            "hint": "természetismeret"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen színű a táska? (What colour is the bag?)",
+            "sentence": "Márk has a ____ bag.",
+            "correctAnswer": "black",
+            "hint": "fekete"
+        }
+    ]
+}
