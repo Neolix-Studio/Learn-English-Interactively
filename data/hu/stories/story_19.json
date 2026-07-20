@@ -1,0 +1,150 @@
+{
+    "title": "Eszter családi piknikje",
+    "type": "reading_node",
+    "story": {
+        "en": "On Friday, Eszter goes to the park with her grandparents. The weather is cloudy. They sit on the grass. They eat fruit and biscuits and drink tea. Eszter brings a book. After lunch, they walk by the lake. They go home at four o'clock.",
+        "hu": "Pénteken Eszter elmegy a parkba a nagyszüleivel. Az idő felhős. A fűben ülnek le. Gyümölcsöt és kekszet esznek, és teát isznak. Eszter egy könyvet visz magával. Ebéd után sétálnak a tó mellett. Négy órakor mennek haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Eszter goes to the park on Friday.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The picnic is on Friday."
+        },
+        {
+            "type": "true_false",
+            "statement": "The weather is rainy.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The weather is cloudy."
+        },
+        {
+            "type": "true_false",
+            "statement": "They sit on the grass.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They sit on the grass."
+        },
+        {
+            "type": "true_false",
+            "statement": "They drink coffee.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They drink tea."
+        },
+        {
+            "type": "true_false",
+            "statement": "They go home at four o'clock.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They go home at four o'clock."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to the park with the child?",
+            "correctAnswer": "The grandparents",
+            "options": [
+                "The family",
+                "A brother",
+                "A cousin",
+                "The grandparents"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the weather like?",
+            "correctAnswer": "Cloudy",
+            "options": [
+                "Windy",
+                "Rainy",
+                "Cloudy",
+                "Warm"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where do they sit?",
+            "correctAnswer": "On the grass",
+            "options": [
+                "Near the lake",
+                "By the playground",
+                "On the grass",
+                "Next to a bench"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child bring?",
+            "correctAnswer": "A book",
+            "options": [
+                "A camera",
+                "A book",
+                "A frisbee",
+                "A ball"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they do after lunch?",
+            "correctAnswer": "Walk by the lake",
+            "options": [
+                "Take photos",
+                "Fly a kite",
+                "Walk by the lake",
+                "Feed the ducks"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Hová mennek? (Where do they go?)",
+            "sentence": "Eszter goes to the ____.",
+            "correctAnswer": "park",
+            "hint": "park"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen az idő? (What is the weather like?)",
+            "sentence": "The weather is ____.",
+            "correctAnswer": "cloudy",
+            "hint": "felhős"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit esznek? (What do they eat?)",
+            "sentence": "They eat ____.",
+            "correctAnswer": "fruit",
+            "hint": "gyümölcs"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit visz magával a gyerek? (What does the child bring?)",
+            "sentence": "Eszter brings a ____.",
+            "correctAnswer": "book",
+            "hint": "könyv"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor mennek haza? (When do they go home?)",
+            "sentence": "They go home at ____.",
+            "correctAnswer": "four",
+            "hint": "négy"
+        }
+    ]
+}

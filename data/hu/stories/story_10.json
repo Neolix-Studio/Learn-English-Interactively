@@ -1,0 +1,150 @@
+{
+    "title": "Dávid iskolai napja",
+    "type": "reading_node",
+    "story": {
+        "en": "Dávid is in class 2B. He sits next to Máté. Their teacher is Mr Brown. Today they study Maths and Music. At lunch, Dávid eats soup. After school, he plays football with Máté. He goes home at half past three.",
+        "hu": "Dávid a 2B osztályba jár. Máté mellett ül. A tanáruk Mr Brown. Ma matematikát és zenét tanulnak. Ebédre levest eszik. Iskola után focit játszik Mátéval. Fél négykor megy haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Dávid is in class 2B.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Dávid is in class 2B."
+        },
+        {
+            "type": "true_false",
+            "statement": "He sits next to Mr Brown.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He sits next to Máté."
+        },
+        {
+            "type": "true_false",
+            "statement": "They study Maths today.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They study Maths and Music."
+        },
+        {
+            "type": "true_false",
+            "statement": "Dávid eats pizza for lunch.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Dávid eats soup."
+        },
+        {
+            "type": "true_false",
+            "statement": "He goes home at half past three.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He goes home at half past three."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who sits next to the student?",
+            "correctAnswer": "Máté",
+            "options": [
+                "Emma",
+                "Máté",
+                "Péter",
+                "Dávid"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who is the teacher?",
+            "correctAnswer": "Mr Brown",
+            "options": [
+                "Mrs White",
+                "Mr Brown",
+                "Mrs Green",
+                "Miss Nagy"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they study first?",
+            "correctAnswer": "Maths",
+            "options": [
+                "Art",
+                "History",
+                "English",
+                "Maths"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the student eat for lunch?",
+            "correctAnswer": "Soup",
+            "options": [
+                "A sandwich",
+                "Rice",
+                "Soup",
+                "Pasta"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do the children play after school?",
+            "correctAnswer": "Football",
+            "options": [
+                "Tag",
+                "Football",
+                "Chess",
+                "Basketball"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Ki mellett ül a tanuló? (Who does the student sit next to?)",
+            "sentence": "He sits next to ____.",
+            "correctAnswer": "Máté",
+            "hint": "Máté"
+        },
+        {
+            "type": "type_in",
+            "question": "Ki a tanáruk? (Who is their teacher?)",
+            "sentence": "Their teacher is ____.",
+            "correctAnswer": "Mr Brown",
+            "hint": "Mr Brown"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit tanulnak először? (What do they study first?)",
+            "sentence": "They study ____ first.",
+            "correctAnswer": "Maths",
+            "hint": "matematikát"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik ebédre? (What does the student eat for lunch?)",
+            "sentence": "Dávid eats ____.",
+            "correctAnswer": "soup",
+            "hint": "leves"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor megy haza? (When does the student go home?)",
+            "sentence": "He goes home at ____.",
+            "correctAnswer": "three",
+            "hint": "három (a half past three kifejezésben)"
+        }
+    ]
+}

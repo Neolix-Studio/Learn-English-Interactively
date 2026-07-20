@@ -1,0 +1,150 @@
+{
+    "title": "Anna reggele",
+    "type": "reading_node",
+    "story": {
+        "en": "Anna gets up at seven o'clock. She washes her face and gets dressed. She drinks milk and eats bread with cheese for breakfast. She goes to school on foot with her sister. The first lesson is English. Anna has a blue bag. She feels happy.",
+        "hu": "Anna hét órakor kel fel. Megmossa az arcát és felöltözik. Reggelire tejet iszik, és sajtos kenyeret eszik. Gyalog megy iskolába a nővérével. Az első órája angol. Anna táskája kék. Boldognak érzi magát."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Anna gets up at seven o'clock.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Anna gets up at seven o'clock."
+        },
+        {
+            "type": "true_false",
+            "statement": "She drinks coffee for breakfast.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She drinks milk."
+        },
+        {
+            "type": "true_false",
+            "statement": "She goes to school with her sister.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She goes with her sister."
+        },
+        {
+            "type": "true_false",
+            "statement": "The first lesson is music.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The first lesson is English."
+        },
+        {
+            "type": "true_false",
+            "statement": "Anna has a blue bag.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The bag is blue."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child drink?",
+            "correctAnswer": "Milk",
+            "options": [
+                "Tea",
+                "Orange juice",
+                "Coffee",
+                "Milk"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child eat for breakfast?",
+            "correctAnswer": "Bread with cheese",
+            "options": [
+                "Bread with cheese",
+                "Yogurt",
+                "An egg",
+                "Cereal"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to school with the child?",
+            "correctAnswer": "A sister",
+            "options": [
+                "A sister",
+                "A brother",
+                "A father",
+                "A mother"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the first lesson?",
+            "correctAnswer": "English",
+            "options": [
+                "English",
+                "Music",
+                "Art",
+                "Maths"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What colour is the bag?",
+            "correctAnswer": "Blue",
+            "options": [
+                "Blue",
+                "Yellow",
+                "Red",
+                "Black"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor kel fel Anna? (When does Anna get up?)",
+            "sentence": "Anna gets up at ____.",
+            "correctAnswer": "seven",
+            "hint": "hét"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit iszik reggelire? (What does the child drink for breakfast?)",
+            "sentence": "She drinks ____.",
+            "correctAnswer": "milk",
+            "hint": "tej"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik reggelire? (What does the child eat for breakfast?)",
+            "sentence": "She eats bread with ____.",
+            "correctAnswer": "cheese",
+            "hint": "sajt"
+        },
+        {
+            "type": "type_in",
+            "question": "Mi az első tanóra? (What is the first lesson?)",
+            "sentence": "The first lesson is ____.",
+            "correctAnswer": "English",
+            "hint": "angol"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen színű a táska? (What colour is the bag?)",
+            "sentence": "Anna has a ____ bag.",
+            "correctAnswer": "blue",
+            "hint": "kék"
+        }
+    ]
+}

@@ -1,0 +1,150 @@
+{
+    "title": "Bence reggele",
+    "type": "reading_node",
+    "story": {
+        "en": "Bence gets up at half past six. He washes his face and gets dressed. He drinks tea and eats cereal for breakfast. He goes to school by bus with his brother. The first lesson is Maths. Bence has a green bag. He feels ready.",
+        "hu": "Bence fél hétkor kel fel. Megmossa az arcát és felöltözik. Reggelire teát iszik, és müzlit eszik. Busszal megy iskolába a bátyjával. Az első órája matematika. Bence táskája zöld. Felkészültnek érzi magát."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Bence gets up at half past six.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Bence gets up at half past six."
+        },
+        {
+            "type": "true_false",
+            "statement": "He drinks coffee for breakfast.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He drinks tea."
+        },
+        {
+            "type": "true_false",
+            "statement": "He goes to school with his brother.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "He goes with his brother."
+        },
+        {
+            "type": "true_false",
+            "statement": "The first lesson is music.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The first lesson is Maths."
+        },
+        {
+            "type": "true_false",
+            "statement": "Bence has a green bag.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The bag is green."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child drink?",
+            "correctAnswer": "Tea",
+            "options": [
+                "Coffee",
+                "Orange juice",
+                "Milk",
+                "Tea"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the child eat for breakfast?",
+            "correctAnswer": "Cereal",
+            "options": [
+                "Bread with cheese",
+                "Cereal",
+                "Yogurt",
+                "A banana"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who goes to school with the child?",
+            "correctAnswer": "A brother",
+            "options": [
+                "A brother",
+                "A mother",
+                "A friend",
+                "A sister"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the first lesson?",
+            "correctAnswer": "Maths",
+            "options": [
+                "Maths",
+                "Art",
+                "English",
+                "Music"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What colour is the bag?",
+            "correctAnswer": "Green",
+            "options": [
+                "Blue",
+                "Yellow",
+                "Green",
+                "Black"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor kel fel Bence? (When does Bence get up?)",
+            "sentence": "Bence gets up at ____.",
+            "correctAnswer": "six",
+            "hint": "hat (a half past six kifejezésben)"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit iszik reggelire? (What does the child drink for breakfast?)",
+            "sentence": "He drinks ____.",
+            "correctAnswer": "tea",
+            "hint": "tea"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik reggelire? (What does the child eat for breakfast?)",
+            "sentence": "He eats ____.",
+            "correctAnswer": "cereal",
+            "hint": "müzli"
+        },
+        {
+            "type": "type_in",
+            "question": "Mi az első tanóra? (What is the first lesson?)",
+            "sentence": "The first lesson is ____.",
+            "correctAnswer": "Maths",
+            "hint": "matematika"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen színű a táska? (What colour is the bag?)",
+            "sentence": "Bence has a ____ bag.",
+            "correctAnswer": "green",
+            "hint": "zöld"
+        }
+    ]
+}

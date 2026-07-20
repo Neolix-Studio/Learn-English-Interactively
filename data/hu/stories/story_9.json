@@ -1,0 +1,150 @@
+{
+    "title": "Emma napja az iskolában",
+    "type": "reading_node",
+    "story": {
+        "en": "Emma is in class 1A. She sits next to Nóra. Their teacher is Mrs Green. Today they study English and Art. At lunch, Emma eats a sandwich. After school, she plays tag with Nóra. She goes home at three o'clock.",
+        "hu": "Emma az 1A osztályba jár. Nóra mellett ül. A tanáruk Mrs Green. Ma angolt és rajzot tanulnak. Ebédre egy szendvicset eszik. Iskola után fogócskát játszik Nórával. Három órakor megy haza."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Emma is in class 1A.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Emma is in class 1A."
+        },
+        {
+            "type": "true_false",
+            "statement": "She sits next to Mrs Green.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She sits next to Nóra."
+        },
+        {
+            "type": "true_false",
+            "statement": "They study English today.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "They study English and Art."
+        },
+        {
+            "type": "true_false",
+            "statement": "Emma eats pizza for lunch.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "Emma eats a sandwich."
+        },
+        {
+            "type": "true_false",
+            "statement": "She goes home at three o'clock.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "She goes home at three o'clock."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who sits next to the student?",
+            "correctAnswer": "Nóra",
+            "options": [
+                "Zsófi",
+                "Nóra",
+                "Máté",
+                "Péter"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Who is the teacher?",
+            "correctAnswer": "Mrs Green",
+            "options": [
+                "Mr Brown",
+                "Mrs Green",
+                "Miss Nagy",
+                "Mr Kiss"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do they study first?",
+            "correctAnswer": "English",
+            "options": [
+                "Music",
+                "English",
+                "History",
+                "Maths"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the student eat for lunch?",
+            "correctAnswer": "A sandwich",
+            "options": [
+                "Pasta",
+                "Soup",
+                "A sandwich",
+                "Rice"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What do the children play after school?",
+            "correctAnswer": "Tag",
+            "options": [
+                "Football",
+                "Cards",
+                "Tag",
+                "Chess"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Ki mellett ül a tanuló? (Who does the student sit next to?)",
+            "sentence": "She sits next to ____.",
+            "correctAnswer": "Nóra",
+            "hint": "Nóra"
+        },
+        {
+            "type": "type_in",
+            "question": "Ki a tanáruk? (Who is their teacher?)",
+            "sentence": "Their teacher is ____.",
+            "correctAnswer": "Mrs Green",
+            "hint": "Mrs Green"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit tanulnak először? (What do they study first?)",
+            "sentence": "They study ____ first.",
+            "correctAnswer": "English",
+            "hint": "angolt"
+        },
+        {
+            "type": "type_in",
+            "question": "Mit eszik ebédre? (What does the student eat for lunch?)",
+            "sentence": "Emma eats a ____.",
+            "correctAnswer": "sandwich",
+            "hint": "szendvics"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor megy haza? (When does the student go home?)",
+            "sentence": "She goes home at ____.",
+            "correctAnswer": "three",
+            "hint": "három"
+        }
+    ]
+}

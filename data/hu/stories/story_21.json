@@ -1,0 +1,150 @@
+{
+    "title": "Milo, a kiskutya",
+    "type": "reading_node",
+    "story": {
+        "en": "Dóra has a dog called Milo. Milo is brown and two years old. Every morning, Dóra gives Milo dog food. The pet likes to play with a red ball. In the afternoon, it sleeps in a basket. Dóra loves Milo very much.",
+        "hu": "Dóra kutyájának a neve Milo. Milo barna, és kétéves. Dóra minden reggel kutyaeledelt ad neki. A kisállat szeret egy piros labdával játszani. Délután egy kosárban alszik. Dóra nagyon szereti Milót."
+    },
+    "items": [
+        {
+            "type": "true_false",
+            "statement": "Dóra has a dog.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The pet is a dog."
+        },
+        {
+            "type": "true_false",
+            "statement": "The pet is black.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The pet is brown."
+        },
+        {
+            "type": "true_false",
+            "statement": "Dóra feeds the pet every morning.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "The pet gets food every morning."
+        },
+        {
+            "type": "true_false",
+            "statement": "The pet plays with a shoe.",
+            "correctAnswer": "False",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "It plays with a red ball."
+        },
+        {
+            "type": "true_false",
+            "statement": "The pet sleeps in a basket.",
+            "correctAnswer": "True",
+            "options": [
+                "True",
+                "False"
+            ],
+            "explanation": "It sleeps in a basket."
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What kind of pet is it?",
+            "correctAnswer": "A dog",
+            "options": [
+                "A dog",
+                "A cat",
+                "A hamster",
+                "A bird"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What is the pet's name?",
+            "correctAnswer": "Milo",
+            "options": [
+                "Milo",
+                "Coco",
+                "Pötty",
+                "Luna"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What colour is the pet?",
+            "correctAnswer": "Brown",
+            "options": [
+                "Orange",
+                "Brown",
+                "Black",
+                "Grey"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "What does the pet eat?",
+            "correctAnswer": "Dog food",
+            "options": [
+                "Cat food",
+                "Fish",
+                "Carrots",
+                "Dog food"
+            ]
+        },
+        {
+            "type": "multiple_choice",
+            "question": "Where does the pet sleep?",
+            "correctAnswer": "In a basket",
+            "options": [
+                "Near the window",
+                "In a small house",
+                "In a basket",
+                "Under the table"
+            ]
+        },
+        {
+            "type": "type_in",
+            "question": "Mi a kisállat neve? (What is the pet's name?)",
+            "sentence": "The pet is called ____.",
+            "correctAnswer": "Milo",
+            "hint": "Milo"
+        },
+        {
+            "type": "type_in",
+            "question": "Milyen színű? (What colour is it?)",
+            "sentence": "Milo is ____.",
+            "correctAnswer": "brown",
+            "hint": "barna"
+        },
+        {
+            "type": "type_in",
+            "question": "Mikor kap enni? (When does the pet get food?)",
+            "sentence": "It gets food every ____.",
+            "correctAnswer": "morning",
+            "hint": "reggel"
+        },
+        {
+            "type": "type_in",
+            "question": "Mivel szeret játszani? (What does it like to play with?)",
+            "sentence": "It likes to play with a ____.",
+            "correctAnswer": "ball",
+            "hint": "labda"
+        },
+        {
+            "type": "type_in",
+            "question": "Hol alszik délután? (Where does it sleep in the afternoon?)",
+            "sentence": "It sleeps in a ____.",
+            "correctAnswer": "basket",
+            "hint": "kosár"
+        }
+    ]
+}
