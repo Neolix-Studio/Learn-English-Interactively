@@ -11,7 +11,7 @@ export function Terms() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Általános Szerződési Feltételek | Neolix"
         description="A Neolix Általános Szerződési Feltételei."
         canonicalPath="/terms"
@@ -22,7 +22,7 @@ export function Terms() {
         <article className="legal-card">
           <h1>Általános Szerződési Feltételek (ÁSZF)</h1>
           <p>Utolsó frissítés: 2026. június 22.</p>
-          
+
           <p>Üdvözöljük a <strong>Lexipaws</strong> honlapján! Jelen Általános Szerződési Feltételek (a továbbiakban: "ÁSZF") szabályozzák Ön (a továbbiakban: "Felhasználó") és a Szolgáltató között létrejött jogviszonyt a weboldal és az azon keresztül kínált online angol nyelvtanulási szolgáltatások igénybevétele során.</p>
 
           <h2>1. A Szolgáltató adatai</h2>
@@ -73,10 +73,10 @@ export function Terms() {
       </main>
 
       <Footer />
-      
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
       />
     </>
   );

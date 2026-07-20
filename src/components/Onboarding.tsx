@@ -39,7 +39,6 @@ export const Onboarding: React.FC<{ onComplete: () => void }> = ({ onComplete })
         if (currentStep < onboardingSteps.length - 1) {
             setCurrentStep(prev => prev + 1);
         } else {
-            // Save to localStorage before completing
             localStorage.setItem('ftue_marketing_data', JSON.stringify(newAnswers));
             onComplete();
         }
@@ -64,16 +63,16 @@ export const Onboarding: React.FC<{ onComplete: () => void }> = ({ onComplete })
                     <div style={{ width: '90px', height: '90px', marginRight: '1rem', flexShrink: 0 }}>
                         <img src="/assets/images/Transparent PNGs/lexi-head.png" alt="Lexi" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                     </div>
-                    
+
                     <div style={{ position: 'relative', background: '#fff', padding: '1.25rem', borderRadius: '20px', border: '2px solid #E5E7EB', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', flex: 1 }}>
                         <h2 style={{ margin: 0, fontSize: '1.25rem', color: '#1F2937' }}>{step.title}</h2>
                         <div style={{ position: 'absolute', top: '50%', left: '-10px', transform: 'translateY(-50%) rotate(45deg)', width: '20px', height: '20px', background: '#fff', borderBottom: '2px solid #E5E7EB', borderLeft: '2px solid #E5E7EB' }}></div>
                     </div>
                 </div>
-                
+
                 <div style={{ display: 'grid', gridTemplateColumns: step.options.length >= 4 ? '1fr 1fr' : '1fr', gap: '0.8rem', width: '100%' }}>
                     {step.options.map((opt, idx) => (
-                        <button 
+                        <button
                             key={idx}
                             onClick={() => handleSelect(opt)}
                             style={{

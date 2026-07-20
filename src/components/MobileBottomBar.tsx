@@ -18,7 +18,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ activeTab, onT
     if (onTabClick) {
       onTabClick(tab);
     }
-    
+
     if (tab === 'profile' && location.pathname !== '/profile') {
       navigate('/profile');
     } else if (tab !== 'profile' && location.pathname !== '/dashboard') {
@@ -28,47 +28,47 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ activeTab, onT
 
   return (
     <nav className="mobile-bottom-bar" aria-label="Mobil navigáció">
-      <button 
-        type="button" 
-        className={`bottom-nav-item ${activeTab === 'levels' ? 'active' : ''}`} 
+      <button
+        type="button"
+        className={`bottom-nav-item ${activeTab === 'levels' ? 'active' : ''}`}
         onClick={() => handleTabClick('levels')}
       >
         <span className="bottom-nav-icon">☰</span>
         <span>{t('dashboard.nav_levels')}</span>
       </button>
-      
-      <button 
-        type="button" 
-        className={`bottom-nav-item ${activeTab === 'curriculum' ? 'active' : ''}`} 
+
+      <button
+        type="button"
+        className={`bottom-nav-item ${activeTab === 'curriculum' ? 'active' : ''}`}
         onClick={() => handleTabClick('curriculum')}
       >
         <span className="bottom-nav-icon">🏠</span>
         <span>{t('dashboard.nav_curriculum')}</span>
       </button>
 
-      {/* Shop button — always accessible */}
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="bottom-nav-item"
         onClick={openShop}
         style={{ position: 'relative' }}
+        aria-label={t('dashboard.nav_shop')}
       >
         <span className="bottom-nav-icon">🛒</span>
-        <span>{t('sidebar_right.shop_btn', { defaultValue: 'Shop' })}</span>
+        <span>{t('dashboard.nav_shop')}</span>
       </button>
-      
-      <button 
-        type="button" 
-        className={`bottom-nav-item ${activeTab === 'stats' ? 'active' : ''}`} 
+
+      <button
+        type="button"
+        className={`bottom-nav-item ${activeTab === 'stats' ? 'active' : ''}`}
         onClick={() => handleTabClick('stats')}
       >
         <span className="bottom-nav-icon">🎯</span>
         <span>{t('dashboard.nav_stats')}</span>
       </button>
-      
-      <button 
-        type="button" 
-        className={`bottom-nav-item ${activeTab === 'profile' ? 'active' : ''}`} 
+
+      <button
+        type="button"
+        className={`bottom-nav-item ${activeTab === 'profile' ? 'active' : ''}`}
         onClick={() => handleTabClick('profile')}
       >
         <span className="bottom-nav-icon">👤</span>

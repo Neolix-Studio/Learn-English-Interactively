@@ -10,11 +10,9 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     echo "<h1>Nuking and Rebuilding Database</h1>";
-    
-    // Disable foreign key checks to allow dropping tables in any order
+
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
 
-    // Fetch all tables
     $stmt = $pdo->query("SHOW TABLES");
     $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
@@ -32,13 +30,12 @@ try {
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
 
     echo "<hr><h2>Running Migrations</h2>";
-    
-    // Include the migrate script
+
     $_SERVER['HTTP_X_MIGRATION_TOKEN'] = MIGRATION_TOKEN;
     ob_start();
     include $projectRoot . '/migrate.php';
     $migrationOutput = ob_get_clean();
-    
+
     echo "<div>$migrationOutput</div>";
 
     echo "<hr><h2>✅ Complete!</h2>";

@@ -27,9 +27,8 @@ export const PracticePage: React.FC = () => {
       setIsLoading(true);
       const response = await api.fetch('get_weak_words', { level: activeLevel || 'A1', limit: 10 });
       setIsLoading(false);
-      
+
       if (response.status === 'success' && response.data && response.data.length > 0) {
-        // Construct node
         const dynamicNode = {
           id: 'practice_mistakes',
           title: t('practice.mistakes_title'),
@@ -68,7 +67,7 @@ export const PracticePage: React.FC = () => {
 
   if (isPlaying && dynamicMistakesNode) {
     return (
-      <LessonPlayer 
+      <LessonPlayer
         lessonNode={dynamicMistakesNode}
         onExit={() => setIsPlaying(false)}
         onComplete={handleComplete}
@@ -78,31 +77,31 @@ export const PracticePage: React.FC = () => {
 
   return (
     <div className="dashboard-container">
-      <SidebarLeft 
+      <SidebarLeft
         isOpen={isMobileNavOpen}
         onClose={() => setIsMobileNavOpen(false)}
-        onOpenProfile={() => navigate('/profile')} 
+        onOpenProfile={() => navigate('/profile')}
       />
-      
+
       <div className="main-stage-track">
-        <button 
-          className="mobile-menu-btn" 
+        <button
+          className="mobile-menu-btn"
           onClick={() => setIsMobileNavOpen(true)}
           style={{ position: 'absolute', top: '15px', left: '15px', zIndex: 90, background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}
         >
           ☰
         </button>
         <div id="app">
-          
+
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <h1 style={{ fontSize: '2.2rem', color: 'var(--color-text-main)', marginBottom: '1rem', fontWeight: 800 }}>{t('practice.page_title')}</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '1.2rem', marginBottom: '2rem', lineHeight: '1.5' }}>
               {t('practice.page_subtitle')}
             </p>
-            
+
             <div style={{ minHeight: '60px' }}>
               {activeMode && (
-                <button 
+                <button
                   onClick={handleStart}
                   style={{
                     background: 'var(--color-accent-in)',
@@ -140,7 +139,6 @@ export const PracticePage: React.FC = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
-            {/* Hibák Button */}
             <button
               onClick={() => setActiveMode('hibak')}
               style={{
@@ -175,8 +173,7 @@ export const PracticePage: React.FC = () => {
                 <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>{t('practice.mode_mistakes_desc')}</p>
               </div>
             </button>
-            
-            {/* Történetek Button */}
+
             <button
               onClick={() => setActiveMode('tortenetek')}
               style={{
@@ -211,8 +208,7 @@ export const PracticePage: React.FC = () => {
                 <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>{t('practice.mode_stories_desc')}</p>
               </div>
             </button>
-            
-            {/* Future Practice Modes can go here */}
+
           </div>
 
         </div>

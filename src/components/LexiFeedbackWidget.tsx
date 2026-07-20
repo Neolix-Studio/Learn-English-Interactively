@@ -4,12 +4,12 @@ import { useUser } from '../context/UserContext';
 
 export const LexiFeedbackWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState(1); // 1 = prompt, 2 = text, 3 = success
+  const [step, setStep] = useState(1);
   const [feedbackText, setFeedbackText] = useState('');
   const [loading, setLoading] = useState(false);
   const { updateProgress, data, isGuest } = useUser();
 
-  if (isGuest) return null; // Only for logged in users
+  if (isGuest) return null;
 
   const handleSubmit = async () => {
     if (!feedbackText.trim()) return;
@@ -20,11 +20,10 @@ export const LexiFeedbackWidget: React.FC = () => {
         answers: { 'General Feedback': feedbackText }
       });
       if (res.success) {
-        // Reward +20 Lexi Treats locally
         updateProgress({
           scores: { ...data.scores, bones: (data.scores?.bones || 0) + 20 }
         });
-        setStep(3); // Success
+        setStep(3);
         setTimeout(() => {
           setIsOpen(false);
           setStep(1);
@@ -39,13 +38,12 @@ export const LexiFeedbackWidget: React.FC = () => {
 
   return (
     <div style={{ position: 'fixed', bottom: '80px', right: '20px', zIndex: 999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
-      
-      {/* Speech Bubble (when open) */}
+
       {isOpen && (
         <div style={{ background: 'var(--color-bg-surface)', padding: '15px', borderRadius: '16px', border: 'var(--glass-border)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)', width: '280px', animation: 'fadeIn 0.2s', transformOrigin: 'bottom right' }}>
-          
+
           <button onClick={() => { setIsOpen(false); setStep(1); }} style={{ position: 'absolute', top: '10px', right: '10px', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✕</button>
-          
+
           {step === 1 && (
             <div style={{ marginTop: '5px' }}>
               <h4 style={{ margin: '0 0 8px 0', color: 'var(--color-text-main)' }}>Lexi needs treats! 🦴</h4>
@@ -57,7 +55,7 @@ export const LexiFeedbackWidget: React.FC = () => {
           {step === 2 && (
             <div style={{ marginTop: '5px' }}>
               <h4 style={{ margin: '0 0 8px 0', color: 'var(--color-text-main)' }}>Your Feedback</h4>
-              <textarea 
+              <textarea
                 value={feedbackText}
                 onChange={(e) => setFeedbackText(e.target.value)}
                 placeholder="What's working? What's broken?"
@@ -77,8 +75,7 @@ export const LexiFeedbackWidget: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Button */}
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--color-accent-in)', border: '4px solid var(--color-bg-base)', boxShadow: '0 5px 15px rgba(0,0,0,0.3)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', transition: 'transform 0.2s' }}
         onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}

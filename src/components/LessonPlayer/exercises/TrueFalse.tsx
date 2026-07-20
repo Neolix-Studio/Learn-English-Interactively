@@ -17,8 +17,7 @@ export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer }) => {
 
   const handleSelect = (value: boolean) => {
     setSelectedAnswer(value);
-    
-    // Support boolean true/false or string "True"/"False"
+
     let expected = question.answer;
     if (expected === undefined && question.correctAnswer !== undefined) {
       if (typeof question.correctAnswer === 'string') {
@@ -27,13 +26,12 @@ export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer }) => {
         expected = !!question.correctAnswer;
       }
     }
-    
+
     onAnswer(value === expected);
   };
 
   const title = question.instruction || "Igaz vagy Hamis?";
-  
-  // Prepare question content
+
   let questionHtml = question.question || question.statement || "";
   if (question.statement && question.translation) {
       questionHtml = `<strong>${question.statement}</strong><br><span style="font-size:1.1rem; color:#6B7280; margin-top: 0.5rem; display: block;">Jelentése: "${question.translation}" ?</span>`;
@@ -42,22 +40,23 @@ export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer }) => {
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <QuestionHeader 
-        text={title} 
-        newWords={question.newWords} 
-        dictionary={question.dictionary} 
+    <div className="true-false-exercise" style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <QuestionHeader
+        text={title}
+        newWords={question.newWords}
+        dictionary={question.dictionary}
         hideAudio={true}
       />
-      
-      <div 
+
+      <div
+        className="lesson-question-card"
         dangerouslySetInnerHTML={{ __html: sanitizeHtml(questionHtml) }}
-        style={{ 
-          fontSize: '1.5rem', 
-          marginBottom: '3rem', 
-          background: 'var(--color-bg-surface)', 
-          padding: '2rem', 
-          borderRadius: '12px', 
+        style={{
+          fontSize: '1.5rem',
+          marginBottom: '3rem',
+          background: 'var(--color-bg-surface)',
+          padding: '2rem',
+          borderRadius: '12px',
           border: '1px solid rgba(255,255,255,0.1)',
           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           width: '100%',
@@ -65,10 +64,11 @@ export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer }) => {
           lineHeight: '2rem'
         }}
       />
-      
-      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', width: '100%' }}>
+
+      <div className="lesson-options-stack true-false-options" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', width: '100%' }}>
         <button
           onClick={() => handleSelect(true)}
+          className="lesson-option-btn"
           style={{
             flex: 1,
             maxWidth: '200px',
@@ -89,6 +89,7 @@ export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer }) => {
         </button>
         <button
           onClick={() => handleSelect(false)}
+          className="lesson-option-btn"
           style={{
             flex: 1,
             maxWidth: '200px',

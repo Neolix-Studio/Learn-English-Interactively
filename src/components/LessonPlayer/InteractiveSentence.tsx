@@ -5,35 +5,36 @@ interface InteractiveSentenceProps {
   sentence: string;
   newWords: string[];
   dictionary: Record<string, string>;
+  disableAudio?: boolean;
 }
 
-export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ sentence, newWords, dictionary }) => {
+export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ sentence, newWords, dictionary, disableAudio = false }) => {
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const [guideIndex, setGuideIndex] = useState<string | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number; placement: 'top' | 'bottom' } | null>(null);
 
   const tokens = sentence.split(/(\s+)/);
 
   useEffect(() => {
-    // Check if the user has seen the guide before
     const hasSeenGuide = localStorage.getItem('hasSeenWordTooltipGuide');
     const safeNewWords = Array.isArray(newWords) ? newWords : (typeof newWords === 'string' ? [newWords] : []);
-    
+
     if (!hasSeenGuide && safeNewWords.length > 0) {
       let found = false;
       tokens.forEach((token, index) => {
         if (found || !token.trim()) return;
-        
+
         const subTokens = token.split('|');
         subTokens.forEach((subToken, subIndex) => {
           if (found) return;
 
           let cleanWord = subToken.toLowerCase().replace(/[.,!?"]/g, '').trim();
-          
+
           if (cleanWord === 'kávét') cleanWord = 'kávé';
           if (cleanWord === 'teát') cleanWord = 'tea';
-          
+
           let isNew: boolean = safeNewWords.includes(cleanWord);
-          
+
           if (!isNew && dictionary) {
              const englishKey = Object.keys(dictionary).find(key => {
                  const val = dictionary[key];
@@ -43,7 +44,7 @@ export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ senten
                  isNew = true;
              }
           }
-          
+
           if (isNew) {
             setGuideIndex(`${index}-${subIndex}`);
             found = true;
@@ -60,11 +61,33 @@ export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ senten
     }
   };
 
+  const getTooltipPosition = (element: HTMLElement) => {
+    const rect = element.getBoundingClientRect();
+    const headerBottom = document.querySelector('.interactive-header')?.getBoundingClientRect().bottom ?? 0;
+    const reservedTop = headerBottom + 14;
+    const estimatedTooltipHeight = 48;
+    const viewportPadding = 24;
+    const hasRoomAbove = rect.top - reservedTop >= estimatedTooltipHeight;
+    const placement: 'top' | 'bottom' = hasRoomAbove ? 'top' : 'bottom';
+    const minX = 88;
+    const maxX = Math.max(minX, window.innerWidth - 88);
+    const x = Math.min(Math.max(rect.left + rect.width / 2, minX), maxX);
+    const y = placement === 'top'
+      ? Math.max(rect.top - 8, reservedTop + estimatedTooltipHeight)
+      : Math.min(rect.bottom + 8, window.innerHeight - viewportPadding);
+
+    return { x, y, placement };
+  };
+
   return (
-    <div style={{ display: 'inline-flex', flexWrap: 'wrap', gap: '0px', alignItems: 'center' }}>
+    <div className="interactive-sentence">
+      {guideIndex !== null && (
+        <div className="word-guide-mobile-hint">
+          Kattints a lila szóra a kiejtéshez és a jelentéshez.
+        </div>
+      )}
       {tokens.map((token, index) => {
         if (!token.trim()) {
-          // Render whitespace exactly as is
           return <span key={index} style={{ whiteSpace: 'pre' }}>{token}</span>;
         }
 
@@ -73,31 +96,27 @@ export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ senten
         return (
           <span key={index} style={{ whiteSpace: 'nowrap' }}>
             {subTokens.map((subToken, subIndex) => {
-              // Clean the token to check against newWords and dictionary (remove quotes too)
               let cleanWord = subToken.toLowerCase().replace(/[.,!?"]/g, '').trim();
-              
-              // Handle hungarian accusative cases roughly if needed (e.g., kávét -> kávé)
+
               if (cleanWord === 'kávét') cleanWord = 'kávé';
               if (cleanWord === 'teát') cleanWord = 'tea';
 
               const safeNewWords = Array.isArray(newWords) ? newWords : (typeof newWords === 'string' ? [newWords] : []);
               let isNewWord = safeNewWords.includes(cleanWord);
               let translation = dictionary ? dictionary[cleanWord] : undefined;
-              
-              // Reverse lookup: if the word is Hungarian, map it to its English translation
+
               if (!translation && dictionary) {
                  const englishKey = Object.keys(dictionary).find(key => {
                      const val = dictionary[key];
                      return val && typeof val === 'string' && val.toLowerCase() === cleanWord;
                  });
                  if (englishKey) {
-                     translation = englishKey; // The translation shown will be the English word
+                     translation = englishKey;
                      isNewWord = safeNewWords.includes(englishKey);
-                     cleanWord = englishKey; // For TTS, we want the English word!
+                     cleanWord = englishKey;
                  }
               }
-              
-              // Is it interactive? Only new words should have tooltips and underlines
+
               const isInteractive = isNewWord;
               const tooltipId = `${index}-${subIndex}`;
               const showGuide = guideIndex === tooltipId;
@@ -108,27 +127,38 @@ export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ senten
               }
 
               return (
-                <div 
-                  key={subIndex} 
+                <div
+                  key={subIndex}
                   style={{ position: 'relative', display: 'inline-block', cursor: 'pointer' }}
-                  onClick={() => {
+                  role="button"
+                  tabIndex={0}
+                  onClick={(event) => {
                     handleDismissGuide();
                     if (activeTooltip === tooltipId) {
                         setActiveTooltip(null);
+                        setTooltipPosition(null);
                     } else {
                         setActiveTooltip(tooltipId);
-                        if (isNewWord) {
+                        setTooltipPosition(getTooltipPosition(event.currentTarget));
+                        if (isNewWord && !disableAudio) {
                             playTTS(cleanWord);
                         }
                     }
                   }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      event.currentTarget.click();
+                    }
+                  }}
                   onMouseLeave={() => {
                     setActiveTooltip(null);
+                    setTooltipPosition(null);
                   }}
                 >
-                  <span 
-                    style={{ 
-                      color: isNewWord ? '#9333ea' : 'inherit', // Purple color for new words
+                  <span
+                    style={{
+                      color: isNewWord ? '#9333ea' : 'inherit',
                       borderBottom: isNewWord ? '2px dotted #9333ea' : '1px dashed #ccc',
                       fontWeight: isNewWord ? 'bold' : 'normal',
                       paddingBottom: '2px'
@@ -137,82 +167,50 @@ export const InteractiveSentence: React.FC<InteractiveSentenceProps> = ({ senten
                     {subToken}
                   </span>
 
-                  {/* Standard Meaning Tooltip */}
                   {showTooltip && translation && (
-                    <div 
+                    <div
                       style={{
-                        position: 'absolute',
-                        bottom: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        marginBottom: '8px',
+                        position: 'fixed',
+                        top: tooltipPosition?.y ?? 0,
+                        left: tooltipPosition?.x ?? 0,
+                        transform: tooltipPosition?.placement === 'bottom' ? 'translateX(-50%)' : 'translate(-50%, -100%)',
                         backgroundColor: '#374151',
                         color: 'white',
                         padding: '6px 12px',
                         borderRadius: '8px',
                         fontSize: '0.9rem',
                         whiteSpace: 'nowrap',
-                        zIndex: 50,
+                        zIndex: 2000,
                         boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
                         fontWeight: 'bold',
-                        animation: 'fadeIn 0.2s ease-in'
+                        animation: 'fadeIn 0.2s ease-in',
+                        maxWidth: 'calc(100vw - 32px)',
+                        pointerEvents: 'none'
                       }}
                     >
                       {translation}
                       <div style={{
                         position: 'absolute',
-                        top: '100%',
+                        top: tooltipPosition?.placement === 'bottom' ? '-10px' : '100%',
                         left: '50%',
                         transform: 'translateX(-50%)',
                         borderWidth: '5px',
                         borderStyle: 'solid',
-                        borderColor: '#374151 transparent transparent transparent'
+                        borderColor: tooltipPosition?.placement === 'bottom'
+                          ? 'transparent transparent #374151 transparent'
+                          : '#374151 transparent transparent transparent'
                       }}></div>
                     </div>
                   )}
 
-                  {/* Auto-Popup Guide Tooltip */}
                   {showGuide && (
-                    <div 
-                      style={{
-                        position: 'absolute',
-                        bottom: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        marginBottom: '12px',
-                        backgroundColor: '#8b5cf6', // Violet color for guide
-                        color: 'white',
-                        padding: '10px 16px',
-                        borderRadius: '12px',
-                        fontSize: '0.9rem',
-                        whiteSpace: 'nowrap',
-                        textAlign: 'center',
-                        zIndex: 60,
-                        boxShadow: '0 10px 15px -3px rgba(0,0,0,0.2)',
-                        fontWeight: 'bold',
-                        lineHeight: '1.4',
-                        animation: 'bounceGuide 2s infinite'
-                      }}
+                    <div
+                      className="word-guide-tooltip"
                     >
                       Kattints a szóra a kiejtéshez és a jelentéshez!
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        borderWidth: '8px',
-                        borderStyle: 'solid',
-                        borderColor: '#8b5cf6 transparent transparent transparent'
-                      }}></div>
+                      <div className="word-guide-tooltip-arrow"></div>
                     </div>
                   )}
-                  
-                  <style>{`
-                    @keyframes bounceGuide {
-                      0%, 100% { transform: translateX(-50%) translateY(0); }
-                      50% { transform: translateX(-50%) translateY(-5px); }
-                    }
-                  `}</style>
                 </div>
               );
             })}

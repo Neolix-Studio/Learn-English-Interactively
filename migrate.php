@@ -1,15 +1,8 @@
 <?php
-/**
- * Database Migration Runner Utility
- * Run locally via CLI: php migrate.php
- * Run remotely via HTTP with the X-Migration-Token header.
- */
 
-// Prevent caching
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
-// Load database configuration
 $configPath = __DIR__ . '/db_config.php';
 if (!file_exists($configPath)) {
     echo json_encode(['success' => false, 'error' => 'db_config.php not found.']);
@@ -18,7 +11,6 @@ if (!file_exists($configPath)) {
 require_once $configPath;
 require_once __DIR__ . '/security.php';
 
-// Determine if we are running in CLI or HTTP
 $isCli = (php_sapi_name() === 'cli');
 
 function migration_format_errors(array $errors, bool $isCli): array {
@@ -35,7 +27,6 @@ function migration_log_error(string $message): void {
 
 security_require_cli_or_token('MIGRATION_TOKEN');
 
-// Establish DB Connection
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
     $pdo = new PDO($dsn, DB_USER, DB_PASS, [
@@ -57,28 +48,24 @@ $applied = [];
 $errors = [];
 
 try {
-    // 1. Ensure migration_history table exists
     $historySqlFile = __DIR__ . '/data/migrations/03_create_migration_history.sql';
     if (!file_exists($historySqlFile)) {
         throw new MigrationException("Core migration file 03_create_migration_history.sql is missing!");
     }
-    
+
     $historySql = file_get_contents($historySqlFile);
     $pdo->exec($historySql);
 
-    // 2. Fetch already applied migrations
     $stmt = $pdo->query("SELECT migration_name FROM migration_history");
     $appliedMigrations = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // 3. Scan migrations directory
     $migrationsDir = __DIR__ . '/data/migrations';
     $files = glob($migrationsDir . '/*.sql');
-    sort($files); // Sort numerically/alphabetically
+    sort($files);
 
     foreach ($files as $file) {
         $fileName = basename($file);
-        
-        // Skip migration history creation sql itself since we already ran it
+
         if ($fileName === '03_create_migration_history.sql') {
             continue;
         }
@@ -91,16 +78,14 @@ try {
 
             try {
                 $pdo->beginTransaction();
-                // Execute migration queries
                 $pdo->exec($sqlContent);
-                // Record execution
                 $logStmt = $pdo->prepare("INSERT INTO migration_history (migration_name) VALUES (?)");
                 $logStmt->execute([$fileName]);
-                
+
                 if ($pdo->inTransaction()) {
                     $pdo->commit();
                 }
-                
+
                 $applied[] = $fileName;
             } catch (Exception $e) {
                 if ($pdo->inTransaction()) {
@@ -109,18 +94,16 @@ try {
                 $errorMessage = "Migration '$fileName' failed: " . $e->getMessage();
                 migration_log_error($errorMessage);
                 $errors[] = $errorMessage;
-                break; // Stop running subsequent migrations on error
+                break;
             }
         }
     }
-
 } catch (Exception $e) {
     $errorMessage = "Global migration manager error: " . $e->getMessage();
     migration_log_error($errorMessage);
     $errors[] = $errorMessage;
 }
 
-// Response output
 $status = empty($errors);
 $response = [
     'success' => $status,

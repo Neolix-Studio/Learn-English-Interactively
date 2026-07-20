@@ -8,7 +8,7 @@ export function PlacementScreen() {
       <h2 className="welcome-step-title">
         Honnan szeretnéd kezdeni?
       </h2>
-      
+
       <div className="welcome-option-stack welcome-placement-stack">
         <button
           onClick={() => navigate('/lesson/ftue')}
@@ -55,8 +55,8 @@ export function PlacementScreen() {
         </button>
       </div>
 
-      <button 
-        onClick={() => navigate(-1)} 
+      <button
+        onClick={() => navigate(-1)}
         className="welcome-back-button"
       >
         Vissza

@@ -20,12 +20,10 @@ export const CharactersPage: React.FC = () => {
       if (location.state?.updatedCharacters) {
         const chars = location.state.updatedCharacters;
         setTimeout(() => {
-          // Find the first character element to scroll to
           const firstEl = document.getElementById(`char-${chars[0]}`);
           if (firstEl) {
             firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            // Add pulse animation
+
             chars.forEach((char: string) => {
               const charEl = document.getElementById(`char-${char}`);
               if (charEl) {
@@ -34,7 +32,7 @@ export const CharactersPage: React.FC = () => {
               }
             });
           }
-        }, 300); // Wait for render
+        }, 300);
       }
     } catch (e) {
       console.error(e);
@@ -79,10 +77,8 @@ export const CharactersPage: React.FC = () => {
   };
 
   const playAudio = (text: string) => {
-    // For now, use SpeechSynthesis API as placeholder
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
-    // Optionally slow it down a bit to hear pronunciation clearly
     utterance.rate = 0.8;
     window.speechSynthesis.speak(utterance);
   };
@@ -136,7 +132,6 @@ export const CharactersPage: React.FC = () => {
             )}
             <div style={{ fontSize: '1.8rem', fontWeight: 600, color: isActive ? '#F59E0B' : 'var(--color-text-main)' }}>{item.ipa}</div>
             <div style={{ fontSize: '1rem', color: 'var(--color-text-muted)', marginTop: '0.4rem', fontWeight: 600 }}>{item.example}</div>
-            {/* Progress bar */}
             <div style={{ width: '40px', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', marginTop: '1rem', overflow: 'hidden' }}>
               <div style={{ width: `${progressPercent}%`, height: '100%', background: '#F59E0B' }}></div>
             </div>
@@ -160,28 +155,28 @@ export const CharactersPage: React.FC = () => {
           z-index: 10;
         }
       `}</style>
-      <SidebarLeft 
+      <SidebarLeft
         isOpen={isMobileNavOpen}
         onClose={() => setIsMobileNavOpen(false)}
-        onOpenProfile={() => navigate('/profile')} 
+        onOpenProfile={() => navigate('/profile')}
       />
-      
+
       <div className="main-stage-track">
-        <button 
-          className="mobile-menu-btn" 
+        <button
+          className="mobile-menu-btn"
           onClick={() => setIsMobileNavOpen(true)}
           style={{ position: 'absolute', top: '15px', left: '15px', zIndex: 90, background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}
         >
           ☰
         </button>
         <div id="app">
-          
+
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <h1 style={{ fontSize: '2.2rem', color: 'var(--color-text-main)', marginBottom: '1rem', fontWeight: 800 }}>Ismerd meg az angol nyelv hangjait!</h1>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '1.2rem', marginBottom: '2rem', lineHeight: '1.5' }}>
               Fejleszd a hallásod és tanuld meg kiejteni az angol nyelv hangjait
             </p>
-            <button 
+            <button
               onClick={handleStartLesson}
               style={{
                 background: 'var(--color-accent-in)',
@@ -215,7 +210,7 @@ export const CharactersPage: React.FC = () => {
             <h2 style={{ fontSize: '1.3rem', color: 'var(--color-text-main)', fontWeight: 800, margin: 0 }}>Magánhangzók</h2>
             <div style={{ flex: 1, height: '2px', background: 'rgba(255,255,255,0.05)' }}></div>
           </div>
-          
+
           {renderGrid(charactersData.vowels)}
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '3.5rem', marginBottom: '2rem' }}>

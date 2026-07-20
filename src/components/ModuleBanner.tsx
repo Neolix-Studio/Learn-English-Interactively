@@ -9,9 +9,9 @@ interface ModuleBannerProps {
 
 export const ModuleBanner: React.FC<ModuleBannerProps> = ({ module, onOpenGrammar }) => {
   return (
-    <div 
-      className="module-banner-container" 
-      style={{ 
+    <div
+      className="module-banner-container"
+      style={{
         '--banner-color': module.themeColor || '#58CC02'
       } as React.CSSProperties}
     >
@@ -19,9 +19,9 @@ export const ModuleBanner: React.FC<ModuleBannerProps> = ({ module, onOpenGramma
         <h2 className="module-banner-title">{module.title}</h2>
         <p className="module-banner-desc">{module.description}</p>
       </div>
-      
-      <button 
-        className="module-banner-grammar-btn" 
+
+      <button
+        className="module-banner-grammar-btn"
         onClick={() => onOpenGrammar(module.id)}
       >
         <div className="btn-inner">

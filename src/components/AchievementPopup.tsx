@@ -21,15 +21,12 @@ export const AchievementPopup: React.FC = () => {
 
   useEffect(() => {
     if (isVisible && unlockedAchievements.length > 0) {
-      // Auto-hide after 5 seconds
       const timer = setTimeout(() => {
         setIsVisible(false);
-        // Remove the first item from the queue
         setTimeout(() => setUnlockedAchievements(prev => prev.slice(1)), 300);
       }, 5000);
       return () => clearTimeout(timer);
     } else if (!isVisible && unlockedAchievements.length > 0) {
-      // Show next in queue
       const timer = setTimeout(() => setIsVisible(true), 500);
       return () => clearTimeout(timer);
     }

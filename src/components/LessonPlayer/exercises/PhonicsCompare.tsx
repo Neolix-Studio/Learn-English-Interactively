@@ -9,7 +9,7 @@ interface PhonicsCompareProps {
 
 export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  
+
   const initialTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -24,12 +24,10 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
   useEffect(() => {
     setSelectedOption(null);
     onAnswer(false);
-    
-    // Slight initial delay so it doesn't blast immediately on render
+
     initialTimeoutRef.current = setTimeout(() => {
       playAudio1();
-      
-      // Delay second audio
+
       timeoutRef.current = setTimeout(() => {
         playAudio2();
       }, 1500);
@@ -43,12 +41,12 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
 
   const handleSelect = (option: 'same' | 'different') => {
     if (isAnswered) return;
-    
+
     setSelectedOption(option);
-    
+
     const isActuallySame = question.isSame;
     const isCorrect = (option === 'same' && isActuallySame) || (option === 'different' && !isActuallySame);
-    
+
     onAnswer(isCorrect);
   };
 
@@ -88,8 +86,7 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
       <h2 style={{ fontSize: '1.8rem', color: 'var(--color-text-main)', marginBottom: '3rem', fontWeight: 'bold' }}>
         {question.instruction || 'Hallgasd meg és válaszolj!'}
       </h2>
-      
-      {/* Audio buttons container */}
+
       <div style={{
         background: 'var(--color-bg-surface)',
         borderRadius: '24px',
@@ -102,7 +99,6 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
         width: '100%',
         maxWidth: '300px'
       }}>
-        {/* Audio 1 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button onClick={handleManualPlay1} style={{
             width: '64px', height: '64px', borderRadius: '50%', background: 'var(--color-accent-in)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -117,7 +113,6 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
           </div>
         </div>
 
-        {/* Audio 2 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button onClick={handleManualPlay2} style={{
             width: '64px', height: '64px', borderRadius: '50%', background: 'var(--color-accent-in)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -137,7 +132,6 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
         {question.questionText || 'Melyik szavakat hallod?'}
       </div>
 
-      {/* Options */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
         <button onClick={() => handleSelect('same')} style={getOptionStyle('same')}>
           ugyanazt a szót

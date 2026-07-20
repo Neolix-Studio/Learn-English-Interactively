@@ -21,31 +21,26 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
   const { isGuest } = useUser();
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  
-  // Health states
+
   const [playerHearts, setPlayerHearts] = useState(5);
   const [bossMaxHealth, setBossMaxHealth] = useState(1);
   const [bossHealth, setBossHealth] = useState(1);
-  
-  // Animation states
+
   const [bossState, setBossState] = useState<'idle' | 'hit' | 'attack' | 'defeated'>('idle');
   const [playerState, setPlayerState] = useState<'idle' | 'hit'>('idle');
 
-  // Feedback state
   const [feedback, setFeedback] = useState<'none' | 'correct' | 'incorrect'>('none');
   const [selectedAnswerCorrect, setSelectedAnswerCorrect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isPostLesson, setIsPostLesson] = useState(false);
   const [isDefeated, setIsDefeated] = useState(false);
 
-  // Fetch and generate questions on mount
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         setIsLoading(true);
-        // Use the pre-loaded data directly from Vite import.meta.glob
         const data = lessonNode;
-        
+
         let rawItems = [];
         if (data.levels) {
             rawItems = data.levels[0].exercises;
@@ -54,11 +49,11 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
         } else if (Array.isArray(data)) {
             rawItems = data;
         }
-        
-        let generatedQuestions = rawItems.length > 0 && rawItems[0].type 
-            ? rawItems 
+
+        let generatedQuestions = rawItems.length > 0 && rawItems[0].type
+            ? rawItems
             : DynamicExerciseEngine.generate(rawItems);
-        
+
         setQuestions(generatedQuestions);
         setBossMaxHealth(generatedQuestions.length);
         setBossHealth(generatedQuestions.length);
@@ -68,7 +63,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
         setIsLoading(false);
       }
     };
-    
+
     fetchQuestions();
   }, [lessonNode]);
 
@@ -93,7 +88,6 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
 
   const handleCheck = () => {
     if (feedback === 'none') {
-      // Determine text to read based on exercise type
       let textToRead = "";
       if (currentQuestion.type === 'word_order') {
         textToRead = currentQuestion.correctAnswer;
@@ -103,7 +97,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
       } else if (currentQuestion.type === 'dictation' || currentQuestion.type === 'image_choice' || currentQuestion.type === 'speak_verify') {
         textToRead = currentQuestion.sentence || currentQuestion.correctAnswer;
       }
-      
+
       if (textToRead) {
         playTTS(textToRead);
       }
@@ -111,29 +105,27 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
       if (selectedAnswerCorrect) {
         setFeedback('correct');
         playSoundEffect('success');
-        
-        // Damage boss
+
         setBossHealth(prev => Math.max(0, prev - 1));
         setBossState('hit');
         setTimeout(() => setBossState(bossHealth - 1 <= 0 ? 'defeated' : 'idle'), 800);
-        
+
       } else {
         setFeedback('incorrect');
         playSoundEffect('fail');
-        
-        // Boss attacks player
+
         setBossState('attack');
         setTimeout(() => setBossState('idle'), 500);
-        
+
         setTimeout(() => {
             setPlayerState('hit');
             setPlayerHearts(prev => Math.max(0, prev - 1));
             setTimeout(() => setPlayerState('idle'), 500);
-            
+
             if (playerHearts - 1 <= 0) {
                 setIsDefeated(true);
             }
-        }, 400); // Hit impacts after attack animation
+        }, 400);
       }
     } else {
       setFeedback('none');
@@ -160,8 +152,8 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
   if (isPostLesson) {
     return (
       <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 1000 }}>
-        <PostLesson 
-          baseXp={30} // Bonus XP for Boss
+        <PostLesson
+          baseXp={30}
           accuracy={Math.floor((playerHearts / 5) * 100)}
           isGuest={isGuest}
           onComplete={() => onComplete({ xpEarned: 30, perfect: playerHearts === 5 })}
@@ -182,13 +174,13 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
 
   return (
     <div className="screen active interactive-active" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 1000 }}>
-      
+
       <style>{`
         .boss-idle { animation: float 3s ease-in-out infinite; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
         .boss-hit { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; filter: drop-shadow(0 0 20px red) brightness(2) !important; }
         .boss-attack { animation: lunge 0.5s ease-in forwards; filter: drop-shadow(0 0 30px purple); }
         .boss-defeated { animation: sinkDown 1s ease-in forwards, dissolve 1s ease-in forwards; }
-        
+
         .player-idle { }
         .player-hit { animation: flashRed 0.5s ease; }
 
@@ -220,14 +212,11 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
         }
       `}</style>
 
-      {/* HIT FLASH OVERLAY */}
       <div className={`player-${playerState}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 10 }}></div>
 
-      {/* HEADER: Health Bars */}
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem 2rem', gap: '2rem', zIndex: 20 }}>
         <button className="interactive-close-btn" onClick={onExit} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'rgba(255,255,255,0.5)' }}>✖</button>
-        
-        {/* Boss Health Bar */}
+
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div style={{ color: 'white', fontWeight: 'bold', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem' }}>Főnök (Boss)</div>
             <div style={{ width: '100%', maxWidth: '400px', height: '24px', background: 'rgba(0,0,0,0.5)', borderRadius: '12px', border: '2px solid #4a4a6a', overflow: 'hidden', position: 'relative' }}>
@@ -235,31 +224,27 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
             </div>
         </div>
 
-        {/* Player Hearts */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold', color: '#EF4444', fontSize: '1.5rem', background: 'rgba(0,0,0,0.5)', padding: '0.5rem 1rem', borderRadius: '1rem', border: '2px solid #4a4a6a' }}>
           <span>❤️</span>
           <span>{playerHearts}</span>
         </div>
       </header>
 
-      {/* BATTLE ARENA: Boss Graphics */}
       <div style={{ flex: 1, position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
           <div className={`boss-${bossState}`} style={{ transition: 'all 0.3s' }}>
               <img src="/assets/images/boss_character.png" alt="Boss" style={{ width: '350px', height: '350px', objectFit: 'contain' }} />
           </div>
       </div>
 
-      {/* MIDDLE: Exercise Content Wrapped in Panel */}
       <main style={{ position: 'relative', zIndex: 20, padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'white', borderTopLeftRadius: '32px', borderTopRightRadius: '32px', boxShadow: '0 -10px 40px rgba(0,0,0,0.3)', minHeight: '40vh' }}>
         <h3 style={{ color: 'var(--color-text-muted)', margin: '0 0 1rem 0', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.9rem' }}>Támadás (Kérdés {questions.length - bossHealth + 1} / {questions.length})</h3>
         {renderExercise()}
       </main>
 
-      {/* FOOTER: Validation Banner & Check Button */}
-      <footer style={{ 
-        padding: '1.5rem 2rem', 
-        display: 'flex', 
-        alignItems: 'center', 
+      <footer style={{
+        padding: '1.5rem 2rem',
+        display: 'flex',
+        alignItems: 'center',
         justifyContent: 'space-between',
         background: feedback === 'correct' ? '#10B981' : feedback === 'incorrect' ? '#EF4444' : 'white',
         color: feedback !== 'none' ? 'white' : 'var(--color-text-main)',
@@ -286,11 +271,11 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
             </div>
           )}
         </div>
-        
-        <button 
-          className="btn btn-primary" 
+
+        <button
+          className="btn btn-primary"
           onClick={handleCheck}
-          style={{ 
+          style={{
             background: feedback === 'correct' ? 'white' : feedback === 'incorrect' ? 'white' : 'var(--color-accent-in)',
             color: feedback === 'correct' ? '#059669' : feedback === 'incorrect' ? '#B91C1C' : 'white',
             borderBottom: `4px solid ${feedback === 'correct' ? '#D1FAE5' : feedback === 'incorrect' ? '#FEE2E2' : 'var(--color-accent-on)'}`,

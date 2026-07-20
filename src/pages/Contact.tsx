@@ -28,7 +28,7 @@ export function Contact() {
 
     if (!name) return showStatus('Kérjük, adja meg a nevét!', 'error');
     if (!email) return showStatus('Kérjük, adja meg az e-mail címét!', 'error');
-    
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) return showStatus('Kérjük, valós e-mail címet adjon meg!', 'error');
     if (!message) return showStatus('Az üzenet mező nem lehet üres!', 'error');
@@ -45,7 +45,7 @@ export function Contact() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Kapcsolat | Neolix"
         description="Vedd fel velünk a kapcsolatot, ha kérdésed van a nyelvtanulással vagy a platformmal kapcsolatban."
         canonicalPath="/contact"
@@ -56,9 +56,8 @@ export function Contact() {
         <article className="legal-card">
           <h1>Kapcsolat (Contact)</h1>
           <p>Utolsó frissítés: 2026. június 24.</p>
-          
+
           <div className="contact-grid">
-            {/* Info Section */}
             <div>
               <h2>1. Kapcsolattartási Csatornák</h2>
               <p>
@@ -96,11 +95,10 @@ export function Contact() {
               </p>
             </div>
 
-            {/* Form Section */}
             <div>
               <h2>Írjon nekünk üzenetet</h2>
               <p>Használhatja az alábbi űrlapot is az azonnali üzenetküldéshez:</p>
-              
+
               <form className="contact-form" noValidate onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="contactName">Név</label>
@@ -116,7 +114,7 @@ export function Contact() {
                 </div>
                 <button type="submit" className="btn-submit">Küldés</button>
               </form>
-              
+
               {statusText && (
                 <div className={`status-message status-${statusType}`} style={{ display: 'block' }}>
                   {statusText}
@@ -132,10 +130,10 @@ export function Contact() {
       </main>
 
       <Footer />
-      
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
       />
     </>
   );

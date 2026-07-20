@@ -11,7 +11,7 @@ export function PrivacyPolicy() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Adatvédelmi Tájékoztató | Neolix"
         description="A Neolix Adatvédelmi Tájékoztatója. Tudj meg többet arról, hogyan kezeljük az adataidat."
         canonicalPath="/privacy-policy"
@@ -22,7 +22,7 @@ export function PrivacyPolicy() {
         <article className="legal-card">
           <h1>Adatkezelési Tájékoztató</h1>
           <p>Utolsó frissítés: 2026. június 22.</p>
-          
+
           <p>A <strong>Neolix Studio</strong> (a továbbiakban: "Szolgáltató", "Adatkezelő") elkötelezett a felhasználók (a továbbiakban: "Felhasználó", "Érintett") személyes adatainak védelme iránt. Ez az Adatkezelési Tájékoztató bemutatja, hogyan kezeljük, tároljuk és védjük az Ön adatait a honlapunk használata során, összhangban a GDPR (Általános Adatvédelmi Rendelet - EU 2016/679) és a vonatkozó helyi jogszabályok előírásaival.</p>
 
           <h2>1. Az Adatkezelő adatai</h2>
@@ -35,7 +35,7 @@ export function PrivacyPolicy() {
           </p>
 
           <h2>2. A kezelt adatok köre, célja és jogalapja</h2>
-          
+
           <h3>2.1. Vendég (Guest) munkamenet</h3>
           <p>Amennyiben Ön regisztráció nélkül, vendégként használja az oldalt, nem gyűjtünk és nem tárolunk semmilyen közvetlen személyes adatot (például nevet vagy e-mail címet). A haladásának (XP, napi széria, teljesített leckék) mentéséhez és az isolated vendégélmény biztosításához a böngészője helyi tárhelyét (<strong>LocalStorage</strong>) használjuk.</p>
           <ul>
@@ -112,10 +112,10 @@ export function PrivacyPolicy() {
       </main>
 
       <Footer />
-      
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
       />
     </>
   );

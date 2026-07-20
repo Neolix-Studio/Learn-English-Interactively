@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 interface ReportProblemModalProps {
   isOpen: boolean;
   onClose: () => void;
-  // Optional context passed by the caller
   contextData?: any;
 }
 
@@ -39,7 +38,6 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
     setErrorMsg('');
 
     try {
-      // Auto-capture data
       const payload = {
         issueType,
         description,
@@ -106,7 +104,7 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
         maxHeight: '90vh',
         overflowY: 'auto'
       }}>
-        <button 
+        <button
           onClick={onClose}
           style={{
             position: 'absolute',
@@ -134,11 +132,11 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
           </div>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>Probléma típusa</label>
-              <select 
-                value={issueType} 
+              <select
+                value={issueType}
                 onChange={(e) => setIssueType(e.target.value)}
                 style={{
                   padding: '0.8rem',
@@ -160,7 +158,7 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>E-mail címed (Opcionális)</label>
-              <input 
+              <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -179,7 +177,7 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>Leírás *</label>
-              <textarea 
+              <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Mi történt pontosan?"
@@ -199,7 +197,7 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>Lépések a reprodukáláshoz (Opcionális)</label>
-              <textarea 
+              <textarea
                 value={steps}
                 onChange={(e) => setSteps(e.target.value)}
                 placeholder="Hogyan tudjuk mi is előidézni a hibát?"
@@ -223,8 +221,8 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
               </div>
             )}
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={status === 'submitting'}
               style={{
                 marginTop: '1rem',

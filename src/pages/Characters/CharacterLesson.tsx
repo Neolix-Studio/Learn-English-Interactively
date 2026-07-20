@@ -20,10 +20,8 @@ export function CharacterLesson() {
   };
 
   const handleComplete = (scoreData: any) => {
-    // Basic completion. XP for character lessons is smaller (e.g. 10 base) but we'll use 15 here.
     completeLesson(charNode.id, scoreData.xpEarned, 100, scoreData.completedLessonId, true, false);
 
-    // Specifically save character progress in localStorage for guests
     try {
       const localCharProgress = JSON.parse(localStorage.getItem('guest_character_progress') || '{}');
       if (scoreData.characters && scoreData.characters.length > 0) {
@@ -32,7 +30,6 @@ export function CharacterLesson() {
           localCharProgress[char] = Math.min(currentLevel + 1, 5);
         });
       } else {
-        // Fallback for hardcoded "s_z_pairs"
         const chars = id?.replace('_pairs', '').split('_') || [];
         chars.forEach((char: string) => {
           const currentLevel = localCharProgress[char] || 0;
@@ -52,7 +49,7 @@ export function CharacterLesson() {
   };
 
   return (
-    <LessonPlayer 
+    <LessonPlayer
       lessonNode={charNode}
       onExit={handleExit}
       onComplete={handleComplete}

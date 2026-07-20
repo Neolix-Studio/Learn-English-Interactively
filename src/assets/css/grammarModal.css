@@ -29,7 +29,6 @@
     max-height: 80vh;
 }
 
-/* Roll-down and roll-up animations */
 @keyframes rollDown {
     0% {
         transform: translateY(-50px) scaleY(0);

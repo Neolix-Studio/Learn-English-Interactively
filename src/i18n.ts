@@ -17,26 +17,28 @@ let defaultLng = localStorage.getItem('guest_base_language') || 'hu';
 
 const urlParams = new URLSearchParams(window.location.search);
 const langParam = urlParams.get('lang');
+const landParam = urlParams.get('land');
 
-// Strict domain enforcement or URL override
-if (langParam && (langParam === 'sk' || langParam === 'hu')) {
+if (landParam && (landParam === 'sk' || landParam === 'hu')) {
+  defaultLng = landParam;
+  localStorage.setItem('guest_base_language', landParam);
+} else if (langParam && (langParam === 'sk' || langParam === 'hu')) {
   defaultLng = langParam;
-  localStorage.setItem('guest_base_language', langParam); // Save it for persistence
+  localStorage.setItem('guest_base_language', langParam);
 } else if (hostname.endsWith('.sk')) {
   defaultLng = 'sk';
 } else if (hostname.endsWith('.hu')) {
   defaultLng = 'hu';
 }
-// .eu or localhost fall back to the localStorage value (defaulting to hu)
 
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: defaultLng, // Determined by domain or localStorage
+    lng: defaultLng,
     fallbackLng: 'hu',
     interpolation: {
-      escapeValue: false // React already safes from xss
+      escapeValue: false
     }
   });
 

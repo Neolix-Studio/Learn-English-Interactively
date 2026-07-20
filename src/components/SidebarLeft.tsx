@@ -6,15 +6,19 @@ import { useUser } from '../context/UserContext';
 import { AudioSynth, setGlobalVolume } from '../utils/audio';
 import { api } from '../utils/api';
 import { clearGuestMigrationStorage } from '../utils/guestProgress';
+import { isLeaderboardUnlocked, LEADERBOARD_UNLOCK_XP } from '../utils/featureUnlocks';
 import { ReportProblemModal } from './modals/ReportProblemModal';
 
 interface SidebarLeftProps {
   onOpenProfile?: () => void;
   isOpen?: boolean;
   onClose?: () => void;
+  tourLevelModalOpen?: boolean;
+  onTourLevelModalClose?: () => void;
+  highlightLeaderboardUnlock?: boolean;
 }
 
-export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen, onClose }) => {
+export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen, onClose, tourLevelModalOpen = false, onTourLevelModalClose, highlightLeaderboardUnlock = false }) => {
   const { data, activeLevel, setActiveLevel, updateProgress, buyCosmetic } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,10 +28,17 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
     const saved = localStorage.getItem('adhd_volume');
     return saved ? Math.round(Number(saved) * 100) : 50;
   });
-  
+
   const [showSettings, setShowSettings] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isLevelModalOpen, setIsLevelModalOpen] = useState(false);
+  const leaderboardUnlocked = isLeaderboardUnlocked(data.points);
+  const displayedLevelModalOpen = isLevelModalOpen || tourLevelModalOpen;
+
+  const closeLevelModal = () => {
+    setIsLevelModalOpen(false);
+    onTourLevelModalClose?.();
+  };
 
   const [reducedMotion, setReducedMotion] = useState(() => {
     return localStorage.getItem('neolix_reduced_motion') === 'true';
@@ -73,28 +84,28 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
 
   const handleThemeChange = async (theme: string) => {
     const unlocked = data.unlocked_themes || ['system', 'light', 'dark'];
-    
+
     if (!unlocked.includes(theme)) {
       let cost = 0;
       if (theme === 'fall') cost = 200;
       if (theme === 'halloween') cost = 500;
-      
+
       const bones = data.scores?.bones || 0;
       if (bones < cost) {
         alert(t('settings.not_enough_bones', { cost }));
         return;
       }
-      
+
       const confirm = window.confirm(t('settings.confirm_purchase', { cost }));
       if (!confirm) return;
-      
+
       const res = await buyCosmetic('theme', theme, cost);
       if (!res.success) {
         alert(res.message);
         return;
       }
     }
-    
+
     updateProgress({
       scores: {
         ...data.scores,
@@ -121,32 +132,32 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
   return (
     <aside className={`dashboard-left-sidebar ${isOpen ? 'is-active' : ''}`} aria-label="Fő navigáció">
       <button className="mobile-close-stats-btn" onClick={onClose}>✕ {t('sidebar.close')}</button>
-      
+
       <Link to="/" onClick={onClose} className="logo" aria-label="Vissza a főoldalra">
         <span className="logo-text">
           Lexipaws
         </span>
       </Link>
-      
+
       <nav className="main-nav" aria-label="Szintválasztó navigáció">
         <div className="sidebar-section-title">
           {t('sidebar.journey')}
         </div>
         <div style={{ padding: '0 1rem 0.5rem 1rem' }}>
-          <button 
+          <button
             type="button"
-            onClick={() => setIsLevelModalOpen(true)} 
-            className="nav-link left-nav-link active-level-button" 
+            onClick={() => setIsLevelModalOpen(true)}
+            className="nav-link left-nav-link active-level-button"
             id="level-selector-btn"
-            style={{ 
-              width: '100%', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'space-between', 
-              padding: '0.8rem 1.2rem', 
-              background: 'rgba(255,255,255,0.06)', 
-              borderRadius: '12px', 
-              border: '1px solid rgba(255,255,255,0.1)', 
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.8rem 1.2rem',
+              background: 'rgba(255,255,255,0.06)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.1)',
               cursor: 'pointer',
               color: 'inherit',
               fontFamily: 'inherit',
@@ -180,9 +191,21 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
             </Link>
           </li>
           <li>
-            <Link to="/leaderboard" onClick={onClose} className={`nav-link left-nav-link ${location.pathname === '/leaderboard' ? 'active' : ''}`}>
-              <span className="nav-icon">🏆</span> {t('sidebar.leaderboard')}
-            </Link>
+            {leaderboardUnlocked ? (
+              <Link to="/leaderboard" onClick={onClose} className={`nav-link left-nav-link leaderboard-nav-link ${highlightLeaderboardUnlock ? 'leaderboard-unlock-pulse' : ''} ${location.pathname === '/leaderboard' ? 'active' : ''}`}>
+                <span className="nav-icon">🏆</span> {t('sidebar.leaderboard')}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                className="nav-link left-nav-link leaderboard-nav-link nav-link-disabled"
+                aria-disabled="true"
+                title={t('sidebar.leaderboard_locked', { amount: LEADERBOARD_UNLOCK_XP - (data.points || 0) })}
+              >
+                <span className="nav-icon">🏆</span> {t('sidebar.leaderboard')}
+                <span className="nav-lock">🔒</span>
+              </button>
+            )}
           </li>
         </ul>
       </nav>
@@ -201,18 +224,18 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
           </li>
           {showSettings && (
             <div className="sidebar-settings-panel">
-              
+
               <div className="sidebar-settings-group">
                 <div className="sidebar-settings-row">
                   <label htmlFor="sound-slider" className="sidebar-settings-label">{t('settings.volume')}</label>
                   <span id="sound-val-display" className="sidebar-settings-val">{volume}%</span>
                 </div>
-                <input 
-                  type="range" 
-                  id="sound-slider" 
-                  min="0" 
-                  max="100" 
-                  step="1" 
+                <input
+                  type="range"
+                  id="sound-slider"
+                  min="0"
+                  max="100"
+                  step="1"
                   value={volume}
                   onChange={(e) => {
                     const newVol = Number(e.target.value);
@@ -222,27 +245,27 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
                     setGlobalVolume(newVol / 100);
                     AudioSynth.playTone(300 + newVol * 4, 'sine', 0.05);
                   }}
-                  className="sidebar-settings-slider" 
+                  className="sidebar-settings-slider"
                 />
               </div>
-              
+
               <div className="sidebar-settings-switch-row">
                 <label htmlFor="reduced-motion-toggle" className="sidebar-settings-label">{t('settings.reduced_motion')}</label>
                 <label className="switch" htmlFor="reduced-motion-toggle">
-                  <input 
-                    type="checkbox" 
-                    id="reduced-motion-toggle" 
+                  <input
+                    type="checkbox"
+                    id="reduced-motion-toggle"
                     checked={reducedMotion}
                     onChange={(e) => setReducedMotion(e.target.checked)}
                   />
                   <span className="slider round"></span>
                 </label>
               </div>
-              
+
               <div className="sidebar-settings-vertical-group">
                 <label className="sidebar-settings-label">{t('settings.visual_theme')}</label>
-                <select 
-                  value={(data.scores?.active_theme === 'default' ? 'system' : data.scores?.active_theme) || 'system'} 
+                <select
+                  value={(data.scores?.active_theme === 'default' ? 'system' : data.scores?.active_theme) || 'system'}
                   onChange={(e) => handleThemeChange(e.target.value)}
                   className="sidebar-settings-select"
                 >
@@ -256,14 +279,14 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
                     {!(data.unlocked_themes || ['system', 'light', 'dark']).includes('halloween') ? 'Halloween 🎃 (🔒 500 🦴)' : 'Halloween 🎃'}
                   </option>
                 </select>
-                <button 
+                <button
                   onClick={() => handleThemeChange('system')}
                   className="sidebar-settings-reset-btn"
                 >
                   {t('settings.reset_theme')}
                 </button>
               </div>
-              
+
             </div>
           )}
           <li>
@@ -273,7 +296,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
                   <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
                   <line x1="12" y1="2" x2="12" y2="12"></line>
                 </svg>
-              </span> 
+              </span>
               {t('sidebar.logout')}
             </button>
           </li>
@@ -284,7 +307,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
             </button>
           </li>
         </ul>
-        
+
         <div className="sidebar-footer-links">
           <Link to="/privacy-policy" className="sidebar-footer-link">{t('footer.privacy_policy')}</Link>
           <Link to="/terms" className="sidebar-footer-link">{t('footer.terms')}</Link>
@@ -296,13 +319,13 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
         </div>
       </div>
 
-        <ReportProblemModal 
-            isOpen={isReportModalOpen} 
-            onClose={() => setIsReportModalOpen(false)} 
+        <ReportProblemModal
+            isOpen={isReportModalOpen}
+            onClose={() => setIsReportModalOpen(false)}
             contextData={{ username: data?.username, activeLevel }}
         />
 
-        {isLevelModalOpen && (
+        {displayedLevelModalOpen && (
           <div style={{
             position: 'fixed',
             top: 0,
@@ -323,7 +346,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
             <button
               type="button"
               aria-label="Szintválasztó bezárása"
-              onClick={() => setIsLevelModalOpen(false)}
+              onClick={closeLevelModal}
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -347,10 +370,10 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
               border: '1px solid rgba(255, 255, 255, 0.1)',
               position: 'relative',
               zIndex: 1
-            }}>
-              <button 
+            }} className="level-selector-modal">
+              <button
                 type="button"
-                onClick={() => setIsLevelModalOpen(false)}
+                onClick={closeLevelModal}
                 style={{
                   position: 'absolute',
                   top: '1.5rem',
@@ -385,7 +408,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
                       type="button"
                       onClick={() => {
                         setActiveLevel(lvl.id);
-                        setIsLevelModalOpen(false);
+                        closeLevelModal();
                         navigate('/dashboard');
                         if (onClose) onClose();
                       }}

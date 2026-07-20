@@ -10,43 +10,42 @@ interface WordOrderProps {
 export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
   const [sourceWords, setSourceWords] = useState<string[]>([]);
   const [targetWords, setTargetWords] = useState<string[]>([]);
+  const isNativeTarget = question.targetLang === 'hu' || question.targetLang === 'sk';
 
-  // Initialize on mount or question change
   useEffect(() => {
     setSourceWords([...question.scrambledWords]);
     setTargetWords([]);
-    onAnswer(false); // Default to false until assembled correctly
-    
-    // Preload all scrambled words silently to eliminate playback delay
-    if (question.targetLang !== 'hu') {
+    onAnswer(false);
+
+    if (!isNativeTarget) {
       preloadTTS(question.scrambledWords);
     }
-  }, [question]);
+  }, [question, isNativeTarget]);
 
   const handleSourceClick = (word: string, index: number) => {
-    if (question.targetLang !== 'hu') {
+    if (!isNativeTarget) {
       playTTS(word, 'en-US');
     }
     const newSource = [...sourceWords];
     newSource.splice(index, 1);
     setSourceWords(newSource);
-    
+
     const newTarget = [...targetWords, word];
     setTargetWords(newTarget);
-    
+
     checkAnswer(newTarget);
   };
 
   const handleTargetClick = (word: string, index: number) => {
-    if (question.targetLang !== 'hu') {
+    if (!isNativeTarget) {
       playTTS(word, 'en-US');
     }
     const newTarget = [...targetWords];
     newTarget.splice(index, 1);
     setTargetWords(newTarget);
-    
+
     setSourceWords([...sourceWords, word]);
-    
+
     checkAnswer(newTarget);
   };
 
@@ -59,20 +58,21 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
   const promptText = question.hu || question.prompt || "Fordítsd le ezt a mondatot";
 
   return (
-    <div style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column' }}>
-      <QuestionHeader 
-        text={promptText} 
-        newWords={question.newWords} 
+    <div className="word-order-exercise" style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column' }}>
+      <QuestionHeader
+        text={promptText}
+        newWords={question.newWords}
         dictionary={question.dictionary}
-        hideAudio={question.targetLang !== 'hu'}
+        hideAudio={true}
+        disableWordAudio={isNativeTarget}
       />
-      
-      {/* Target Area (Lines where words are placed) */}
-      <div 
-        style={{ 
-          minHeight: '60px', 
-          borderBottom: '2px solid var(--color-bg-surface)', 
-          paddingBottom: '1rem', 
+
+      <div
+        className="word-order-target"
+        style={{
+          minHeight: '60px',
+          borderBottom: '2px solid var(--color-bg-surface)',
+          paddingBottom: '1rem',
           marginBottom: '2rem',
           display: 'flex',
           flexWrap: 'wrap',
@@ -80,9 +80,9 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
         }}
       >
         {targetWords.map((w, i) => (
-          <button 
+          <button
             key={`t-${i}`}
-            className="interactive-word-chip" 
+            className="interactive-word-chip"
             onClick={() => handleTargetClick(w, i)}
             style={{
               padding: '0.8rem 1.2rem',
@@ -100,13 +100,12 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
           </button>
         ))}
       </div>
-      
-      {/* Source Area (Word Bank) */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center' }}>
+
+      <div className="word-order-source" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center' }}>
         {sourceWords.map((w, i) => (
-          <button 
+          <button
             key={`s-${i}`}
-            className="interactive-word-chip" 
+            className="interactive-word-chip"
             onClick={() => handleSourceClick(w, i)}
             style={{
               padding: '0.8rem 1.2rem',

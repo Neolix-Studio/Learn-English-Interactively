@@ -9,17 +9,14 @@ try {
     $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASS);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Get all table names in the current database
     $stmt = $pdo->query("SHOW TABLES");
     $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // Disable foreign key checks so we can truncate safely
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
 
     echo "Starting database reset...<br><br>";
 
     foreach ($tables as $table) {
-        // Skip tts_cache (so we don't lose audio) and migration_history (so we don't re-run schema setups)
         if ($table !== 'tts_cache' && $table !== 'migration_history') {
             $pdo->exec("TRUNCATE TABLE `$table`");
             echo "✅ Truncated table: <strong>$table</strong><br>";
@@ -28,7 +25,6 @@ try {
         }
     }
 
-    // Re-enable foreign key checks
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
 
     echo "<br>🎉 <strong>Database successfully reset!</strong> You can now test with a fresh account.";

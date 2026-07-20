@@ -16,10 +16,9 @@ const match = lastUserInput.match(/<svg[\s\S]*?<\/svg>/i);
 
 if (match) {
     let svgContent = match[0];
-    
-    // Remove the green background path
+
     svgContent = svgContent.replace(/<path[^>]*fill="#8DC339"[^>]*\/>/i, '');
-    
+
     fs.writeFileSync('public/new-icon.svg', svgContent);
     console.log('Successfully extracted and saved public/new-icon.svg');
 } else {

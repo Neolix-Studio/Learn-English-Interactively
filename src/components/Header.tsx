@@ -16,16 +16,14 @@ export function Header({ onLoginClick }: HeaderProps) {
   return (
     <header className="site-header" style={{ zIndex: 9999 }}>
       <div className="header-container">
-        {/* Clicking the logo always returns them here to the main landing page */}
         <Link to="/" className="logo" aria-label="Főoldal">
           <span className="logo-text">Lexipaws</span>
         </Link>
-        
-        {/* Hamburger Menu Toggle */}
-        <button 
-          className={`mobile-menu-toggle ${isMobileMenuOpen ? 'is-active' : ''}`} 
-          id="mobile-menu-toggle" 
-          aria-label="Menü megnyitása" 
+
+        <button
+          className={`mobile-menu-toggle ${isMobileMenuOpen ? 'is-active' : ''}`}
+          id="mobile-menu-toggle"
+          aria-label="Menü megnyitása"
           aria-expanded={isMobileMenuOpen}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
@@ -34,7 +32,6 @@ export function Header({ onLoginClick }: HeaderProps) {
           <span className="hamburger-line"></span>
         </button>
 
-        {/* Nav Drawer Wrapper */}
         <div className={`nav-drawer ${isMobileMenuOpen ? 'is-active' : ''}`} id="nav-drawer">
           <nav className="main-nav" aria-label="Fő navigáció">
             <ul className="nav-list">
@@ -46,7 +43,6 @@ export function Header({ onLoginClick }: HeaderProps) {
           </nav>
 
           <div className="header-actions" style={{ display: 'flex', alignItems: 'center' }}>
-            {/* Language Switcher to Gateway */}
             <Link to="/gateway" className="lang-switcher" title="Nyelv megváltoztatása" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: '#F3F4F6', marginRight: '15px', border: '1px solid #E5E7EB', cursor: 'pointer' }}>
               <svg viewBox="0 0 100 100" width="24" height="24">
                 <clipPath id="circle-clip-nav">
@@ -59,7 +55,7 @@ export function Header({ onLoginClick }: HeaderProps) {
                 </g>
               </svg>
             </Link>
-            
+
             {isAuthenticated ? (
               <div className="header-authenticated-actions">
                 <span className="user-welcome">Szia, {data.username}!</span>
@@ -68,8 +64,8 @@ export function Header({ onLoginClick }: HeaderProps) {
                 </Link>
               </div>
             ) : (
-              <button 
-                className="btn btn-logout" 
+              <button
+                className="btn btn-logout"
                 id="nav-auth-btn"
                 disabled={isLoading}
                 onClick={() => {

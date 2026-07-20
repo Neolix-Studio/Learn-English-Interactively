@@ -1,4 +1,3 @@
-// src/utils/learningContent.ts
 
 export const learningContent: Record<string, any> = {
     A1: {

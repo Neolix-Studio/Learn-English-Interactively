@@ -38,7 +38,6 @@ try {
         $pdo->exec("ALTER TABLE `users` ADD COLUMN `preferred_language` VARCHAR(10) DEFAULT NULL");
         echo "✅ Added `preferred_language` column to `users` table.<br>";
     } catch (PDOException $e) {
-        // 1060 is "Duplicate column name", meaning it already exists, which is fine
         if ($e->getCode() == '42S21' || strpos($e->getMessage(), '1060') !== false) {
             echo "✅ `preferred_language` column already exists in `users` table.<br>";
         } else {

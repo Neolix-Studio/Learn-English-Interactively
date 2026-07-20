@@ -224,16 +224,14 @@ const groups = [
     }
 ];
 
-// Helper to generate the JSON content for a group
 function generateGroupJSON(group) {
     const lessons = [];
 
     group.levels.forEach((levelWordSets, levelIndex) => {
         let items = [];
         let speakItems = [];
-        
+
         levelWordSets.forEach((wordSet) => {
-            // Generate ListenChoose for EVERY word in the set
             wordSet.forEach((correctWord, correctWordIndex) => {
                 items.push({
                     type: "phonics_listen_choose",
@@ -246,7 +244,6 @@ function generateGroupJSON(group) {
                     }))
                 });
 
-                // Collect Speak for EVERY word in the set to pick from later
                 speakItems.push({
                     type: "phonics_speak",
                     instruction: "Mondd ki ezt a szót!",
@@ -256,12 +253,10 @@ function generateGroupJSON(group) {
                 });
             });
 
-            // Generate Compare (1 per wordSet)
-            // 50% chance same, 50% chance different
             const isSame = Math.random() > 0.5;
             let word1 = wordSet[0];
-            let word2 = isSame ? wordSet[0] : wordSet[1]; // Always compare against the second word if different
-            
+            let word2 = isSame ? wordSet[0] : wordSet[1];
+
             items.push({
                 type: "phonics_compare",
                 instruction: "Hallgasd meg és válaszolj!",
@@ -274,7 +269,6 @@ function generateGroupJSON(group) {
             });
         });
 
-        // Generate 1 PhonicsMatch for ALL words in this level (usually 4 to 6 words)
         const allWords = levelWordSets.flat();
         items.push({
             type: "phonics_match",
@@ -282,14 +276,11 @@ function generateGroupJSON(group) {
             pairs: allWords.map(w => ({ text: w, audioUrl: null }))
         });
 
-        // Shuffle the items
         items.sort(() => Math.random() - 0.5);
 
-        // Pick exactly 2 random speak items
         speakItems.sort(() => Math.random() - 0.5);
         const selectedSpeakItems = speakItems.slice(0, 2);
 
-        // Append speak items at the end
         items = [...items, ...selectedSpeakItems];
 
         lessons.push({

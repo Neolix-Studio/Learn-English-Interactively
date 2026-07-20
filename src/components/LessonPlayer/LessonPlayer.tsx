@@ -137,20 +137,17 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const [isLastSubLesson, setIsLastSubLesson] = useState<boolean>(true);
   const [isReadingStory, setIsReadingStory] = useState(lessonNode?.type === 'reading_node');
   const [isStoryPeekVisible, setIsStoryPeekVisible] = useState(false);
-  
-  // Use global dictionary directly
+
   const dictionary = globalVocabulary;
   const [introducedWords, setIntroducedWords] = useState<string[]>([]);
   const [characters, setCharacters] = useState<string[]>([]);
-  
-  // Feedback state
+
   const [feedback, setFeedback] = useState<'none' | 'correct' | 'incorrect' | 'skipped'>('none');
   const [selectedAnswerCorrect, setSelectedAnswerCorrect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isPostLesson, setIsPostLesson] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Report Problem Modal state
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   useEffect(() => {
@@ -162,37 +159,33 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   }, []);
 
   const currentQuestion = questions[currentIndex];
-  
+
   const enrichedQuestion = useMemo(() => {
     return enrichQuestion(currentQuestion, dictionary, introducedWords, userData.learnedWords);
   }, [currentQuestion, dictionary, introducedWords, userData.learnedWords]);
 
-  // Fetch and generate questions on mount
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         setIsLoading(true);
-        // Use the pre-loaded data directly from Vite import.meta.glob
         const data = lessonNode;
-        
+
         const selection = selectLessonItems(data, lessonNode, userData, isGuest);
         setActiveSubLessonId(selection.currentSubLessonId);
         setIsLastSubLesson(selection.isLastSubLesson);
         if (selection.introducedWords) setIntroducedWords(selection.introducedWords);
-        
-        // Also load dictionary and introduced words if they exist at the root level
+
         if (data.introducedWords) setIntroducedWords(data.introducedWords);
         if (data.characters) setCharacters(data.characters);
-        
+
         let generatedQuestions: QuestionData[] = [];
-        
-        // Check if the items are already questions (have a 'type') or just vocabulary words
+
         if (selection.rawItems.length > 0 && selection.rawItems[0].type) {
-            generatedQuestions = selection.rawItems; // Already formatted as questions
+            generatedQuestions = selection.rawItems;
         } else {
             generatedQuestions = DynamicExerciseEngine.generate(selection.rawItems);
         }
-        
+
         setQuestions(generatedQuestions);
       } catch (err: any) {
         console.error("Failed to load lesson data:", err);
@@ -201,7 +194,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         setIsLoading(false);
       }
     };
-    
+
     fetchQuestions();
   }, [lessonNode]);
 
@@ -221,7 +214,6 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     </div>;
   }
 
-  // Calculate completed questions (include current if feedback is showing)
   const completedQuestions = currentIndex + (feedback !== 'none' ? 1 : 0);
   const progressPercent = (completedQuestions / questions.length) * 100;
 
@@ -232,14 +224,14 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const handleSkipExercise = () => {
     stopAudio();
     setFeedback('skipped');
-    playSoundEffect('success'); // Play a success sound or a neutral sound
+    playSoundEffect('success');
   };
 
   const isInterstitial = currentQuestion?.type === 'morale_boost' || currentQuestion?.type === 'harder_encouragement';
 
   const handleCheck = () => {
     if (isInterstitial) {
-      stopAudio(); // Cut off any playing audio when moving past an interstitial
+      stopAudio();
       if (currentIndex + 1 < questions.length) {
         setCurrentIndex(prev => prev + 1);
       } else {
@@ -249,7 +241,6 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     }
 
     if (feedback === 'none') {
-      // Determine text to read based on exercise type
       let textToRead = "";
       if (currentQuestion.type === 'word_order') {
         textToRead = currentQuestion.correctAnswer;
@@ -259,19 +250,18 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
       } else if (currentQuestion.type === 'dictation' || currentQuestion.type === 'image_choice' || currentQuestion.type === 'speak_verify') {
         textToRead = currentQuestion.sentence || currentQuestion.correctAnswer;
       }
-      
-      if (textToRead && currentQuestion.targetLang !== 'hu') {
-        // Clean up dialogue markers and HTML tags before sending to TTS
+
+      const isNativeTarget = currentQuestion.targetLang === 'hu' || currentQuestion.targetLang === 'sk';
+      if (textToRead && !isNativeTarget) {
         const cleanText = textToRead
             .replace(/A:\s*/g, '')
             .replace(/B:\s*/g, '')
             .replace(/<br\s*\/?>/gi, '. ')
-            .replace(/<[^>]*>?/gm, ''); // strip any other html
-            
+            .replace(/[<>]/g, '');
+
         playTTS(cleanText);
       }
 
-      // User clicked "Check" after selecting an answer
       if (selectedAnswerCorrect) {
         setFeedback('correct');
         playSoundEffect('success');
@@ -280,7 +270,6 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         playSoundEffect('fail');
         setMistakes(prev => prev + 1);
 
-        // Log mistake to backend
         if (!isGuest && !isTutorial) {
           import('../../utils/api').then(({ api }) => {
             api.fetch('log_failed_exercise', {
@@ -292,13 +281,11 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         }
       }
     } else {
-      // User clicked "Continue" after seeing feedback
-      stopAudio(); // Cut off any playing sentence audio when advancing to next question
+      stopAudio();
       setFeedback('none');
       if (currentIndex + 1 < questions.length) {
         setCurrentIndex(prev => prev + 1);
       } else {
-        // Trigger post lesson screen
         setIsPostLesson(true);
       }
     }
@@ -306,7 +293,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
 
   const renderExercise = () => {
     if (!enrichedQuestion) return null;
-    
+
     switch (currentQuestion.type) {
       case 'image_choice':
         return <ImageChoice question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
@@ -350,7 +337,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           <button className="interactive-close-btn" onClick={onExit} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>
           <div style={{ flex: 1, textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}>📖 {lessonNode.title || t('lesson.story_title')}</div>
         </header>
-        
+
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '2rem' }}>
           <div style={{ maxWidth: '800px', margin: '0 auto', width: '100%', background: 'var(--color-bg-surface)', padding: '3rem', borderRadius: '24px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
             <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center', color: 'var(--color-text-main)' }}>{lessonNode.title}</h1>
@@ -358,8 +345,8 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             <div style={{ padding: '1.5rem', background: 'var(--color-bg-base)', borderRadius: '16px', borderLeft: '4px solid var(--color-accent-in)' }}>
                 <p style={{ fontSize: '1.2rem', lineHeight: '1.8rem', color: 'var(--color-text-muted)', margin: 0 }}>{lessonNode.story.hu}</p>
             </div>
-            
-            <button 
+
+            <button
               onClick={() => setIsReadingStory(false)}
               style={{
                 width: '100%', marginTop: '3rem', padding: '1.5rem', fontSize: '1.5rem', fontWeight: 800,
@@ -380,8 +367,8 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   if (isPostLesson) {
     return (
       <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 1000 }}>
-        <PostLesson 
-          baseXp={15} 
+        <PostLesson
+          baseXp={15}
           accuracy={Math.max(0, 100 - (mistakes * 20))}
           isGuest={isGuest}
           isTutorial={isTutorial || userData.points === 0}
@@ -390,8 +377,8 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             if (introducedWords && introducedWords.length > 0) {
               syncLearnedWords(introducedWords);
             }
-            onComplete({ 
-              xpEarned: Math.max(5, 15 - mistakes), 
+            onComplete({
+              xpEarned: Math.max(5, 15 - mistakes),
               perfect: mistakes === 0,
               completedLessonId: activeSubLessonId,
               isNodeComplete: isLastSubLesson,
@@ -406,23 +393,22 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
 
   return (
     <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 1000 }}>
-      
-      {/* HEADER: Progress Bar */}
+
       <header className="interactive-header" style={{ display: 'flex', alignItems: 'center', padding: '1rem 2rem', gap: '2rem', background: 'var(--color-bg-surface)', borderBottom: 'var(--glass-border)' }}>
         <button className="interactive-close-btn" onClick={onExit} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>
-        <div className="interactive-progress-bar" style={{ 
-          flex: 1, 
-          height: '16px', 
-          background: 'var(--color-bg-base)', 
-          borderRadius: '8px', 
+        <div className="interactive-progress-bar" style={{
+          flex: 1,
+          height: '16px',
+          background: 'var(--color-bg-base)',
+          borderRadius: '8px',
           position: 'relative',
-          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)' 
+          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <div className="interactive-progress-fill" style={{ 
-            width: `${progressPercent}%`, 
-            height: '100%', 
+          <div className="interactive-progress-fill" style={{
+            width: `${progressPercent}%`,
+            height: '100%',
             borderRadius: '8px',
-            background: 'linear-gradient(180deg, #81C784 0%, #4CAF50 100%)', 
+            background: 'linear-gradient(180deg, #81C784 0%, #4CAF50 100%)',
             boxShadow: 'inset 0 2px 3px rgba(255,255,255,0.5), inset 0 -2px 3px rgba(0,0,0,0.2), 0 2px 6px rgba(76, 175, 80, 0.4)',
             transition: 'width 0.3s ease',
             position: 'relative',
@@ -437,7 +423,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           </div>
         </div>
         {lessonNode?.type === 'reading_node' && lessonNode?.story && (
-          <button 
+          <button
             onClick={() => setIsStoryPeekVisible(!isStoryPeekVisible)}
             style={{
               padding: '0.5rem 1rem', background: isStoryPeekVisible ? 'var(--color-accent-in)' : 'var(--color-bg-base)',
@@ -448,7 +434,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             {t('lesson.story_btn')}
           </button>
         )}
-        <button 
+        <button
           onClick={() => setIsReportModalOpen(true)}
           style={{
             background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem'
@@ -459,10 +445,8 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         </button>
       </header>
 
-      {/* MIDDLE: Exercise Content */}
       <main className="interactive-main">
-        
-        {/* Story Peek Bubble */}
+
         {isStoryPeekVisible && lessonNode?.story && (
           <div style={{
             position: 'absolute', top: '1rem', right: '1rem', zIndex: 10, width: '400px', maxWidth: '90%',
@@ -476,7 +460,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           </div>
         )}
         {currentQuestion.newWord && (
-          <div style={{
+          <div className="interactive-new-word-badge" style={{
             marginBottom: '2rem',
             background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
             color: 'white',
@@ -498,12 +482,11 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         {renderExercise()}
       </main>
 
-      {/* FOOTER: Validation Banner & Check Button */}
       <footer className={`interactive-footer ${feedback !== 'none' ? 'has-feedback' : ''}`} style={{
-        padding: '1.5rem 2rem', 
-        borderTop: 'var(--glass-border)', 
-        display: 'flex', 
-        alignItems: 'center', 
+        padding: '1.5rem 2rem',
+        borderTop: 'var(--glass-border)',
+        display: 'flex',
+        alignItems: 'center',
         justifyContent: 'space-between',
         background: feedback === 'correct' ? 'rgba(16, 185, 129, 0.1)' : feedback === 'incorrect' ? 'rgba(239, 68, 68, 0.1)' : feedback === 'skipped' ? 'rgba(245, 158, 11, 0.1)' : 'var(--color-bg-surface)',
         transition: 'background 0.3s'
@@ -537,11 +520,11 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             </div>
           )}
         </div>
-        
-        <button 
+
+        <button
           className="btn btn-primary interactive-submit-btn"
           onClick={handleCheck}
-          style={{ 
+          style={{
             background: (feedback === 'correct' || isInterstitial) ? '#10B981' : feedback === 'incorrect' ? '#EF4444' : feedback === 'skipped' ? '#F59E0B' : 'var(--color-accent-in)',
             borderBottom: `4px solid ${(feedback === 'correct' || isInterstitial) ? '#059669' : feedback === 'incorrect' ? '#B91C1C' : feedback === 'skipped' ? '#D97706' : 'var(--color-accent-on)'}`,
             borderTop: 'none',
@@ -562,10 +545,10 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           {isInterstitial || feedback !== 'none' ? t('lesson.continue_btn') : t('lesson.check_btn')}
         </button>
       </footer>
-      
-      <ReportProblemModal 
-        isOpen={isReportModalOpen} 
-        onClose={() => setIsReportModalOpen(false)} 
+
+      <ReportProblemModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
         contextData={{
           lessonId: lessonNode?.id,
           questionIndex: currentIndex,

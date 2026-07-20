@@ -11,19 +11,17 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({ question, onAnswer }) =>
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
-    // Generate unique items
     const newItems: any[] = [];
     question.pairs.forEach((p: any, i: number) => {
       newItems.push({ id: `en-${i}`, text: p.en, pairId: p.en, matched: false });
       newItems.push({ id: `hu-${i}`, text: p.hu, pairId: p.en, matched: false });
     });
-    
-    // Shuffle
+
     for (let i = newItems.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [newItems[i], newItems[j]] = [newItems[j], newItems[i]];
     }
-    
+
     setItems(newItems);
     setSelectedIds([]);
     onAnswer(false);
@@ -37,55 +35,49 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({ question, onAnswer }) =>
       setSelectedIds([id]);
     } else if (selectedIds.length === 1) {
       if (selectedIds[0] === id) {
-        // Deselect
         setSelectedIds([]);
         return;
       }
-      
+
       const firstItem = items.find(i => i.id === selectedIds[0]);
       if (firstItem && firstItem.pairId === item.pairId) {
-        // Match!
-        const newItems = items.map(i => 
+        const newItems = items.map(i =>
           (i.id === id || i.id === selectedIds[0]) ? { ...i, matched: true } : i
         );
         setItems(newItems);
         setSelectedIds([]);
-        
-        // Check if all matched
+
         if (newItems.every(i => i.matched)) {
           onAnswer(true);
         }
       } else {
-        // No match
         setSelectedIds([selectedIds[0], id]);
         setTimeout(() => {
           setSelectedIds((prev) => {
-             // Only clear if they are still the same (user didn't click another)
              if (prev.includes(id) && prev.includes(selectedIds[0])) return [];
              return prev;
           });
         }, 800);
       }
     } else {
-       // Already 2 selected (waiting for timeout), just select the new one
        setSelectedIds([id]);
     }
   };
 
   return (
     <div style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <QuestionHeader 
-        text="Párosítsd a szavakat!" 
-        newWords={question.newWords} 
-        dictionary={question.dictionary} 
+      <QuestionHeader
+        text="Párosítsd a szavakat!"
+        newWords={question.newWords}
+        dictionary={question.dictionary}
         hideAudio={true}
       />
-      
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', width: '100%' }}>
         {items.map((item) => {
           const isSelected = selectedIds.includes(item.id);
           const isError = selectedIds.length === 2 && selectedIds.includes(item.id);
-          
+
           return (
             <button
               key={item.id}

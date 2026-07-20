@@ -63,7 +63,6 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
         className="modal-content"
         style={{ background: 'var(--color-bg-surface)', borderRadius: '24px', padding: '0', width: '100%', maxWidth: '480px', boxShadow: '0 25px 60px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1, overflow: 'hidden', border: 'var(--glass-border)' }}
       >
-        {/* Header */}
         <div style={{ background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', padding: '1.5rem 2rem', position: 'relative' }}>
           <button
             onClick={onClose}
@@ -77,7 +76,6 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div style={{ display: 'flex', borderBottom: '1px solid var(--color-bg-base)', background: 'var(--color-bg-surface)' }}>
           {[
             { id: 'power_ups' as Tab, label: '⚡ Power-Ups' },
@@ -98,19 +96,16 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
           ))}
         </div>
 
-        {/* Success toast */}
         {buyFeedback && (
           <div style={{ margin: '1rem 1.5rem 0', padding: '0.75rem 1rem', background: 'color-mix(in srgb, #10B981 15%, transparent)', border: '1px solid #10B981', borderRadius: '10px', color: '#10B981', fontWeight: 700, fontSize: '0.9rem', textAlign: 'center', animation: 'scaleUp 0.2s ease' }}>
             {buyFeedback}
           </div>
         )}
 
-        {/* Body */}
         <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '55vh', overflowY: 'auto' }}>
 
           {activeTab === 'power_ups' && (
             <>
-              {/* Streak Shield */}
               <div style={{ border: '1.5px solid var(--color-bg-base)', borderRadius: '16px', padding: '1.1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--color-bg-base)', transition: 'border-color 0.2s', cursor: 'default' }}
                 onMouseOver={e => (e.currentTarget.style.borderColor = 'var(--color-accent-in)')}
                 onMouseOut={e => (e.currentTarget.style.borderColor = 'var(--color-bg-base)')}
@@ -139,7 +134,6 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
                   🦴 100
                 </button>
               </div>
-              {/* Fall Theme */}
               {!(data.unlocked_themes || []).includes('fall') ? (
                 <div style={{ border: '1.5px solid var(--color-bg-base)', borderRadius: '16px', padding: '1.1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--color-bg-base)', transition: 'border-color 0.2s', cursor: 'default' }}
                   onMouseOver={e => (e.currentTarget.style.borderColor = '#F59E0B')}
@@ -176,7 +170,6 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
                 </div>
               )}
 
-              {/* Halloween Theme */}
               {!(data.unlocked_themes || []).includes('halloween') ? (
                 <div style={{ border: '1.5px solid var(--color-bg-base)', borderRadius: '16px', padding: '1.1rem', display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--color-bg-base)', transition: 'border-color 0.2s', cursor: 'default' }}
                   onMouseOver={e => (e.currentTarget.style.borderColor = '#7C3AED')}
@@ -217,7 +210,6 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
 
           {activeTab === 'coming_soon' && (
             <>
-              {/* Empty / Coming Soon state */}
               <div style={{ textAlign: 'center', padding: '2.5rem 1rem' }}>
                 <div style={{ fontSize: '4rem', marginBottom: '1rem', filter: 'grayscale(30%)' }}>🔮</div>
                 <h3 style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.2rem', fontWeight: 800 }}>Hamarosan érkezik!</h3>

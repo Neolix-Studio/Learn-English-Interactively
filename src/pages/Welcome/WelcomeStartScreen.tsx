@@ -5,8 +5,7 @@ export function WelcomeStartScreen() {
 
   return (
     <div className="welcome-step welcome-start-step">
-      
-      {/* Mock Mascot Image - You can replace this with your actual SVG or image */}
+
       <div className="welcome-paw-mark" style={{
         backgroundColor: '#e5e7eb',
       }}>
@@ -16,7 +15,7 @@ export function WelcomeStartScreen() {
       <h2 className="welcome-start-title">
         Üdvözlünk a Lexipaws-nál!
       </h2>
-      
+
       <p className="welcome-start-copy">
         A legszórakoztatóbb módja az angoltanulásnak.
       </p>

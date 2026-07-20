@@ -11,7 +11,7 @@ export function Impressum() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Impresszum | Neolix"
         description="A Neolix platform üzemeltetőjének adatai és elérhetőségei."
         canonicalPath="/impressum"
@@ -22,7 +22,7 @@ export function Impressum() {
         <article className="legal-card">
           <h1>Impresszum (Impresszum / Identifikačné údaje)</h1>
           <p>Utolsó frissítés: 2026. június 22.</p>
-          
+
           <p>Az elektronikus kereskedelmi szolgáltatásokról szóló EU-irányelvek és a helyi jogszabályok (Szlovákia / Magyarország) alapján az alábbiakban olvashatók a Lexipaws üzemeltetőjének hivatalos adatai:</p>
 
           <h2>1. A Szolgáltató (Honlap üzemeltetője) adatai</h2>
@@ -68,10 +68,10 @@ export function Impressum() {
       </main>
 
       <Footer />
-      
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
       />
     </>
   );

@@ -74,7 +74,6 @@
     }
 }
 
-/* Grid layout for Contact content */
 .contact-grid {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
@@ -82,7 +81,6 @@
     align-items: start;
 }
 
-/* Contact Form Styles */
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -140,7 +138,6 @@ textarea.form-control {
     transform: translateY(0);
 }
 
-/* Status Notification Styles */
 .status-message {
     padding: 1rem;
     border-radius: 8px;
