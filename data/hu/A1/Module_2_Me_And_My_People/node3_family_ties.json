@@ -567,12 +567,12 @@
                 {
                     "type": "word_order",
                     "hu": "A barátom és a családja.",
-                    "correctAnswer": "My friend and my family.",
+                    "correctAnswer": "My friend and his family.",
                     "scrambledWords": [
                         "My",
                         "friend",
                         "and",
-                        "my",
+                        "his",
                         "family.",
                         "your",
                         "is"
