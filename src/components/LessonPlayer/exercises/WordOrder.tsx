@@ -7,18 +7,42 @@ interface WordOrderProps {
   onAnswer: (isCorrect: boolean) => void;
 }
 
+const shuffleArray = (array: string[]): string[] => {
+  const shuffled = [...array];
+  let attempts = 0;
+  
+  const performShuffle = () => {
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+  };
+
+  if (shuffled.length > 1) {
+    do {
+      performShuffle();
+      attempts++;
+    } while (
+      shuffled.every((val, index) => val === array[index]) && 
+      attempts < 10
+    );
+  }
+  return shuffled;
+};
+
 export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
   const [sourceWords, setSourceWords] = useState<string[]>([]);
   const [targetWords, setTargetWords] = useState<string[]>([]);
   const isNativeTarget = question.targetLang === 'hu' || question.targetLang === 'sk';
 
   useEffect(() => {
-    setSourceWords([...question.scrambledWords]);
+    const scrambled = shuffleArray(question.scrambledWords || []);
+    setSourceWords(scrambled);
     setTargetWords([]);
     onAnswer(false);
 
-    if (!isNativeTarget) {
-      preloadTTS(question.scrambledWords);
+    if (!isNativeTarget && question.scrambledWords) {
+      preloadTTS(scrambled);
     }
   }, [question, isNativeTarget]);
 
