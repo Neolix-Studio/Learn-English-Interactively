@@ -128,6 +128,7 @@ textarea.form-control {
     cursor: pointer;
     transition: all var(--transition-base);
     box-shadow: 0 0 15px oklch(0.75 0.15 250 / 0.3);
+    min-height: 44px;
 }
 .btn-submit:hover {
     transform: translateY(-2px);

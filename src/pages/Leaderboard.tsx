@@ -300,8 +300,8 @@ export const LeaderboardPage: React.FC = () => {
           </div>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', alignItems: 'center', background: 'var(--color-bg-surface)', padding: '0.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <div style={{ paddingLeft: '1rem', color: 'var(--color-text-muted)' }}>
+          <form className="leaderboard-search-form" onSubmit={handleSearch} style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', alignItems: 'center', background: 'var(--color-bg-surface)', padding: '0.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div className="leaderboard-search-icon" style={{ paddingLeft: '1rem', color: 'var(--color-text-muted)' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -313,12 +313,12 @@ export const LeaderboardPage: React.FC = () => {
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   style={{
-                      flex: 1, padding: '0.8rem 0', border: 'none',
+                      flex: 1, minWidth: 0, padding: '0.8rem 0', border: 'none',
                       background: 'transparent', outline: 'none',
                       color: 'var(--color-text-main)', fontSize: '1.1rem'
                   }}
               />
-              <button type="submit" style={{
+              <button className="leaderboard-search-button" type="submit" style={{
                   padding: '0.8rem 1.5rem', borderRadius: '8px', background: 'var(--color-accent-in)', color: 'white', fontWeight: 'bold', border: 'none', cursor: 'pointer', transition: 'background 0.2s'
               }}>Keresés</button>
           </form>

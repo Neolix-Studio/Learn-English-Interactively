@@ -324,6 +324,12 @@ body {
     letter-spacing: -1px;
 }
 
+@media (max-width: 480px) {
+    .hero-title {
+        line-height: 1.22 !important;
+    }
+}
+
 .hero-title span {
     color: var(--color-primary);
 }
