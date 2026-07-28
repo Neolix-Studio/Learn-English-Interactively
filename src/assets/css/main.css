@@ -130,13 +130,14 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 30px;
-    height: 21px;
+    width: 44px;
+    height: 44px;
     background: transparent;
     border: none;
     cursor: pointer;
     z-index: 1001;
-    padding: 0;
+    padding: 11.5px 7px;
+    box-sizing: border-box;
 }
 
 .hamburger-line {
@@ -591,12 +592,15 @@ a {
     font-weight: 600;
     cursor: pointer;
     text-decoration: underline;
+    min-height: 44px;
+    padding: 0.65rem 0.5rem;
 }
 
 .welcome-back-button {
     color: #9ca3af;
     margin-top: 2rem;
     text-decoration: none;
+    width: 100%;
 }
 
 .welcome-placement-stack {

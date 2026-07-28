@@ -3829,6 +3829,13 @@ body {
 }
 
 @media (max-width: 991px) {
+    .mobile-menu-btn {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+
     .dashboard-container {
         margin-top: 0 !important;
         min-height: 100dvh !important;
@@ -4073,6 +4080,24 @@ body {
     max-width: 800px;
     min-width: 0;
     padding: 0 1rem;
+}
+
+@media (max-width: 380px) {
+    .leaderboard-search-form {
+        display: grid !important;
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 0.35rem 0.65rem !important;
+    }
+
+    .leaderboard-search-icon {
+        padding-left: 0.25rem !important;
+    }
+
+    .leaderboard-search-button {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-height: 44px;
+    }
 }
 
 #app.library-active {

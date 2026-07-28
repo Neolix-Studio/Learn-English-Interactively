@@ -435,6 +435,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           </button>
         )}
         <button
+          className="interactive-report-btn"
           onClick={() => setIsReportModalOpen(true)}
           style={{
             background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem'

@@ -368,6 +368,13 @@
     }
 }
 
+@media (max-width: 380px) {
+    .roadmap-node-container {
+        width: calc(100% - 56px);
+        margin-inline: auto;
+    }
+}
+
 .treasure-chest-wrapper {
     position: relative;
     width: 80px;
