@@ -60,12 +60,20 @@ usually: name the work package, plus any decision we made that isn't written dow
 "done when". Do not paste chunks of SOURCE_OF_TRUTH.md back in. Do not over-specify implementation
 from a reading of code you couldn't run. One work package per prompt — they are sized deliberately.
 
+WHERE THINGS STAND
+Check the Progress log at the bottom of REMEDIATION_PLAN.md for what is already done — it is
+kept current. Do not assume the plan is untouched.
+
 FIRST TASK
 Read the three files, then give me:
-  - a 10-line summary of where the project actually stands
-  - which three work packages you think should come first, and why
+  - a 10-line summary of where the project actually stands, based on the Progress log
+  - which work packages should come next, and why
   - any question that is genuinely ambiguous
 Do not guess at product decisions — ask me.
+
+Then I want to work through the open decisions that are blocking the most work. Section 21 of
+SOURCE_OF_TRUTH.md lists them all; the ones gating Phase C are the priority. For each, lay out
+the trade-offs and give me a recommendation with your reasoning — do not just present options.
 ```
 
 ---
