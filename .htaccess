@@ -1,9 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteCond %{HTTP_HOST} ^(www\.)?lexipaws\.eu$ [NC]
-    RewriteRule ^$ gateway.html [L]
-
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} !^/api\.php [NC]
@@ -20,6 +17,10 @@
 </FilesMatch>
 
 <FilesMatch "\.(log|sql|env)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^\.ftp-deploy-sync-state\.json$">
     Require all denied
 </FilesMatch>
 

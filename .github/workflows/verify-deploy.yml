@@ -1,6 +1,7 @@
 name: CI/CD Verify and Deploy
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -144,6 +145,16 @@ jobs:
           npm run package:release
           node scripts/write_db_config.js
 
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ github.ref_name }}-${{ github.sha }}
+          path: |
+            release/
+            !release/db_config.php
+          retention-days: 30
+          if-no-files-found: error
+
       - name: Deploy files via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -174,7 +185,19 @@ jobs:
 
       - name: Perform Post-Deploy Health Check
         run: |
-          curl -f -s "${{ steps.vars.outputs.site_url }}/api.php?action=get_session"
+          # api.php returns HTTP 200 even when db_config.php is missing (api.php:41-43) or the
+          # database is unreachable (api.php:59-63), so `curl -f` alone cannot detect a broken
+          # deploy. Assert on the response body instead.
+          #
+          # handleGetSession (api.php:911) returns {"session":null} when logged out and
+          # {"session":{...}} when logged in. There is no "success" key on this endpoint --
+          # asserting on one would fail every deploy on a healthy site.
+          BODY=$(curl -fsS "${{ steps.vars.outputs.site_url }}/api.php?action=get_session")
+          echo "Health check response: $BODY"
+          if ! echo "$BODY" | grep -q '"session"'; then
+            echo "::error::Health check failed - no session payload. The app is reachable but its database probably is not."
+            exit 1
+          fi
 
       - name: Notify Slack on Deploy Success
         if: success()
