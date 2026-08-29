@@ -150,7 +150,12 @@ jobs:
       # source into release/, so at this point the bundle provably contains no credentials.
       - name: Build Release Bundle
         run: |
-          npm ci || npm install
+          # `npm ci --ignore-scripts`, not `npm ci || npm install`: the `|| npm install` fallback
+          # silently accepts a drifted lockfile (so a deploy could ship dependencies CI never
+          # tested), and skipping install lifecycle scripts keeps a compromised transitive
+          # package from executing on a runner that is about to hold deployment secrets.
+          # Verified that the build is unaffected -- tsc/vite are run-scripts, not install hooks.
+          npm ci --ignore-scripts
           npm run package:release
 
       # The artifact is captured BEFORE db_config.php is generated, so a credential file cannot
