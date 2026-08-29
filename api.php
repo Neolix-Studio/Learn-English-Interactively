@@ -554,7 +554,7 @@ function handleSignup(PDO $pdo, array $data) {
 
         $points = isset($guestMigration['points']) ? intval($guestMigration['points']) : 0;
         $completed = isset($guestMigration['completed']) ? json_encode($guestMigration['completed']) : json_encode(new stdClass());
-        $scores = isset($guestMigration['scores']) ? json_encode($guestMigration['scores']) : json_encode(new stdClass());
+        $scores = encodeScores($guestMigration['scores'] ?? null);
 
         $stmtProgress = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, active_theme)
@@ -963,11 +963,18 @@ function handleGetSession(PDO $pdo) {
     }
 }
 
+function encodeScores($scores): string {
+    if (!is_array($scores) || $scores === []) {
+        return json_encode(new stdClass());
+    }
+    return json_encode($scores);
+}
+
 function parseProgressData(array $data) {
     return [
         'points' => isset($data['points']) ? intval($data['points']) : 0,
         'completed' => isset($data['completed']) ? json_encode($data['completed']) : json_encode(new stdClass()),
-        'scores' => isset($data['scores']) ? json_encode($data['scores']) : json_encode(new stdClass()),
+        'scores' => encodeScores($data['scores'] ?? null),
         'level' => isset($data['level']) ? intval($data['level']) : 1,
         'streak_count' => isset($data['streak_count']) ? intval($data['streak_count']) : 0,
         'streak_shields' => isset($data['streak_shields']) ? intval($data['streak_shields']) : 0,
@@ -987,6 +994,13 @@ function parseProgressData(array $data) {
 function handleSaveProgress(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Munkamenet lejárt! Kérjük, jelentkezz be újra.']);
+        return;
+    }
+
+    if (!security_rate_limit('save_progress_' . $_SESSION['user_id'], 45, 60)) {
+        http_response_code(429);
+        error_log("Security: User {$_SESSION['user_id']} exceeded the save_progress rate limit.");
+        echo json_encode(['error' => 'Túl sok kérés. Kérjük, próbáld újra később.']);
         return;
     }
 
@@ -1016,45 +1030,49 @@ function handleSaveProgress(PDO $pdo, array $data) {
 
             $parsed['energy'] = max(0, min(5, intval($parsed['energy'])));
 
-	        if ($currentDbProgress && !empty($currentDbProgress['scores'])) {
-	            $currentScores = json_decode($currentDbProgress['scores'], true);
-	            $incomingScores = json_decode($parsed['scores'], true);
-                if (!is_array($currentScores)) $currentScores = [];
-                if (!is_array($incomingScores)) $incomingScores = [];
+        $currentScores = [];
+        if ($currentDbProgress && isset($currentDbProgress['scores'])) {
+            $decodedCurrentScores = json_decode((string)$currentDbProgress['scores'], true);
+            if (is_array($decodedCurrentScores)) {
+                $currentScores = $decodedCurrentScores;
+            }
+        }
 
-                $currentBones = intval($currentScores['bones'] ?? 0);
-                $incomingBones = intval($incomingScores['bones'] ?? $currentBones);
-                if ($incomingBones < $currentBones) {
-                    $incomingScores['bones'] = $incomingBones;
-                } elseif ($incomingBones > $currentBones + 100) {
-                    error_log("Security: User $userId attempted excessive bones increase. Capped.");
-                    $incomingScores['bones'] = $currentBones + 100;
+        $incomingScores = json_decode($parsed['scores'], true);
+        if (!is_array($incomingScores)) $incomingScores = [];
+
+        $currentBones = intval($currentScores['bones'] ?? 0);
+        $incomingBones = intval($incomingScores['bones'] ?? $currentBones);
+        if ($incomingBones < $currentBones) {
+            $incomingScores['bones'] = $incomingBones;
+        } elseif ($incomingBones > $currentBones + 100) {
+            error_log("Security: User $userId attempted excessive bones increase. Capped.");
+            $incomingScores['bones'] = $currentBones + 100;
+        }
+
+        $currentShields = intval($currentScores['streak_shields'] ?? 0);
+        $incomingShields = intval($incomingScores['streak_shields'] ?? $currentShields);
+        if ($incomingShields > $currentShields + 3) {
+            $incomingScores['streak_shields'] = $currentShields + 3;
+        }
+
+        if (isset($incomingScores['node_state']) && is_array($incomingScores['node_state'])) {
+            foreach ($incomingScores['node_state'] as $nodeId => $nodeData) {
+                $incomingLevel = isset($nodeData['current_level']) ? intval($nodeData['current_level']) : 1;
+                $currentLevel = 1;
+
+                if (isset($currentScores['node_state'][$nodeId]['current_level'])) {
+                    $currentLevel = intval($currentScores['node_state'][$nodeId]['current_level']);
                 }
 
-                $currentShields = intval($currentScores['streak_shields'] ?? 0);
-                $incomingShields = intval($incomingScores['streak_shields'] ?? $currentShields);
-                if ($incomingShields > $currentShields + 3) {
-                    $incomingScores['streak_shields'] = $currentShields + 3;
+                if ($incomingLevel > $currentLevel + 1) {
+                    error_log("Security: User $userId attempted to skip $nodeId from $currentLevel to $incomingLevel. Blocked.");
+                    $incomingScores['node_state'][$nodeId]['current_level'] = $currentLevel;
                 }
+            }
+        }
 
-		            if (isset($incomingScores['node_state']) && is_array($incomingScores['node_state'])) {
-	                foreach ($incomingScores['node_state'] as $nodeId => $nodeData) {
-                    $incomingLevel = isset($nodeData['current_level']) ? intval($nodeData['current_level']) : 1;
-                    $currentLevel = 1;
-
-                    if (isset($currentScores['node_state'][$nodeId]['current_level'])) {
-                        $currentLevel = intval($currentScores['node_state'][$nodeId]['current_level']);
-                    }
-
-                    if ($incomingLevel > $currentLevel + 1) {
-                        error_log("Security: User $userId attempted to skip $nodeId from $currentLevel to $incomingLevel. Blocked.");
-                        $incomingScores['node_state'][$nodeId]['current_level'] = $currentLevel;
-                    }
-		            }
-                }
-
-	                $parsed['scores'] = json_encode($incomingScores);
-		        }
+        $parsed['scores'] = encodeScores($incomingScores);
 
         $stmt = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, last_active_date, unlocked_items, active_theme, earned_xp_per_node, daily_quests_date, active_quests, quest_progress, completed_quests_today, energy, last_energy_refill)
