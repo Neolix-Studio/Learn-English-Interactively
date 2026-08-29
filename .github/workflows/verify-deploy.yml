@@ -2,6 +2,14 @@ name: CI/CD Verify and Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: 'Branch to deploy. Must match the branch chosen in "Use workflow from" above.'
+        required: true
+        type: choice
+        options:
+          - dev
+          - main
   push:
     branches:
       - main
@@ -94,7 +102,15 @@ jobs:
   deploy:
     name: Deploy (CD)
     needs: verify
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+    # Deploys run on a push to dev/main, or on a manual dispatch that explicitly selects one of
+    # them. The dispatch arm requires `target` to equal the ref the workflow was launched from,
+    # so dispatching from a feature branch cannot deploy: ref_name would not match either option.
+    if: >-
+      (github.event_name == 'push' &&
+        (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')) ||
+      (github.event_name == 'workflow_dispatch' &&
+        (github.event.inputs.target == 'main' || github.event.inputs.target == 'dev') &&
+        github.ref_name == github.event.inputs.target)
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -112,14 +128,61 @@ jobs:
       - name: Set Environment Variables
         id: vars
         run: |
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            echo "server_dir=lexipaws.eu/web" >> $GITHUB_OUTPUT
-            echo "site_url=https://lexipaws.eu" >> $GITHUB_OUTPUT
-          else
-            echo "server_dir=lexipaws.eu/sub/dev" >> $GITHUB_OUTPUT
-            echo "site_url=https://dev.lexipaws.eu" >> $GITHUB_OUTPUT
-          fi
+          # The job's `if` already restricts this to dev and main. This case is the second line
+          # of defence: it fails closed rather than sending an unexpected ref to the dev target,
+          # which is what the previous `else` branch would have done.
+          case "${{ github.ref_name }}" in
+            main)
+              echo "server_dir=lexipaws.eu/web" >> $GITHUB_OUTPUT
+              echo "site_url=https://lexipaws.eu" >> $GITHUB_OUTPUT
+              ;;
+            dev)
+              echo "server_dir=lexipaws.eu/sub/dev" >> $GITHUB_OUTPUT
+              echo "site_url=https://dev.lexipaws.eu" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "::error::Refusing to deploy ref '${{ github.ref_name }}' - only dev and main are deployable."
+              exit 1
+              ;;
+          esac
 
+      # Build first, with no secrets in the environment. `build_release.js` copies only tracked
+      # source into release/, so at this point the bundle provably contains no credentials.
+      - name: Build Release Bundle
+        run: |
+          npm ci || npm install
+          npm run package:release
+
+      # The artifact is captured BEFORE db_config.php is generated, so a credential file cannot
+      # be present in it even momentarily. That ordering is the real guarantee; the exclusion
+      # glob on the upload step is only a third layer behind it and this assertion.
+      #
+      # This matters because artifacts on a PUBLIC repository are downloadable by any signed-in
+      # GitHub user for the whole retention window. db_config.php carries DB_PASS,
+      # MIGRATION_TOKEN, CRON_SECRET, MAINTENANCE_TOKEN, GOOGLE_TTS_API_KEY, SMTP_PASS and both
+      # Slack webhooks, so a single leaked artifact would be a full credential disclosure.
+      - name: Assert release bundle carries no credentials
+        run: |
+          FOUND=$(find release \( -name 'db_config*.php' -o -name '*.env' -o -name '.env' \) -print | sort)
+          if [ -n "$FOUND" ]; then
+            echo "::error::Refusing to upload the release artifact - credential files found in release/:"
+            echo "$FOUND"
+            exit 1
+          fi
+          echo "Verified: no db_config*.php or .env files in release/ before upload."
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ github.ref_name }}-${{ github.sha }}
+          path: |
+            release/
+            !release/db_config.php
+          retention-days: 30
+          if-no-files-found: error
+
+      # Runs only after the artifact is safely uploaded. From here on release/ holds live
+      # secrets, so no step below this line may upload, print or otherwise export its contents.
       - name: Write Server Production DB Config
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -140,20 +203,7 @@ jobs:
           BETA_INVITES_ENABLED: ${{ secrets.BETA_INVITES_ENABLED }}
           APP_BASE_URL: ${{ steps.vars.outputs.site_url }}
           DB_CONFIG_PATH: release/db_config.php
-        run: |
-          npm ci || npm install
-          npm run package:release
-          node scripts/write_db_config.js
-
-      - name: Upload release artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-${{ github.ref_name }}-${{ github.sha }}
-          path: |
-            release/
-            !release/db_config.php
-          retention-days: 30
-          if-no-files-found: error
+        run: node scripts/write_db_config.js
 
       - name: Deploy files via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
