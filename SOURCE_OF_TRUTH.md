@@ -4,6 +4,8 @@
 >
 > **Audited:** 2026-08-28 · **Against commit:** `7b2a8f2` (2026-07-27) · **Branch:** `codex/mobile-ui-audit`
 > **Method:** 13 parallel subsystem readers + an adversarial verification pass. Every claim below carries a `file:line`. Claims that survived adversarial re-checking are unmarked; anything softer is labelled ⚠️ *unverified*.
+>
+> **Owner decisions recorded:** 2026-08-28 — see [§12.1](#121-settled-design-decisions--owner-2026-08-28) (accent, typeface, mascot), [§6](#matching-what-ships-and-what-does-not--owner-2026-08-28) (matching), [§10](#session--auth) (HTTPS redirect) and [§20](#full-release-readiness-beyond-beta) (exams as a full-release gate). **Decisions are not audit findings** — they describe what the product *will* be, not what the code does today, and each names the change it implies. Anything a decision cannot settle from the repo alone is marked ⚠️ *needs live verification*.
 
 ---
 
@@ -349,13 +351,27 @@ Dispatch is a `switch` at `LessonPlayer.tsx:297-330`. Counts are from a `jq` cen
 | `phonics_compare` | `PhonicsCompare.tsx` | `question.isSame` | 404 |
 | `phonics_speak` | `PhonicsSpeak.tsx` | **always `onAnswer(true)`** | 404 |
 | `image_choice` | `ImageChoice.tsx` | `opt.correct` | 264 |
-| `phonics_match` | `PhonicsMatch.tsx` | all pairs matched — **cannot be wrong** | 204 |
+| `phonics_match` | `PhonicsMatch.tsx` | all pairs matched — **cannot be wrong** · ⚠️ *owner has decided this must change — see below* | 204 |
 | `true_false` | `TrueFalse.tsx` | `question.answer` | 125 |
 | `multiple_choice` | `MultipleChoice.tsx` | **exact string** | 125 |
 | `type_in` | `TypeIn.tsx` | `trim().toLowerCase()` | 125 |
-| `dictation`, `match_pairs`, `morale_boost`, `harder_encouragement`, `sentence_builder` | components exist | — | **0 — unreachable** |
+| `dictation`, `match_pairs`, `morale_boost`, `harder_encouragement`, `sentence_builder` | components exist | — | **0 — unreachable** · `match_pairs` is now **confirmed deletable** — see below |
 
 **Leniency, summarised:** case-insensitivity only in `type_in`, `dictation`, `word_order`. Punctuation stripped only in `word_order`, `dictation`. **Nothing anywhere does typo tolerance, accent folding, alternate-answer lists, or whitespace normalisation beyond `trim()`.** `answer` values containing `/` (e.g. `"am/is"`) are truncated to the first variant by `FillBlanks.tsx:23`.
+
+### Matching: what ships, and what does not — owner, 2026-08-28
+
+**The Beta matching feature is the existing character/phonics activity, `phonics_match`** — 204 live items, reached from every character lesson. **The generic matching lesson that was removed is not returning for Beta**, so its unreachable implementation may be deleted: `MatchPairs.tsx` (107 lines) and the `match_pairs` switch case, both emitted only by the dead `DynamicExerciseEngine` path. *(This closes the `MatchPairs` half of §21 Q19; `BossEncounter`, `engine.ts` and `Dictation` are still open.)*
+
+**Second decision: a wrong `phonics_match` attempt must count against accuracy, while the exercise stays forgiving.**
+
+Today it cannot count against anything. `PhonicsMatch.tsx:74-76` calls `onAnswer(true)` once `matchedIds.length === question.pairs.length`, and the mismatch branch (`:77-84`) only flashes red for 800 ms before clearing the selection. Since the learner cannot advance without eventually matching every pair, the exercise is **unconditionally correct** — it inflates lesson accuracy and never records a mistake.
+
+Three consequences worth knowing before this is implemented:
+
+- **"Affects accuracy" and "feeds weak-item practice" are the same switch.** `LessonPlayer.tsx:270-281` increments `mistakes` *and* POSTs `log_failed_exercise` off the same `onAnswer(false)`. Reporting a mispairing therefore also pushes it into `user_failed_exercises` → `get_weak_words` → PracticePage, whether or not that was intended. It is almost certainly the right behaviour for a phonics contrast the learner just confused — but it is a coupling, not a choice made separately.
+- ✅ **The rule is settled (owner, 2026-08-28): a `phonics_match` exercise incurs *at most one* mistake, and only if at least one mispairing occurred.** Report `onAnswer(false)` once any mispairing has happened, regardless of how many wrong taps follow — never a penalty per tap. The exercise still cannot be failed and still cannot block the lesson; only the score moves. This matters because `accuracy = max(0, 100 - mistakes*20)` is unusually steep: four mistakes already lands a learner at 20%, so a per-tap penalty on a drag-and-match exercise would be punitive out of all proportion to the error.
+- **It is inert until the accuracy hardcode is gone.** All five `completeLesson` call sites pass the literal `100` (§8). Until WP-B3 passes `scoreData.accuracy` through, a correctly-reported mispairing changes the in-lesson counter and the `log_failed_exercise` row, but nothing the user's profile records.
 
 ### Audio / TTS
 
@@ -530,6 +546,10 @@ Flat PHP on shared hosting. `api.php` is a single 2,026-line front controller wi
 ### Session & auth
 
 - 30-day cookie, `httponly`, `samesite=Lax`, `secure` only when HTTPS is detected (`security.php:8-20`).
+  **Owner decision, 2026-08-28: the HTTPS redirect has been enabled at the host** — this **supersedes** the WP-A1 side finding that it was off for `lexipaws.eu`, which should no longer be cited as a live defect.
+  ✅ **Redirect verified 2026-08-28 on all four hostnames.** `http://` returns **301** to the matching `https://` origin for `lexipaws.eu`, `lexipaws.hu`, `lexipaws.sk` **and** `dev.lexipaws.eu` — so this is not scoped to the apex, and `.hu`/`.sk` logins are not left on plain HTTP.
+  ✅ **`Secure` session cookie verified on `dev`.** `GET https://dev.lexipaws.eu/api.php?action=csrf_token` returns `Set-Cookie: PHPSESSID=…; Max-Age=2592000; path=/; secure; HttpOnly; SameSite=Lax` — every flag §10 claims, confirmed live.
+  ⚠️ **Not verifiable on the three production hostnames yet, and this is expected.** `https://lexipaws.{eu,hu,sk}/api.php` returns **404** and `/` returns **403** — production is still the emptied docroot from WP-A1, so there is no PHP to set a cookie. **Re-run the cookie check on all three immediately after the WP-A4 cutover.** The redirect being right does not prove the cookie is: `security.php:8-20` sets `secure` from its own HTTPS detection, and behind a proxy that terminates TLS, PHP can see plain HTTP and drop the flag even though the browser is on HTTPS.
 - `password_hash(PASSWORD_DEFAULT)` / `password_verify`. ✅
 - `session_regenerate_id(true)` on signup, login and beta-admin login — **but not after `update_password` or `reset_password`**, and neither invalidates other sessions. With 30-day cookies, a captured session survives the victim changing their password.
 - **Password policy caps length at 16 characters** while requiring four character classes (`api.php:48`). This blocks password-manager secrets and pushes users toward weaker hand-made passwords. Client-side validation checks only `length >= 8`, so users hit server rejections after submitting.
@@ -683,6 +703,63 @@ The last two are cheap DoS amplifiers during an open Beta.
 
 ---
 
+### 12.1 Settled design decisions — owner, 2026-08-28
+
+These answer §21 Q8–Q11. They are **decisions, not descriptions of the code**: each names the change it implies. Where they disagree with `docs/guides/design_guide.md`, they win.
+
+| # | Decision | Where the code stands today |
+|---|---|---|
+| **D1** | **The primary accent is green `#10B981`.** | Already what users see — the rogue bare `:root` at `landing.css:206` beats `main.css:12`'s `#3b82f6` in light *and* dark. The decision **ratifies the accident**: no visual change today, but the value must move into `main.css:12` and the rogue block must go. ⚠️ **`#10B981` is not shippable as a single value — it fails contrast in light mode. See "The accent needs a ramp" below.** |
+| **D2** | **Nunito is the brand typeface.** | Already the only font `index.html:33` loads, and already force-applied globally (`dashboard.css:2849`, `landing.css:218` with `!important`). `--font-heading: 'Outfit'` and `--font-body: 'Inter'` (`main.css:4-5`) are dead pointers to be **repointed at Nunito** — not repaired by adding font loads. |
+| **D3** | **The canonical Lexi rendering is the 2D cel** — the `Tyler-asset-pack.png` turnaround (879 KB: 6 head angles, 5 body views, 8 expressions, separate ears and tails). | Ships in every deploy and is **used nowhere** — but it is **not the only copy**: 24 of the 26 files in `public/assets/images/Transparent PNGs/` are **already-separated cel views cut from that pack** (`tyler-sitting-front`, `tyler-front-full-body`, `tyler-left/right-profile`, `tyler-back`, `tyler-running-right`, plus 8 head expressions). The hand-coded grey SVG in `LexiMascot.tsx` / `LexiAnimation.tsx` / `Gateway.tsx` is retired; the photoreal `tyler-3d/` frames are **not** canonical. |
+| **D4** | **Theme default stays `system`.** | Restated, not new — §2 constraint #4 is unchanged. Light and dark must both be correct. |
+
+**Consequences that are not obvious:**
+
+- **Deleting the rogue `:root` wholesale breaks the landing page.** **Seven** tokens are defined *only* there — `--color-bg`, `--color-surface`, `--color-primary`, `--level-a1`, `--level-a2`, `--level-b1`, `--level-b2` (`landing.css:204-213`) — with **16 live consumers, all inside `landing.css` itself** (`:219`, `:237`, `:268`, `:334`, `:387-400`, the level-card borders and buttons). WP-C1 currently reads *"pick one and delete the other"*; the accurate instruction is **rehome those seven into the C1 token block first, then delete the rogue block.** *(Corrected 2026-08-28 — an earlier pass said six; `--level-a1`…`--level-b2` is four tokens, not three.)*
+- **D1 does not banish blue.** `--color-primary: #3B82F6` survives as a secondary, and `--level-a2` is blue by design. The decision is about `--color-accent-in` only.
+- **D1 does not touch the purchased themes.** `main.css:1032`, `:1046`, `:1060` and `:1074` each re-declare `--color-accent-in` inside a theme scope; those stay.
+- **D2 makes two hacks redundant, not correct.** Once the tokens say Nunito, `dashboard.css:2849`'s `* { font-family }` and `landing.css:218`'s `!important` should be **deleted**, not kept as belt-and-braces — they are two of the reasons the type layer is currently unpredictable.
+- **D3 withdraws recommendation 7 in §13.** That item proposed swapping the landing run-cycle for the four `tyler-3d/` PNGs. Under D3 that is off the table — the run cycle needs 2D cel frames, and the asset pack does not contain a run sequence. **Recommendation 6 (swap the grey SVG for a cropped cel still) stands and is now the priority; recommendation 7 is withdrawn pending cel run frames.** Until those exist the run animation stays as-is; it is not a regression, just an unresolved surface.
+
+#### The accent needs a ramp — measured 2026-08-28
+
+D1 was checked against WCAG rather than by eye, and the result **inverts the risk an earlier pass assumed.** Green is fine in dark and **fails in light** — which is the default-rendering theme and the one every current user sees. Contrast of `#10B981` against the palette in `main.css:7-10` and `:28-31`:
+
+| Usage | Light | Dark |
+|---|---|---|
+| Accent as **text/icon** on the page ground | **2.43:1 ❌** | 6.99:1 ✅ AA |
+| Accent as text on a surface | **2.54:1 ❌** | 5.79:1 ✅ AA |
+| **White label on a green fill** (the primary-button pattern) | **2.54:1 ❌** | — |
+| Non-text UI contrast, WCAG 1.4.11 (needs 3.0:1) | **2.43:1 ❌** | 6.99:1 ✅ |
+
+**Both failing patterns are live and widespread.** `--color-accent-in` has **170 usages**, in both shapes: as a text colour (`AuthModal.tsx:371` a link, `ShopModal.tsx:89` the active tab, `ReportProblemModal.tsx:130` and `FeedbackRefillModal.tsx:139` headings) and as a fill under a hardcoded white label (`AvatarUploadModal.tsx:119`, `FeedbackRefillModal.tsx:113`, `LexiFeedbackWidget.tsx:51`, `ReportProblemModal.tsx:232`). For reference the blue it replaces was also weak in light (3.52:1 — large text only), so this is **not a regression introduced by D1**; it is a pre-existing failure that D1 makes slightly worse and now owns.
+
+**No single green satisfies both themes** — that is the finding that matters, because it is structural rather than a matter of taste:
+
+| Candidate | On light | White on fill | On dark |
+|---|---|---|---|
+| `#10B981` emerald-500 *(the decided value)* | 2.43 ❌ | 2.54 ❌ | **6.99 ✅** |
+| `#059669` emerald-600 | 3.61 ⚠️ | 3.77 ⚠️ | 4.71 ✅ |
+| `#047857` emerald-700 | **5.25 ✅** | **5.48 ✅** | 3.23 ⚠️ |
+| `#34D399` emerald-400 | 1.84 ❌ | 1.92 ❌ | **9.23 ✅** |
+
+**Recommended, and it keeps D1 intact — the accent is still green, it just stops being one hex:**
+
+- **Light: `#047857`** (emerald-700) — 5.25:1 as text, 5.48:1 for a white label on a green fill. Both pass AA.
+- **Dark: `#10B981`** (emerald-500, the decided value) — 6.99:1. Note a green fill in **dark** needs a **near-black label**, not white (`#111827` on `#10B981` is 6.99:1; white is 2.54:1).
+- This means **`--color-accent-in` must become theme-scoped.** It is not today: the dark block at `main.css:28-38` redefines backgrounds and text but **never redefines the accent**, so light and dark currently share one accent value. That gap is a C1 deliverable, not a colour preference.
+
+⚠️ **Still needs a human eye, not a calculator:** contrast is a floor, not a design review. Emerald-700 is noticeably deeper than the green on the landing page today, so the light theme will visibly change — which contradicts the "no visual change" reading of D1 and is worth seeing before it ships.
+
+**One inconsistency D1 does not resolve.** The accent is a *family* — `--color-accent-in` (170 uses), `--color-accent-on` (58), `--color-accent-at` (10) — and D1 names only the first. The other two are still blue (`#60a5fa`, `#2563eb` at `main.css:13-14`), so today the app renders **a green base with blue hover and active states**, and the gradients at `AuthModal.tsx:34` and `ShopModal.tsx:66,127` interpolate green→blue. **C1 must extend the green decision across all three**, or the ramp fix will look half-applied.
+
+⚠️ **One earlier assumption was wrong — corrected by checking the disk:**
+
+**~~The cel sheet has to be sliced.~~ It already is.** The individual cel views exist as separate files and have since 2026-07-03. What blocks them is the defect §13 already names: **every one is the full 768×1364 canvas with everything else erased**, so they render as thumbnails floating in empty space. D3 therefore needs **no new art and no slicing** — it needs **WP-G1 item 2, the alpha-bounding-box crop**, which was already the single highest-value asset fix available. That makes D3 cheap. The one genuine gap is the **run cycle**: only `tyler-running-right.png` exists, a single pose, not a sequence — which is why §13 recommendation 7 is withdrawn rather than redirected. *(A chroma-key variant, `tyler-asset-pack-green-bg.png`, 1.3 MB, also ships and is likewise unused — a second orphan for WP-G3, not a second decision.)*
+
+---
+
 ## 13. Art, assets, and the mascot
 
 > You said you're stuck here — no designer budget, can't draw, relying on AI generation. **The art is not your problem. The plumbing between the art and the app is.** You already own a genuinely good character bible; almost none of it reaches the screen.
@@ -716,7 +793,7 @@ The rename happened in code and copy but **never on the filesystem**: 26 of 26 m
 ### Five mascot renderings; users only ever see the worst one
 
 1. **Hand-coded grey SVG** — the same path data copy-pasted into `LexiMascot.tsx`, `LexiAnimation.tsx` and `Gateway.tsx`. Reads as a grey hippo/bear: ears at the far edges like horns, featureless dark muzzle, forehead wrinkles floating outside the silhouette, a detached white circle for a paw. **No teal collar, no white chest blaze** — the brand mascot's two identifying features. This is what appears on the landing page, the language gateway, and inside `FillBlanks` exercises: the three highest-traffic surfaces.
-2. **`Tyler-asset-pack.png`** (899 KB) — a genuinely good 2D cel turnaround: 6 head angles, 5 body views, 8 expressions, separate ears and tails. **Unused.**
+2. **`Tyler-asset-pack.png`** (879 KB) — a genuinely good 2D cel turnaround: 6 head angles, 5 body views, 8 expressions, separate ears and tails. **Unused as a sheet — but 24 of the 26 files in the same folder are already-separated views cut from it**, equally unused. ✅ **Canonical as of 2026-08-28 — see §12.1 D3.**
 3. **`Lexipaws macot.png` / `Lexipaws app logo and icon.png`** — polished flat-vector brand art, but they are *poster mockups with fake UI baked in*, not extractable assets. **Unused.**
 4. **`public/images/tyler-3d/{run1,run2,skid,sit}.png`** — photoreal 3D, clearly cut for exactly the four states of the landing run-in animation. **Unused**; the SVG frames were hand-built instead.
 5. **`boss_character.png`** — a dragon from a different franchise, **and it is a JPEG with a `.png` extension** (`file`: `JPEG image data, … 1024x1024, components 3`, no alpha, white corner pixel). It renders at 350×350 over a dark navy gradient → **a white square on the boss arena**.
@@ -764,8 +841,8 @@ Ordered by impact ÷ effort. **Items 1–6 need no new art at all.**
 3. **Re-export `boss_character.png` as a real PNG with alpha.** Currently a white rectangle on a navy arena.
 4. **Replace the favicon and `og:image`** — export a 512×512 and a 1200×630 PNG from the logo you already own. Fixes the browser tab and every shared link.
 5. **Delete the 19 answer-spelling `<text>` elements from `svgDictionary.json`.** Fixes 34 broken exercises. *(Keep `PAST`, `+ED`, `ING`, `+S`, `HE/SHE/IT` — those are intentional grammar cues.)*
-6. **Swap the hand-coded grey SVG for a cropped `tyler-sitting-front.png`** in `LexiMascot`, `Gateway` and the animation's sit frame. The grey blob is the app's worst visual asset and it is on your three highest-traffic surfaces.
-7. **Swap the run-cycle SVG frames for the four `tyler-3d/` PNGs** already on disk — same `setInterval`, `<img>` instead of `<svg>`. Also add `overflow: visible` (the muzzle is clipped every frame) and drop the `animation: none !important` at `main.css:756-759` that kills the run on phones while the JS keeps cycling.
+6. **Swap the hand-coded grey SVG for a cropped 2D cel still** (`tyler-sitting-front.png`, or a crop cut from `Tyler-asset-pack.png`) in `LexiMascot`, `Gateway` and the animation's sit frame. The grey blob is the app's worst visual asset and it is on your three highest-traffic surfaces. **Confirmed by §12.1 D3 — the cel is canonical, so this is now the priority item in this list.**
+7. ~~**Swap the run-cycle SVG frames for the four `tyler-3d/` PNGs**~~ — **WITHDRAWN 2026-08-28 by §12.1 D3.** The photoreal 3D rendering is not canonical, so shipping it on the landing page would put a second mascot style in front of first-time visitors. The run cycle needs **cel** frames, and the asset pack has no run sequence — so this stays unresolved rather than fixed. *Two parts of it survive independently of which art is used:* add `overflow: visible` (the muzzle is clipped every frame) and drop the `animation: none !important` at `main.css:756-759`, which kills the run on phones while the JS keeps cycling.
 8. **Pick one icon language.** Replacing the ~26 nav/UI emoji with flat SVGs matching `svgDictionary`'s style is about a day, and it stops the app from looking different on Windows.
 9. **Delete the orphans and optimise the rest** — `public/images/` (byte-identical duplicate), the `.ai`/`.eps`/`pikaso-creations` folders, the two 4–5 MB mockup posters, `stars.jpg`, `star.jpg`, `star-gamified.png`, `public/icons.svg`, `src/assets/{hero.png,react.svg,vite.svg}`. Run SVGO on the four traced SVGs (expect 60–80% off 960 KB). **Takes the deploy from ~34 MB to ~2 MB.**
 
@@ -876,8 +953,8 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 |---|---|---|
 | 1 | **`save_progress` wipes 11 columns per call** — streak, energy, theme, quests, shields, level | `UserContext.tsx:366` + `api.php:966,1059` |
 | 2 | **`lexipaws.eu/` may 404** — `.htaccess` rewrites the apex to a missing `gateway.html`, and staging cannot reveal it | `.htaccess:4-5` |
-| 3 | **Unbounded XP/bones minting** — no rate limit on `save_progress`/`update_progress`; uncapped `max()` merge at signup | `api.php:667-696`, `:1007-1041` |
-| 3b | **One request permanently disarms every anti-cheat clamp.** `POST {"scores": 0}` → `parseProgressData` stores `json_encode(0)` = the string `"0"` → on every later request `!empty($currentDbProgress['scores'])` is **false** (verified: `empty("0") === true` in PHP), so the entire bones / streak_shields / node_state clamp block is skipped from then on. Next payload writes raw. | [api.php:1019](api.php:1019), [api.php:970](api.php:970) |
+| 3 | **Unbounded XP/bones minting** — no rate limit on `save_progress`/`update_progress`; uncapped `max()` merge at signup. ⏳ **`save_progress` has a limiter in flight — PR #263 (WP-B0), 45 requests / 60 s, keyed on `user_id`; measured 60/60 requests accepted on `dev` vs 45/60 on the branch.** `update_progress` and the uncapped signup merge are untouched and remain WP-B2, as does moving the counters out of `$_SESSION`. | `api.php:667-696`, `:1007-1041` |
+| 3b | **One request permanently disarms every anti-cheat clamp.** A `scores` value of `0` → `parseProgressData` stores `json_encode(0)` = the string `"0"` → on every later request `!empty($currentDbProgress['scores'])` is **false** (verified: `empty("0") === true` in PHP), so the entire bones / streak_shields / node_state clamp block is skipped from then on. Next payload writes raw. ⚠️ **Mechanism corrected 2026-08-29 by running the attack against a real database** — a lone `POST {"scores":0}` to `save_progress` is **not** sufficient. If the row already holds non-empty scores the clamp block runs, `json_decode("0", true)` is not an array, and `[]` is stored instead — truthy as `"[]"`, so nothing is disarmed. The poisoning needs the stored `scores` to be **empty at that moment**, which two paths reach: a **fresh account's first `save_progress`** (no `user_progress` row → `$currentDbProgress` is false → block skipped), and **signup**, where [api.php:557](api.php:557) passes `guest_migration.scores` to `json_encode` unguarded — so `{"guest_migration":{"scores":0}}` writes `"0"` in **one unauthenticated request**. The signup path is the cheaper one and was not previously recorded here. `mergeGuestProgressIntoUser` is already `is_array`-guarded at [api.php:602](api.php:602). ⏳ **Fix in flight — PR #263 (WP-B0), not yet merged; `dev` is still exploitable.** | [api.php:1019](api.php:1019), [api.php:970](api.php:970), [api.php:557](api.php:557) |
 | 3c | **`last_active_date` is never set to `CURDATE()` by anything.** The only writers are `cron_notifications.php:69` (sets it to *yesterday*) and `save_progress` (null). So any row that once matches `cron_notifications.php`'s at-risk query can never stop matching. Currently harmless only because every autosave nulls the column — meaning **the save_progress bug is suppressing a worse bug.** Fixing one without the other destroys legacy users' shields and streaks. | [cron_notifications.php:54-97](cron_notifications.php:54) |
 | 4 | **`BETA_INVITES_ENABLED` fails open** — one missing secret opens public registration | `api.php:260-262`, `write_db_config.js:4-6` |
 | 5 | **One unsolvable exercise blocks Module 2** (uncommitted working-tree edit) | `data/hu/A1/Module_2…/node3_family_ties.json` |
@@ -930,11 +1007,11 @@ Roughly **1,100+ lines of dead application code** plus ~47% of the CSS will ship
 | Item | Lines | Evidence |
 |---|---|---|
 | `src/utils/learningContent.ts` | 465 | Zero importers; its `dataSource` paths point at `data/A1/…` which has not existed since the migration. Also the only place carrying `title_sk` fields, so it *looks* like the localization source of truth. |
-| `src/components/BossEncounter.tsx` | 301 | Mounted only when `activeLesson.id === 'Boss'`; node ids come from filenames and `find data -iname '*boss*'` returns nothing. Also carries an unreachable soft-lock of its own. |
-| `src/utils/engine.ts` (`DynamicExerciseEngine`) | 166 | Runs only when `rawItems[0].type` is falsy; **0 of 144 data files produce typeless items**. |
+| `src/components/BossEncounter.tsx` | 301 | Mounted only when `activeLesson.id === 'Boss'`; node ids come from filenames and `find data -iname '*boss*'` returns nothing. Also carries an unreachable soft-lock of its own. ✅ **Decided 2026-08-28 — delete the code; the boss encounter stays on the roadmap as post-Beta** (§21 Q19). |
+| `src/utils/engine.ts` (`DynamicExerciseEngine`) | 166 | Runs only when `rawItems[0].type` is falsy; **0 of 144 data files produce typeless items**. ✅ **Decided 2026-08-28 — delete** (§21 Q19). |
 | `src/components/Onboarding.tsx` | ~90 | Zero importers; `Dashboard.tsx:216` documents its removal. |
 | `src/services/api.ts` | ~25 | Zero importers, broken URL construction, inverted error semantics. |
-| `Dictation.tsx`, `MatchPairs.tsx` | | Emitted only by the unreachable engine. |
+| `Dictation.tsx` (93), `MatchPairs.tsx` (107) | 200 | Emitted only by the unreachable engine, so neither has ever rendered. ✅ **Both decided 2026-08-28 — delete** (§21 Q19). **`Dictation` the *feature* is deferred to CEFR B1/B2** (transcription does not fit an A1-only curriculum); **`MatchPairs` is not returning** — the Beta matching feature is the existing `phonics_match` activity (§6). |
 | `MoraleBoost.tsx`, `HarderEncouragement.tsx` | | **No producer at all** — the strings appear only in `LessonPlayer.tsx`. |
 | `data/quests.json` | | No consumer in `src/` or any PHP file; still shipped and still the one file `validate_json.js` really checks. |
 | `src/index.css`, `src/App.css` | 313 | Unmodified Vite scaffold, imported by nothing. |
@@ -1069,6 +1146,14 @@ Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a bl
 2. **Confirm `BETA_INVITES_ENABLED` is actually `true` in the production GitHub secret.** If it is not, registration is already open.
 3. **Rotate `MIGRATION_TOKEN` and the SMTP password**, and delete `db_config_prod.php`.
 
+### Full-release readiness (beyond Beta)
+
+Items that are explicitly **not** Beta gates, but must be settled before a full public release. They are recorded here because **the Beta is partly being run to produce the evidence that settles them** — which only works if someone writes down in advance what evidence to collect.
+
+| # | Item | The decision, and what settles it |
+|---|---|---|
+| **FR-1** | **Do end-of-module exams become hard progression gates?** | **Owner decision, 2026-08-28: an explicit full-release decision, deliberately deferred.** Beta ships exams as **soft** gates (WP-F4: **the pass threshold is 80%**; passing awards module completion once; failing does not block the next module; retries are unlimited and cannot farm rewards; wrong answers feed weak-item practice). After Beta, **decide on evidence** whether failing an exam should lock the next module. **Evidence to collect during the Beta — and WP-F4 is required to instrument this, not merely to permit it (see its done-when):** first-attempt pass rate per module against the 80% line; the score distribution around that line (if most failures cluster at 70–79%, the threshold is the variable to change, not the gate); the retry distribution (a long tail means the exam is mis-pitched, not that learners are failing); whether learners who fail and continue anyway go on to struggle in the next module; and whether the weak-item queue that exam failures feed is actually worked through or just accumulates. **If the Beta ends without this data, FR-1 cannot be answered and the gate decision defaults to staying soft** — which is a legitimate outcome, but it should be a choice rather than an accident. **Why it ships soft:** hardening the gate later is a small change, while softening it after learners have already been blocked out of content they paid attention to is a trust problem. Note this decision is not purely pedagogical — a hard gate on a module boundary is also a retention cliff, and the Beta cohort is 5–10 people, which is enough to see confusion but **not** enough to measure drop-off. Expect FR-1 to need a judgement call on top of the numbers. |
+
 ---
 
 ## 21. Open questions for the owner
@@ -1077,21 +1162,21 @@ Grouped by what they block. These genuinely need your answer — I can implement
 
 ### Blocks the Beta date
 1. **Is 2026-09-01 still the target?** Several docs hardcode it.
-2. **Is Slovak in scope for the first Beta?** Right now `lexipaws.sk` promises a Slovak course and serves a Hungarian one — *worse for credibility than an honest "coming soon" waitlist.*
+2. ~~**Is Slovak in scope for the first Beta?**~~ **ANSWERED — yes.** This is already a standing owner constraint (§2, constraint #3) and drives all of Phase D; recorded here 2026-08-28 so it stops being re-asked. The `lexipaws.sk` credibility problem stands as a *defect* rather than an open question: until Phase D lands, the `.sk` domain promises a Slovak course and serves a Hungarian one.
 3. **Does the invite gate stay for the public Beta**, or does registration open?
 
 ### Blocks content work
-4. **How should the base-language field be modelled?** `docs/curriculum_discussion.txt` left this open. Either (a) add a sibling `"sk"` key inside the existing items and keep one shared tree, or (b) keep separate trees and rename `"hu"` to something neutral like `"l1"`. **This blocks all 1420 prompts and should be decided before any translation starts.**
+4. ~~**How should the base-language field be modelled?**~~ **ANSWERED — option (a), sibling keys in one shared tree.** Already recorded as owner-approved in §2 constraint #3 and specified in **WP-D1**; noted here 2026-08-28 because this list still described it as blocking. `data/sk/` is deleted, the tree moves to a neutral `data/A1/…`, and new `"sk"` values are seeded **`null`** rather than falling back to Hungarian, so untranslated content is visibly untranslated and `count(null)` is a free progress metric.
 5. **Who produces the Slovak translation** — you (you're a native speaker), a contractor, or MT with review?
 6. **Is `lessons_and_folders_to_be_created.md` still the plan for Lessons 2–9?** It needs a schema and answer keys, or deletion.
 7. **Was `Module_6/node4` intentionally dropped, or is it missing content?**
 
 ### Blocks design work
-8. **Light or dark by default?** The design guide mandates dark + OKLCH; the CSS ships light + hex and defaults to `system`. **Everything downstream depends on this answer.**
-9. **Blue `#3b82f6` or green `#10B981` as the primary accent?** Fixing the rogue `:root` in `landing.css` will change most of the UI at once, so this needs a product decision, not a code fix.
-10. **Are Outfit and Inter still the intended typefaces?** Nothing loads them; Nunito is force-applied globally. If Nunito is the real brand font, the tokens and the guide should both say so.
-11. **Which mascot rendering is canonical** — flat-vector, 2D cel, photoreal 3D, or the hand-coded SVG? Crops, animation frames, favicon, og:image and app icon all follow from this.
-12. **Is the mascot named Lexi or Tyler?** A one-time file rename ends an entire class of bug.
+8. ~~**Light or dark by default?**~~ **ANSWERED — `system`.** Already stated as §2 constraint #4 and restated as §12.1 D4; recorded here 2026-08-28 so the question stops being re-asked. The design guide's dark-by-default mandate describes the old app. **Light and dark must both be correct.**
+9. ~~**Blue `#3b82f6` or green `#10B981` as the primary accent?**~~ **ANSWERED 2026-08-28 — green** (§12.1 D1). The work is moving the value into `main.css:12` and rehoming the **seven** tokens that live only in the rogue block. ⚠️ **But `#10B981` cannot ship as a single value:** measured against the palette it scores **2.43:1 in light** (fails AA, and fails even the 3.0:1 non-text threshold) versus 6.99:1 in dark. The accent must become **theme-scoped** — recommended `#047857` light / `#10B981` dark — and the decision must extend to `--color-accent-on` and `--color-accent-at`, which are still blue. Full measurements in §12.1.
+10. ~~**Are Outfit and Inter still the intended typefaces?**~~ **ANSWERED 2026-08-28 — no. Nunito is the brand typeface** (§12.1 D2). `--font-heading` / `--font-body` get repointed at Nunito, and the `* { font-family }` and `!important` overrides that were compensating for the dead tokens get deleted.
+11. ~~**Which mascot rendering is canonical?**~~ **ANSWERED 2026-08-28 — the 2D cel** (`Tyler-asset-pack.png`; §12.1 D3). The hand-coded grey SVG is retired and the photoreal `tyler-3d/` frames are not canonical, which **withdraws recommendation 7 in §13** (the run-cycle swap). **The crops already exist** — 24 of the 26 files in `public/assets/images/Transparent PNGs/` are separated cel views cut from the pack, so nothing needs slicing; they need only the WP-G1 alpha-bounding-box crop. *(An earlier pass said the crops had to be cut by hand — corrected 2026-08-28 by checking the folder.)* The one real gap is a **run cycle**: only `tyler-running-right.png` exists, a single pose.
+12. ~~**Is the mascot named Lexi or Tyler?**~~ **ANSWERED — Lexi.** Already a standing owner constraint (§2, constraint #2: *Tyler is the owner's real dog and the origin of "Lexipaws", but the in-product character is Lexi*); recorded here 2026-08-28. The 26 `tyler-*.png` filenames are legacy and the rename is **WP-G2** — which also ends the 404 class in §13.
 13. **Do you hold a redistribution licence for `cartoon-pitbull-illustrated-collection/`?** (`.ai`/`.eps` stock source, tracked in git and publicly served.)
 14. **Should emoji stay as the icon system?** It means the app looks different on your users' Windows/Android machines than on your Mac.
 
@@ -1100,7 +1185,16 @@ Grouped by what they block. These genuinely need your answer — I can implement
 16. **Should reward math move server-side before launch**, or are per-request delta caps the accepted Beta posture?
 17. **Is energy meant to be a hard paywall gate?** If yes it must become server-authoritative; if it is a soft nudge, the current behaviour is arguably fine and the UI should stop implying scarcity.
 18. **Should leagues have promotion/relegation**, or stay as lifetime-XP tiers? The reward multipliers and the marketing copy both imply cohorts.
-19. **Is `BossEncounter` / `DynamicExerciseEngine` / `Dictation` / `MatchPairs` planned, or deletable?** ~1,100 lines hang on this.
+19. ~~**Is `BossEncounter` / `DynamicExerciseEngine` / `Dictation` planned, or deletable?**~~ **ANSWERED 2026-08-28 — all three implementations are deletable, and two of the product ideas survive.** The distinction matters: *the code goes, the roadmap entry stays.*
+
+    | Item | Product idea | The code on `dev` |
+    |---|---|---|
+    | **`BossEncounter`** (301 lines) | **Post-Beta.** Still wanted, not in Beta scope. | **Delete.** Reachable only when `activeLesson.id === 'Boss'`; node ids come from filenames and `find data -iname '*boss*'` returns nothing. It also carries its own unreachable soft-lock, and its art (`boss_character.png`) is a JPEG with no alpha that renders as a white square. Rebuild it against the Phase-C tokens when it is actually scheduled. |
+    | **`Dictation`** (93 lines) | **Deferred to CEFR B1/B2.** Dictation is a listening-and-transcription task that does not fit A1 — which is the entire current curriculum. | **Delete.** Emitted only by the dead `DynamicExerciseEngine` path, so it has never rendered. |
+    | **`MatchPairs`** (107 lines) | **Not returning.** The Beta matching feature is the existing `phonics_match` activity. | **Delete**, with its `match_pairs` switch case (§6). |
+    | **`DynamicExerciseEngine`** (`engine.ts`, 166 lines) | — | **Delete.** Runs only when `rawItems[0].type` is falsy; **0 of 144 data files** produce typeless items. Deleting it is what makes `Dictation` and `MatchPairs` unreachable in the first place. |
+
+    Deleting all four removes ~667 lines with **zero behaviour change**, because none of it executes. Everything is recoverable from git history if a post-Beta rebuild wants it as a reference — which is the point: keeping dead code in the tree is a worse record of intent than a roadmap line plus a commit SHA.
 20. **Should `phonics_speak` ship at all** with no speech recognition? It is 404 items and closes every character lesson.
 21. **Was react-query meant to own all server state**, or should it be removed and both queries folded back into plain fetches?
 22. **Should `data/quests.json` become the live pool**, or be deleted?
@@ -1158,6 +1252,36 @@ npm run build
 
 # 10. Deploy weight (expect ~34 MB until the asset cleanup lands)
 du -sh public dist
+
+# 11. Is the accent still split between two files? (expect, until C1 lands: main.css:12 #3b82f6 losing to landing.css:206 #10B981.
+#     The four main.css oklch hits are the purchased themes and are correct — ignore them.)
+grep -rn -- '--color-accent-in:' src/assets/css/main.css src/assets/css/landing.css
+
+# 12. Are the rogue-block-only tokens still defined nowhere but landing.css? (expect: 4 hits, all landing.css:204-211.
+#     Sampling 4 of the 6; --level-a2/b1/b2 sit on the same lines. If any hit moves to main.css, C1 has rehomed them.)
+grep -rn -- '--color-primary:\|--level-a1:\|--color-bg:\|--color-surface:' src/assets/css/
+
+# 13. Do the font tokens still point at fonts nothing loads? (expect: Outfit + Inter until C1 lands)
+grep -n -- '--font-heading:\|--font-body:' src/assets/css/main.css
+
+# 14. Can phonics_match still never be wrong? (expect: onAnswer(true) only, no onAnswer(false) outside the reset effect)
+grep -n 'onAnswer(' src/components/LessonPlayer/exercises/PhonicsMatch.tsx
+
+# 15. Is the HTTPS redirect live on all four hostnames? (VERIFIED 2026-08-28: all four 301 → https)
+for h in lexipaws.eu lexipaws.hu lexipaws.sk dev.lexipaws.eu; do
+  printf '%-18s ' "$h"; curl -s -o /dev/null -m 15 -w '%{http_code} -> %{redirect_url}\n' "http://$h/"
+done
+
+# 16. Does the session cookie carry Secure? (VERIFIED on dev 2026-08-28; the three prod hosts 404 until WP-A4)
+for h in lexipaws.eu lexipaws.hu lexipaws.sk dev.lexipaws.eu; do
+  printf '%-18s ' "$h"; curl -s -m 15 -D - -o /dev/null "https://$h/api.php?action=csrf_token" | grep -i '^set-cookie' || echo 'no cookie (404 until A4)'
+done
+
+# 17. Is the deploy manifest still public on dev? (expect 403 once WP-A3 merges; was 200 + 69,475 bytes on 2026-08-28)
+curl -s -o /dev/null -m 15 -w '%{http_code} %{size_download} bytes\n' https://dev.lexipaws.eu/.ftp-deploy-sync-state.json
+
+# 18. Is the accent still a single non-theme-scoped value? (expect: no --color-accent-in inside the dark block until C1)
+sed -n '28,40p' src/assets/css/main.css | grep -c 'color-accent'
 ```
 
 ### B. Update protocol
