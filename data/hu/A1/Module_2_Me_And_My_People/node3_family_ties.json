@@ -595,17 +595,18 @@
                 {
                     "type": "word_order",
                     "hu": "Szia, a nevem... Ő a fivérem.",
-                    "correctAnswer": "Hello, my name is... She is my sister.",
+                    "correctAnswer": "Hello, my name is... He is my brother.",
                     "scrambledWords": [
                         "Hello,",
                         "my",
                         "name",
                         "is...",
+                        "He",
                         "She",
                         "is",
                         "my",
-                        "sister.",
-                        "brother."
+                        "brother.",
+                        "sister."
                     ],
                     "id": "item_df635034"
                 },
