@@ -46,6 +46,7 @@ require_once __DIR__ . '/db_config.php';
 require_once __DIR__ . '/mailer.php';
 
 define('PASSWORD_REGEX', '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/');
+define('RATE_LIMIT_ERR_MSG', 'Túl sok kérés. Kérjük, próbáld újra később.');
 define('PASSWORD_ERR_MSG', 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.');
 define('APP_ALLOWED_HOSTS', ['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'neolix.studio', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
 
@@ -423,7 +424,7 @@ function sendBetaRequestReceiptEmail(string $email, string $name, string $baseLa
 function handleRequestBetaAccess(PDO $pdo, array $data): void {
     if (!security_rate_limit('beta_request_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 5, 3600)) {
         http_response_code(429);
-        echo json_encode(['error' => 'Túl sok kérés. Kérjük, próbáld újra később.']);
+        echo json_encode(['error' => RATE_LIMIT_ERR_MSG]);
         return;
     }
 
@@ -554,7 +555,7 @@ function handleSignup(PDO $pdo, array $data) {
 
         $points = isset($guestMigration['points']) ? intval($guestMigration['points']) : 0;
         $completed = isset($guestMigration['completed']) ? json_encode($guestMigration['completed']) : json_encode(new stdClass());
-        $scores = isset($guestMigration['scores']) ? json_encode($guestMigration['scores']) : json_encode(new stdClass());
+        $scores = encodeScores($guestMigration['scores'] ?? null);
 
         $stmtProgress = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, active_theme)
@@ -963,11 +964,18 @@ function handleGetSession(PDO $pdo) {
     }
 }
 
+function encodeScores($scores): string {
+    if (!is_array($scores) || $scores === []) {
+        return json_encode(new stdClass());
+    }
+    return json_encode($scores);
+}
+
 function parseProgressData(array $data) {
     return [
         'points' => isset($data['points']) ? intval($data['points']) : 0,
         'completed' => isset($data['completed']) ? json_encode($data['completed']) : json_encode(new stdClass()),
-        'scores' => isset($data['scores']) ? json_encode($data['scores']) : json_encode(new stdClass()),
+        'scores' => encodeScores($data['scores'] ?? null),
         'level' => isset($data['level']) ? intval($data['level']) : 1,
         'streak_count' => isset($data['streak_count']) ? intval($data['streak_count']) : 0,
         'streak_shields' => isset($data['streak_shields']) ? intval($data['streak_shields']) : 0,
@@ -984,9 +992,176 @@ function parseProgressData(array $data) {
     ];
 }
 
+function clampNodeState(array $incomingScores, array $currentScores, $userId): array {
+    if (!isset($incomingScores['node_state']) || !is_array($incomingScores['node_state'])) {
+        return $incomingScores;
+    }
+
+    foreach ($incomingScores['node_state'] as $nodeId => $nodeData) {
+        $incomingLevel = isset($nodeData['current_level']) ? intval($nodeData['current_level']) : 1;
+        $currentLevel = 1;
+
+        if (isset($currentScores['node_state'][$nodeId]['current_level'])) {
+            $currentLevel = intval($currentScores['node_state'][$nodeId]['current_level']);
+        }
+
+        if ($incomingLevel > $currentLevel + 1) {
+            error_log("Security: User $userId attempted to skip $nodeId from $currentLevel to $incomingLevel. Blocked.");
+            $incomingScores['node_state'][$nodeId]['current_level'] = $currentLevel;
+        }
+    }
+
+    return $incomingScores;
+}
+
+/**
+ * Clamps the incoming scores JSON against what is currently stored.
+ *
+ * Runs whenever a payload carries scores. It must never be gated on the
+ * truthiness of the stored string: a stored "0" is falsy in PHP, and using
+ * !empty() here let a single {"scores":0} payload disarm every clamp below
+ * for good.
+ */
+function clampScores(string $incomingScoresJson, $currentDbProgress, $userId): string {
+    $currentScores = [];
+    if ($currentDbProgress && isset($currentDbProgress['scores'])) {
+        $decodedCurrentScores = json_decode((string)$currentDbProgress['scores'], true);
+        if (is_array($decodedCurrentScores)) {
+            $currentScores = $decodedCurrentScores;
+        }
+    }
+
+    $incomingScores = json_decode($incomingScoresJson, true);
+    if (!is_array($incomingScores)) $incomingScores = [];
+
+    $currentBones = intval($currentScores['bones'] ?? 0);
+    $incomingBones = intval($incomingScores['bones'] ?? $currentBones);
+    if ($incomingBones < $currentBones) {
+        $incomingScores['bones'] = $incomingBones;
+    } elseif ($incomingBones > $currentBones + 100) {
+        error_log("Security: User $userId attempted excessive bones increase. Capped.");
+        $incomingScores['bones'] = $currentBones + 100;
+    }
+
+    $currentShields = intval($currentScores['streak_shields'] ?? 0);
+    $incomingShields = intval($incomingScores['streak_shields'] ?? $currentShields);
+    if ($incomingShields > $currentShields + 3) {
+        $incomingScores['streak_shields'] = $currentShields + 3;
+    }
+
+    return encodeScores(clampNodeState($incomingScores, $currentScores, $userId));
+}
+
+function clampProgressAgainstStored(array $parsed, $currentDbProgress, $userId): array {
+    if ($currentDbProgress && isset($currentDbProgress['points'])) {
+        $currentPoints = intval($currentDbProgress['points']);
+        if ($parsed['points'] < $currentPoints) {
+            $parsed['points'] = $currentPoints;
+        }
+        if ($parsed['points'] > $currentPoints + 100) {
+            error_log("Security: User $userId attempted excessive point increase. Capped.");
+            $parsed['points'] = $currentPoints + 100;
+        }
+    }
+
+    $parsed['energy'] = max(0, min(5, intval($parsed['energy'])));
+    $parsed['scores'] = clampScores($parsed['scores'], $currentDbProgress, $userId);
+
+    return $parsed;
+}
+
+function awardLeagueXp(PDO $pdo, $userId, array $parsed, $currentDbProgress): void {
+    if ($currentDbProgress && isset($currentDbProgress['points'])) {
+        $xpEarned = max(0, $parsed['points'] - intval($currentDbProgress['points']));
+    } else {
+        $xpEarned = $parsed['points'];
+    }
+
+    if ($xpEarned <= 0) {
+        return;
+    }
+
+    $leagueId = 1;
+    if ($parsed['points'] >= 5000) $leagueId = 4;
+    elseif ($parsed['points'] >= 1500) $leagueId = 3;
+    elseif ($parsed['points'] >= 500) $leagueId = 2;
+
+    $stmtLeague = $pdo->prepare("INSERT INTO user_leagues
+        (user_id, league_id, weekly_xp, monthly_xp)
+        VALUES (?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+        league_id = ?,
+        weekly_xp = weekly_xp + ?,
+        monthly_xp = monthly_xp + ?");
+    $stmtLeague->execute([
+        $userId, $leagueId, $xpEarned, $xpEarned,
+        $leagueId, $xpEarned, $xpEarned
+    ]);
+}
+
+function sendCommittedStreakEmail($currentDbProgress, int $newStreak, bool $milestonePref): void {
+    if (!$currentDbProgress['marketing_data']) {
+        return;
+    }
+
+    $marketingData = json_decode($currentDbProgress['marketing_data'], true);
+    if (!isset($marketingData['streak_commitment'])) {
+        return;
+    }
+
+    preg_match('/\d+/', $marketingData['streak_commitment'], $matches);
+    if (empty($matches)) {
+        return;
+    }
+
+    $committedStreak = intval($matches[0]);
+    if ($milestonePref && $newStreak === $committedStreak) {
+        sendTemplateEmail($currentDbProgress['email'], 'milestone', [
+            'username' => $currentDbProgress['username'],
+            'milestoneMessage' => "ELÉRTED A VÁLLALT " . $committedStreak . " NAPOS CÉLODAT!",
+            'language' => $currentDbProgress['base_language'] ?? 'hu'
+        ]);
+    }
+}
+
+function sendStreakMilestoneEmails($currentDbProgress, array $parsed): void {
+    if (!$currentDbProgress || !isset($currentDbProgress['streak_count'])) {
+        return;
+    }
+
+    $oldStreak = intval($currentDbProgress['streak_count']);
+    $newStreak = intval($parsed['streak_count']);
+
+    if ($newStreak <= $oldStreak) {
+        return;
+    }
+
+    $milestones = [7, 30, 100];
+
+    $prefs = json_decode($currentDbProgress['notification_preferences'] ?? '{}', true);
+    $milestonePref = $prefs['milestones'] ?? true;
+
+    if ($milestonePref && in_array($newStreak, $milestones)) {
+        sendTemplateEmail($currentDbProgress['email'], 'milestone', [
+            'username' => $currentDbProgress['username'],
+            'milestoneMessage' => $newStreak . " NAPOS TANULÁSI SOROZAT!",
+            'language' => $currentDbProgress['base_language'] ?? 'hu'
+        ]);
+    }
+
+    sendCommittedStreakEmail($currentDbProgress, $newStreak, (bool)$milestonePref);
+}
+
 function handleSaveProgress(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['error' => 'Munkamenet lejárt! Kérjük, jelentkezz be újra.']);
+        return;
+    }
+
+    if (!security_rate_limit('save_progress_' . $_SESSION['user_id'], 45, 60)) {
+        http_response_code(429);
+        error_log("Security: User {$_SESSION['user_id']} exceeded the save_progress rate limit.");
+        echo json_encode(['error' => RATE_LIMIT_ERR_MSG]);
         return;
     }
 
@@ -1000,61 +1175,10 @@ function handleSaveProgress(PDO $pdo, array $data) {
             JOIN users u ON u.id = up.user_id
             WHERE up.user_id = ?
         ");
-	        $stmtCheck->execute([$userId]);
-	        $currentDbProgress = $stmtCheck->fetch();
+        $stmtCheck->execute([$userId]);
+        $currentDbProgress = $stmtCheck->fetch();
 
-            if ($currentDbProgress && isset($currentDbProgress['points'])) {
-                $currentPoints = intval($currentDbProgress['points']);
-                if ($parsed['points'] < $currentPoints) {
-                    $parsed['points'] = $currentPoints;
-                }
-                if ($parsed['points'] > $currentPoints + 100) {
-                    error_log("Security: User $userId attempted excessive point increase. Capped.");
-                    $parsed['points'] = $currentPoints + 100;
-                }
-            }
-
-            $parsed['energy'] = max(0, min(5, intval($parsed['energy'])));
-
-	        if ($currentDbProgress && !empty($currentDbProgress['scores'])) {
-	            $currentScores = json_decode($currentDbProgress['scores'], true);
-	            $incomingScores = json_decode($parsed['scores'], true);
-                if (!is_array($currentScores)) $currentScores = [];
-                if (!is_array($incomingScores)) $incomingScores = [];
-
-                $currentBones = intval($currentScores['bones'] ?? 0);
-                $incomingBones = intval($incomingScores['bones'] ?? $currentBones);
-                if ($incomingBones < $currentBones) {
-                    $incomingScores['bones'] = $incomingBones;
-                } elseif ($incomingBones > $currentBones + 100) {
-                    error_log("Security: User $userId attempted excessive bones increase. Capped.");
-                    $incomingScores['bones'] = $currentBones + 100;
-                }
-
-                $currentShields = intval($currentScores['streak_shields'] ?? 0);
-                $incomingShields = intval($incomingScores['streak_shields'] ?? $currentShields);
-                if ($incomingShields > $currentShields + 3) {
-                    $incomingScores['streak_shields'] = $currentShields + 3;
-                }
-
-		            if (isset($incomingScores['node_state']) && is_array($incomingScores['node_state'])) {
-	                foreach ($incomingScores['node_state'] as $nodeId => $nodeData) {
-                    $incomingLevel = isset($nodeData['current_level']) ? intval($nodeData['current_level']) : 1;
-                    $currentLevel = 1;
-
-                    if (isset($currentScores['node_state'][$nodeId]['current_level'])) {
-                        $currentLevel = intval($currentScores['node_state'][$nodeId]['current_level']);
-                    }
-
-                    if ($incomingLevel > $currentLevel + 1) {
-                        error_log("Security: User $userId attempted to skip $nodeId from $currentLevel to $incomingLevel. Blocked.");
-                        $incomingScores['node_state'][$nodeId]['current_level'] = $currentLevel;
-                    }
-		            }
-                }
-
-	                $parsed['scores'] = json_encode($incomingScores);
-		        }
+        $parsed = clampProgressAgainstStored($parsed, $currentDbProgress, $userId);
 
         $stmt = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, last_active_date, unlocked_items, active_theme, earned_xp_per_node, daily_quests_date, active_quests, quest_progress, completed_quests_today, energy, last_energy_refill)
@@ -1084,66 +1208,8 @@ function handleSaveProgress(PDO $pdo, array $data) {
             $parsed['energy'], $parsed['last_energy_refill']
         ]);
 
-        $xpEarned = 0;
-        if ($currentDbProgress && isset($currentDbProgress['points'])) {
-            $xpEarned = max(0, $parsed['points'] - intval($currentDbProgress['points']));
-        } else {
-            $xpEarned = $parsed['points'];
-        }
-
-        if ($xpEarned > 0) {
-            $leagueId = 1;
-            if ($parsed['points'] >= 5000) $leagueId = 4;
-            elseif ($parsed['points'] >= 1500) $leagueId = 3;
-            elseif ($parsed['points'] >= 500) $leagueId = 2;
-
-            $stmtLeague = $pdo->prepare("INSERT INTO user_leagues
-                (user_id, league_id, weekly_xp, monthly_xp)
-                VALUES (?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE
-                league_id = ?,
-                weekly_xp = weekly_xp + ?,
-                monthly_xp = monthly_xp + ?");
-            $stmtLeague->execute([
-                $userId, $leagueId, $xpEarned, $xpEarned,
-                $leagueId, $xpEarned, $xpEarned
-            ]);
-        }
-
-        if ($currentDbProgress && isset($currentDbProgress['streak_count'])) {
-            $oldStreak = intval($currentDbProgress['streak_count']);
-            $newStreak = intval($parsed['streak_count']);
-
-            $milestones = [7, 30, 100];
-
-            $prefs = json_decode($currentDbProgress['notification_preferences'] ?? '{}', true);
-            $milestonePref = $prefs['milestones'] ?? true;
-
-            if ($milestonePref && $newStreak > $oldStreak && in_array($newStreak, $milestones)) {
-                sendTemplateEmail($currentDbProgress['email'], 'milestone', [
-                    'username' => $currentDbProgress['username'],
-                    'milestoneMessage' => $newStreak . " NAPOS TANULÁSI SOROZAT!",
-                    'language' => $currentDbProgress['base_language'] ?? 'hu'
-                ]);
-            }
-
-            if ($currentDbProgress['marketing_data'] && $newStreak > $oldStreak) {
-                $marketingData = json_decode($currentDbProgress['marketing_data'], true);
-                if (isset($marketingData['streak_commitment'])) {
-                    preg_match('/\d+/', $marketingData['streak_commitment'], $matches);
-                    if (!empty($matches)) {
-                        $committedStreak = intval($matches[0]);
-                        if ($milestonePref && $newStreak === $committedStreak) {
-                            sendTemplateEmail($currentDbProgress['email'], 'milestone', [
-                                'username' => $currentDbProgress['username'],
-                                'milestoneMessage' => "ELÉRTED A VÁLLALT " . $committedStreak . " NAPOS CÉLODAT!",
-                                'language' => $currentDbProgress['base_language'] ?? 'hu'
-                            ]);
-                        }
-                    }
-                }
-            }
-        }
+        awardLeagueXp($pdo, $userId, $parsed, $currentDbProgress);
+        sendStreakMilestoneEmails($currentDbProgress, $parsed);
 
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
@@ -1245,7 +1311,7 @@ function handleUpdatePassword(PDO $pdo, array $data) {
 function handleForgotPassword(PDO $pdo, array $data) {
     if (!security_rate_limit('forgot_password_' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'), 5, 3600)) {
         http_response_code(429);
-        echo json_encode(['error' => 'Túl sok kérés. Kérjük, próbáld újra később.']);
+        echo json_encode(['error' => RATE_LIMIT_ERR_MSG]);
         return;
     }
 
