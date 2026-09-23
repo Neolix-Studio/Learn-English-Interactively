@@ -868,14 +868,17 @@ Deploy order: **upload everything → run remote migrations → health check.** 
 
 `main` deploys to production **automatically on push** with no manual approval gate, no GitHub Environment protection, and no version stamp.
 
+**Branch policy — solo-maintainer mode (owner, 2026-09-23).** The project has one developer, so PR review was removed. `dev` is the **default branch** and accepts **direct pushes**, with no required reviews and no required status checks. It still blocks force-push and deletion. Every push runs CI, and the deploy job `needs: verify`, so a red build lands on the branch but never reaches `dev.lexipaws.eu`. `main` keeps its classic protection (1 approval, strict `Verify (CI)` + `Analyze Code`, enforced for admins) until the React cutover. Deploys are serialised per target with a `concurrency` group. `dependabot-automerge.yml` merges green patch and minor Dependabot PRs into `dev` and dispatches the deploy itself, because a `GITHUB_TOKEN` merge does not fire `push` workflows.
+
 ### Workflows
 
 | Workflow | Trigger | Gates? |
 |---|---|---|
-| `verify-deploy.yml` | push/PR on main+dev | ✅ The only real gate. PHP lint, security scan, oxlint, JSON validate, build, sandbox migrations against `mariadb:10.6`. |
-| `codeql-analysis.yml` | push/PR + weekly | ✅ Required check `Analyze Code` — but **`javascript-typescript` only. The entire PHP backend is unscanned.** |
+| `verify-deploy.yml` | push/PR on main+dev, manual dispatch | ✅ The only real gate — on `dev` it gates the **deploy**, not the push. PHP lint, security scan, oxlint, JSON validate, build, sandbox migrations against `mariadb:10.6`. |
+| `codeql-analysis.yml` | push/PR + weekly | ✅ Required check `Analyze Code` on `main` only (advisory on `dev`) — but **`javascript-typescript` only. The entire PHP backend is unscanned.** |
 | `cypress.yml` | `workflow_dispatch` only | ❌ Gates nothing, and cannot run (see below) |
 | `sonar-sync.yml` | after CI + daily cron | ❌ Two broken integrations (see below) |
+| `dependabot-automerge.yml` | after CI on a Dependabot PR | Merges patch and minor bumps into `dev` once all PR checks pass, then dispatches a `dev` deploy. |
 
 CI pins **Node 20** and **PHP 8.2**; this machine runs Node 26 and PHP 8.5. Local and CI do not run the same runtimes.
 

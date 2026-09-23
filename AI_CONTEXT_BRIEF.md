@@ -124,6 +124,7 @@ These are owner decisions. They are **not** derivable from the code, and they ha
 - Reads and writes files, runs the build, runs `git` and `gh`, probes the live site
 - Verifies claims against the actual code before acting
 - Updates `SOURCE_OF_TRUTH.md` and the `REMEDIATION_PLAN.md` progress log as part of finishing work
+- Commits and pushes **directly to `dev`**, with no PRs. The owner is the only developer and nobody reviews. A push to `dev` auto-deploys to `dev.lexipaws.eu` if CI passes, so verify locally before pushing. Never push to `main`: it is production and still protected.
 
 **What ChatGPT cannot do here** — and should say so rather than guessing: run `git`/`gh`, see branches other than the checked-out files, run the build, hit the network, or check production. Anything requiring those is a question for Claude Code.
 

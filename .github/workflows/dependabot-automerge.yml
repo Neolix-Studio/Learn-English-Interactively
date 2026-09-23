@@ -1,0 +1,92 @@
+name: Dependabot Auto-merge
+
+# Solo-maintainer setup: nobody is available to approve Dependabot PRs, so patch and minor bumps
+# merge themselves once CI is green. Major bumps (and 0.x minor bumps, which semver treats as
+# breaking) and grouped updates stay open for a human.
+#
+# Why workflow_run and not `gh pr merge --auto` on pull_request:
+#   - `dev` has no required status checks (so the owner can push directly), and without them
+#     auto-merge has nothing to wait for and would merge before CI finishes.
+#   - A merge made with GITHUB_TOKEN does not trigger `push` workflows, so the merged bump would
+#     never deploy. Merging here lets the same job dispatch the deploy explicitly
+#     (workflow_dispatch is the one event GITHUB_TOKEN is allowed to trigger).
+#
+# Safety: workflow_run runs from the default branch with a write token, so this job never checks
+# out or executes PR code. It only reads PR metadata through the API.
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Verify and Deploy"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+  checks: read
+  statuses: read
+
+jobs:
+  automerge:
+    name: Merge Dependabot PR
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.actor.login == 'dependabot[bot]' &&
+      startsWith(github.event.workflow_run.head_branch, 'dependabot/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+
+    steps:
+      - name: Resolve PR and decide
+        id: pr
+        run: |
+          PR=$(gh pr list --head "$HEAD_BRANCH" --state open --json number,author,baseRefName,headRefOid \
+            --jq ".[] | select(.author.login == \"app/dependabot\" and .headRefOid == \"$HEAD_SHA\") | .number")
+          if [ -z "$PR" ]; then
+            echo "No open Dependabot PR at $HEAD_SHA (superseded or already merged) - nothing to do."
+            exit 0
+          fi
+          BASE=$(gh pr view "$PR" --json baseRefName --jq .baseRefName)
+          if [ "$BASE" != "dev" ]; then
+            echo "PR #$PR targets '$BASE', not dev - leaving it for manual review."
+            exit 0
+          fi
+
+          TITLE=$(gh pr view "$PR" --json title --jq .title)
+          # Single-dependency titles end in "from X to Y". Grouped updates do not, and are skipped.
+          FROM=$(echo "$TITLE" | sed -nE 's/.* from v?([0-9][^ ]*) to v?([0-9][^ ]*)$/\1/p')
+          TO=$(echo "$TITLE" | sed -nE 's/.* from v?([0-9][^ ]*) to v?([0-9][^ ]*)$/\2/p')
+          if [ -z "$FROM" ] || [ -z "$TO" ]; then
+            echo "Cannot parse versions from '$TITLE' - leaving PR #$PR for manual review."
+            exit 0
+          fi
+          FROM_MAJOR=${FROM%%.*}; TO_MAJOR=${TO%%.*}
+          FROM_MINOR=$(echo "$FROM" | cut -d. -f2); TO_MINOR=$(echo "$TO" | cut -d. -f2)
+          if [ "$FROM_MAJOR" != "$TO_MAJOR" ] || { [ "$FROM_MAJOR" = "0" ] && [ "$FROM_MINOR" != "$TO_MINOR" ]; }; then
+            echo "Breaking bump $FROM -> $TO - leaving PR #$PR for manual review."
+            exit 0
+          fi
+
+          echo "PR #$PR ($FROM -> $TO) qualifies for auto-merge."
+          echo "number=$PR" >> "$GITHUB_OUTPUT"
+
+      # CI passing is what triggered this run, but CodeQL and SonarCloud report separately.
+      # This job is not itself a check on the PR, so watching the PR's checks cannot deadlock.
+      - name: Wait for the remaining PR checks
+        if: steps.pr.outputs.number != ''
+        run: gh pr checks "${{ steps.pr.outputs.number }}" --watch --fail-fast --interval 30
+
+      - name: Merge
+        if: steps.pr.outputs.number != ''
+        # --match-head-commit: refuse to merge if Dependabot pushed a newer commit than the one CI tested.
+        run: gh pr merge "${{ steps.pr.outputs.number }}" --squash --delete-branch --match-head-commit "$HEAD_SHA"
+
+      - name: Deploy dev
+        if: steps.pr.outputs.number != ''
+        run: gh workflow run verify-deploy.yml --ref dev -f target=dev

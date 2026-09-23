@@ -1,69 +1,35 @@
 # Neolix Studio Git Workflow & QA Standards Guide
 
-This document outlines the standard step-by-step workflow for managing code branches, submitting pull requests via the GitHub Desktop application, and the testing requirements for future development.
+This document outlines the branch and deploy workflow and the testing requirements for future development.
+
+> **Solo-maintainer mode (since 2026-09-23).** The project has one developer, so there is nobody to approve pull requests. `dev` accepts **direct pushes** and is the repository's **default branch**. `main` is unchanged and still protected, because it serves production and still holds the old vanilla-JS app until the React cutover.
 
 ---
 
-## Part 1: GitHub Desktop Step-by-Step Workflow
+## Part 1: Day-to-day workflow
 
-Always perform development tasks using a dedicated feature branch. Follow these steps sequentially:
+1. Pull the latest `dev`: `git checkout dev && git pull`.
+2. Commit your change on `dev`. A short-lived local branch is fine for experiments; merge it into `dev` locally when it works.
+3. `git push origin dev`.
+4. GitHub Actions runs **CI/CD Verify and Deploy**. If `Verify (CI)` passes, the deploy job publishes to `https://dev.lexipaws.eu`. If it fails, nothing is deployed, and you fix forward with another push.
+5. CodeQL and SonarCloud also run on the push. They report findings but do not block the deploy.
 
-### 1. Preparing the Workspace
-1. Open **GitHub Desktop**.
-2. Select your repository in the top-left dropdown.
-3. In the **Current Branch** dropdown (middle-top), select **`dev`**.
-4. Click **Fetch origin** (top-right). If there are updates, click **Pull origin** to download the latest changes.
+What is still enforced on `dev`: no force-push, no branch deletion.
 
-### 2. Creating a New Feature Branch
-1. Click the **Current Branch** dropdown.
-2. Click **New Branch**.
-3. Name your branch using the prefix `feature/` or `fix/` followed by a descriptive name:
-   * Example: `feature/streak-shield-logic` or `fix/word-order-click`
-4. Choose to base your branch on **`dev`** (do NOT base it on `main`).
-5. Click **Create Branch**.
-
-### 3. Making and Committing Changes
-1. Edit code in your IDE/editor as usual.
-2. Switch back to **GitHub Desktop**. You will see the changed files listed on the left sidebar.
-3. Check the checkboxes next to the files you want to commit.
-4. At the bottom-left, fill in the commit details:
-   * **Summary (Required)**: Keep it concise and use semantic formatting if possible (e.g., `fix: update streak rendering offset` or `feat: add contact form validations`).
-   * **Description (Optional)**: Provide brief context if the changes are complex.
-5. Click the blue **Commit to [your-branch-name]** button.
-
-### 4. Creating the Pull Request (PR)
-1. Click **Publish branch** at the top right to upload the branch to GitHub.
-2. A button labeled **Create Pull Request** will appear. Click it. This opens GitHub in your browser.
-3. **CRITICAL STEP**: On the GitHub PR page, make sure the destination target is set correctly:
-   * **base**: `dev` $\leftarrow$ **compare**: `feature/your-branch-name`
-4. Title the PR clearly, write a short description of what was changed, and submit the PR.
-5. Wait for the required checks:
-   * `Verify (CI)`
-   * `Analyze Code`
-6. Ask for review. At least one approval is required before merge.
-7. Merge only after checks pass and conversations are resolved.
-
-Protected branch rule: do not push directly to `dev` or `main`. All changes must go through a PR.
+**Dependabot** opens PRs against `dev`. `dependabot-automerge.yml` merges patch and minor bumps automatically once every check on the PR is green, then triggers a `dev` deploy. Major bumps, 0.x minor bumps and grouped updates stay open for you to merge by hand.
 
 ---
 
-## Part 2: Industry-Standard Development & QA Policy
-
-The workflow for promoting code to the production environment consists of two stages:
+## Part 2: Environments
 
 ```
-[Feature Branch] ---> [dev branch] ---> [main branch]
-                      (Testing Env)         (Production Env)
+[dev branch] ---------------------> [main branch]
+ push -> dev.lexipaws.eu              (Production Env: lexipaws.eu)
 ```
 
-1. **Feature/Fix Branch to `dev`**: Where active code reviews, automated scans, and manual QA validation happen.
-2. **`dev` to `main`**: A standard pull request to release fully vetted, stable code into production.
-
-Current deployment mapping:
-
-* Merging to `dev` deploys `https://dev.lexipaws.eu`.
-* Merging to `main` deploys `https://lexipaws.eu`.
-* Production releases should only happen from a reviewed `dev` to `main` PR.
+* A push to `dev` deploys `https://dev.lexipaws.eu` once CI passes.
+* A push to `main` deploys `https://lexipaws.eu`. `main` still requires a PR with one approval, plus the `Verify (CI)` and `Analyze Code` checks. When production is cut over to the React app, relax `main` the same way `dev` was relaxed, or promote with a manual `workflow_dispatch` run with `target: main`.
+* A deploy can be re-run by hand from **Actions → CI/CD Verify and Deploy → Run workflow**, choosing the same branch in both "Use workflow from" and `target`.
 
 ---
 

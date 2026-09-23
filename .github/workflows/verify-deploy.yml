@@ -113,6 +113,12 @@ jobs:
         github.ref_name == github.event.inputs.target)
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # One deploy per target at a time: direct pushes and Dependabot auto-merges can land in quick
+    # succession, and two overlapping FTP syncs into the same docroot would interleave files.
+    # Queued rather than cancelled, so the newest commit always ends up deployed.
+    concurrency:
+      group: deploy-${{ github.ref_name }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout Code
