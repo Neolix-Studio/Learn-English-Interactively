@@ -2,7 +2,7 @@
 
 Lexipaws teaches English to Hungarian speakers (Slovak follows): a React 19 + TypeScript + Vite app in `src/`, flat PHP + MariaDB behind `api.php`, and the curriculum as JSON in `data/`. It is a hard Alpha working toward a Hungarian-only Beta. The owner is the only developer and works with Claude Code only.
 
-**One GitHub issue = one session = one push to `dev`.** The owner starts a session with "Do #NNN" and closes the issue with his OK. This file is the protocol for that session. The detail lives in the specs:
+**One GitHub issue = one session = one push to `dev`.** The owner starts a session with "Do #NNN", or the autopilot starts it (see [Autopilot](#autopilot)). A session closes its own issue unless the owner is needed (step 10). This file is the protocol for that session. The detail lives in the specs:
 
 | File | What it holds |
 |---|---|
@@ -137,12 +137,12 @@ Then run the live checks the issue itself names.
 
 Post one comment on the issue:
 
-- `## Ready for your check — pushed to dev as <sha>`
+- `## Done — pushed to dev as <sha>`, or `## Needs you — pushed to dev as <sha>` when step 10 stops for the owner
 - a table with one row per "Done when" line: the command, its output, and for UI work which matrix screenshots you read and what each showed. `gh` cannot attach images: show the owner the PNGs that matter in the session, and never commit or upload them
 - "Seen, not changed", if anything
 - "How to check it yourself" (step 9)
 
-Leave the issue open and its board item **In progress**.
+Then go to step 10.
 
 ### 9. Tell the owner how to check it
 
@@ -150,18 +150,36 @@ End every session by telling the owner, in plain words, how to check the result 
 
 **Say every time whether he has to run anything in the database** (owner request, 2026-09-30). Usually the answer is "nothing to run in the database": the deploy applies the files in `data/migrations/` by itself. When he does have to run SQL by hand, do not run it for him. Put it in `tools/local/maintenance/sql/NNN_what_it_does.sql`, with a comment at the top saying what it does, whether to run it before or after the deploy, and what he should see afterwards; commit it with the issue; and give him a clickable link to that file in the chat, so it opens beside the conversation as text he can copy and paste into the database tool. Do not paste long SQL into the chat instead of the link.
 
-Then ask him for his OK.
+### 10. Close, or stop for the owner
 
-### 10. Close, after the owner's OK
+**A session closes its own issue unless the owner is needed** (owner decision, 2026-09-30, replacing that morning's "never close on its own"). The owner is needed when one of these holds, and only then:
 
-**A session never closes an issue on its own** (owner decision, 2026-09-30), also when there was nothing to test by hand. When the owner says it is fine, in this session or a later one ("close #NNN"):
+- a new file in `data/migrations/` (commit it, **do not push**, and ask for his yes with a link to the `.sql` file; see the hard rules)
+- SQL he has to run by hand (step 9)
+- a check that only he can do: a real phone, a real e-mail inbox, a payment, his own account, or anything the local stack and the screenshot matrix cannot show. "He may want to look at it" is not enough; the "How to check it yourself" steps are for him to use later
+- a product decision, or an unanswered "Owner input needed" section
+- Verify or Deploy failed and a fix-forward commit did not make both green, or `dev.lexipaws.eu` fails the step 7 checks
+- anything the hard rules say to stop and ask about
+
+When the owner is needed: leave the issue open and **In progress**, tell him exactly what he has to do, and ask for his OK. Otherwise close it now:
 
 1. `gh issue close NNN --reason completed`
 2. Set its board item to **Done**.
 3. Move every dependent whose last open blocker this was from **Blocked** to **Backlog**.
 4. Add one line to the issue saying what was moved.
 
-If he reports a problem instead, fix it in the same issue with a new commit and repeat steps 4 to 9.
+When the owner later says "close #NNN", do the same four steps. If he reports a problem instead, reopen the issue if it is closed, fix it with a new commit and repeat steps 4 to 10.
+
+## Autopilot
+
+`tools/local/autopilot.sh` runs sessions one after another, each a fresh Claude Code session started with the same prompt, until one needs the owner. In an autopilot session:
+
+- Follow this file from step 1 with no issue named: the next issue is the one step 1 picks.
+- Nobody is watching. Do not ask questions mid-session; when something needs the owner, stop there (step 10) and put what he must do in the issue comment and the final message.
+- A command that is not pre-approved in `.claude/settings.json` is refused, not asked. Find a pre-approved way (the Read, Edit and Write tools need no approval), and if there is none, stop and name the command.
+- There is no browser pane. Start the dev server with the Bash tool in the background (`npm run dev`), and stop it and the local stack when finished.
+- Start only with a clean working tree on `dev`, level with `origin/dev`. If it is not, stop.
+- End the final message with exactly one line, the last line: `AUTOPILOT: CONTINUE` when the issue was closed and the next one may start, or `AUTOPILOT: STOP — <what the owner must do>` otherwise. Nothing left in Next or Backlog, an open blocker on the picked issue, and a refused command are all STOP.
 
 ## Board
 
