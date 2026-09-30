@@ -81,7 +81,31 @@ tests.
 
 Requires `mariadb` from Homebrew (`brew install mariadb`); the server does not
 need to be running. `--ref` is how you show a check detects the bug it claims
-to: run it against `origin/dev` before WP-B0 and checks 1-3 fail while 4-5 pass.
+to: run it against `dev` before WP-B0 (`--ref 450b9dd`) and checks 1-3 fail
+while 4-5 pass.
+
+**In CI.** The verify job of `verify-deploy.yml` runs the suite on every push,
+without `--slow`, so a failed check stops the deploy. There it does not start a
+MariaDB; it uses the job's `mariadb:10.6` service container:
+
+```
+TEST_DB_PASS=root ./tools/local/testing/save_progress_security_test.sh --db-host 127.0.0.1 --db-port 3306
+```
+
+| Flag | Environment | Meaning |
+|---|---|---|
+| `--db-host` | `TEST_DB_HOST` | Use the MariaDB already running at this address instead of starting one. `127.0.0.1` or `localhost` only. |
+| `--db-port` | `TEST_DB_PORT` | Its port, default 3306. Without `--db-host` this is the port of the throwaway instance, default 3399. |
+| `--db-user` | `TEST_DB_USER` | Default `root`. The account must be allowed to create a database. |
+| | `TEST_DB_PASS` | Its password. Environment only, so it does not show in the process list. |
+
+In this mode the suite creates a database named `lexipaws_sptest_<pid>_<time>`
+and drops it on exit. It stops if that name already exists, and it touches no
+other database on the server. A host that is not loopback is refused: the live
+database is remote, and this keeps the suite from ever being pointed at it.
+Only a client is needed (`mariadb`, or `mysql` as on GitHub's runners). To try
+the mode on a Mac, start any local MariaDB with a root password first; without
+`--db-host` nothing changes and the suite still brings its own.
 
 ## Screenshots
 

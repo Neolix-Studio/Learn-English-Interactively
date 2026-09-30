@@ -81,6 +81,19 @@ jobs:
       - name: Verify Database Migrations in Sandbox
         run: php migrate.php
 
+      # The only automated check of api.php's progress handlers: the anti-cheat clamps, the
+      # rate limit, and that an honest save is stored unchanged. It drives the real api.php over
+      # HTTP from a sandbox copy with a config of its own, on a database it creates on the
+      # service container and drops again; learn_english_test and the db_config.php written
+      # above are not used. A failed check exits non-zero, which fails this job, and the deploy
+      # job `needs: verify`, so a regression here never reaches the server.
+      # Without --slow: that adds a 62-second wait to prove the rate-limit window reopens.
+      - name: Run save_progress Security Suite
+        timeout-minutes: 5
+        env:
+          TEST_DB_PASS: root
+        run: ./tools/local/testing/save_progress_security_test.sh --db-host 127.0.0.1 --db-port 3306
+
       - name: Notify Slack on CI Failure
         if: failure()
         env:

@@ -38,7 +38,7 @@ Product. These are owner decisions; do not reopen them unless he asks.
 | `dev` has its own database | It shares production's (see the hard rules). |
 | Local `main` is current | It is stale, and so are the other old local branches. Use `git fetch origin` and read `origin/main`. |
 | `data/sk` is the Slovak course | It is a copy of `data/hu` in Hungarian, minus 17 stories. |
-| Green checks mean it works | There are no automated tests. `npm run lint` exits 0 with warnings, and `npm run validate:json` checks the schema of one file. Green means "it builds". |
+| Green checks mean it works | The only automated test is the `save_progress` security suite, which CI runs before every deploy (#357); nothing else is tested. `npm run lint` exits 0 with warnings, and `npm run validate:json` checks the schema of one file. Green means "it builds, and `save_progress` still clamps and throttles". |
 | `http://localhost:5173` is the app | On `localhost` every auth guard is off. Use `http://app.localhost:5173` to see what a user sees. |
 | Editing `data/` shows on refresh | Curriculum JSON is bundled at build time. |
 | This machine matches CI | CI runs Node 20 and PHP 8.2; this machine runs newer versions of both. |

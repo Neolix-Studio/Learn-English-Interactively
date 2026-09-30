@@ -182,7 +182,7 @@ Art is AI-generated and the owner does not draw. Prefer fixes that reuse assets 
 └── scripts/ tools/         Build, release, security scan, local DB tooling
 ```
 
-**Tracked-file distribution:** `data` 166, `src` 100, `reference` 98, `public` 89, `docs` 40. `reference/` (design mockups + a `.docx`) dominates clone and CI-checkout cost — and `verify-deploy.yml:104` uses `fetch-depth: 0` on the deploy job, pulling full history on every production deploy.
+**Tracked-file distribution:** `data` 166, `src` 100, `reference` 98, `public` 89, `docs` 40. `reference/` (design mockups + a `.docx`) dominates clone and CI-checkout cost — and `verify-deploy.yml:140` uses `fetch-depth: 0` on the deploy job, pulling full history on every production deploy.
 
 **Not tracked (verified via `git log --all`):** `dist/`, `release/`, `node_modules/`, `audio/`, `avatars/`, `db_config.php`, `db_config_prod.php`. None were ever committed.
 
@@ -886,9 +886,9 @@ Shared Apache at Websupport.sk over **FTPS port 21**. No SSH, no containers, no 
 
 Deploy order: **upload everything → run remote migrations → health check.** By the time anything can fail, production has already been overwritten. **There is no rollback step anywhere** — `docs/guides/cicd_user_story.md:33-34` lists "Rollback Capability" as an acceptance criterion and it is unimplemented.
 
-**The health check is a false green.** `verify-deploy.yml:177` uses `curl -f`, which only fails on HTTP ≥ 400 — but `api.php:41-43` (missing `db_config.php`) and `:59-63` (PDO failure) both `echo` a JSON error and **exit with HTTP 200**. A deploy that lost its database config reports success and posts "🚀 CD Deploy Succeeded" to Slack. The check only proves Apache can execute PHP. ✅ **Fixed @ `450b9dd` (WP-A3, 2026-08-29):** the health check now fails unless the body of `api.php?action=get_session` contains `"session"` (`verify-deploy.yml:256-258`), so a dead database turns the deploy red. The order is unchanged — it still reports after the upload, so it detects a broken deploy but does not prevent one.
+**The health check is a false green.** `verify-deploy.yml:177` uses `curl -f`, which only fails on HTTP ≥ 400 — but `api.php:41-43` (missing `db_config.php`) and `:59-63` (PDO failure) both `echo` a JSON error and **exit with HTTP 200**. A deploy that lost its database config reports success and posts "🚀 CD Deploy Succeeded" to Slack. The check only proves Apache can execute PHP. ✅ **Fixed @ `450b9dd` (WP-A3, 2026-08-29):** the health check now fails unless the body of `api.php?action=get_session` contains `"session"` (`verify-deploy.yml:269-271`), so a dead database turns the deploy red. The order is unchanged — it still reports after the upload, so it detects a broken deploy but does not prevent one.
 
-**What else WP-A3 changed (`450b9dd`).** The release bundle is uploaded as a workflow artifact before `db_config.php` is generated, behind an assertion that fails the job if any credential file is in it (`verify-deploy.yml:175-188`), so there is now something to restore from by hand. `workflow_dispatch` redeploys a target without a code push, and only when the chosen target matches the branch it was launched from. `.htaccess:23-25` denies `.ftp-deploy-sync-state.json` — it returned 200 with 69,475 bytes before and returns **403** now (re-checked 2026-09-30). Migrations 04, 07 and 11 are idempotent. There is still no automatic rollback.
+**What else WP-A3 changed (`450b9dd`).** The release bundle is uploaded as a workflow artifact before `db_config.php` is generated, behind an assertion that fails the job if any credential file is in it (`verify-deploy.yml:188-201`), so there is now something to restore from by hand. `workflow_dispatch` redeploys a target without a code push, and only when the chosen target matches the branch it was launched from. `.htaccess:23-25` denies `.ftp-deploy-sync-state.json` — it returned 200 with 69,475 bytes before and returns **403** now (re-checked 2026-09-30). Migrations 04, 07 and 11 are idempotent. There is still no automatic rollback.
 
 `main` deploys to production **automatically on push** with no manual approval gate, no GitHub Environment protection, and no version stamp.
 
@@ -900,7 +900,7 @@ Deploy order: **upload everything → run remote migrations → health check.** 
 
 | Workflow | Trigger | Gates? |
 |---|---|---|
-| `verify-deploy.yml` | push/PR on main+dev, manual dispatch | ✅ The only real gate — on `dev` it gates the **deploy**, not the push. PHP lint, security scan, oxlint, JSON validate, build, sandbox migrations against `mariadb:10.6`. |
+| `verify-deploy.yml` | push/PR on main+dev, manual dispatch | ✅ The only real gate — on `dev` it gates the **deploy**, not the push. PHP lint, security scan, oxlint, JSON validate, build, sandbox migrations against `mariadb:10.6`, and since 2026-09-30 (H1a, #357) the `save_progress` security suite (`verify-deploy.yml:91-95`). |
 | `codeql-analysis.yml` | push/PR + weekly | ✅ Required check `Analyze Code` on `main` only (advisory on `dev`) — but **`javascript-typescript` only. The entire PHP backend is unscanned.** |
 | `cypress.yml` | `workflow_dispatch` only | ❌ Gates nothing, and cannot run (see below) |
 | `sonar-sync.yml` | after CI + daily cron | ❌ Two broken integrations (see below). **Disabled since 2026-09-24**, after it filed 86 duplicate issues in one night. |
@@ -908,13 +908,15 @@ Deploy order: **upload everything → run remote migrations → health check.** 
 
 CI pins **Node 20** and **PHP 8.2**; this machine runs Node 26 and PHP 8.5. Local and CI do not run the same runtimes.
 
-`npm ci || npm install` (`:44`, `:143`) defeats the purpose of `npm ci` — a drifted lockfile silently falls through and passes green. *(The lock is in sync today.)* **Half-fixed @ `450b9dd` (WP-A3):** the deploy job now runs `npm ci --ignore-scripts` (`verify-deploy.yml:164`); the verify job still has the fallback (`:53`).
+`npm ci || npm install` (`:44`, `:143`) defeats the purpose of `npm ci` — a drifted lockfile silently falls through and passes green. *(The lock is in sync today.)* **Half-fixed @ `450b9dd` (WP-A3):** the deploy job now runs `npm ci --ignore-scripts` (`verify-deploy.yml:177`); the verify job still has the fallback (`:53`).
 
 The lint step is labelled "Run ESLint" but runs oxlint, which **exits 0 with 45 warnings**. It blocks nothing.
 
 ### Test coverage: effectively zero
 
-The entire automated test suite:
+**One real test now gates the deploy (H1a, #357, 2026-09-30).** The verify job runs `tools/local/testing/save_progress_security_test.sh` on every push (`verify-deploy.yml:91-95`), without `--slow`. It drives the real `api.php` over HTTP from a sandbox copy and makes 8 checks: the anti-cheat clamps hold on a poisoned `scores="0"` row and after a `{"scores":0}` payload, a scripted loop is throttled after 45 requests, an honest save is stored byte for byte, a user with no `user_progress` row can save, league XP accumulates, and a streak milestone saves without SMTP. A failed check exits non-zero and fails the job; the deploy job `needs: verify` (`verify-deploy.yml:117`) and its `if:` has no `always()` or `failure()`, so it is skipped. In CI the suite does not start a MariaDB: `--db-host 127.0.0.1 --db-port 3306` points it at the job's `mariadb:10.6` service, where it creates a database of its own (`lexipaws_sptest_<pid>_<time>`), drops it on exit, and leaves `learn_english_test` alone. It accepts a loopback host only, so it cannot be pointed at the live database. Without `--db-host` it still starts and destroys its own instance, as before. **This is the only automated test of behaviour.** It covers `save_progress` and nothing else: login, signup, lesson playback, XP maths in the frontend and streak rules remain untested, and everything below still describes the rest.
+
+The rest of the automated test suite:
 
 ```js
 describe('Homepage Test', () => {
@@ -925,7 +927,7 @@ describe('Homepage Test', () => {
 });
 ```
 
-That is `cypress/e2e/home.cy.js` in full. There are no unit tests, no component tests, no PHP tests, no `vitest`/`jest`/`playwright`/`phpunit` config anywhere. The one test asserts a `<body>` renders — not a route, not text, not a network call. Under `vite preview` there is no PHP backend at all, so every API call 404s and it still passes.
+That is `cypress/e2e/home.cy.js` in full. There are no unit tests, no component tests, no PHP tests other than the `save_progress` suite above, no `vitest`/`jest`/`playwright`/`phpunit` config anywhere. The one test asserts a `<body>` renders — not a route, not text, not a network call. Under `vite preview` there is no PHP backend at all, so every API call 404s and it still passes.
 
 **And it cannot run:** `cypress` is in neither `dependencies`, nor `devDependencies`, nor `package-lock.json`, nor `node_modules/`. `cypress.yml` also declares a 2-container "parallelization" matrix without passing `parallel`/`record`/`group`, so it would run the same one test twice.
 

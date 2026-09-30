@@ -11,6 +11,22 @@
 #   ./tools/local/testing/save_progress_security_test.sh --ref dev    # a git ref
 #   ./tools/local/testing/save_progress_security_test.sh --slow       # + 60s window test
 #
+# With --db-host it uses a MariaDB that is already running instead of starting
+# one: this is how the verify job in CI runs it, against its mariadb service
+# container. The suite still creates a database of its own there and drops it
+# on exit, and it stops if that name is already taken, so nothing else on the
+# server is read or changed. Only a loopback host is accepted.
+#
+#   TEST_DB_PASS=root ./tools/local/testing/save_progress_security_test.sh \
+#       --db-host 127.0.0.1 --db-port 3306
+#
+#   --db-host / TEST_DB_HOST   127.0.0.1 or localhost; switches this mode on
+#   --db-port / TEST_DB_PORT   default 3306 (without --db-host: the port of the
+#                              throwaway instance, default 3399)
+#   --db-user / TEST_DB_USER   default root; must be allowed to CREATE DATABASE
+#   TEST_DB_PASS               its password (environment only, so it stays out
+#                              of the process list)
+#
 # --ref is how you prove a test detects the bug it claims to: run it against
 # origin/dev before WP-B0 and checks 1, 2 and 3 must FAIL.
 #
@@ -28,25 +44,59 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 REF=""
 SLOW=0
 PORT="${TEST_HTTP_PORT:-8080}"
-DB_PORT="${TEST_DB_PORT:-3399}"
+# An empty DB_HOST means "start a throwaway instance"; see the header.
+DB_HOST="${TEST_DB_HOST:-}"
+DB_PORT="${TEST_DB_PORT:-}"
+DB_USER="${TEST_DB_USER:-root}"
+DB_PASS="${TEST_DB_PASS:-}"
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --ref) REF="$2"; shift 2 ;;
     --slow) SLOW=1; shift ;;
+    --db-host) DB_HOST="$2"; shift 2 ;;
+    --db-port) DB_PORT="$2"; shift 2 ;;
+    --db-user) DB_USER="$2"; shift 2 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
 
+if [ -n "$DB_HOST" ]; then
+  # Loopback only. The suite creates and drops a database, and the one server it
+  # must never reach - the live one dev and production share - is remote.
+  case "$DB_HOST" in
+    127.0.0.1) ;;
+    # PDO and the client both treat the name "localhost" as "use the unix
+    # socket" and ignore the port, so pin it to the TCP address.
+    localhost) DB_HOST="127.0.0.1" ;;
+    *) echo "FATAL: --db-host accepts 127.0.0.1 or localhost only, not '$DB_HOST'." >&2; exit 2 ;;
+  esac
+  DB_PORT="${DB_PORT:-3306}"
+else
+  DB_PORT="${DB_PORT:-3399}"
+fi
+case "$DB_PORT" in ''|*[!0-9]*) echo "FATAL: the DB port must be a number, not '$DB_PORT'." >&2; exit 2 ;; esac
+# DB_USER is written into the generated PHP config below.
+case "$DB_USER" in ''|*[!A-Za-z0-9_]*) echo "FATAL: the DB user may hold letters, digits and _ only." >&2; exit 2 ;; esac
+
 # ---------------------------------------------------------------- prerequisites
-MARIADBD="${MARIADBD:-$(command -v mariadbd || true)}"
-MARIADB="${MARIADB:-$(command -v mariadb || true)}"
-INSTALL_DB="${INSTALL_DB:-$(command -v mariadb-install-db || true)}"
-if [ -z "$MARIADBD" ] || [ -z "$MARIADB" ] || [ -z "$INSTALL_DB" ]; then
-  echo "FATAL: mariadbd / mariadb / mariadb-install-db not on PATH." >&2
-  echo "       brew install mariadb   (the server does NOT need to be running;" >&2
-  echo "       this script starts its own throwaway instance)" >&2
-  exit 2
+if [ -n "$DB_HOST" ]; then
+  # Only a client is needed. GitHub's Ubuntu runners ship `mysql`, not `mariadb`.
+  MARIADB="${MARIADB:-$(command -v mariadb || command -v mysql || true)}"
+  if [ -z "$MARIADB" ]; then
+    echo "FATAL: no mariadb or mysql client on PATH." >&2
+    exit 2
+  fi
+else
+  MARIADBD="${MARIADBD:-$(command -v mariadbd || true)}"
+  MARIADB="${MARIADB:-$(command -v mariadb || true)}"
+  INSTALL_DB="${INSTALL_DB:-$(command -v mariadb-install-db || true)}"
+  if [ -z "$MARIADBD" ] || [ -z "$MARIADB" ] || [ -z "$INSTALL_DB" ]; then
+    echo "FATAL: mariadbd / mariadb / mariadb-install-db not on PATH." >&2
+    echo "       brew install mariadb   (the server does NOT need to be running;" >&2
+    echo "       this script starts its own throwaway instance)" >&2
+    exit 2
+  fi
 fi
 command -v php >/dev/null || { echo "FATAL: php not on PATH." >&2; exit 2; }
 
@@ -54,15 +104,34 @@ SANDBOX="$(mktemp -d "${TMPDIR:-/tmp}/lexipaws-sptest.XXXXXX")"
 # The unix socket path has a ~103 character limit, and a socket inside a deep
 # scratch directory silently blows through it. Keep it directly under /tmp.
 SOCKET="/tmp/lexipaws-sptest-$$.sock"
-DB_NAME="lexipaws_sptest"
+if [ -n "$DB_HOST" ]; then
+  # Unique per run, so a name left behind by a killed run cannot be mistaken
+  # for this run's database.
+  DB_NAME="lexipaws_sptest_$$_$(date +%s)"
+  # The client reads the password from this file rather than from argv.
+  CNF_PASS="${DB_PASS//\\/\\\\}"; CNF_PASS="${CNF_PASS//\"/\\\"}"
+  ( umask 077
+    printf '[client]\nprotocol=tcp\nhost=%s\nport=%s\nuser=%s\npassword="%s"\n' \
+      "$DB_HOST" "$DB_PORT" "$DB_USER" "$CNF_PASS" > "$SANDBOX/client.cnf" )
+  DB_SERVER=("$MARIADB" --defaults-file="$SANDBOX/client.cnf")
+else
+  DB_NAME="lexipaws_sptest"
+  DB_SERVER=("$MARIADB" --socket="$SOCKET" -u root)
+fi
+DB_CREATED=0
 BASE="http://localhost:$PORT/api.php"
 FAILURES=0
 
 cleanup() {
   [ -n "${PHP_PID:-}" ] && kill "$PHP_PID" 2>/dev/null
-  [ -S "$SOCKET" ] && "$MARIADB"-admin --socket="$SOCKET" -u root shutdown 2>/dev/null
-  sleep 1
-  rm -f "$SOCKET"
+  if [ -n "$DB_HOST" ]; then
+    # The server is not ours to stop. Drop the one database this run created.
+    [ "$DB_CREATED" -eq 1 ] && "${DB_SERVER[@]}" -e "DROP DATABASE IF EXISTS $DB_NAME;" 2>/dev/null
+  else
+    [ -S "$SOCKET" ] && "$MARIADB"-admin --socket="$SOCKET" -u root shutdown 2>/dev/null
+    sleep 1
+    rm -f "$SOCKET"
+  fi
   rm -rf "$SANDBOX"
 }
 trap cleanup EXIT
@@ -87,12 +156,15 @@ cp -R "$REPO_ROOT/templates" "$SANDBOX/app/templates"
 cp -R "$REPO_ROOT/libs/PHPMailer" "$SANDBOX/app/libs/PHPMailer"
 
 # The DSN concatenates DB_HOST straight into the string, so the port rides along.
+# The password is read from the environment of the two PHP processes started
+# below, so its characters never have to be quoted into PHP source.
+export SPTEST_DB_PASS="$DB_PASS"
 cat > "$SANDBOX/app/db_config.php" <<PHPCONF
 <?php
 define('DB_HOST', '127.0.0.1;port=$DB_PORT');
 define('DB_NAME', '$DB_NAME');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_USER', '$DB_USER');
+define('DB_PASS', (string) getenv('SPTEST_DB_PASS'));
 define('GOOGLE_TTS_API_KEY', 'test');
 define('SLACK_WEBHOOK_URL', '');
 define('SLACK_WEBHOOK_URL_FEEDBACK', '');
@@ -109,17 +181,34 @@ PHPCONF
 
 echo "=============================================================="
 echo "save_progress security test  —  ${REF:-working tree}"
+if [ -n "$DB_HOST" ]; then
+  echo "database $DB_NAME on the MariaDB at $DB_HOST:$DB_PORT"
+fi
 echo "=============================================================="
 
 # ------------------------------------------------------------------ database
-"$INSTALL_DB" --datadir="$SANDBOX/mysqldata" --auth-root-authentication-method=normal >/dev/null 2>&1
-"$MARIADBD" --datadir="$SANDBOX/mysqldata" --port="$DB_PORT" --socket="$SOCKET" \
-            --bind-address=127.0.0.1 --pid-file="$SANDBOX/mysql.pid" >"$SANDBOX/mysqld.log" 2>&1 &
-for _ in $(seq 1 30); do [ -S "$SOCKET" ] && break; sleep 1; done
-[ -S "$SOCKET" ] || { echo "FATAL: MariaDB did not start; see $SANDBOX/mysqld.log" >&2; exit 2; }
+if [ -n "$DB_HOST" ]; then
+  if ! "${DB_SERVER[@]}" -e "SELECT 1" >/dev/null 2>"$SANDBOX/db-connect.log"; then
+    echo "FATAL: cannot reach a MariaDB at $DB_HOST:$DB_PORT as $DB_USER" >&2
+    cat "$SANDBOX/db-connect.log" >&2
+    exit 2
+  fi
+else
+  "$INSTALL_DB" --datadir="$SANDBOX/mysqldata" --auth-root-authentication-method=normal >/dev/null 2>&1
+  "$MARIADBD" --datadir="$SANDBOX/mysqldata" --port="$DB_PORT" --socket="$SOCKET" \
+              --bind-address=127.0.0.1 --pid-file="$SANDBOX/mysql.pid" >"$SANDBOX/mysqld.log" 2>&1 &
+  for _ in $(seq 1 30); do [ -S "$SOCKET" ] && break; sleep 1; done
+  [ -S "$SOCKET" ] || { echo "FATAL: MariaDB did not start; see $SANDBOX/mysqld.log" >&2; exit 2; }
+fi
 
-DB=("$MARIADB" --socket="$SOCKET" -u root "$DB_NAME" -N -B)
-"$MARIADB" --socket="$SOCKET" -u root -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4;"
+DB=("${DB_SERVER[@]}" "$DB_NAME" -N -B)
+# No IF NOT EXISTS, on purpose: on a server this script did not start, a name
+# that is already taken has to stop the run, not be reused and dropped on exit.
+if ! "${DB_SERVER[@]}" -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4;"; then
+  echo "FATAL: could not create the database $DB_NAME" >&2
+  exit 2
+fi
+DB_CREATED=1
 ( cd "$SANDBOX/app" && php migrate.php ) > "$SANDBOX/migrate.log" 2>&1
 if ! grep -q '"errors": \[\]' "$SANDBOX/migrate.log"; then
   echo "FATAL: migrations failed" >&2
