@@ -115,6 +115,8 @@ The inverse failure exists too: `FillBlanks.tsx:121-138`'s compose-card classes 
 
 **Definition of done for any UI change:** verified at **320 / 360 / 390 px portrait** *and* one desktop width, before the PR. Touch targets ≥ 44 × 44 px.
 
+*(2026-09-30, #356: there are no PRs any more, and the check is now the `tools/local/ux-shots` matrix — 320×568, 360×800, 390×844, 768×1024 and 1280×800, each in light and dark — run before the push to `dev`. `CLAUDE.md` step 4 has the full verification set.)*
+
 #### 2. The mascot is named **Lexi**
 
 *(Tyler is the owner's real dog, and the origin of the name "Lexipaws" — but the in-product character is Lexi.)* The 26 `tyler-*.png` files are legacy filenames and should be renamed; that rename also fixes the live 404s in §13.
@@ -1109,6 +1111,7 @@ Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a bl
 
 | Doc | Why |
 |---|---|
+| `CLAUDE.md` | **The session protocol (2026-09-30, #356).** Claude Code loads it at the start of every session: the hard rules, the traps, and the steps from picking an issue on Project 1 to posting the evidence, and closing it once the owner has checked the result. It replaced `AI_CONTEXT_BRIEF.md`, which is now a pointer to it. It states the owner constraints in short; [§2](#2-product--business-context) stays their full record. |
 | `UX_REVIEW.md` | **Newest (2026-09-23).** Verified UI/UX review of `dev` @ `f1d3dc8`: 146 findings → 71 root causes, all adversarially re-verified (0 refuted), plus 12 gap findings, with a refactor plan mapped onto the WP ids here. Owns the UX layer; this file stays the engineering truth. |
 | `MOBILE_UI_AUDIT.md` | Newest (2026-07-27). All six findings verified implemented. Honest about what did *not* reproduce and what remains untested. |
 | `docs/THEME_UPDATE_GUIDE.md` | **The best-calibrated doc in the repo.** Its unchecked to-do list still describes the codebase exactly. |
@@ -1322,6 +1325,7 @@ sed -n '28,40p' src/assets/css/main.css | grep -c 'color-accent'
 - **When an owner question in [§21](#21-open-questions-for-the-owner) is answered**, record the answer inline. Those answers are the most valuable content in this file and exist nowhere else in the repo.
 - **Re-run the full audit** after any change touching `UserContext.tsx`, `api.php`'s progress handlers, `main.css`'s token block, or the migration set.
 - **Cite `file:line` for every new claim.** The value of this document is that it is checkable.
+- **Every session updates this file as part of finishing** — the steps are in `CLAUDE.md` (step 5). A session is one commit, which cannot contain its own SHA, so from 2026-09-30 a fix is marked `✅ Fixed (#NNN, date)` with the issue number; `git log --oneline --grep '#NNN'` gives the commit, and the issue's evidence comment states it. Older marks cite the SHA directly.
 
 ### Corrections already applied
 
