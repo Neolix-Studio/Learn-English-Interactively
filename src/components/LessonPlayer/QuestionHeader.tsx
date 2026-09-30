@@ -32,7 +32,7 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({ text, ttsText, n
         style={{
           position: 'relative',
           background: 'var(--color-bg-surface)',
-          border: '2px solid var(--glass-border)',
+          border: '2px solid var(--color-border)',
           borderRadius: '24px',
           borderTopLeftRadius: '4px',
           boxShadow: '0 4px 6px rgba(0,0,0,0.05)',

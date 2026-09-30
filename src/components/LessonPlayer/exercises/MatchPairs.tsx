@@ -92,7 +92,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({ question, onAnswer }) =>
                 transition: 'all 0.2s',
                 fontWeight: 'bold',
                 background: item.matched ? 'var(--color-bg-base)' : isError ? 'rgba(239, 68, 68, 0.2)' : isSelected ? 'rgba(16, 185, 129, 0.2)' : 'var(--color-bg-surface)',
-                border: `2px solid ${item.matched ? 'var(--color-bg-base)' : isError ? '#EF4444' : isSelected ? '#10B981' : 'var(--glass-border)'}`,
+                border: `2px solid ${item.matched ? 'var(--color-bg-base)' : isError ? '#EF4444' : isSelected ? '#10B981' : 'var(--color-border)'}`,
                 color: item.matched ? 'var(--color-text-muted)' : isError ? '#EF4444' : isSelected ? '#10B981' : 'var(--color-text-main)',
                 boxShadow: item.matched ? 'none' : '0 2px 0 #E5E7EB',
                 opacity: item.matched ? 0.5 : 1

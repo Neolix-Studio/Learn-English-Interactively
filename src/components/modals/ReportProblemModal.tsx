@@ -89,7 +89,7 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      zIndex: 9999,
+      zIndex: 'var(--layer-dialog)',
       backdropFilter: 'blur(5px)'
     }}>
       <div style={{

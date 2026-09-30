@@ -68,7 +68,7 @@ export const AchievementPopup: React.FC = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '1rem',
-      zIndex: 99999,
+      zIndex: 'var(--layer-toast)',
       color: 'var(--color-text-main)'
     }}>
       <div style={{

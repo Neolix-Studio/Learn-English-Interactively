@@ -70,8 +70,8 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({ question, onAnsw
                 fontWeight: 'bold',
                 background: 'var(--option-bg, var(--color-bg-base))',
                 color: 'var(--option-fg, var(--color-text-main))',
-                border: '2px solid var(--option-border, var(--glass-border-color, var(--color-text-muted)))',
-                boxShadow: isSelected ? '0 2px 0 var(--option-border)' : '0 4px 0 var(--glass-border-color, var(--color-text-muted))',
+                border: '2px solid var(--option-border, var(--color-text-muted))',
+                boxShadow: isSelected ? '0 2px 0 var(--option-border)' : '0 4px 0 var(--color-text-muted)',
                 transform: isSelected ? 'translateY(2px)' : 'none',
                 textAlign: 'left'
               }}

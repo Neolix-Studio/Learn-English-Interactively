@@ -79,7 +79,7 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({ isOpen, on
   const currentAvatarUrl = preview || '/avatars/default.png';
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 'var(--layer-dialog)', padding: '20px' }}>
       <div style={{ background: 'var(--color-bg-surface)', padding: '2.5rem', borderRadius: '24px', maxWidth: '400px', width: '100%', border: 'var(--glass-border)', boxShadow: '0 20px 50px rgba(0,0,0,0.2)', position: 'relative', animation: 'scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
 
         <button onClick={onClose} style={{ position: 'absolute', top: '15px', right: '15px', background: 'var(--color-bg-base)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-main)' }}>✕</button>
@@ -90,7 +90,7 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({ isOpen, on
 
           <div
             onClick={() => fileInputRef.current?.click()}
-            style={{ width: '150px', height: '150px', borderRadius: '50%', background: 'var(--color-bg-base)', border: '4px dashed var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', overflow: 'hidden', position: 'relative' }}
+            style={{ width: '150px', height: '150px', borderRadius: '50%', background: 'var(--color-bg-base)', border: '4px dashed var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', overflow: 'hidden', position: 'relative' }}
           >
             {currentAvatarUrl !== '/avatars/default.png' ? (
               <img src={currentAvatarUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

@@ -355,7 +355,7 @@ export const LeaderboardPage: React.FC = () => {
                                           {rank}
                                       </div>
                                       
-                                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', color: 'var(--color-text-main)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', color: 'var(--color-text-main)', border: '1px solid rgba(255,255,255,0.1)' }}>
                                           {user.username.substring(0, 2).toUpperCase()}
                                       </div>
                                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -393,7 +393,7 @@ export const LeaderboardPage: React.FC = () => {
                                       {currentUserRank}
                                   </div>
                                   
-                                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-bg-inset)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', color: 'var(--color-text-main)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem', fontWeight: 'bold', color: 'var(--color-text-main)', border: '1px solid rgba(255,255,255,0.1)' }}>
                                       {currentUsername?.substring(0, 2).toUpperCase()}
                                   </div>
 

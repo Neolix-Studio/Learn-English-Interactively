@@ -187,7 +187,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
           ) : !leaderboardUnlocked ? (
             <div style={{ textAlign: 'center', padding: '0.6rem', background: 'var(--color-bg-surface)', borderRadius: '8px', border: '1px dashed var(--color-text-muted)' }}>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.4rem' }}>{t('sidebar_right.gather_xp_msg', { amount: LEADERBOARD_UNLOCK_XP - xp })}</p>
-              <div style={{ width: '100%', height: '8px', background: 'var(--color-bg-main)', borderRadius: '4px', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '8px', background: 'var(--color-bg-base)', borderRadius: '4px', overflow: 'hidden' }}>
                 <div style={{ width: `${(xp / LEADERBOARD_UNLOCK_XP) * 100}%`, height: '100%', background: 'var(--color-accent-in)', transition: 'width 0.3s' }}></div>
               </div>
             </div>

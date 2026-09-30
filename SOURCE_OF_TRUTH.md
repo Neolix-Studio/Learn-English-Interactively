@@ -235,6 +235,7 @@ npm run dev                              # terminal B — http://localhost:5173
 | `npm run lint` | oxlint. 45 warnings, **exits 0** — gates nothing. |
 | `npm run validate:json` | Parses 144 files; applies a real schema check to **one** (`data/quests.json`). Prints "144/144 matched known schema checks" regardless. |
 | `npm run security:php` | 4-pattern line-regex smoke scan over 20 PHP files. Exits 0. |
+| `npm run check:css` | Fails on a `var(--x)` that nothing defines and on `--glass-border` used as a colour (§12 Tokens). Exits 0 today; not run by CI. Added 2026-09-30 (#364). |
 | `npm run package:release` | Wipes and rebuilds `release/` (~38 MB). |
 | `./tools/local/testing/local_stack.sh up` | Real `api.php` behind `npm run dev` on a **throwaway MariaDB** (socket only), seeded with two learners, an invite code and weak words; `php -S 127.0.0.1:8000` serves a sandbox copy that cannot open repo files. `sync` re-copies the PHP and applies new migrations, `sql "…"` queries the database, `status` reprints the logins, `down` stops everything and deletes the data. Added 2026-09-30 (#355). |
 | `node tools/local/ux-shots/matrix.mjs --path /dashboard --preset returning-guest` | Screenshots one route in headless Chrome at 320×568, 360×800, 390×844, 768×1024 and 1280×800, light and dark (10 PNGs, git-ignored `out/`). Needs only `npm run dev`; **never starts PHP and no request reaches it** — every backend call is answered from a mock or as "backend down" — and GA4 and Headway are blocked. `shot.mjs` beside it takes one capture or a scripted flow. Added 2026-09-30 (#354); see `tools/local/ux-shots/README.md`. |
@@ -354,7 +355,7 @@ The three ❌ rows are live bugs: the "Bejelentkezés" buttons on the 404 page a
 
 ## 6. The learning loop
 
-`LessonPlayer.tsx` (597 lines) is the only player in production. Mounted from four places, always `position: fixed; inset: 0; z-index: 1000`:
+`LessonPlayer.tsx` (597 lines) is the only player in production. Mounted from four places, always `position: fixed; inset: 0; z-index: var(--layer-screen)` (§12 Tokens):
 
 | Caller | Node source |
 |---|---|
@@ -543,7 +544,7 @@ Almost all of it traces back to finding #1:
 
 **32% of the translated keys are never used** — and two whole namespaces are dead:
 
-- **`tour.*` (32 keys)** — a fully translated 8-step dashboard tour and 9-step leaderboard tour in both languages. `ProductTour.tsx:133-172` ignores them entirely, does not import `useTranslation`, and hardcodes **four English steps**. Joyride's own buttons render "Next"/"Back"/"Skip". *The first thing every new user sees is in the wrong language for both markets.*
+- **`tour.*` (32 keys)** — a fully translated 8-step dashboard tour and 9-step leaderboard tour in both languages. `ProductTour.tsx:135-174` ignores them entirely, does not import `useTranslation`, and hardcodes **four English steps**. Joyride's own buttons render "Next"/"Back"/"Skip". *The first thing every new user sees is in the wrong language for both markets.*
 - **`leaderboard.*` (16 keys)** — `Leaderboard.tsx` hardcodes the Hungarian equivalents instead.
 
 **Five `t()` keys resolve to nothing** and always render their Hungarian inline fallback: `levels.a1_desc`–`b2_desc` (`SidebarLeft.tsx:399-402`) and `dashboard.title` (`Dashboard.tsx:152`).
@@ -736,7 +737,7 @@ The last two are cheap DoS amplifiers during an open Beta.
 
 ### CSS reality
 
-**13 files, 9,297 lines, bundled into ONE 154 KB stylesheet.** Because `App.tsx` imports every page statically, **every rule applies on every route** — "page-scoped" CSS does not exist here.
+**13 files, 9,297 lines, bundled into ONE 154 KB stylesheet** *(counted 2026-08-28; on 2026-09-30, with `tokens.css` from #364, it is 14 files and 9,534 lines)*. Because `App.tsx` imports every page statically, **every rule applies on every route** — "page-scoped" CSS does not exist here.
 
 - **`src/index.css` and `src/App.css` (313 lines) are the unmodified Vite scaffold and are imported by nothing.** They define a conflicting purple token set. `docs/frontend/CSS_Architecture.md` points new contributors at exactly these two dead files.
 - **`dashboard.css` is three files in a trench coat:** shell + exercise UI (1–2836), a **pasted-in standalone prototype** with its own `:root`, its own `*` reset, its own `body` gradient and global `h1,h2`/`p` rules (2837–3605), and an override layer that partially undoes both (3607–4479). `dashboard.css:3680` band-aids the body damage back with `!important`.
@@ -751,10 +752,10 @@ The last two are cheap DoS amplifiers during an open Beta.
 
 - **`.cards-grid` collides and breaks the landing page.** `landing.css:44` makes it a 4-column grid for Home's level cards; `gateway.css:98` redefines it as a flex column. Gateway loads last (bundle offset 149169 vs 29784), so **Home's level grid never renders as a grid**. This is the first screen a visitor sees.
 - **`gateway.css:43-54` sets `body { display:flex; align-items:center }`** as the last `body` rule in the bundle — every page in the app has a flex-centered body.
-- **Reduced motion does not work.** `main.css:354` uses `animation-duration: -1ms`, which is invalid CSS and is dropped by every parser. *(The block's other five declarations — `animation-delay`, `iteration-count`, `background-attachment`, `scroll-behavior`, `transition-duration` — are valid and do apply.)* Net effect: animations still play once at their **full authored duration**, including infinite background loops and the paid themes' particle fields.
+- **Reduced motion does not work.** `main.css:358` uses `animation-duration: -1ms`, which is invalid CSS and is dropped by every parser. *(The block's other five declarations — `animation-delay`, `iteration-count`, `background-attachment`, `scroll-behavior`, `transition-duration` — are valid and do apply.)* Net effect: animations still play once at their **full authored duration**, including infinite background loops and the paid themes' particle fields.
 - **`scaleUp` and `slideInRight` have no `@keyframes` anywhere** — four modal entrance animations silently do nothing. `fadeIn` is defined only inside `PostLesson.tsx`'s `<style>` tag but used by three other components, so it only animates while PostLesson happens to be mounted.
-- **Seven custom properties are used but never defined:** `--color-bg-body`, `--color-border`, `--color-bg-main`, `--color-bg-inset`, `--glass-border-color`, `--color-bg-active`, `--border-color`.
-- **`--glass-border` is a shorthand** (`1px solid #E5E7EB`) used as a color in four places — all invalid and dropped.
+- ~~**Seven custom properties are used but never defined:** `--color-bg-body`, `--color-border`, `--color-bg-main`, `--color-bg-inset`, `--glass-border-color`, `--color-bg-active`, `--border-color`.~~ ✅ Fixed (#364, 2026-09-30): `--color-border` is now a real token (below); the other six references were replaced by an existing token or by the value that already rendered. `npm run check:css` fails on any new one.
+- ~~**`--glass-border` is a shorthand** (`1px solid #E5E7EB`) used as a color in four places — all invalid and dropped.~~ ✅ Fixed (#364, 2026-09-30). *It was 25 places, not four (6 in CSS, 19 in components): `border: 2px solid var(--glass-border)` and the like, which the browser dropped whole, so those elements had no border at all.* All 25 now use `var(--color-border)`; the visible results are listed under Tokens.
 - ~~**`interactive.css:933-936` selects on inline-style string content:** `:has(.interactive-feedback-message[style*="rgb(5, 150, 105)"])`. Any change in how React serialises that colour silently breaks the correct-answer footer tint.~~ ✅ Fixed (#360, 2026-09-30): the selector is gone, and so are the phone-only lime title (`#8bdc2a !important`), the rule that hid the ✓/✖ and the two-line clamp on the answer. The footer's `data-state` now picks the colours from the `--feedback-*` tokens (`interactive.css:499-591`, §6 Lifecycle).
 - **A third styling layer exists:** 22 `@keyframes` live inside `<style>` tags in six TSX components, some shadowing CSS-file definitions.
 - **`RewardPopup.css` hardcodes a dark gradient with white text** — unreadable by design on the default light theme. Same class of problem in `legal.css`.
@@ -762,6 +763,48 @@ The last two are cheap DoS amplifiers during an open Beta.
 ### Breakpoints
 
 20 distinct values across 39 media queries, no shared scale. Three near-duplicate desktop thresholds coexist: **991 / 992 / 1199 / 1200** — and the design guide documents a fourth (1024). Two byte-identical media queries in `interactive.css` (lines 1306 and 1388) carry conflicting values. *(2026-09-30, #360: `interactive.css` gained one `@media (min-width: 601px)` block at `:623` for the feedback banner; 601 was already one of the values, so the distinct-value count is unchanged and the query count is one higher.)*
+
+**The scale, decided in C1a (#364, 2026-09-30): three `min-width` breakpoints and no others.**
+
+| Name | Query | Use |
+|---|---|---|
+| `sm` | `@media (min-width: 480px)` | two-up option grids |
+| `md` | `@media (min-width: 768px)` | drawers become side panels |
+| `lg` | `@media (min-width: 1024px)` | three-column desktop; replaces 991 / 992 / 1199 / 1200 |
+
+Phone styles are the base rule. A media query cannot read a custom property, so the number is written out; `--breakpoint-sm/md/lg` in `tokens.css` carry the same values for scripts. **Every new media query uses one of these three values.** The existing queries are untouched: #364 added none and changed none, and WP-C2 converts them file by file. Until then `Dashboard.tsx:31` and `ProductTour.tsx:11` still test `(max-width: 991px)` in JavaScript.
+
+### Tokens (C1a, #364, 2026-09-30)
+
+[`src/assets/css/tokens.css`](src/assets/css/tokens.css) holds the tokens that do not depend on the theme; `main.tsx:3` imports it first. Colour tokens stay in `main.css`, one set per theme scope (C1b, #393, builds the ramp). #364 **defined** the scales and moved the z-indexes onto them; it did not repaint existing spacing, radii or shadows, which WP-C2/C3 do as they touch each rule.
+
+| Scale | Tokens |
+|---|---|
+| Spacing (4-pt) | `--space-1` 4 px · `--space-2` 8 · `--space-3` 12 · `--space-4` 16 (the phone gutter) · `--space-6` 24 · `--space-8` 32 · `--space-12` 48 (written in rem) |
+| Radius | `--radius-sm` 8 px inputs and chips · `--radius-md` 16 buttons and cards · `--radius-lg` 24 sheets and dialogs · `--radius-full` pills and avatars |
+| Elevation | level 0 is `border: var(--glass-border)` and no shadow · `--elevation-1` `0 1px 2px` + `0 2px 8px` · `--elevation-2` `0 12px 32px` (navy `#0F1524` at 6, 8 and 18 %) |
+| Motion | `--duration-press` 120 ms · `--duration-state` 200 ms · `--duration-sheet` 320 ms · `--ease-out` `cubic-bezier(0.2, 0.8, 0.2, 1)`. Defined only; reduced motion is still broken (C3e, #464) |
+| Border colour | `--color-border`, per theme scope in `main.css`: `#E5E7EB` light (`:21`), white 10 % dark (`:35`, `:49`), amber 20 % `fall`, purple 20 % `halloween`. `--glass-border` is `1px solid var(--color-border)` and is only valid as a whole `border` value |
+
+**Layers.** Anything that covers the page takes a layer token, never a number:
+
+| Token | Value | Who uses it |
+|---|---|---|
+| `--layer-base` | 0 | the landing nav drawer inside the header |
+| `--layer-raised` | 10 | the header's logo and menu button, the landing hero and mascot, the floating feedback button |
+| `--layer-app-bar` | 100 | `.site-header` (`main.css:99`) |
+| `--layer-nav` | 200 | the dashboard drawers and side panels; the phone bottom bar is `calc(var(--layer-nav) + 1)` so it stays above an open drawer |
+| `--layer-screen` | 250 | full-screen takeovers: `LessonPlayer`, `BossEncounter` |
+| `--layer-dialog` | 300 | `.modal-overlay` (auth, shop), reward popup, grammar modal, report, avatar upload, energy refill, level picker |
+| `--layer-toast` | 400 | `AchievementPopup` |
+| `--layer-tour` | 500 | the product tour. Joyride needs a number, so `ProductTour.tsx:14` repeats it as `TOUR_LAYER = 500`: change both together |
+
+- **The header is below every dialog** (100 < 300). Before #364 it carried an inline `zIndex: 9999` over `.modal-overlay`'s 2000 and hid the top 58 px of the auth dialog on phones (C37). That inline style and the one-off `zIndex: 10000` on the guest-merge question (#363) are gone.
+- **A layer only orders siblings inside one stacking context.** `.dashboard-container` is one (`dashboard.css:13`, `z-index: 1`): its drawers, bottom bar and the level picker inside the left drawer stay under the lesson screen and under the floating feedback button whatever their layer. That is why the feedback button still sits on top of an open drawer (C37, #391). The real fix is a portal (UX2-1, #396).
+- **26 literal z-index values before, 16 after.** What is left is local to one component (−2 … 20, 60, 90, 100) plus two above 100: the word tooltip inside the lesson (`InteractiveSentence.tsx:183`, 2000) and the dead `.mascot-container` (`dashboard.css:2882`, 1000).
+- **What became visible when the 25 dropped borders started to apply:** a hairline around the lesson's instruction bubble, word-order chips, the type-in field (with its green focus ring), the streak-goal cards, the Profile selects and 'Log Out' button, the avatar drop zone, and the round back button on Practice, Characters and Leaderboard. The 'My Friends' rows lost a hardcoded `#eee` border that glared in dark mode. Nothing else moved: a before/after pixel comparison of 372 screenshots is in the #364 evidence.
+
+**`npm run check:css`** ([`scripts/check_css_tokens.js`](scripts/check_css_tokens.js)) reads every stylesheet a module imports plus every `.ts`/`.tsx` file and fails when a `var(--x)` has no definition or when `--glass-border` is used as anything but a whole border value. It skips `src/index.css` and `src/App.css`, which nothing imports. It is not part of CI yet.
 
 **`root-fix.css` is two-thirds band-aid.** Its `overflow-x` and `box-sizing` rules duplicate `main.css`; only the `#root` flex-column rule is load-bearing. It was patching `index.css`'s `#root { width: 1126px }` — a threat that no longer exists since `index.css` was unhooked. Merge the `#root` rule into `main.css` and delete all three files.
 
@@ -782,7 +825,7 @@ These answer §21 Q8–Q11. They are **decisions, not descriptions of the code**
 
 - **Deleting the rogue `:root` wholesale breaks the landing page.** **Seven** tokens are defined *only* there — `--color-bg`, `--color-surface`, `--color-primary`, `--level-a1`, `--level-a2`, `--level-b1`, `--level-b2` (`landing.css:204-213`) — with **16 live consumers, all inside `landing.css` itself** (`:219`, `:237`, `:268`, `:334`, `:387-400`, the level-card borders and buttons). WP-C1 currently reads *"pick one and delete the other"*; the accurate instruction is **rehome those seven into the C1 token block first, then delete the rogue block.** *(Corrected 2026-08-28 — an earlier pass said six; `--level-a1`…`--level-b2` is four tokens, not three.)*
 - **D1 does not banish blue.** `--color-primary: #3B82F6` survives as a secondary, and `--level-a2` is blue by design. The decision is about `--color-accent-in` only.
-- **D1 does not touch the purchased themes.** `main.css:1032`, `:1046`, `:1060` and `:1074` each re-declare `--color-accent-in` inside a theme scope; those stay.
+- **D1 does not touch the purchased themes.** `main.css:1035`, `:1050`, `:1065` and `:1080` each re-declare `--color-accent-in` inside a theme scope; those stay.
 - **D2 makes two hacks redundant, not correct.** Once the tokens say Nunito, `dashboard.css:2849`'s `* { font-family }` and `landing.css:218`'s `!important` should be **deleted**, not kept as belt-and-braces — they are two of the reasons the type layer is currently unpredictable.
 - **D3 withdraws recommendation 7 in §13.** That item proposed swapping the landing run-cycle for the four `tyler-3d/` PNGs. Under D3 that is off the table — the run cycle needs 2D cel frames, and the asset pack does not contain a run sequence. **Recommendation 6 (swap the grey SVG for a cropped cel still) stands and is now the priority; recommendation 7 is withdrawn pending cel run frames.** Until those exist the run animation stays as-is; it is not a regression, just an unresolved surface.
 
@@ -797,7 +840,7 @@ D1 was checked against WCAG rather than by eye, and the result **inverts the ris
 | **White label on a green fill** (the primary-button pattern) | **2.54:1 ❌** | — |
 | Non-text UI contrast, WCAG 1.4.11 (needs 3.0:1) | **2.43:1 ❌** | 6.99:1 ✅ |
 
-**Both failing patterns are live and widespread.** `--color-accent-in` has **170 usages**, in both shapes: as a text colour (`AuthModal.tsx:371` a link, `ShopModal.tsx:89` the active tab, `ReportProblemModal.tsx:130` and `FeedbackRefillModal.tsx:139` headings) and as a fill under a hardcoded white label (`AvatarUploadModal.tsx:119`, `FeedbackRefillModal.tsx:113`, `LexiFeedbackWidget.tsx:51`, `ReportProblemModal.tsx:232`). For reference the blue it replaces was also weak in light (3.52:1 — large text only), so this is **not a regression introduced by D1**; it is a pre-existing failure that D1 makes slightly worse and now owns.
+**Both failing patterns are live and widespread.** `--color-accent-in` has **170 usages**, in both shapes: as a text colour (`AuthModal.tsx:369` a link, `ShopModal.tsx:89` the active tab, `ReportProblemModal.tsx:130` and `FeedbackRefillModal.tsx:139` headings) and as a fill under a hardcoded white label (`AvatarUploadModal.tsx:119`, `FeedbackRefillModal.tsx:113`, `LexiFeedbackWidget.tsx:51`, `ReportProblemModal.tsx:232`). For reference the blue it replaces was also weak in light (3.52:1 — large text only), so this is **not a regression introduced by D1**; it is a pre-existing failure that D1 makes slightly worse and now owns.
 
 **No single green satisfies both themes** — that is the finding that matters, because it is structural rather than a matter of taste:
 
@@ -812,7 +855,7 @@ D1 was checked against WCAG rather than by eye, and the result **inverts the ris
 
 - **Light: `#047857`** (emerald-700) — 5.25:1 as text, 5.48:1 for a white label on a green fill. Both pass AA.
 - **Dark: `#10B981`** (emerald-500, the decided value) — 6.99:1. Note a green fill in **dark** needs a **near-black label**, not white (`#111827` on `#10B981` is 6.99:1; white is 2.54:1).
-- This means **`--color-accent-in` must become theme-scoped.** It is not today: the dark block at `main.css:28-38` redefines backgrounds and text but **never redefines the accent**, so light and dark currently share one accent value. That gap is a C1 deliverable, not a colour preference.
+- This means **`--color-accent-in` must become theme-scoped.** It is not today: the dark block at `main.css:29-40` redefines backgrounds and text but **never redefines the accent**, so light and dark currently share one accent value. That gap is a C1 deliverable, not a colour preference.
 
 ⚠️ **Still needs a human eye, not a calculator:** contrast is a floor, not a design review. Emerald-700 is noticeably deeper than the green on the landing page today, so the light theme will visibly change — which contradicts the "no visual change" reading of D1 and is worth seeing before it ships.
 
@@ -906,7 +949,7 @@ Ordered by impact ÷ effort. **Items 1–6 need no new art at all.**
 4. **Replace the favicon and `og:image`** — export a 512×512 and a 1200×630 PNG from the logo you already own. Fixes the browser tab and every shared link.
 5. **Delete the 19 answer-spelling `<text>` elements from `svgDictionary.json`.** Fixes 34 broken exercises. *(Keep `PAST`, `+ED`, `ING`, `+S`, `HE/SHE/IT` — those are intentional grammar cues.)*
 6. **Swap the hand-coded grey SVG for a cropped 2D cel still** (`tyler-sitting-front.png`, or a crop cut from `Tyler-asset-pack.png`) in `LexiMascot`, `Gateway` and the animation's sit frame. The grey blob is the app's worst visual asset and it is on your three highest-traffic surfaces. **Confirmed by §12.1 D3 — the cel is canonical, so this is now the priority item in this list.**
-7. ~~**Swap the run-cycle SVG frames for the four `tyler-3d/` PNGs**~~ — **WITHDRAWN 2026-08-28 by §12.1 D3.** The photoreal 3D rendering is not canonical, so shipping it on the landing page would put a second mascot style in front of first-time visitors. The run cycle needs **cel** frames, and the asset pack has no run sequence — so this stays unresolved rather than fixed. *Two parts of it survive independently of which art is used:* add `overflow: visible` (the muzzle is clipped every frame) and drop the `animation: none !important` at `main.css:756-759`, which kills the run on phones while the JS keeps cycling.
+7. ~~**Swap the run-cycle SVG frames for the four `tyler-3d/` PNGs**~~ — **WITHDRAWN 2026-08-28 by §12.1 D3.** The photoreal 3D rendering is not canonical, so shipping it on the landing page would put a second mascot style in front of first-time visitors. The run cycle needs **cel** frames, and the asset pack has no run sequence — so this stays unresolved rather than fixed. *Two parts of it survive independently of which art is used:* add `overflow: visible` (the muzzle is clipped every frame) and drop the `animation: none !important` at `main.css:759-762`, which kills the run on phones while the JS keeps cycling.
 8. **Pick one icon language.** Replacing the ~26 nav/UI emoji with flat SVGs matching `svgDictionary`'s style is about a day, and it stops the app from looking different on Windows.
 9. **Delete the orphans and optimise the rest** — `public/images/` (byte-identical duplicate), the `.ai`/`.eps`/`pikaso-creations` folders, the two 4–5 MB mockup posters, `stars.jpg`, `star.jpg`, `star-gamified.png`, `public/icons.svg`, `src/assets/{hero.png,react.svg,vite.svg}`. Run SVGO on the four traced SVGs (expect 60–80% off 960 KB). **Takes the deploy from ~34 MB to ~2 MB.**
 
@@ -1377,7 +1420,7 @@ done
 curl -s -o /dev/null -m 15 -w '%{http_code} %{size_download} bytes\n' https://dev.lexipaws.eu/.ftp-deploy-sync-state.json
 
 # 18. Is the accent still a single non-theme-scoped value? (expect: no --color-accent-in inside the dark block until C1)
-sed -n '28,40p' src/assets/css/main.css | grep -c 'color-accent'
+sed -n '29,41p' src/assets/css/main.css | grep -c 'color-accent'
 ```
 
 ### B. Update protocol

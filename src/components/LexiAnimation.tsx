@@ -42,8 +42,8 @@ export function LexiAnimation() {
   }, []);
 
   return (
-    <div className="hero-mascot-wrapper" style={{ position: 'relative', zIndex: 999 }}>
-      <div id="landing-lexi-container" style={{ position: 'relative', animation: 'runTranslate 2s ease-out forwards', zIndex: 999 }}>
+    <div className="hero-mascot-wrapper" style={{ position: 'relative', zIndex: 'var(--layer-raised)' }}>
+      <div id="landing-lexi-container" style={{ position: 'relative', animation: 'runTranslate 2s ease-out forwards', zIndex: 'var(--layer-raised)' }}>
         <div id="lexi-welcome-bubble" style={{ position: 'absolute', top: '-20px', left: '-80px', background: 'white', padding: '10px 20px', borderRadius: '20px', border: '2px solid #E5E7EB', fontWeight: 800, color: '#1F2937', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', opacity: 0, animation: 'popIn 0.5s ease forwards 2.5s', zIndex: 10 }}>
           Üdvözöllek!
           <div style={{ position: 'absolute', bottom: '-8px', right: '-10px', width: '20px', height: '20px', background: 'white', borderBottom: '2px solid #E5E7EB', borderRight: '2px solid #E5E7EB', transform: 'rotate(45deg)', zIndex: -1 }}></div>

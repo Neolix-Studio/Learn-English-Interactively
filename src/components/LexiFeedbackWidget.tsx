@@ -37,7 +37,7 @@ export const LexiFeedbackWidget: React.FC = () => {
   };
 
   return (
-    <div style={{ position: 'fixed', bottom: '80px', right: '20px', zIndex: 999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
+    <div style={{ position: 'fixed', bottom: '80px', right: '20px', zIndex: 'var(--layer-raised)', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
 
       {isOpen && (
         <div style={{ background: 'var(--color-bg-surface)', padding: '15px', borderRadius: '16px', border: 'var(--glass-border)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)', width: '280px', animation: 'fadeIn 0.2s', transformOrigin: 'bottom right' }}>
@@ -59,7 +59,7 @@ export const LexiFeedbackWidget: React.FC = () => {
                 value={feedbackText}
                 onChange={(e) => setFeedbackText(e.target.value)}
                 placeholder="What's working? What's broken?"
-                style={{ width: '100%', height: '80px', padding: '8px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '0.9rem', resize: 'none', marginBottom: '8px', fontFamily: 'inherit' }}
+                style={{ width: '100%', height: '80px', padding: '8px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '0.9rem', resize: 'none', marginBottom: '8px', fontFamily: 'inherit' }}
               />
               <button disabled={loading} onClick={handleSubmit} style={{ width: '100%', padding: '8px', borderRadius: '8px', background: 'var(--color-success)', color: 'white', border: 'none', fontWeight: 'bold', cursor: 'pointer', opacity: loading ? 0.7 : 1 }}>{loading ? 'Sending...' : 'Send (+20 🦴)'}</button>
             </div>

@@ -51,7 +51,7 @@ export const Onboarding: React.FC<{ onComplete: () => void }> = ({ onComplete })
             position: 'fixed',
             top: 0, left: 0, right: 0, bottom: 0,
             background: 'var(--color-bg-base)',
-            zIndex: 2000,
+            zIndex: 'var(--layer-screen)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

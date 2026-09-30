@@ -178,7 +178,7 @@ export const FriendsPage: React.FC = () => {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {friends.map((f: FriendData) => (
-              <div key={f.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: '1px solid var(--border-color, #eee)', borderRadius: '10px' }}>
+              <div key={f.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: 'var(--glass-border)', borderRadius: '10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                   <img
                     src={f.avatar ? `/avatars/${f.avatar}` : '/avatars/default.png'}

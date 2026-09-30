@@ -1,0 +1,58 @@
+/*
+ * Design tokens that do not depend on the theme (C1a, #364). Documented in SOURCE_OF_TRUTH.md §12.
+ * Colour tokens live in main.css, one set per theme scope.
+ * `npm run check:css` fails on a var() that points at a property nobody defines.
+ */
+
+:root {
+    /*
+     * Breakpoints. Phone styles are the base rule; enhance upward with min-width only.
+     * A media query cannot read a custom property, so write the number:
+     *   @media (min-width: 480px)   sm  two-up option grids
+     *   @media (min-width: 768px)   md  drawers become side panels
+     *   @media (min-width: 1024px)  lg  three-column desktop
+     * New queries use these three values and no others.
+     */
+    --breakpoint-sm: 480px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+
+    /* Spacing, 4-pt steps: 4, 8, 12, 16 (the phone gutter), 24, 32, 48 px. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+
+    /* Radius: sm inputs and chips, md buttons and cards, lg sheets and dialogs, full pills and avatars. */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
+
+    /* Elevation. Level 0 is no shadow, only `border: var(--glass-border)`. */
+    --elevation-1: 0 1px 2px rgba(15, 21, 36, 0.06), 0 2px 8px rgba(15, 21, 36, 0.08);
+    --elevation-2: 0 12px 32px rgba(15, 21, 36, 0.18);
+
+    /*
+     * Layers (z-index). Anything that covers the page takes one of these.
+     * A layer only orders siblings inside one stacking context: `.dashboard-container` is one,
+     * so its drawers and bottom bar stay under the lesson screen whatever their layer.
+     */
+    --layer-base: 0;
+    --layer-raised: 10;     /* lifted inside its own component; floating page buttons */
+    --layer-app-bar: 100;   /* the site header */
+    --layer-nav: 200;       /* nav drawers, side panels, the phone bottom bar */
+    --layer-screen: 250;    /* full-screen takeovers: lesson, boss fight, onboarding */
+    --layer-dialog: 300;    /* modals and sheets, with their scrim */
+    --layer-toast: 400;     /* achievement toast */
+    --layer-tour: 500;      /* product tour */
+
+    /* Motion: press, state change, sheet or dialog entrance. */
+    --duration-press: 120ms;
+    --duration-state: 200ms;
+    --duration-sheet: 320ms;
+    --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}

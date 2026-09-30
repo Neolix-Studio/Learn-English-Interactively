@@ -29,7 +29,7 @@ body.has-mobile-drawer-open {
     background: var(--color-bg-surface);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    z-index: 2000;
+    z-index: var(--layer-nav);
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 2.5rem 1.5rem 90px 1.5rem;
     display: flex;
@@ -134,7 +134,7 @@ body.has-mobile-drawer-open {
 }
 
 .course-accordion:hover {
-    border-color: var(--glass-border);
+    border-color: var(--color-border);
 }
 
 .course-accordion[open] {
@@ -634,7 +634,7 @@ body.has-mobile-drawer-open {
 
 .word-order-answer:has(.word-chip) {
     border-style: solid;
-    border-color: var(--glass-border);
+    border-color: var(--color-border);
 }
 
 .answer-placeholder {
@@ -1864,7 +1864,7 @@ body.is-lesson-active .mobile-bottom-bar {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    z-index: 3100;
+    z-index: calc(var(--layer-nav) + 1);
     box-sizing: border-box;
 }
 
@@ -2011,7 +2011,7 @@ body.is-lesson-active .mobile-bottom-bar {
         border-right: var(--glass-border);
         padding: 2.5rem 1.5rem;
         box-shadow: none;
-        z-index: 900;
+        z-index: var(--layer-nav);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
         transition: none;
@@ -2098,7 +2098,7 @@ body.is-lesson-active .mobile-bottom-bar {
 
     .sidebar-node.locked .sb-node-circle {
         opacity: 0.5;
-        border-color: var(--glass-border);
+        border-color: var(--color-border);
         filter: grayscale(1);
     }
 
@@ -2136,7 +2136,7 @@ body.is-lesson-active .mobile-bottom-bar {
     background: var(--color-bg-surface);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    z-index: 2000;
+    z-index: var(--layer-nav);
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 2rem 1.5rem 90px 1.5rem;
     overflow-y: auto;
@@ -2198,7 +2198,7 @@ body.is-lesson-active .mobile-bottom-bar {
         padding: 2rem 1.5rem;
         transition: none;
         height: calc(100vh - 70px);
-        z-index: 900;
+        z-index: var(--layer-nav);
         overflow-y: auto;
     }
 
@@ -2244,7 +2244,7 @@ body.is-lesson-active .mobile-bottom-bar {
 
 .quiz-opt-btn:hover:not(:disabled) {
     background: var(--color-bg-surface);
-    border-color: var(--glass-border);
+    border-color: var(--color-border);
     transform: translateX(4px);
 }
 
@@ -2500,7 +2500,7 @@ input:checked + .slider:before {
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 10000;
+  z-index: var(--layer-dialog);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3571,7 +3571,7 @@ p {
     top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(8px);
-    z-index: 1000;
+    z-index: var(--layer-dialog);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -3860,7 +3860,7 @@ body {
         top: 0 !important;
         width: 100% !important;
         max-width: none !important;
-        z-index: 2000 !important;
+        z-index: var(--layer-nav) !important;
         transition: right 0.3s ease !important;
         height: 100dvh !important;
         padding: max(1rem, env(safe-area-inset-top, 0px)) 1rem calc(120px + env(safe-area-inset-bottom, 0px)) 1rem !important;
@@ -3891,7 +3891,7 @@ body {
         left: -100% !important;
         width: 100% !important;
         max-width: none !important;
-        z-index: 2000 !important;
+        z-index: var(--layer-nav) !important;
         transition: left 0.3s ease !important;
         height: 100dvh !important;
         padding: max(1rem, env(safe-area-inset-top, 0px)) 1rem calc(120px + env(safe-area-inset-bottom, 0px)) 1rem !important;
@@ -4415,7 +4415,7 @@ a.logo {
         top: 0 !important;
         height: 100vh !important;
         height: 100dvh !important;
-        z-index: 900 !important;
+        z-index: var(--layer-nav) !important;
     }
 
     .dashboard-left-sidebar {
@@ -4445,7 +4445,7 @@ a.logo {
 }
 
 .react-joyride__floater {
-    z-index: 100000 !important;
+    z-index: var(--layer-tour) !important;
 }
 
 @media (max-width: 991px) {
@@ -4453,7 +4453,7 @@ a.logo {
         position: fixed !important;
         inset: 0 !important;
         pointer-events: none !important;
-        z-index: 100000 !important;
+        z-index: var(--layer-tour) !important;
     }
 
     #react-joyride-portal .react-joyride__floater {

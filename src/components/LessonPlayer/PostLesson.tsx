@@ -107,7 +107,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
         left: 0,
         width: '100%',
         height: '100%',
-        background: 'var(--color-bg-main)',
+        background: 'var(--color-bg-base)',
         zIndex: 100,
         display: 'flex',
         flexDirection: 'column',
@@ -490,7 +490,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
                     justifyContent: 'center',
                     alignItems: 'center',
                     background: isToday ? 'transparent' : (isPast ? 'var(--color-bg-surface)' : 'transparent'),
-                    border: isToday ? '3px solid #F59E0B' : '2px dashed var(--glass-border)',
+                    border: isToday ? '3px solid #F59E0B' : '2px dashed var(--color-border)',
                     boxShadow: isToday ? '0 0 15px rgba(245, 158, 11, 0.4)' : 'none'
                   }}>
                     {isToday && (
@@ -541,7 +541,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
              <div style={{ flex: 1, position: 'relative' }}>
                  <div style={{
                      background: selectedStreak ? 'var(--color-bg-surface)' : 'rgba(255,255,255,0.5)',
-                     border: selectedStreak ? '2px solid #3B82F6' : '2px solid var(--glass-border)',
+                     border: selectedStreak ? '2px solid #3B82F6' : '2px solid var(--color-border)',
                      borderRadius: '16px',
                      borderTopLeftRadius: '0',
                      padding: '1.25rem',
@@ -574,7 +574,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
                 onClick={() => setSelectedStreak(goal.id)}
                 style={{
                   padding: '1.25rem',
-                  border: '2px solid var(--glass-border)',
+                  border: '2px solid var(--color-border)',
                   borderRadius: '16px',
                   background: 'var(--color-bg-surface)',
                   fontSize: '1.2rem',

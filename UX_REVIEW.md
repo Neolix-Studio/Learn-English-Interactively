@@ -617,6 +617,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** SOT §3, §5, §16 P2 #29, §18, WP-B4, WP-E4; C55, N3, N4.
 
 ### C37 · Ad-hoc z-index: the fixed header covers modals, and the feedback button covers content — **major**
+- ✅ **Partly fixed (#364, 2026-09-30):** the header is on `--layer-app-bar` (100) and every modal overlay on `--layer-dialog` (300), so the header no longer covers the auth tabs or the '← Vissza a bejelentkezéshez' ("Back to login") link; measured with `elementFromPoint` at 320 and 360. **Still open (#391, then UX2-1 #396):** no Escape or scrim close on the auth sub-views, no cancel on the reset view, and the feedback button still sits over the drawers, shows a broken image and is in English. The drawers live inside `.dashboard-container`'s stacking context, so that part needs a portal or a hide rule, not a z-index.
 - **What happens:** the header carries an inline `zIndex: 9999` while `.modal-overlay` is 2000 and top-aligned at ≤480 px, so the 70 px header covers the first ~58 px of every modal: auth tabs and beta titles. In 'Elfelejtett jelszó' ("Forgot password") the visible exit '← Vissza a bejelentkezéshez' ("Back to login") sits under the header, with no close, Escape or scrim close; submitting any address reaches a screen with a visible back button, so it is not a hard trap. The reset view has no cancel. On `/dashboard` for logged-in users the floating feedback button (z 999) shows a missing image clipped to 'Feedb', overlaps the Útmutató button and sits above the stats drawer; its copy is English.
 - **Learner impact:** the auth screen — the wrapped app's likely first screen — looks broken and hides its own exits.
 - **Fix:** stopgap: header below the overlay (or overlay above 9999). Proper: a z-index scale plus a portal (WP-C1); header `inert` while a dialog is open; X/←, Escape and scrim close on every auth sub-view; hide the feedback button while overlays are open, point it at an existing cel and localise it (or move it into Settings/Help).
@@ -841,6 +842,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** WP-C3; C01, C03, C08, C61; decision Q15; C-1.
 
 ### C52 · No component primitives — **minor**
+- ✅ **Partly fixed (#364, 2026-09-30):** the z-index scale exists (eight `--layer-*` tokens, SOT §12 Tokens) and the 26 literal values are down to 16, all but two of them local to one component. **Still open:** the button and overlay primitives, the sub-44 px targets, the three close glyphs and the stylelint bans.
 - **What happens:** about 57 button-like classes (roughly 13 genuinely different button styles on the 360 dashboard), 4 overlay systems plus the lesson overlay, PostLesson and Joyride, 26 z-index values (−2 … 999999), 846 inline style objects and three close glyphs (✖ ✕ ×). Below 44 px: CHECK 145×40, TOVÁBB 116×40, report ✖ 18×32, grammar × 19×32, shop ✕ 32×32, shop price 77×38, 'Heti/Havi' ("Weekly/Monthly") 148×42, tour Skip 43×30. Continue is lime in onboarding and emerald in lessons (red after a wrong answer is a deliberate, fine pattern).
 - **Learner impact:** modest on its own — the tiny targets sit in infrequent modals — but it is the cause behind C48 and C49.
 - **Fix:** first an `IconButton` with a 44×44 hit area and a full-width lesson CTA of at least 48 px; then the §5b component set; stylelint bans on hex, raw z-index and `!important`.
@@ -849,6 +851,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** WP-C1 (z-index scale), WP-C3 (sub-44 px targets); C24, C37, C48.
 
 ### C53 · Motion has no system — **minor**
+- **Note (#364, 2026-09-30):** the motion tokens from §5b are defined (`--duration-press/state/sheet`, `--ease-out`) but nothing uses them yet and nothing below is fixed. The reduced-motion work is C3e (#464).
 - **What happens:** `main.css:354`'s `-1ms` is invalid, so under OS reduced motion animations still play once (a 15–20 s background drift, the mascot's blink and ear flicks). Without it, four infinite loops run on the dashboard and `gradientMove` keeps repainting behind the lesson. The in-app 'Csökkentett mozgás' ("Reduced motion") toggle stops the background but not the node pulse, the 'Kezdés' bubble or the PostLesson loops, and `LexiAnimation` ignores reduced motion. `@keyframes pulse` exists in three materially different versions in one bundle.
 - **Learner impact:** a reduced-motion setting that half works, in a product pitched at focus.
 - **Fix:** `0.01ms` instead of `-1ms`; one `data-motion` attribute driven by the OS query or the toggle, extended to `.roadmap-node.current`, `.node-chat-bubble` and the PostLesson loops; namespaced keyframes; delete the animated background.
@@ -946,6 +949,8 @@ A returning learner on a 360 px Android phone, in the wrapped app. The audio ste
 11. **Back to the path (60 s).** 'Tovább' or the system Back returns to Learn, anchored on the next node; the finished node shows a stamp and the Continue card updates. Back on a tab root leaves the app (C22).
 
 ### 5b. Design-system foundation
+
+> **Adopted in C1a (#364, 2026-09-30):** the breakpoints, spacing, radius, elevation, layer and motion rows of the scale table below, with one addition: a `screen` layer (250) between nav and sheet for the full-screen lesson, which must cover the navigation and stay under dialogs. The token names and the rules are in SOT §12 (Breakpoints, Tokens). The colour and type rows are still proposals (C1b #393, C1c #394).
 
 This *is* WP-C1, WP-C2 and WP-C4 plus WP-G4 — not a parallel effort. The values below are the panel's proposal and consistent with SOT §12.1. Ratios are text against `--bg`, or label against fill where a label is named; they were re-computed for this document, but re-check every pair with a script before adopting them.
 

@@ -83,14 +83,14 @@ export const TypeIn: React.FC<TypeInProps> = ({ question, onAnswer, isAnswered =
                   padding: '1.2rem',
                   fontSize: '1.2rem',
                   borderRadius: '12px',
-                  border: '2px solid var(--glass-border)',
+                  border: '2px solid var(--color-border)',
                   boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)',
                   outline: 'none',
                   transition: 'border-color 0.2s',
                   textAlign: 'center'
               }}
               onFocus={(e) => e.target.style.borderColor = 'var(--color-accent-in)'}
-              onBlur={(e) => e.target.style.borderColor = 'var(--glass-border)'}
+              onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
               autoFocus
           />
           {question.hint && (

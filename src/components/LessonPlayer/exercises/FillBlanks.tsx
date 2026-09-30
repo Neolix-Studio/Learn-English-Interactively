@@ -59,7 +59,7 @@ export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer, isAn
                 padding: '1rem 1.5rem',
                 borderRadius: '20px',
                 borderTopLeftRadius: '4px',
-                border: '2px solid var(--glass-border)',
+                border: '2px solid var(--color-border)',
                 fontSize: '1.3rem',
                 color: 'var(--color-text-main)',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
@@ -69,7 +69,7 @@ export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer, isAn
               }}>
                 <div style={{
                   position: 'absolute', top: '10px', left: '-10px', width: '0', height: '0',
-                  borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderRight: '10px solid var(--glass-border)',
+                  borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderRight: '10px solid var(--color-border)',
                 }}></div>
                 <div style={{
                   position: 'absolute', top: '10px', left: '-7px', width: '0', height: '0',
@@ -80,7 +80,7 @@ export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer, isAn
             </div>
 
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', alignSelf: 'flex-end', maxWidth: '85%', flexDirection: 'row-reverse' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--glass-border)', flexShrink: 0 }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--color-bg-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--color-border)', flexShrink: 0 }}>
                 <svg width="35" height="35" viewBox="0 0 24 24" fill="#9CA3AF">
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>

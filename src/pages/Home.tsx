@@ -147,7 +147,7 @@ export function Home() {
       <Header onLoginClick={openAuthModal} />
 
       <main style={{ marginTop: '70px' }}>
-        <section className="hero-section" style={{ position: 'relative', zIndex: 1000 }}>
+        <section className="hero-section" style={{ position: 'relative', zIndex: 'var(--layer-raised)' }}>
           <div className="hero-container">
             <div className="hero-text-content">
               <h1 className="hero-title">Tanulj angolul <span>egyszerűen</span>, a saját tempódban!</h1>

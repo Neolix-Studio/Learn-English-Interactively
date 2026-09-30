@@ -10,6 +10,8 @@ interface ProductTourProps {
 
 const MOBILE_BREAKPOINT = '(max-width: 991px)';
 const MOBILE_TOUR_STEP_DELAY_MS = 380;
+// Joyride takes a number: keep it equal to --layer-tour in tokens.css.
+const TOUR_LAYER = 500;
 
 const isMobileViewport = () => (
   typeof window !== 'undefined' && window.matchMedia(MOBILE_BREAKPOINT).matches
@@ -23,7 +25,7 @@ const getSharedJoyrideOptions = (): Partial<Options> => ({
   overlayColor: 'rgba(15, 23, 42, 0.75)',
   primaryColor: '#4F46E5',
   textColor: '#1E293B',
-  zIndex: 100000,
+  zIndex: TOUR_LAYER,
   showProgress: true,
   scrollDuration: 220,
   scrollOffset: 96,
@@ -60,7 +62,7 @@ const getSharedJoyrideStyles = () => ({
   floater: {
     maxWidth: 'min(360px, calc(100vw - 28px))',
     width: 'min(360px, calc(100vw - 28px))',
-    zIndex: 100000,
+    zIndex: TOUR_LAYER,
   },
   tooltip: {
     borderRadius: '16px',

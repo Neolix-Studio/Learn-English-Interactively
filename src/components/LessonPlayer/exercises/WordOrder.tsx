@@ -151,11 +151,11 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer, isAnsw
             style={{
               padding: '0.8rem 1.2rem',
               background: 'var(--color-bg-surface)',
-              border: '2px solid var(--glass-border)',
+              border: '2px solid var(--color-border)',
               borderRadius: '12px',
               fontSize: '1.2rem',
               cursor: isAnswered ? 'default' : 'pointer',
-              boxShadow: '0 2px 0 var(--glass-border)',
+              boxShadow: '0 2px 0 var(--color-border)',
               color: 'var(--color-text-main)',
               transition: 'transform 0.1s'
             }}

@@ -249,7 +249,7 @@ export const ProfilePage: React.FC = () => {
           <select
             value={(data.scores.active_theme === 'default' ? 'system' : data.scores.active_theme) || 'system'}
             onChange={handleThemeChange}
-            style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', outline: 'none', fontWeight: 'bold' }}
+            style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', outline: 'none', fontWeight: 'bold' }}
           >
             <option value="system">{t('settings.theme_system')}</option>
             <option value="light">{t('settings.theme_light')}</option>
@@ -268,7 +268,7 @@ export const ProfilePage: React.FC = () => {
           <select
             value={activeNameplate}
             onChange={handleNameplateChange}
-            style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', outline: 'none', fontWeight: 'bold' }}
+            style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', outline: 'none', fontWeight: 'bold' }}
           >
             <option value="none">None (Standard)</option>
             <option value="cyber">Cyber Neon Capsule</option>
@@ -292,7 +292,7 @@ export const ProfilePage: React.FC = () => {
                   window.location.reload();
               }
             }}
-            style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', outline: 'none', fontWeight: 'bold' }}
+            style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', cursor: 'pointer', outline: 'none', fontWeight: 'bold' }}
           >
             <option value="hu">Hungarian (Magyar)</option>
             <option value="sk">Slovak (Slovenčina)</option>
@@ -385,8 +385,8 @@ export const ProfilePage: React.FC = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <button
             onClick={handleLogout}
-            style={{ padding: '1rem', borderRadius: '12px', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', border: '1px solid var(--glass-border)', fontWeight: 'bold', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
-            onMouseOver={(e) => e.currentTarget.style.background = 'var(--glass-border)'}
+            style={{ padding: '1rem', borderRadius: '12px', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', border: '1px solid var(--color-border)', fontWeight: 'bold', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
+            onMouseOver={(e) => e.currentTarget.style.background = 'var(--color-border)'}
             onMouseOut={(e) => e.currentTarget.style.background = 'var(--color-bg-base)'}
           >
             Log Out

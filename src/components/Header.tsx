@@ -14,7 +14,7 @@ export function Header({ onLoginClick }: HeaderProps) {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <header className="site-header" style={{ zIndex: 9999 }}>
+    <header className="site-header">
       <div className="header-container">
         <Link to="/" className="logo" aria-label="Főoldal">
           <span className="logo-text">Lexipaws</span>

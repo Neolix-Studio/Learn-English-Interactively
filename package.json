@@ -11,6 +11,7 @@
     "lint:js": "oxlint src cypress.config.js vite.config.ts",
     "security:php": "node scripts/check_php_security.js",
     "validate:json": "node scripts/validate_json.js",
+    "check:css": "node scripts/check_css_tokens.js",
     "preview": "vite preview"
   },
   "dependencies": {

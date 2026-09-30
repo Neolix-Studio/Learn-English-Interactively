@@ -240,10 +240,8 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
       guestSummary.lessons > 0 && t('auth.merge_lessons', { amount: amount(guestSummary.lessons) })
     ].filter(Boolean) as string[];
 
-    // Above the site header (z-index 9999), which still covers the top of every other auth view on a
-    // phone (C37, #391): this question must never be hidden.
     return (
-      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false" style={{ zIndex: 10000 }}>
+      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
         <div className="modal-content glass-panel" role="dialog" aria-modal="true" aria-labelledby="guest-merge-title">
           <h2 id="guest-merge-title" style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.3rem' }}>{t('auth.merge_title')}</h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', margin: '0 0 1rem 0' }}>

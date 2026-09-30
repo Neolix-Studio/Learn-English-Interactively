@@ -18,7 +18,8 @@
 
     --transition-base: 0.3s ease;
     --transition-theme: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-    --glass-border: 1px solid #E5E7EB;
+    --color-border: #E5E7EB;
+    --glass-border: 1px solid var(--color-border);
     --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     --bg-gradient: radial-gradient(circle at top right, #e0e7ff 0%, transparent 40%),
                    radial-gradient(circle at bottom left, #dbeafe 0%, transparent 40%),
@@ -31,7 +32,8 @@
     --color-bg-surface: #1F2937;
     --color-text-main: #F9FAFB;
     --color-text-muted: #9CA3AF;
-    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --color-border: rgba(255, 255, 255, 0.1);
+    --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
                    radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
                    var(--color-bg-base);
@@ -44,7 +46,8 @@
         --color-bg-surface: #1F2937;
         --color-text-main: #F9FAFB;
         --color-text-muted: #9CA3AF;
-        --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+        --color-border: rgba(255, 255, 255, 0.1);
+        --glass-border: 1px solid var(--color-border);
         --bg-gradient: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
                        radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
                        var(--color-bg-base);
@@ -93,7 +96,7 @@ a {
     left: 0;
     width: 100%;
     height: 70px;
-    z-index: 1000;
+    z-index: var(--layer-app-bar);
 }
 
 .header-container {
@@ -111,7 +114,7 @@ a {
     display: flex;
     align-items: center;
     transition: transform var(--transition-base);
-    z-index: 1001;
+    z-index: var(--layer-raised);
 }
 
 .logo:hover {
@@ -135,7 +138,7 @@ a {
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 1001;
+    z-index: var(--layer-raised);
     padding: 11.5px 7px;
     box-sizing: border-box;
 }
@@ -175,7 +178,7 @@ a {
     opacity: 0;
     visibility: hidden;
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out, visibility 0.4s;
-    z-index: 990;
+    z-index: var(--layer-base);
     box-shadow: var(--glass-shadow);
 }
 
@@ -371,7 +374,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
+    z-index: var(--layer-dialog);
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-base), backdrop-filter var(--transition-base);
@@ -1032,7 +1035,8 @@ a {
     --color-accent-in: oklch(0.7 0.25 320);
     --color-accent-on: oklch(0.8 0.2 190);
     --color-accent-at: oklch(0.85 0.2 120);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --color-border: rgba(255, 255, 255, 0.1);
+    --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top right, oklch(0.2 0.15 320 / 0.4), transparent 50%),
                    radial-gradient(circle at bottom left, oklch(0.2 0.15 190 / 0.3), transparent 50%),
                    var(--color-bg-base);
@@ -1046,7 +1050,8 @@ a {
     --color-accent-in: oklch(0.75 0.2 140);
     --color-accent-on: oklch(0.8 0.15 100);
     --color-accent-at: oklch(0.7 0.15 60);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --color-border: rgba(255, 255, 255, 0.1);
+    --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top left, oklch(0.25 0.1 140 / 0.4), transparent 60%),
                    radial-gradient(circle at bottom right, oklch(0.2 0.1 100 / 0.3), transparent 60%),
                    var(--color-bg-base);
@@ -1060,7 +1065,8 @@ a {
     --color-accent-in: oklch(0.65 0.2 45);
     --color-accent-on: oklch(0.75 0.18 55);
     --color-accent-at: oklch(0.8 0.15 70);
-    --glass-border: 1px solid rgba(245, 158, 11, 0.2);
+    --color-border: rgba(245, 158, 11, 0.2);
+    --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top left, oklch(0.3 0.15 45 / 0.5), transparent 60%),
                    radial-gradient(circle at bottom right, oklch(0.25 0.1 30 / 0.4), transparent 60%),
                    var(--color-bg-base);
@@ -1074,7 +1080,8 @@ a {
     --color-accent-in: oklch(0.6 0.25 140);
     --color-accent-on: oklch(0.65 0.2 45);
     --color-accent-at: oklch(0.7 0.2 300);
-    --glass-border: 1px solid rgba(168, 85, 247, 0.2);
+    --color-border: rgba(168, 85, 247, 0.2);
+    --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top left, oklch(0.25 0.15 300 / 0.5), transparent 60%),
                    radial-gradient(circle at bottom right, oklch(0.2 0.1 140 / 0.3), transparent 60%),
                    var(--color-bg-base);

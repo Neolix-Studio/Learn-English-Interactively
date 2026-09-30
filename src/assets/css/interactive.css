@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     height: 100dvh;
-    background: var(--color-bg-body);
+    background: var(--color-bg-base);
     overflow: hidden;
 }
 
@@ -245,7 +245,7 @@
     font-weight: 600;
 }
 .match-pair-btn:hover {
-    background: var(--glass-border);
+    background: var(--color-border);
     transform: translateY(-2px);
 }
 .match-pair-btn.selected {
@@ -299,7 +299,7 @@
     padding: 1rem;
     font-size: 1.2rem;
     border-radius: 12px;
-    border: 2px solid var(--glass-border);
+    border: 2px solid var(--color-border);
     background: rgba(0,0,0,0.2);
     color: var(--color-text-main);
     text-align: center;
