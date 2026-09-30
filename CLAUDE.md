@@ -112,8 +112,12 @@ One commit for the issue, on `dev`, with the plan key and the issue number in th
 
 ```bash
 git push origin dev
-gh run watch "$(gh run list --workflow verify-deploy.yml --branch dev --limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status
+SHA=$(git rev-parse HEAD)
+until RUN=$(gh run list --workflow verify-deploy.yml --commit "$SHA" --json databaseId --jq '.[0].databaseId // empty') && [ -n "$RUN" ]; do sleep 5; done
+gh run watch "$RUN" --exit-status
 ```
+
+Watch the run of **your commit**, as above. Right after a push the newest run in the list can still be an older one, and its green result says nothing about your change.
 
 The run has two jobs. **Verify** failing means nothing was deployed. **Deploy** failing means `dev.lexipaws.eu` may be broken: tell the owner at once. In both cases fix forward with a new commit on `dev`.
 
