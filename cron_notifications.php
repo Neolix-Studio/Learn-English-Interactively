@@ -15,12 +15,31 @@ try {
 
     echo "Running notifications cron job...\n";
 
-    $stmtInactivity = $pdo->query("
-        SELECT id, email, username, inactivity_email_count, last_inactivity_email_sent, last_login_at, notification_preferences, base_language
-        FROM users
-        WHERE last_login_at < DATE_SUB(NOW(), INTERVAL 48 HOUR)
-          AND last_login_at > DATE_SUB(NOW(), INTERVAL 14 DAY)
+    // One clock reading for the whole run, in learner days: see lexipaws_activity_date().
+    $now = time();
+    $yesterday = lexipaws_activity_date(1, $now);
+    $twoDaysAgo = lexipaws_activity_date(2, $now);
+
+    // The first full day after save_progress began to stamp last_active_date
+    // itself (#358). An earlier date may come from the old app's client, or
+    // from this cron's earlier version, which took a shield from every stale
+    // row each night. Rows with such a date are never mailed and never
+    // touched. (The local stack and the test suite set their own day in the
+    // config they generate.)
+    $trustedFrom = defined('ACTIVITY_DATES_TRUSTED_FROM') ? ACTIVITY_DATES_TRUSTED_FROM : '2026-10-01';
+
+    // Inactivity is keyed on the last day with a successful save, not on the
+    // last password login: a learner who stays signed in has an old login. A
+    // row that was never stamped (NULL) gets no mail.
+    $stmtInactivity = $pdo->prepare("
+        SELECT u.id, u.email, u.username, u.inactivity_email_count, u.last_inactivity_email_sent, u.notification_preferences, u.base_language
+        FROM users u
+        JOIN user_progress up ON up.user_id = u.id
+        WHERE up.last_active_date <= ?
+          AND up.last_active_date > ?
+          AND up.last_active_date >= ?
     ");
+    $stmtInactivity->execute([$twoDaysAgo, lexipaws_activity_date(14, $now), $trustedFrom]);
     $inactiveUsers = $stmtInactivity->fetchAll();
 
     foreach ($inactiveUsers as $user) {
@@ -47,29 +66,47 @@ try {
                 $updateStmt = $pdo->prepare("UPDATE users SET inactivity_email_count = inactivity_email_count + 1, last_inactivity_email_sent = NOW() WHERE id = ?");
                 $updateStmt->execute([$user['id']]);
                 echo "Sent inactivity email to {$user['email']}\n";
+            } else {
+                echo "Could not send inactivity email to {$user['email']}\n";
             }
         }
     }
 
-    $stmtStreak = $pdo->query("
+    // Only a row last active exactly two days ago is at risk: that learner
+    // missed yesterday, and only yesterday. NULL and older dates are stale
+    // rows and are never touched. Moving last_active_date on to yesterday
+    // takes the row out of this query, so a missed day costs one shield
+    // however often the cron runs.
+    $stmtStreak = $pdo->prepare("
         SELECT u.id, u.email, u.username, u.last_streak_email_sent, u.notification_preferences, u.base_language,
                up.streak_count, up.streak_shields, up.last_active_date
         FROM users u
         JOIN user_progress up ON u.id = up.user_id
         WHERE up.streak_count > 0
-          AND up.last_active_date < CURDATE() - INTERVAL 1 DAY
+          AND up.last_active_date = ?
+          AND up.last_active_date >= ?
     ");
+    $stmtStreak->execute([$twoDaysAgo, $trustedFrom]);
     $atRiskUsers = $stmtStreak->fetchAll();
+
+    // Both writes repeat the date condition, so a save that lands after the
+    // SELECT above keeps its shield and its streak.
+    $consumeStmt = $pdo->prepare("
+        UPDATE user_progress
+        SET streak_shields = streak_shields - 1,
+            last_active_date = ?
+        WHERE user_id = ?
+          AND streak_shields > 0
+          AND last_active_date = ?
+    ");
+    $breakStmt = $pdo->prepare("UPDATE user_progress SET streak_count = 0 WHERE user_id = ? AND streak_shields <= 0 AND last_active_date = ?");
 
     foreach ($atRiskUsers as $user) {
         if ($user['streak_shields'] > 0) {
-            $consumeStmt = $pdo->prepare("
-                UPDATE user_progress
-                SET streak_shields = streak_shields - 1,
-                    last_active_date = CURDATE() - INTERVAL 1 DAY
-                WHERE user_id = ?
-            ");
-            $consumeStmt->execute([$user['id']]);
+            $consumeStmt->execute([$yesterday, $user['id'], $twoDaysAgo]);
+            if ($consumeStmt->rowCount() === 0) {
+                continue;
+            }
 
             $prefs = json_decode($user['notification_preferences'] ?? '{}', true);
             if (isset($prefs['milestones']) && $prefs['milestones'] === false) {
@@ -87,12 +124,15 @@ try {
                     $updateSent = $pdo->prepare("UPDATE users SET last_streak_email_sent = NOW() WHERE id = ?");
                     $updateSent->execute([$user['id']]);
                     echo "Sent streak protected email to {$user['email']}\n";
+                } else {
+                    echo "Could not send streak protected email to {$user['email']}\n";
                 }
             }
         } else {
-            $breakStmt = $pdo->prepare("UPDATE user_progress SET streak_count = 0 WHERE user_id = ?");
-            $breakStmt->execute([$user['id']]);
-            echo "Broke streak for user {$user['email']}\n";
+            $breakStmt->execute([$user['id'], $twoDaysAgo]);
+            if ($breakStmt->rowCount() > 0) {
+                echo "Broke streak for user {$user['email']}\n";
+            }
         }
     }
 

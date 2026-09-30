@@ -1180,6 +1180,11 @@ function handleSaveProgress(PDO $pdo, array $data) {
 
         $parsed = clampProgressAgainstStored($parsed, $currentDbProgress, $userId);
 
+        // Every successful save counts as activity today. The server sets the
+        // day and ignores a client-sent one: cron_notifications.php trusts this
+        // column, so last_active_date has to stay in the UPDATE list below.
+        $parsed['last_active_date'] = lexipaws_activity_date();
+
         $stmt = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, last_active_date, unlocked_items, active_theme, earned_xp_per_node, daily_quests_date, active_quests, quest_progress, completed_quests_today, energy, last_energy_refill)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)

@@ -139,6 +139,9 @@ define('SMTP_PORT', 465);
 define('SMTP_SECURE', 'ssl');
 define('SMTP_USER', '');
 define('SMTP_PASS', '');
+// cron_notifications.php ignores a last_active_date from before the day the
+// writer shipped. Here every date counts, so the cron can be tried on seeded rows.
+define('ACTIVITY_DATES_TRUSTED_FROM', '2000-01-01');
 PHPCONF
 }
 

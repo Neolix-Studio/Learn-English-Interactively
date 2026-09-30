@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 #
-# Integration test for the save_progress anti-cheat surface (WP-B0).
+# Integration test for the save_progress anti-cheat surface (WP-B0), for the
+# activity-day writer in save_progress and for cron_notifications.php, which
+# trusts that writer (B1-cron, #358).
 #
-# Runs the real api.php over real HTTP, against a THROWAWAY MariaDB instance
+# Runs the real api.php over real HTTP, and the real cron from the command
+# line, against a THROWAWAY MariaDB instance
 # that this script creates and destroys. It never reads db_config.php and never
 # connects to the live database — dev and production share one database, so
 # there is no safe remote environment to test writes against.
@@ -32,11 +35,12 @@
 #
 # Exits non-zero if any check fails.
 #
-# WP-B1 note: this covers the clamp and rate-limit surface only. B1 (stop
-# save_progress destroying 11 columns) must add its own assertions that
-# level, streak_count, streak_shields, last_active_date, unlocked_items,
+# WP-B1 note: B1 (stop save_progress destroying 11 columns) must add its own
+# assertions that level, streak_count, streak_shields, unlocked_items,
 # active_theme, earned_xp_per_node, daily_quests_date, active_quests, energy
 # and last_energy_refill survive an autosave that does not mention them.
+# last_active_date is the exception: every save has to keep writing it
+# (group 6), because the cron's gates (group 7) rely on it.
 
 set -uo pipefail
 
@@ -144,7 +148,7 @@ fail() { echo "  ❌ FAIL  $1"; FAILURES=$((FAILURES+1)); }
 # real one - which holds live credentials and is gitignored, i.e. NOT
 # recoverable from git - is never read, written or overwritten.
 mkdir -p "$SANDBOX/app/data" "$SANDBOX/app/libs" "$SANDBOX/sessions"
-for f in api.php security.php mailer.php migrate.php; do
+for f in api.php security.php mailer.php migrate.php cron_notifications.php; do
   if [ -n "$REF" ]; then
     git -C "$REPO_ROOT" show "$REF:$f" > "$SANDBOX/app/$f" || exit 2
   else
@@ -152,7 +156,11 @@ for f in api.php security.php mailer.php migrate.php; do
   fi
 done
 cp -R "$REPO_ROOT/data/migrations" "$SANDBOX/app/data/migrations"
-cp -R "$REPO_ROOT/templates" "$SANDBOX/app/templates"
+if [ -n "$REF" ]; then
+  git -C "$REPO_ROOT" archive "$REF" templates | tar -x -C "$SANDBOX/app" || exit 2
+else
+  cp -R "$REPO_ROOT/templates" "$SANDBOX/app/templates"
+fi
 cp -R "$REPO_ROOT/libs/PHPMailer" "$SANDBOX/app/libs/PHPMailer"
 
 # The DSN concatenates DB_HOST straight into the string, so the port rides along.
@@ -177,6 +185,9 @@ define('SMTP_PORT', 465);
 define('SMTP_SECURE', 'ssl');
 define('SMTP_USER', '');
 define('SMTP_PASS', '');
+// The first day whose last_active_date the cron trusts. Live, this is the day
+// after the writer shipped; here it is long ago, except in group 8.
+define('ACTIVITY_DATES_TRUSTED_FROM', getenv('SPTEST_TRUSTED_FROM') ?: '2000-01-01');
 PHPCONF
 
 echo "=============================================================="
@@ -274,6 +285,20 @@ sys.exit(0 if (b <= mb and sh <= ms and lvl <= ml) else 1)
 ' "$2" "$3" "$4"
 }
 
+# The learner's calendar day $1 days ago. The app counts days in Europe/Budapest
+# (lexipaws_activity_date() in security.php), so the suite must too: PHP here
+# may default to UTC and CI's database runs in UTC.
+day() {
+  python3 -c '
+import sys, datetime, zoneinfo
+today = datetime.datetime.now(zoneinfo.ZoneInfo("Europe/Budapest")).date()
+print((today - datetime.timedelta(days=int(sys.argv[1]))).isoformat())' "$1"
+}
+# streak_count|streak_shields|last_active_date of one user
+streak_row() {
+  "${DB[@]}" -e "SELECT CONCAT(streak_count,'|',streak_shields,'|',IFNULL(last_active_date,'<NULL>')) FROM user_progress WHERE user_id=$1"
+}
+
 INFLATED='{"scores":{"bones":999999999,"streak_shields":999,"node_state":{"n1":{"current_level":99}}}}'
 
 # ============================================================== 1. poisoned row
@@ -351,6 +376,184 @@ ELAPSED="$(python3 -c 'import time,sys;print(round(time.time()-float(sys.argv[1]
 if [ "$CODE" = "200" ] && [ "$(col 4 streak_count)" = "7" ]
 then pass "sendStreakMilestoneEmails: streak 6->7 with milestones=false succeeds without SMTP (${ELAPSED}s)"
 else fail "milestone path broke the save (HTTP $CODE)"; fi
+
+# =================================================== 6. the activity-day writer
+echo
+echo "6. a successful save stamps last_active_date with the learner's day"
+seed
+D0="$(day 0)"; D1="$(day 1)"; D2="$(day 2)"; D3="$(day 3)"
+"${DB[@]}" -e "UPDATE user_progress SET last_active_date='2026-07-01' WHERE user_id=4"
+post 4 '{"points":1010,"scores":{"bones":55}}' >/dev/null
+GOT="$(col 4 last_active_date)"
+if [ "$GOT" = "$D0" ]; then pass "a row last active on 2026-07-01 is stamped with today, $D0 (Europe/Budapest)"
+else fail "last_active_date is [$GOT] after a save, expected $D0"; fi
+
+post 4 '{"points":1020,"last_active_date":"2031-01-01","scores":{"bones":55}}' >/dev/null
+GOT="$(col 4 last_active_date)"
+if [ "$GOT" = "$D0" ]; then pass "a last_active_date sent by the client is ignored"
+else fail "the client set last_active_date to [$GOT]"; fi
+
+post 3 '{"points":10,"scores":{"bones":5}}' >/dev/null
+GOT="$(col 3 last_active_date)"
+if [ "$GOT" = "$D0" ]; then pass "a first save (no user_progress row yet) is stamped too"
+else fail "last_active_date is [$GOT] after a first save, expected $D0"; fi
+
+# Fixed instants either side of midnight in Budapest, in summer and in winter
+# time, read with PHP set to a zone 12-13 hours ahead.
+GOT="$(cd "$SANDBOX/app" && php -d date.timezone=Pacific/Kiritimati -r '
+require "security.php";
+echo implode(" ", [
+    lexipaws_activity_date(0, 1782943199), // 2026-07-01 21:59:59 UTC = 23:59:59 in Budapest
+    lexipaws_activity_date(0, 1782943200), // one second later
+    lexipaws_activity_date(0, 1798757999), // 2026-12-31 22:59:59 UTC = 23:59:59 in Budapest
+    lexipaws_activity_date(0, 1798758000), // one second later
+    lexipaws_activity_date(2, 1798758000),
+]);' 2>/dev/null)"
+if [ "$GOT" = "2026-07-01 2026-07-02 2026-12-31 2027-01-01 2026-12-30" ]
+then pass "the day changes at midnight in Europe/Budapest, whatever PHP's own time zone is"
+else fail "lexipaws_activity_date() returned [$GOT]"; fi
+
+# ================================================= 7. cron_notifications.php
+echo
+echo "7. cron_notifications.php leaves stale rows alone and keys mail on activity"
+seed
+# User 4 gets today's date from a real save. Until WP-B1 that save also zeroes
+# streak_count, so the streak is put back by hand: the row then looks the way
+# a saved-today row will after B1, and only the date keeps the cron away.
+post 4 '{"points":1010,"scores":{"bones":55}}' >/dev/null
+"${DB[@]}" <<SQL
+UPDATE user_progress SET streak_count=5, streak_shields=2 WHERE user_id=4;
+INSERT INTO users (id, email, password_hash, username, last_login_at) VALUES
+  (11, 'legacy@test.local',   'x', 'legacytester',   '2026-07-01 08:00:00'),
+  (12, 'neverset@test.local', 'x', 'neversettester', NOW()),
+  (13, 'oldlogin@test.local', 'x', 'oldlogintester', NOW() - INTERVAL 10 DAY),
+  (14, 'idle3@test.local',    'x', 'idle3tester',    NOW()),
+  (15, 'missed1@test.local',  'x', 'missed1tester',  NOW()),
+  (16, 'noshield@test.local', 'x', 'noshieldtester', NOW());
+-- 11: a legacy row.                12: never stamped.
+-- 13: active today, but the last password login was 10 days ago.
+-- 14: idle for 3 days, although the login is fresh.
+-- 15: missed exactly yesterday.    16: the same, with no shield left.
+INSERT INTO user_progress (user_id, points, scores, streak_count, streak_shields, last_active_date) VALUES
+  (11, 500, '{}', 5, 2, '2026-07-01'),
+  (12, 500, '{}', 5, 2, NULL),
+  (13, 500, '{}', 5, 2, '$D0'),
+  (14, 500, '{}', 5, 2, '$D3'),
+  (15, 500, '{}', 5, 2, '$D2'),
+  (16, 500, '{}', 5, 0, '$D2');
+SQL
+for _ in 1 2 3; do ( cd "$SANDBOX/app" && php cron_notifications.php ) >> "$SANDBOX/cron.log" 2>&1; done
+sed 's/^/     | /' "$SANDBOX/cron.log"
+# No SMTP password is configured here, so a mail that is due shows up as a
+# "Could not send ..." line, and one that is not due leaves no line at all.
+mail_line() { grep -cE "$1 email to $2@test\.local" "$SANDBOX/cron.log"; }
+never_mailed() {
+  [ "$(grep -cF "$1@test.local" "$SANDBOX/cron.log")" = "0" ] && [ "$("${DB[@]}" -e "
+    SELECT COUNT(*) FROM users WHERE email='$1@test.local'
+      AND last_inactivity_email_sent IS NULL AND last_streak_email_sent IS NULL")" = "1" ]
+}
+
+if [ "$(grep -c 'Cron job finished successfully' "$SANDBOX/cron.log")" = "3" ] && ! grep -q '^Error' "$SANDBOX/cron.log"
+then pass "three runs in a row finish without an error"
+else fail "the cron did not finish three clean runs"; fi
+
+ROW="$(streak_row 11)"
+if [ "$ROW" = "5|2|2026-07-01" ] && never_mailed legacy
+then pass "a legacy row (streak 5, 2 shields, last active 2026-07-01) is unchanged and gets no e-mail"
+else fail "legacy row is now [$ROW], or it was mailed"; fi
+
+ROW="$(streak_row 12)"
+if [ "$ROW" = "5|2|<NULL>" ] && never_mailed neverset
+then pass "a row whose last_active_date is NULL is unchanged and gets no e-mail"
+else fail "NULL-date row is now [$ROW], or it was mailed"; fi
+
+ROW="$(streak_row 4)"
+if [ "$ROW" = "5|2|$D0" ] && never_mailed honest
+then pass "a row saved today is not matched"
+else fail "saved-today row is now [$ROW], or it was mailed"; fi
+
+ROW="$(streak_row 13)"
+if [ "$ROW" = "5|2|$D0" ] && never_mailed oldlogin
+then pass "active today with a 10-day-old login: no inactivity e-mail"
+else fail "active-today row is now [$ROW], or it was mailed"; fi
+
+ROW="$(streak_row 14)"
+if [ "$ROW" = "5|2|$D3" ] && [ "$(mail_line inactivity idle3)" -ge 1 ] && [ "$(mail_line 'streak protected' idle3)" = "0" ]
+then pass "idle for 3 days: an inactivity e-mail is due; shields and streak are not touched"
+else fail "idle-3-days row is now [$ROW], inactivity lines: $(mail_line inactivity idle3)"; fi
+
+ROW="$(streak_row 15)"
+if [ "$ROW" = "5|1|$D1" ] && [ "$(mail_line 'streak protected' missed1)" = "1" ]
+then pass "one missed day costs one shield across three runs, with one streak e-mail"
+else fail "missed-one-day row is now [$ROW] (expected 5|1|$D1), streak lines: $(mail_line 'streak protected' missed1)"; fi
+
+ROW="$(streak_row 16)"
+if [ "$ROW" = "0|0|$D2" ]
+then pass "one missed day with no shield left ends the streak"
+else fail "no-shield row is now [$ROW] (expected 0|0|$D2)"; fi
+
+# The next two mornings: every date moves one day further into the past, then
+# the cron runs once more. This is the case the old cron got wrong - it took a
+# shield from the legacy row every day until the streak was gone.
+for _ in 1 2; do
+  "${DB[@]}" -e "UPDATE user_progress SET last_active_date = last_active_date - INTERVAL 1 DAY WHERE user_id IN (4, 11, 12, 13, 14, 15, 16)"
+  ( cd "$SANDBOX/app" && php cron_notifications.php ) >> "$SANDBOX/cron.log" 2>&1
+done
+
+ROW="$(streak_row 11)"
+if [ "$ROW" = "5|2|2026-06-29" ] && never_mailed legacy
+then pass "two mornings later the legacy row still has its streak and both shields, and no e-mail"
+else fail "legacy row after two more mornings is [$ROW], or it was mailed"; fi
+
+ROW="$(streak_row 15)"
+if [ "$ROW" = "0|0|$D2" ]
+then pass "a second missed day takes the last shield, and a third ends the streak"
+else fail "missed-three-days row is now [$ROW] (expected 0|0|$D2)"; fi
+
+ROW="$(streak_row 4)"
+if [ "$ROW" = "5|1|$D1" ]
+then pass "the learner who saved two mornings ago has missed one day and lost one shield"
+else fail "saved-two-mornings-ago row is now [$ROW] (expected 5|1|$D1)"; fi
+
+LINKS="$(cd "$SANDBOX/app" && php -r '
+require "mailer.php";
+$template = include "templates/emails/inactivity.php";
+foreach (["hu", "sk"] as $lang) {
+    echo $lang, " ", $template(["username" => "x", "language" => $lang])["buttonLink"], "\n";
+}' 2>/dev/null)"
+if [ "$(printf '%s\n' "$LINKS" | grep -cE '^(hu|sk) .*/dashboard$')" = "2" ]
+then pass "the inactivity e-mail's button opens /dashboard in Hungarian and in Slovak"
+else fail "inactivity button links: [$LINKS]"; fi
+
+# ===================================== 8. dates from before the writer shipped
+echo
+echo "8. a last_active_date from before the writer shipped is never acted on"
+seed
+"${DB[@]}" <<SQL
+INSERT INTO users (id, email, password_hash, username) VALUES
+  (21, 'oldcron@test.local', 'x', 'oldcrontester'),
+  (22, 'oldidle@test.local', 'x', 'oldidletester');
+-- 21: what the old cron left behind every night: a streak, a shield, and a
+--     recent date that it wrote itself.    22: three days idle by an old date.
+INSERT INTO user_progress (user_id, points, scores, streak_count, streak_shields, last_active_date) VALUES
+  (21, 500, '{}', 5, 1, '$D2'),
+  (22, 500, '{}', 5, 2, '$D3');
+SQL
+# The cut-off is yesterday: both dates are older, so neither row is trusted.
+( cd "$SANDBOX/app" && SPTEST_TRUSTED_FROM="$D1" php cron_notifications.php ) > "$SANDBOX/cron-cutoff.log" 2>&1
+sed 's/^/     | /' "$SANDBOX/cron-cutoff.log"
+ROWS="$(streak_row 21) $(streak_row 22)"
+if [ "$ROWS" = "5|1|$D2 5|2|$D3" ] && ! grep -qE 'oldcron@|oldidle@' "$SANDBOX/cron-cutoff.log"
+then pass "with the cut-off after both dates: no shield taken, no streak ended, no e-mail"
+else fail "rows before the cut-off are now [$ROWS], or one was mailed"; fi
+
+# The same rows with the cut-off three days back: now the cron acts on them,
+# so the cut-off was the only thing holding it back.
+( cd "$SANDBOX/app" && SPTEST_TRUSTED_FROM="$D3" php cron_notifications.php ) > "$SANDBOX/cron-cutoff.log" 2>&1
+ROWS="$(streak_row 21) $(streak_row 22)"
+if [ "$ROWS" = "5|0|$D1 5|2|$D3" ] && grep -q 'inactivity email to oldidle@test.local' "$SANDBOX/cron-cutoff.log"
+then pass "with the cut-off before both dates: the shield is taken and the inactivity e-mail is due"
+else fail "rows after moving the cut-off are [$ROWS] (expected 5|0|$D1 5|2|$D3)"; fi
 
 # ==================================================================== summary
 echo

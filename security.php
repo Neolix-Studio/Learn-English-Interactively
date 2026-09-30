@@ -124,6 +124,20 @@ function security_rate_limit(string $bucket, int $maxAttempts, int $windowSecond
     return true;
 }
 
+/**
+ * The calendar day a learner's activity counts for, as Y-m-d.
+ *
+ * Always Europe/Budapest, which is the same zone as Europe/Bratislava, so the
+ * day ends at the learner's midnight whatever PHP's date.timezone or the
+ * database server's time zone are set to. save_progress stamps
+ * user_progress.last_active_date with it and cron_notifications.php compares
+ * against it; neither uses CURDATE().
+ */
+function lexipaws_activity_date(int $daysAgo = 0, ?int $now = null): string {
+    $local = (new DateTimeImmutable('@' . ($now ?? time())))->setTimezone(new DateTimeZone('Europe/Budapest'));
+    return $local->modify('-' . max(0, $daysAgo) . ' days')->format('Y-m-d');
+}
+
 function security_sanitize_log_line(string $value, int $maxLength = 2000): string {
     $value = preg_replace('/[\r\n\t]+/', ' ', $value);
     return mb_substr($value ?? '', 0, $maxLength);

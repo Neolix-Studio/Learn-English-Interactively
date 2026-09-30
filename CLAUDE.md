@@ -38,7 +38,7 @@ Product. These are owner decisions; do not reopen them unless he asks.
 | `dev` has its own database | It shares production's (see the hard rules). |
 | Local `main` is current | It is stale, and so are the other old local branches. Use `git fetch origin` and read `origin/main`. |
 | `data/sk` is the Slovak course | It is a copy of `data/hu` in Hungarian, minus 17 stories. |
-| Green checks mean it works | The only automated test is the `save_progress` security suite, which CI runs before every deploy (#357); nothing else is tested. `npm run lint` exits 0 with warnings, and `npm run validate:json` checks the schema of one file. Green means "it builds, and `save_progress` still clamps and throttles". |
+| Green checks mean it works | The only automated test is the `save_progress` security suite, which CI runs before every deploy (#357); since #358 it also runs `cron_notifications.php`. Nothing else is tested. `npm run lint` exits 0 with warnings, and `npm run validate:json` checks the schema of one file. Green means "it builds, `save_progress` still clamps, throttles and records the activity day, and the notifications cron still leaves stale rows alone". |
 | `http://localhost:5173` is the app | On `localhost` every auth guard is off. Use `http://app.localhost:5173` to see what a user sees. |
 | Editing `data/` shows on refresh | Curriculum JSON is bundled at build time. |
 | This machine matches CI | CI runs Node 20 and PHP 8.2; this machine runs newer versions of both. |
@@ -90,7 +90,7 @@ php -l path/to/each_touched_file.php
 
 Depending on what changed:
 
-- **`api.php` or `security.php`:** `./tools/local/testing/save_progress_security_test.sh` has to pass every check.
+- **`api.php`, `security.php` or `cron_notifications.php`:** `./tools/local/testing/save_progress_security_test.sh` has to pass every check.
 - **Anything where the server and the UI have to work together:** the local stack, which runs the real PHP on a throwaway database. `./tools/local/testing/local_stack.sh up`, then `npm run dev`, then `http://app.localhost:5173`; `sync` after a PHP edit, `down` when finished. Details: `tools/local/README.md`.
 - **Any UI change:** the screenshot matrix, with `npm run dev` running: `node tools/local/ux-shots/matrix.mjs --path /route --preset <state>`. It gives 320×568, 360×800, 390×844, 768×1024 and 1280×800, each in light and dark; add `--lesson` for lesson screens. **Open and read every PNG**: the tool reports that a file was written, not that the screen is right. Once TOOL-checks (#380) exists, run its contrast check too. Details: `tools/local/ux-shots/README.md`.
 

@@ -59,6 +59,12 @@ Things to know:
   `php-server.log`.
 - `up` refuses to start while anything else listens on `127.0.0.1:8000`, since
   that could be a `php -S` on the live database.
+- **Trying the cron.** Run it from the sandbox copy, never from the repo:
+  `(cd /tmp/lexipaws-local-stack/app && php cron_notifications.php)`. The
+  sandbox config sets `ACTIVITY_DATES_TRUSTED_FROM` to the year 2000, so rows
+  you date by hand with `sql` count; live, the cron ignores every
+  `last_active_date` before 2026-10-01. It prints `Could not send ...` for
+  each mail that is due, because nothing here can send.
 - `down` deletes only a directory this script created. After a reboot `/tmp`
   is empty and the stack is simply gone; run `up` again.
 - Requires `php` and `mariadb` from Homebrew (`brew install mariadb`); the
@@ -67,11 +73,21 @@ Things to know:
 
 ## Testing
 
-`testing/save_progress_security_test.sh` drives the real `api.php` over HTTP
-against a **throwaway MariaDB instance it creates and destroys itself**. It
-never reads `db_config.php` and never connects to the live database — `dev` and
-production share one database, so there is no safe remote target for write
-tests.
+`testing/save_progress_security_test.sh` drives the real `api.php` over HTTP,
+and runs the real `cron_notifications.php` from the command line, against a
+**throwaway MariaDB instance it creates and destroys itself**. It never reads
+`db_config.php` and never connects to the live database — `dev` and production
+share one database, so there is no safe remote target for write tests.
+
+| Group | What it proves |
+|---|---|
+| 1-5 | `save_progress` clamps an inflated payload, cannot be disarmed, is throttled, and leaves honest traffic alone (WP-B0). |
+| 6 | Every successful save sets `last_active_date` to the learner's day in Europe/Budapest and ignores a date sent by the client (#358). |
+| 7 | The cron leaves legacy, never-stamped and saved-today rows alone, takes one shield per missed day, and keys the inactivity e-mail on activity, not on the last login (#358). |
+| 8 | A `last_active_date` from before the cut-off day is never acted on (#358). |
+
+No SMTP password is configured, so the cron cannot send anything: a mail that
+is due shows up as a `Could not send ... email to ...` line in its output.
 
 ```
 ./tools/local/testing/save_progress_security_test.sh              # working tree
@@ -82,7 +98,9 @@ tests.
 Requires `mariadb` from Homebrew (`brew install mariadb`); the server does not
 need to be running. `--ref` is how you show a check detects the bug it claims
 to: run it against `dev` before WP-B0 (`--ref 450b9dd`) and checks 1-3 fail
-while 4-5 pass.
+while 4-5 pass; against the commit before #358 (`--ref 2408107`) groups 1-5
+pass and 6-8 fail. With `--ref` the PHP files and `templates/` come from that
+ref; the migrations always come from the working tree.
 
 **In CI.** The verify job of `verify-deploy.yml` runs the suite on every push,
 without `--slow`, so a failed check stops the deploy. There it does not start a

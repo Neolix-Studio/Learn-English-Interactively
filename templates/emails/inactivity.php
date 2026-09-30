@@ -13,19 +13,19 @@ return function($data) {
                 <p>Vráť sa a sprav si jednu rýchlu lekciu ešte dnes.</p>
             ",
             'buttonText' => "Pokračovať v učení",
-            'buttonLink' => lexipawsAppUrl()
+            'buttonLink' => lexipawsAppUrl('dashboard')
         ];
     } else {
         return [
-            'subject' => "Hiányzol nekünk, " . htmlspecialchars($username) . "!",
-            'headerText' => "Térj vissza a tanuláshoz",
+            'subject' => "Lexi vár a következő leckével, " . htmlspecialchars($username) . "!",
+            'headerText' => "A következő leckéd készen áll",
             'bodyHtml' => "
                 <p>Szia <strong>" . htmlspecialchars($username) . "</strong>!</p>
-                <p>Észrevettük, hogy már pár napja nem léptél be a Lexipaws-ba. Ne hagyd, hogy az eddig megszerzett tudásod elvesszen!</p>
-                <p>Gyere vissza, és csinálj meg egy gyors leckét még ma.</p>
+                <p>Lexi már előkészítette a következő leckédet. Néhány perc gyakorlás, és máris több angol szót ismersz.</p>
+                <p>Ott folytathatod, ahol abbahagytad.</p>
             ",
             'buttonText' => "Folytatom a tanulást",
-            'buttonLink' => lexipawsAppUrl()
+            'buttonLink' => lexipawsAppUrl('dashboard')
         ];
     }
 };

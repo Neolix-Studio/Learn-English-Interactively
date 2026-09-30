@@ -528,11 +528,12 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** WP-F4; C25, C26, C40.
 
 ### N8 · "We miss you" e-mails go to learners who practise every day — **major**
+- ✅ **Fixed (#358, 2026-09-30).** Inactivity is keyed on `user_progress.last_active_date`, which every successful save now sets to the learner's day (Europe/Budapest); `last_login_at` is no longer read. Mail goes to a learner last active 2 to 13 days ago, so anyone active today or yesterday gets none, and a row that never saved gets none. The Hungarian copy is gain-framed: subject 'Lexi vár a következő leckével, {név}!' ("Lexi is waiting with the next lesson, {name}!"), heading 'A következő leckéd készen áll' ("Your next lesson is ready"), body 'Lexi már előkészítette a következő leckédet. Néhány perc gyakorlás, és máris több angol szót ismersz.' ("Lexi has already prepared your next lesson. A few minutes of practice and you already know more English words.") and 'Ott folytathatod, ahol abbahagytad.' ("You can carry on where you left off."); the button 'Folytatom a tanulást' ("I'll carry on learning") is unchanged. The button opens `/dashboard` in both language branches. **Still open:** the Slovak copy is the old loss-framed text (UX0e-1); an app link waits for N12; the cadence counter is still reset only by a password login; the mail footer is in English; the job runs at 02:00 (owner's panel), so that is when the mail arrives.
 - **What happens:** inactivity is keyed on `last_login_at`, which is written only at password login. A daily learner who stays signed in gets the loss-framed 'Hiányzol nekünk… már pár napja nem léptél be' ("We miss you… you haven't logged in for a few days") on day 2, day 4, then weekly; its button goes to the marketing page.
 - **Learner impact:** the most active learners are told they are inactive.
 - **Fix:** key on the last lesson date; skip anyone active today; gain-framed copy; link to `/dashboard` (an app link once N12 lands). Nothing writes a "today" activity date yet: `last_active_date` is never set to `CURDATE()` (SOT §16 P0 #3c).
 - **Effort:** S
-- **Where:** `cron_notifications.php:19-22`, `api.php:734`, `mailer.php:42-51`, `templates/emails/inactivity.php`
+- **Where:** `cron_notifications.php:34-42` (`:19-22` before #358), `api.php:734`, `mailer.php:42-51`, `templates/emails/inactivity.php`
 - **Related:** WP-B1's cron prerequisite edits the same file and proposes the `last_active_date = CURDATE()` writer this fix needs, so do them together; C27, C35, N12.
 
 ### C35 · Loss-framed pressure mechanics for an all-ages audience — **minor**
