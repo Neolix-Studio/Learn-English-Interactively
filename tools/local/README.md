@@ -127,6 +127,16 @@ Only a client is needed (`mariadb`, or `mysql` as on GitHub's runners). To try
 the mode on a Mac, start any local MariaDB with a root password first; without
 `--db-host` nothing changes and the suite still brings its own.
 
+`testing/check_phonics_items.mjs` reads every sound item in `data/*/characters`
+and exits 1 when one cannot be answered by ear (a listen-choose item offering
+the same word twice, a compare item that plays one spelling twice and calls it
+different, a match item with a duplicated pair) or has no id of its own (#362).
+It is not part of CI; the permanent validator rules belong to WP-F2.
+
+```
+node tools/local/testing/check_phonics_items.mjs
+```
+
 ## Screenshots
 
 `ux-shots/` captures the React app from headless Chrome with mocked backend replies. It needs only

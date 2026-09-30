@@ -12,40 +12,43 @@
       "title": "Szint 1",
       "items": [
         {
+          "id": "vowels_o_ow_level_1_0",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
           "options": [
             {
               "id": "opt_0",
-              "text": "bow",
+              "text": "boat",
               "correct": false
             },
             {
               "id": "opt_1",
-              "text": "bow",
+              "text": "bout",
               "correct": true
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_1_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
           "options": [
             {
               "id": "opt_0",
-              "text": "bow",
+              "text": "boat",
               "correct": true
             },
             {
               "id": "opt_1",
-              "text": "bow",
+              "text": "bout",
               "correct": false
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_1_2",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -56,6 +59,7 @@
           "isSame": true
         },
         {
+          "id": "vowels_o_ow_level_1_3",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -73,6 +77,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_1_4",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -90,16 +95,18 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_1_5",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
           "audioUrl1": null,
           "audioUrl2": null,
-          "word1": "bow",
-          "word2": "bow",
+          "word1": "boat",
+          "word2": "bout",
           "isSame": false
         },
         {
+          "id": "vowels_o_ow_level_1_6",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -112,16 +119,17 @@
               "audioUrl": null
             },
             {
-              "text": "bow",
+              "text": "boat",
               "audioUrl": null
             },
             {
-              "text": "bow",
+              "text": "bout",
               "audioUrl": null
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_1_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "now",
@@ -129,6 +137,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "vowels_o_ow_level_1_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "bow",
@@ -142,116 +151,124 @@
       "title": "Szint 2",
       "items": [
         {
+          "id": "vowels_o_ow_level_2_0",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
           "options": [
             {
               "id": "opt_0",
-              "text": "sow",
+              "text": "coat",
               "correct": false
             },
             {
               "id": "opt_1",
-              "text": "sow",
+              "text": "cow",
               "correct": true
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_2_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
           "options": [
             {
               "id": "opt_0",
-              "text": "row",
+              "text": "goat",
               "correct": true
             },
             {
               "id": "opt_1",
-              "text": "row",
+              "text": "gout",
               "correct": false
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_2_2",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
           "audioUrl1": null,
           "audioUrl2": null,
-          "word1": "sow",
-          "word2": "sow",
+          "word1": "coat",
+          "word2": "cow",
           "isSame": false
         },
         {
+          "id": "vowels_o_ow_level_2_3",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
             {
-              "text": "sow",
+              "text": "coat",
               "audioUrl": null
             },
             {
-              "text": "sow",
+              "text": "cow",
               "audioUrl": null
             },
             {
-              "text": "row",
+              "text": "goat",
               "audioUrl": null
             },
             {
-              "text": "row",
+              "text": "gout",
               "audioUrl": null
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_2_4",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
           "options": [
             {
               "id": "opt_0",
-              "text": "sow",
+              "text": "coat",
               "correct": true
             },
             {
               "id": "opt_1",
-              "text": "sow",
+              "text": "cow",
               "correct": false
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_2_5",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
           "options": [
             {
               "id": "opt_0",
-              "text": "row",
+              "text": "goat",
               "correct": false
             },
             {
               "id": "opt_1",
-              "text": "row",
+              "text": "gout",
               "correct": true
             }
           ]
         },
         {
+          "id": "vowels_o_ow_level_2_6",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
           "audioUrl1": null,
           "audioUrl2": null,
-          "word1": "row",
-          "word2": "row",
+          "word1": "goat",
+          "word2": "gout",
           "isSame": false
         },
         {
+          "id": "vowels_o_ow_level_2_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "row",
@@ -259,6 +276,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "vowels_o_ow_level_2_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "sow",
@@ -272,6 +290,7 @@
       "title": "Szint 3",
       "items": [
         {
+          "id": "vowels_o_ow_level_3_0",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -289,6 +308,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_3_1",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -299,6 +319,7 @@
           "isSame": true
         },
         {
+          "id": "vowels_o_ow_level_3_2",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -316,6 +337,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_3_3",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -333,6 +355,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_3_4",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -355,6 +378,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_3_5",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -372,6 +396,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_3_6",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -382,6 +407,7 @@
           "isSame": true
         },
         {
+          "id": "vowels_o_ow_level_3_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "know",
@@ -389,6 +415,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "vowels_o_ow_level_3_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "bout",
@@ -402,6 +429,7 @@
       "title": "Szint 4",
       "items": [
         {
+          "id": "vowels_o_ow_level_4_0",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -419,6 +447,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_4_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -436,6 +465,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_4_2",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -458,6 +488,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_4_3",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -475,6 +506,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_4_4",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -492,6 +524,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_4_5",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -502,6 +535,7 @@
           "isSame": false
         },
         {
+          "id": "vowels_o_ow_level_4_6",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -512,6 +546,7 @@
           "isSame": true
         },
         {
+          "id": "vowels_o_ow_level_4_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "cow",
@@ -519,6 +554,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "vowels_o_ow_level_4_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "flout",
@@ -532,6 +568,7 @@
       "title": "Szint 5",
       "items": [
         {
+          "id": "vowels_o_ow_level_5_0",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -542,6 +579,7 @@
           "isSame": true
         },
         {
+          "id": "vowels_o_ow_level_5_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -559,6 +597,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_5_2",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -576,6 +615,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_5_3",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -598,6 +638,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_5_4",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -608,6 +649,7 @@
           "isSame": true
         },
         {
+          "id": "vowels_o_ow_level_5_5",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -625,6 +667,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_5_6",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -642,6 +685,7 @@
           ]
         },
         {
+          "id": "vowels_o_ow_level_5_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "mound",
@@ -649,6 +693,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "vowels_o_ow_level_5_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "gout",

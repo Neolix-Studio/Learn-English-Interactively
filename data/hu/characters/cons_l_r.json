@@ -12,6 +12,7 @@
       "title": "Szint 1",
       "items": [
         {
+          "id": "cons_l_r_level_1_0",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -34,6 +35,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_1_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -51,6 +53,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_1_2",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -68,6 +71,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_1_3",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -85,6 +89,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_1_4",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -95,6 +100,7 @@
           "isSame": true
         },
         {
+          "id": "cons_l_r_level_1_5",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -112,6 +118,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_1_6",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -122,6 +129,7 @@
           "isSame": true
         },
         {
+          "id": "cons_l_r_level_1_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "right",
@@ -129,6 +137,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "cons_l_r_level_1_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "rip",
@@ -142,6 +151,7 @@
       "title": "Szint 2",
       "items": [
         {
+          "id": "cons_l_r_level_2_0",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -152,6 +162,7 @@
           "isSame": false
         },
         {
+          "id": "cons_l_r_level_2_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -169,6 +180,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_2_2",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -191,6 +203,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_2_3",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -208,6 +221,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_2_4",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -225,6 +239,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_2_5",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -242,6 +257,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_2_6",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -252,6 +268,7 @@
           "isSame": true
         },
         {
+          "id": "cons_l_r_level_2_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "lead",
@@ -259,6 +276,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "cons_l_r_level_2_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "rock",
@@ -272,6 +290,7 @@
       "title": "Szint 3",
       "items": [
         {
+          "id": "cons_l_r_level_3_0",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -289,6 +308,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_3_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -306,6 +326,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_3_2",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -316,6 +337,7 @@
           "isSame": false
         },
         {
+          "id": "cons_l_r_level_3_3",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -333,6 +355,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_3_4",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -343,6 +366,7 @@
           "isSame": true
         },
         {
+          "id": "cons_l_r_level_3_5",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -365,6 +389,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_3_6",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -382,6 +407,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_3_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "wrong",
@@ -389,6 +415,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "cons_l_r_level_3_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "ramp",
@@ -402,6 +429,7 @@
       "title": "Szint 4",
       "items": [
         {
+          "id": "cons_l_r_level_4_0",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -412,6 +440,7 @@
           "isSame": false
         },
         {
+          "id": "cons_l_r_level_4_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -429,6 +458,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_4_2",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -439,6 +469,7 @@
           "isSame": true
         },
         {
+          "id": "cons_l_r_level_4_3",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -456,6 +487,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_4_4",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -473,6 +505,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_4_5",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -490,6 +523,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_4_6",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -512,6 +546,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_4_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "rack",
@@ -519,6 +554,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "cons_l_r_level_4_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "lack",
@@ -532,6 +568,7 @@
       "title": "Szint 5",
       "items": [
         {
+          "id": "cons_l_r_level_5_0",
           "type": "phonics_match",
           "instruction": "Válaszd ki az összetartozó párokat!",
           "pairs": [
@@ -554,6 +591,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_5_1",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -571,6 +609,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_5_2",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -588,6 +627,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_5_3",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -598,6 +638,7 @@
           "isSame": false
         },
         {
+          "id": "cons_l_r_level_5_4",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -615,6 +656,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_5_5",
           "type": "phonics_compare",
           "instruction": "Hallgasd meg és válaszolj!",
           "questionText": "Melyik szavakat hallod?",
@@ -625,6 +667,7 @@
           "isSame": true
         },
         {
+          "id": "cons_l_r_level_5_6",
           "type": "phonics_listen_choose",
           "instruction": "Mit hallasz?",
           "audioUrl": null,
@@ -642,6 +685,7 @@
           ]
         },
         {
+          "id": "cons_l_r_level_5_7",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "row",
@@ -649,6 +693,7 @@
           "targetLang": "en-US"
         },
         {
+          "id": "cons_l_r_level_5_8",
           "type": "phonics_speak",
           "instruction": "Mondd ki ezt a szót!",
           "word": "late",

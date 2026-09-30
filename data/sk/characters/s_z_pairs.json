@@ -4,6 +4,7 @@
     "characters": ["s", "z"],
     "items": [
         {
+            "id": "s_z_pairs_0",
             "type": "phonics_listen_choose",
             "instruction": "Mit hallasz?",
             "audioUrl": null,
@@ -13,6 +14,7 @@
             ]
         },
         {
+            "id": "s_z_pairs_1",
             "type": "phonics_listen_choose",
             "instruction": "Mit hallasz?",
             "audioUrl": null,
@@ -22,6 +24,7 @@
             ]
         },
         {
+            "id": "s_z_pairs_2",
             "type": "phonics_compare",
             "instruction": "Hallgasd meg és válaszolj!",
             "questionText": "Melyik szavakat hallod?",
@@ -32,6 +35,7 @@
             "isSame": false
         },
         {
+            "id": "s_z_pairs_3",
             "type": "phonics_match",
             "instruction": "Válaszd ki az összetartozó párokat!",
             "pairs": [
@@ -42,12 +46,14 @@
             ]
         },
         {
+            "id": "s_z_pairs_4",
             "type": "phonics_speak",
             "instruction": "Mondd ki ezt a szót!",
             "word": "sip",
             "audioUrl": null
         },
         {
+            "id": "s_z_pairs_5",
             "type": "phonics_listen_choose",
             "instruction": "Mit hallasz?",
             "audioUrl": null,
@@ -57,6 +63,7 @@
             ]
         },
         {
+            "id": "s_z_pairs_6",
             "type": "phonics_compare",
             "instruction": "Hallgasd meg és válaszolj!",
             "questionText": "Melyik szavakat hallod?",
@@ -67,6 +74,7 @@
             "isSame": true
         },
         {
+            "id": "s_z_pairs_7",
             "type": "phonics_listen_choose",
             "instruction": "Mit hallasz?",
             "audioUrl": null,
@@ -76,12 +84,14 @@
             ]
         },
         {
+            "id": "s_z_pairs_8",
             "type": "phonics_speak",
             "instruction": "Mondd ki ezt a szót!",
             "word": "zip",
             "audioUrl": null
         },
         {
+            "id": "s_z_pairs_9",
             "type": "phonics_match",
             "instruction": "Válaszd ki az összetartozó párokat!",
             "pairs": [

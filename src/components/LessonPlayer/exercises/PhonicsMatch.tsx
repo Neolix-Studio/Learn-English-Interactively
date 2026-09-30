@@ -18,8 +18,9 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
   const [errorIds, setErrorIds] = useState<string[]>([]);
 
   useEffect(() => {
-    const audios = question.pairs.map((p: any) => ({ ...p, id: `audio-${p.text}`, pairId: p.text }));
-    const texts = question.pairs.map((p: any) => ({ ...p, id: `text-${p.text}`, pairId: p.text }));
+    // A tile is identified by its position in the item, so two pairs with the same text stay two tiles.
+    const audios = question.pairs.map((p: any, index: number) => ({ ...p, id: `audio-${index}` }));
+    const texts = question.pairs.map((p: any, index: number) => ({ ...p, id: `text-${index}` }));
 
     setAudioItems([...audios].sort(() => Math.random() - 0.5));
     setTextItems([...texts].sort(() => Math.random() - 0.5));
@@ -32,7 +33,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
   }, [question]);
 
   const handleAudioClick = (item: any) => {
-    if (matchedIds.includes(item.pairId)) return;
+    if (matchedIds.includes(item.id)) return;
 
     if (item.audioUrl) {
       const audio = new Audio(item.audioUrl);
@@ -52,7 +53,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
   };
 
   const handleTextClick = (item: any) => {
-    if (matchedIds.includes(item.pairId)) return;
+    if (matchedIds.includes(item.id)) return;
 
     setSelectedTextId(item.id);
     setErrorIds([]);
@@ -66,15 +67,13 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
     const audioItem = audioItems.find(a => a.id === audioId);
     const textItem = textItems.find(t => t.id === textId);
 
-    if (audioItem && textItem && audioItem.pairId === textItem.pairId) {
-      const newMatched = [...matchedIds, audioItem.pairId];
+    if (audioItem && textItem && audioItem.text === textItem.text) {
+      const newMatched = [...matchedIds, audioId, textId];
       setMatchedIds(newMatched);
       setSelectedAudioId(null);
       setSelectedTextId(null);
 
-      // Two pairs with the same text share one pairId, so they match together.
-      const pairCount = new Set(question.pairs.map((p: any) => p.text)).size;
-      if (newMatched.length === pairCount) {
+      if (newMatched.length === question.pairs.length * 2) {
         onAnswer({ hasAnswer: true, isCorrect: true, value: null });
       }
     } else {
@@ -149,7 +148,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
       <div style={{ display: 'flex', width: '100%', gap: '2rem' }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {audioItems.map((item, idx) => {
-            const isMatched = matchedIds.includes(item.pairId);
+            const isMatched = matchedIds.includes(item.id);
             return (
               <button key={item.id} onClick={() => handleAudioClick(item)} style={getStyle(item.id, isMatched)}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -163,7 +162,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
 
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {textItems.map((item, idx) => {
-            const isMatched = matchedIds.includes(item.pairId);
+            const isMatched = matchedIds.includes(item.id);
             return (
               <button key={item.id} onClick={() => handleTextClick(item)} style={getStyle(item.id, isMatched)}>
                 {item.text}

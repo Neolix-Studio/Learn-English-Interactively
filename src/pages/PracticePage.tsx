@@ -36,7 +36,8 @@ export const PracticePage: React.FC = () => {
           lessons: [
             {
               id: 'lesson_1',
-              items: response.data.map((item: any) => item.question_data)
+              // A row stored before its item had an id keeps failing under the id it was logged with.
+              items: response.data.map((item: any) => ({ ...item.question_data, id: item.question_data?.id ?? item.exercise_id }))
             }
           ]
         };

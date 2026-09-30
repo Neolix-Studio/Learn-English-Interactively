@@ -6,6 +6,7 @@ five viewports, light and dark, Hungarian (and Slovak when asked).
 
 - `shot.mjs` takes one screenshot, or walks a list of steps (click, type, scroll…) and takes several.
 - `matrix.mjs` runs `shot.mjs` once per viewport and theme for one route.
+- `sound-lesson.mjs` plays a whole sound lesson and checks the grades and the result screen.
 - `presets.json`, `seeds/`, `mocks/` are the app states: a new guest, a signed-in learner, zero energy…
 
 ## What it touches, and what it never touches
@@ -171,6 +172,28 @@ other path is the 404 page.
 To land on a particular exercise type, seed `scores.node_state` so the sub-lesson you want is next
 (node ids are the file names under `data/hu/A1/Module_*/`). Stories start from `/practice`. The phone
 bottom bar reads Szintek / Tananyag / Bolt / Statisztika / Profil.
+
+## Playing a whole sound lesson
+
+`sound-lesson.mjs` plays one level of a sound lesson (`/lesson/characters/<id>`) from the first item to
+the result screen and checks what the player says. It reads the items from `data/hu/characters/<id>.json`,
+builds the steps and runs them through `shot.mjs`, or through `matrix.mjs` with `--matrix`. It is the
+regression check for the sound drills until there is a test runner (WP-H1).
+
+```bash
+# a perfect run: every item right, the result screen must say 100%
+node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z
+
+# level 2, a PNG of items 1 to 7 before and after CHECK, at every lesson viewport, light and dark
+node tools/local/ux-shots/sound-lesson.mjs --id vowels_o_ow --level 2 --shots 1,2,3,4,5,6,7 --matrix --lesson
+
+# items 1 and 4 answered wrongly: 60%, and the two log_failed_exercise requests are printed
+node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --wrong 1,4
+```
+
+It exits 1 when a check fails: a compare option that is no longer selected one second after the tap,
+a match tile left unmatched, an item graded differently from what was tapped, a wrong percentage on
+the result screen, or a `log_failed_exercise` request too many or too few. `--help` lists the flags.
 
 ## Steps
 
