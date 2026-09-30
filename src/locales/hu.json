@@ -214,5 +214,16 @@
     "error": "Hiba történt",
     "save": "Mentés",
     "cancel": "Mégse"
+  },
+  "auth": {
+    "merge_title": "Hozzáadod a fiókodhoz?",
+    "merge_intro": "Ezen az eszközön vendégként szerzett haladást találtunk:",
+    "merge_xp": "{{amount}} XP",
+    "merge_bones": "{{amount}} Lexi Treat",
+    "merge_streak": "{{amount}} napos széria",
+    "merge_lessons": "{{amount}} teljesített lecke",
+    "merge_note": "Ahol a fiókodban már több van, az marad. Ezt később nem lehet visszavonni.",
+    "merge_accept": "Igen, hozzáadom",
+    "merge_decline": "Nem, kihagyom"
   }
 }

@@ -306,21 +306,32 @@ Fields the client **never sends back**: `energy`, `last_energy_refill`, `daily_q
 
 Migration at auth time extracts **only `{points, completed, scores}`** (`guestProgress.ts:7-45`). Energy, learned vocabulary, unlocked themes, quests and notification preferences are silently dropped.
 
+**The merge is asked for, not silent (#363, 2026-09-30).** On submit, `AuthModal` ([AuthModal.tsx:80](src/components/AuthModal.tsx:80)) runs `summarizeGuestProgress` ([guestProgress.ts:57](src/utils/guestProgress.ts:57)) over that payload. When it holds any XP, treats, streak or finished lesson, the modal shows 'Hozzáadod a fiókodhoz?' ("Add it to your account?") with those amounts before any request is made ([:234](src/components/AuthModal.tsx:234)); this holds for login and for signup. 'Igen, hozzáadom' sends `guest_migration` and clears the three guest keys on success, as before. 'Nem, kihagyom' sends the request **without a `guest_migration` field** ([:110](src/components/AuthModal.tsx:110)) and leaves the guest keys on the device, where they stay until logout. The answer is remembered for a retry after a wrong password and asked again when the e-mail address changes. A payload with nothing to show (no XP, treats, streak or lesson) is no longer sent at all. The server is unchanged: it still merges whatever it is sent, with `max()` and no cap (§8, WP-B2).
+
+**Logout clears every per-person key (#363).** Both logout handlers ([SidebarLeft.tsx:121](src/components/SidebarLeft.tsx:121), [ProfilePage.tsx:47](src/pages/ProfilePage.tsx:47)) call `clearPersonalStorage()` ([guestProgress.ts:102](src/utils/guestProgress.ts:102)), which removes the keys marked *person* in the table below. The keys are not namespaced per user, so two accounts that share a browser **without** a logout in between (an expired session, then another login) still share them.
+
 ### localStorage keys — the complete list
 
-| Key | Written by | Read by |
-|---|---|---|
-| `neolix_guest_progress` | `UserContext.tsx:362` | `UserContext.tsx:171`, `guestProgress.ts:8` |
-| `user_local_progress` | `FTUELesson.tsx:30` | `guestProgress.ts:9`, `LessonPlayer.tsx:111` (legacy) |
-| `guest_base_language` | `i18n.ts:16,24,27` | `i18n.ts` |
-| `guest_character_progress` | `Characters.tsx:17`, `CharacterLesson.tsx:26,39` | same — **used for logged-in users too; never synced or migrated** |
-| `ftue_marketing_data` | `HearAboutUsScreen:19`, `WhyLearningScreen:19`, `PostLesson:81` | `AuthModal.tsx:69` — **which runs before those screens ever render** |
-| `lexipaws_tour_completed` | `ProductTour` | `Dashboard.tsx:33-44` |
-| `neolix_active_lesson`, `adhd_volume`, `hasSeenWordTooltipGuide` | various | various |
-| `forceBetaRequestModal` | `PostLesson.tsx:681` | `Home.tsx:92` ✅ |
-| **`forceLoginModal`** | `NotFoundPage.tsx:7`, `SidebarRight.tsx:177` | **nothing** ❌ |
-| **`forceRegisterModal`** | **nothing** | `Home.tsx:92` ❌ |
-| **`neolix_language`** | `Gateway.tsx:10` | **nothing** ❌ |
+*Whose* says what logout does with the key since #363: **person** keys are removed by `clearPersonalStorage()` ([guestProgress.ts:90](src/utils/guestProgress.ts:90)), **device** keys stay. *(2026-09-30: `selectedLevel`, `last_feedback_refill` and `neolix_reduced_motion` were missing from this "complete" list; added.)*
+
+| Key | Written by | Read by | Whose |
+|---|---|---|---|
+| `neolix_guest_progress` | `UserContext.tsx:362` | `UserContext.tsx:171`, `guestProgress.ts:8` | person |
+| `user_local_progress` | `FTUELesson.tsx:30` | `guestProgress.ts:9`, `LessonPlayer.tsx:111` (legacy) | person |
+| `guest_base_language` | `i18n.ts:16,24,27` | `i18n.ts` | device |
+| `guest_character_progress` | `Characters.tsx:17`, `CharacterLesson.tsx:26,39` | same — **used for logged-in users too; never synced or migrated** | person |
+| `ftue_marketing_data` | `HearAboutUsScreen:19`, `WhyLearningScreen:19`, `PostLesson:81`, `Onboarding.tsx:42` | `AuthModal.tsx:114` — **which runs before those screens ever render** | person |
+| `lexipaws_tour_completed` | `Dashboard.tsx:50` | `Dashboard.tsx:35` | person |
+| `neolix_active_lesson` | `Dashboard.tsx:129` | `Dashboard.tsx:105` | person |
+| `hasSeenWordTooltipGuide` | `InteractiveSentence.tsx:59` | `InteractiveSentence.tsx:19` | person |
+| `selectedLevel` | `UserContext.tsx:291`, `AuthModal.tsx` (on login and signup) | `UserContext.tsx:100` | person |
+| `last_feedback_refill` | `FeedbackRefillModal.tsx:49` | `Dashboard.tsx:109` (one-hour cooldown of the refill survey, client-side only) | person |
+| `adhd_volume` | `SidebarLeft.tsx:243` | `SidebarLeft.tsx:28`, `audio.ts:74` | device |
+| `neolix_reduced_motion` | `SidebarLeft.tsx:53` | `SidebarLeft.tsx:44` | device |
+| `forceBetaRequestModal` | `PostLesson.tsx:681` | `Home.tsx:92` ✅ | device |
+| **`forceLoginModal`** | `NotFoundPage.tsx:7`, `SidebarRight.tsx:177` | **nothing** ❌ | device |
+| **`forceRegisterModal`** | **nothing** | `Home.tsx:92` ❌ | device |
+| **`neolix_language`** | `Gateway.tsx:10` | **nothing** ❌ | device |
 
 The three ❌ rows are live bugs: the "Bejelentkezés" buttons on the 404 page and in `SidebarRight` navigate to `/` and open nothing. The working pattern is `/?login=true`.
 
@@ -454,7 +465,7 @@ lessons[].{ id: lesson_1..4, title: "Part n/4", introducedWords[], items[8|10|11
 ### Other content shapes
 
 - **Stories** — `{title, type:"reading_node", story:{en, hu}, items[15]}` (5 each of true_false / multiple_choice / type_in). `LessonPlayer.tsx:379,493` hardcode `story.hu`. Reached only from PracticePage via `getRandomStory()` — also with no language argument.
-- **Phonics** — `{id, type:"character_lesson", title, characters[IPA], lessons[5]}`; each level holds 9 items, and since #362 every item has an `id` (`<level id>_<position>`). Progress stored per-IPA in `localStorage`, never server-side.
+- **Phonics** — `{id, type:"character_lesson", title, characters[IPA], lessons[5]}`; each level holds 9 items, and since #362 every item has an `id` (`<level id>_<position>`). Progress stored per-IPA in `localStorage`, never server-side; logout removes it (#363).
 - **Grammar** — `data/hu/grammar.json`, keyed `Module_1..7`. **Statically imported** by `GrammarModal.tsx:2`, so it is Hungarian-only for everyone.
 - **Vocabulary** — flat `Record<string,string>`, 172 entries. **Statically imported** from `data/hu/` by `LessonPlayer.tsx:24`.
 

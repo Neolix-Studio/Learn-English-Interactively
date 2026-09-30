@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { api } from '../utils/api';
-import { clearGuestMigrationStorage, readGuestMigrationPayload } from '../utils/guestProgress';
+import { clearGuestMigrationStorage, readGuestMigrationPayload, summarizeGuestProgress } from '../utils/guestProgress';
+import type { GuestProgressSummary } from '../utils/guestProgress';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -36,10 +38,23 @@ const btnPrimaryStyle: React.CSSProperties = {
   boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)'
 };
 
+const btnSecondaryStyle: React.CSSProperties = {
+  width: '100%',
+  minHeight: '48px',
+  padding: '0.85rem 1.25rem',
+  borderRadius: '14px',
+  fontWeight: 800,
+  fontSize: '1rem',
+  border: '2px solid var(--color-text-muted)',
+  background: 'transparent',
+  color: 'var(--color-text-main)'
+};
+
 export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '', inviteCode = '', initialEmail = '' }: AuthModalProps) {
   const canRegister = inviteCode.trim() !== '';
   const [tab, setTab] = useState<'login' | 'register'>(initialView === 'register' && canRegister ? 'register' : 'login');
-  const [view, setView] = useState<'auth' | 'forgot' | 'forgot_sent' | 'reset' | 'reset_done'>(
+  const { t } = useTranslation();
+  const [view, setView] = useState<'auth' | 'merge' | 'forgot' | 'forgot_sent' | 'reset' | 'reset_done'>(
     initialView === 'forgot' ? 'forgot' : initialView === 'reset' ? 'reset' : 'auth'
   );
 
@@ -57,15 +72,45 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleAuth = async (e: React.FormEvent) => {
+  // Guest progress found on this device is only sent once the person has said yes to it (N6).
+  // The answer holds for one account: changing the e-mail asks again.
+  const [guestSummary, setGuestSummary] = useState<GuestProgressSummary | null>(null);
+  const [mergeGuest, setMergeGuest] = useState<boolean | null>(null);
+
+  const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+
+    if (tab === 'register' && !canRegister) {
+      setError('A béta regisztráció meghívóhoz kötött. Kérjük, kérj béta hozzáférést a főoldalon.');
+      return;
+    }
+
+    const summary = summarizeGuestProgress(readGuestMigrationPayload());
+    if (summary && mergeGuest === null) {
+      setGuestSummary(summary);
+      setView('merge');
+      return;
+    }
+
+    submitAuth(summary !== null && mergeGuest === true);
+  };
+
+  const answerMerge = (answer: boolean) => {
+    setMergeGuest(answer);
+    submitAuth(answer);
+  };
+
+  const submitAuth = async (withGuestProgress: boolean) => {
     setLoading(true);
     setError('');
 
+    const guestMigration = readGuestMigrationPayload();
+    const guestProgressLeftAlone = !withGuestProgress && summarizeGuestProgress(guestMigration) !== null;
+    const migrationField = withGuestProgress ? { guest_migration: guestMigration } : {};
+
     try {
       if (tab === 'register') {
-        const guestMigration = readGuestMigrationPayload();
-
         const marketingDataRaw = localStorage.getItem('ftue_marketing_data');
         let marketingData = {};
         if (marketingDataRaw) {
@@ -81,12 +126,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
         if (hostname.endsWith('.sk')) baseLanguage = 'sk';
         else if (hostname.endsWith('.hu')) baseLanguage = 'hu';
 
-        if (!canRegister) {
-          setError('A béta regisztráció meghívóhoz kötött. Kérjük, kérj béta hozzáférést a főoldalon.');
-          setLoading(false);
-          return;
-        }
-
         const data = await api.fetch('signup', {
             email,
             password,
@@ -95,34 +134,42 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             beta_invite_code: betaInviteCode,
             base_language: baseLanguage,
             marketing_data: marketingData,
-            guest_migration: guestMigration
+            ...migrationField
         });
 
         if (data.error) {
             setError(data.error);
+            setView('auth');
             setLoading(false);
             return;
         }
 
         if (data.success) {
             localStorage.setItem("selectedLevel", "A1");
-            clearGuestMigrationStorage();
+            if (guestProgressLeftAlone) {
+                localStorage.removeItem('ftue_marketing_data');
+            } else {
+                clearGuestMigrationStorage();
+            }
             const searchParams = new URLSearchParams(window.location.search);
             const redirectUrl = searchParams.get('redirect') || '/dashboard';
             window.location.href = redirectUrl;
         }
       } else {
-        const data = await api.fetch('login', { email, password, guest_migration: readGuestMigrationPayload() });
+        const data = await api.fetch('login', { email, password, ...migrationField });
 
         if (data.error) {
             setError(data.error);
+            setView('auth');
             setLoading(false);
             return;
         }
 
         if (data.success) {
             localStorage.setItem("selectedLevel", "A1");
-            clearGuestMigrationStorage();
+            if (!guestProgressLeftAlone) {
+                clearGuestMigrationStorage();
+            }
             const searchParams = new URLSearchParams(window.location.search);
             const redirectUrl = searchParams.get('redirect') || '/dashboard';
             window.location.href = redirectUrl;
@@ -131,6 +178,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     } catch (err) {
       console.error("Auth hiba:", err);
       setError("Hálózati hiba: Nem sikerült csatlakozni a szerverhez.");
+      setView('auth');
     } finally {
       setLoading(false);
     }
@@ -182,6 +230,47 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
   };
 
   if (!isOpen) return null;
+
+  if (view === 'merge' && guestSummary) {
+    const amount = (value: number) => value.toLocaleString('hu-HU');
+    const amounts = [
+      guestSummary.xp > 0 && t('auth.merge_xp', { amount: amount(guestSummary.xp) }),
+      guestSummary.bones > 0 && t('auth.merge_bones', { amount: amount(guestSummary.bones) }),
+      guestSummary.streak > 0 && t('auth.merge_streak', { amount: amount(guestSummary.streak) }),
+      guestSummary.lessons > 0 && t('auth.merge_lessons', { amount: amount(guestSummary.lessons) })
+    ].filter(Boolean) as string[];
+
+    // Above the site header (z-index 9999), which still covers the top of every other auth view on a
+    // phone (C37, #391): this question must never be hidden.
+    return (
+      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false" style={{ zIndex: 10000 }}>
+        <div className="modal-content glass-panel" role="dialog" aria-modal="true" aria-labelledby="guest-merge-title">
+          <h2 id="guest-merge-title" style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.3rem' }}>{t('auth.merge_title')}</h2>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', margin: '0 0 1rem 0' }}>
+            {t('auth.merge_intro')}
+          </p>
+          <ul id="guest-merge-amounts" style={{ listStyle: 'none', margin: '0 0 1rem 0', padding: 0, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.5rem' }}>
+            {amounts.map(label => (
+              <li key={label} style={{ padding: '0.5rem 0.9rem', borderRadius: '999px', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontWeight: 800, fontSize: '0.95rem' }}>
+                {label}
+              </li>
+            ))}
+          </ul>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: '0 0 1.25rem 0' }}>
+            {t('auth.merge_note')}
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <button type="button" id="guest-merge-accept" disabled={loading} onClick={() => answerMerge(true)} style={{ ...btnPrimaryStyle, marginTop: 0, minHeight: '48px', fontSize: '1rem', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+              {t('auth.merge_accept')}
+            </button>
+            <button type="button" id="guest-merge-decline" disabled={loading} onClick={() => answerMerge(false)} style={{ ...btnSecondaryStyle, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+              {t('auth.merge_decline')}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (view === 'forgot') {
     return (
@@ -358,7 +447,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
           <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <label htmlFor="auth-email" style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>E-mail cím</label>
-            <input type="email" id="auth-email" placeholder="email@domain.com" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} />
+            <input type="email" id="auth-email" placeholder="email@domain.com" required autoComplete="email" value={email} onChange={e => { setEmail(e.target.value); setMergeGuest(null); }} style={inputStyle} />
           </div>
 
           <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>

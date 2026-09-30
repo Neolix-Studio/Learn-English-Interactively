@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../context/UserContext';
 import { AudioSynth, setGlobalVolume } from '../utils/audio';
 import { api } from '../utils/api';
-import { clearGuestMigrationStorage } from '../utils/guestProgress';
+import { clearPersonalStorage } from '../utils/guestProgress';
 import { isLeaderboardUnlocked, LEADERBOARD_UNLOCK_XP } from '../utils/featureUnlocks';
 import { ReportProblemModal } from './modals/ReportProblemModal';
 
@@ -118,7 +118,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
     try {
       await api.fetch('logout');
     } catch {}
-    clearGuestMigrationStorage();
+    clearPersonalStorage();
     window.location.href = '/';
   };
 
