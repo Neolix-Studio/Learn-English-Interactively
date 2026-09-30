@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useUser } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MobileBottomBar } from '../components/MobileBottomBar';
 import { AvatarUploadModal } from '../components/modals/AvatarUploadModal';
@@ -38,7 +38,10 @@ const ACHIEVEMENT_DEF = [
 export const ProfilePage: React.FC = () => {
   const { data, updateProgress, buyCosmetic, updatePreferences, updateLanguage, isGuest, isLoading } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
+  // A directly opened page has no in-app history ('default' key), so ← goes to the path instead of doing nothing.
+  const goBack = () => (location.key === 'default' ? navigate('/dashboard', { replace: true }) : navigate(-1));
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -122,7 +125,7 @@ export const ProfilePage: React.FC = () => {
     <div className="profile-page-container" style={{ padding: '2rem', paddingBottom: '100px', maxWidth: '800px', margin: '0 auto', minHeight: '100vh', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
       <div className="profile-page-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-        <button onClick={() => navigate(-1)} style={{ background: 'var(--color-bg-surface)', border: 'var(--glass-border)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-main)' }}>
+        <button onClick={goBack} style={{ background: 'var(--color-bg-surface)', border: 'var(--glass-border)', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--color-text-main)' }}>
           ←
         </button>
         <h1 className="profile-page-title" style={{ margin: 0, color: 'var(--color-text-main)', fontSize: '2rem', fontWeight: 800 }}>{t('profile.title')}</h1>

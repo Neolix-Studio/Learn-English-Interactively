@@ -55,7 +55,7 @@ Now the four things that matter more than everything else combined:
 |---|---|---|---|
 | **1** | ~~**Every autosave wipes 11 database columns.** The client sends 5 of 17 fields; the server substitutes hardcoded defaults for the rest and `ON DUPLICATE KEY UPDATE`s all 17.~~ ✅ **Fixed (#359, 2026-09-30).** `save_progress` reads only the five fields the client sends. On an existing row it writes those five and `last_active_date` (the server's day, #358); the other ten columns are kept, and a client cannot write them. | `UserContext.tsx:366-372` → `api.php:1007-1015` → `api.php:1213-1222` | ~~Streak, energy, active theme, daily quests, level and shields are destroyed on every save.~~ The columns survive a save. That does **not** repair what the learner sees: the client keeps its streak, shields, theme and quests in the `scores` JSON or in memory and never sends these columns, so the streak still inflates, a theme choice is still lost on reload and energy still refills on reload ([§8](#8-gamification--economy), WP-B3). |
 | **2** | **The economy is client-authoritative and mintable.** Reward math runs in the browser; the only server defence is per-request delta caps, and `save_progress` / `update_progress` have **no rate limit**. | `api.php:1017-1092`, no `security_rate_limit` call on either action | +100 XP and +100 bones per request, indefinitely. The leaderboard — a headline Beta feature — is fully forgeable. Guest-migration at signup bypasses even the caps (`api.php:657-707` merges with `max()`, uncapped). **Part-fixed @ `92b6f18` (WP-B0, 2026-08-31):** `save_progress` is now limited to 45 requests / 60 s per user, which slows the loop but does not cap it; `update_progress` and the signup merge are unchanged — see [§16](#16-known-broken-inventory-ranked) row 3. |
-| **3** | **The Slovak product does not exist.** `data/sk/` is a copy of `data/hu/` (one node file differs, 17 stories missing). The base-language field inside both trees is literally named `"hu"`. `roadmapLoader` defaults to `'hu'` and both callers omit the argument. | `roadmapLoader.ts:28` + `Roadmap.tsx:20`, `FTUELesson.tsx:10`; `LessonPlayer.tsx:24` hard-imports `data/hu/vocabulary.json` | `lexipaws.sk` advertises *"Učte sa anglicky po slovensky"* and serves a Hungarian course. A Slovak beginner cannot complete one exercise. |
+| **3** | **The Slovak product does not exist.** `data/sk/` is a copy of `data/hu/` (one node file differs, 17 stories missing). The base-language field inside both trees is literally named `"hu"`. `roadmapLoader` defaults to `'hu'` and both callers omit the argument. | `roadmapLoader.ts:28` + `Roadmap.tsx:20`, `FTUELesson.tsx:15`; `LessonPlayer.tsx:24` hard-imports `data/hu/vocabulary.json` | `lexipaws.sk` advertises *"Učte sa anglicky po slovensky"* and serves a Hungarian course. A Slovak beginner cannot complete one exercise. |
 | **4** | **`lexipaws.eu/` may be a 404 in production and staging cannot reveal it.** `.htaccess:4-5` rewrites the apex to `gateway.html`, which exists nowhere in the repo, `public/`, `dist/`, or `release/`. | `.htaccess:4-5` (verified target missing) | Works today only if Apache's rewrite loop falls through to the SPA rule. The condition is scoped to `lexipaws.eu`, so `dev.lexipaws.eu` never exercises it. **Check this by hand before anything else.** ✅ **Fixed @ `450b9dd` (WP-A3, 2026-08-29):** the rewrite was removed, so the apex now takes the same SPA path as `.hu` and `.sk`. It is still unproven on production, which serves an empty docroot until the cutover (WP-A4). |
 
 Two more that are cheap to fix and disproportionately visible:
@@ -273,7 +273,7 @@ No `React.lazy` anywhere. All ~20 route components, the lesson player, Joyride, 
 | `/` | `isGatewayDomain ? Gateway : Home` | public |
 | `/welcome` | `WelcomeLayout` — **no index child** | `RequireAuthenticated` |
 | `/welcome/{start,hear-about-us,why-learning,experience,placement}` | 5 FTUE screens | inherited |
-| `/lesson/ftue` | `FTUELesson` | `RequireAuthenticated` |
+| `/lesson/ftue` | `FTUELesson` — redirects to `/dashboard` when `tutorial_done` is already set (#373) | `RequireAuthenticated` |
 | `/lesson/characters/:id` | `CharacterLesson` | `RequireAuthenticated` |
 | `/dashboard` `/profile` `/friends` `/practice` `/characters` `/leaderboard` | | `RequireAuthenticated` |
 | `/contact` `/privacy-policy` `/terms` `/impressum` `/gateway` | | public |
@@ -282,6 +282,8 @@ No `React.lazy` anywhere. All ~20 route components, the lesson player, Joyride, 
 `RequireAuthenticated` (`App.tsx:35-48`) returns **`null`** while `isLoading` — a blank white screen on every guarded deep link during session bootstrap, even though `SkeletonLoader.tsx` already provides skeletons and `ProfilePage.tsx:64` proves the pattern.
 
 Navigating to `/welcome` exactly renders an empty layout — there is no index redirect to `/welcome/start`.
+
+History (#373, 2026-09-30): the tutorial leaves for `/dashboard` with `replace` (`FTUELesson.tsx:48`), so it is not behind the first dashboard in history. The ← on `/profile` and `/friends` (`ProfilePage.tsx:44`, `FriendsPage.tsx:32`) goes back when there is in-app history and to `/dashboard` (replace) when the page was opened directly (`location.key === 'default'`). The other ← that calls `navigate(-1)`, `PlacementScreen.tsx:59`, is unchanged. Lessons, sheets and drawers still have no history entries (UX-3).
 
 ### State: `UserContext.tsx` (549 lines) is everything
 
@@ -318,7 +320,7 @@ Migration at auth time extracts **only `{points, completed, scores}`** (`guestPr
 | Key | Written by | Read by | Whose |
 |---|---|---|---|
 | `neolix_guest_progress` | `UserContext.tsx:362` | `UserContext.tsx:171`, `guestProgress.ts:8` | person |
-| `user_local_progress` | `FTUELesson.tsx:30` | `guestProgress.ts:9`, `LessonPlayer.tsx:111` (legacy) | person |
+| `user_local_progress` | `FTUELesson.tsx:40` | `guestProgress.ts:9`, `LessonPlayer.tsx:111` (legacy) | person |
 | `guest_base_language` | `i18n.ts:16,24,27` | `i18n.ts` | device |
 | `guest_character_progress` | `Characters.tsx:17`, `CharacterLesson.tsx:26,39` | same — **used for logged-in users too; never synced or migrated** | person |
 | `ftue_marketing_data` | `HearAboutUsScreen:19`, `WhyLearningScreen:19`, `PostLesson:88`, `Onboarding.tsx:42` | `AuthModal.tsx:114` — **which runs before those screens ever render** | person |
@@ -361,7 +363,7 @@ The three ❌ rows are live bugs: the "Bejelentkezés" buttons on the 404 page a
 |---|---|
 | `Dashboard.tsx:192` | roadmap node `originalData` |
 | `PracticePage.tsx:71` | synthetic node from `get_weak_words`, or a random story |
-| `FTUELesson.tsx:44` | first node of Module_1 |
+| `FTUELesson.tsx:14-18` | first node of Module_1 |
 | `CharacterLesson.tsx:52` | `data/<lang>/characters/<id>.json` |
 
 ### Lifecycle
@@ -465,7 +467,7 @@ lessons[].{ id: lesson_1..4, title: "Part n/4", introducedWords[], items[8|10|11
 
 `getCurriculum(lang='hu')` builds modules → nodes → sorts → splices a virtual `chest_<moduleId>` node at `floor(nodes.length/2)` (`roadmapLoader.ts:98-107`), titled the hardcoded Hungarian *"Jutalom Láda"*.
 
-**Both callers omit the language argument** (`Roadmap.tsx:20`, `FTUELesson.tsx:10`), so the roadmap is always Hungarian.
+**Both callers omit the language argument** (`Roadmap.tsx:20`, `FTUELesson.tsx:15`), so the roadmap is always Hungarian.
 
 ### Other content shapes
 
@@ -1083,7 +1085,7 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 | 6 | **Friends is broken for anyone with a league friend** — wrong table for `monthly_xp` | `api.php:2083-2087` |
 | 7 | **`user_metadata` table does not exist** — the energy-refill-for-feedback loop always throws | `api.php:1801,1814` |
 | 8 | ~~**Registered users are shown the guest signup wall** after their first lesson and ejected to `/`~~ ✅ **Fixed (#372, 2026-09-30):** the wall is removed and the lesson is saved on its last answer | ~~`PostLesson.tsx:458`, `LessonPlayer.tsx:414`~~ |
-| 9 | **Onboarding trap** — a registered user with zero progress is bounced to `/welcome/start` on every dashboard visit, and the welcome shell has no nav, no skip, and exits back to `/welcome/experience`. ✅ **Part-fixed (#372, 2026-09-30):** the redirect reads `scores.tutorial_done` (`Dashboard.tsx:95-99`), which `completeLesson` sets with the first saved lesson (`UserContext.tsx:433`), instead of `points > 0`; data saved before the flag gets it on load when it has points or a completed node (`UserContext.tsx:188-191`). So nobody who has finished a lesson is sent back. **Still open:** the welcome shell's missing nav and skip, and its exit to `/welcome/experience` | `Dashboard.tsx:95-99`, `UserContext.tsx:188-191`, `FTUELesson.tsx:44` |
+| 9 | **Onboarding trap** — a registered user with zero progress is bounced to `/welcome/start` on every dashboard visit, and the welcome shell has no nav, no skip, and exits back to `/welcome/experience`. ✅ **Part-fixed (#372, 2026-09-30):** the redirect reads `scores.tutorial_done` (`Dashboard.tsx:95-99`), which `completeLesson` sets with the first saved lesson (`UserContext.tsx:433`), instead of `points > 0`; data saved before the flag gets it on load when it has points or a completed node (`UserContext.tsx:188-191`). So nobody who has finished a lesson is sent back. ✅ **Part-fixed (#373, 2026-09-30):** the tutorial cannot be replayed. `FTUELesson` leaves for `/dashboard` with `replace` (`FTUELesson.tsx:48`), so Back from the first dashboard does not reach it, and a learner whose `tutorial_done` was already set when the page opened is redirected to `/dashboard` (`:11`, `:21-23`) before any reward is granted again. **Still open:** the welcome shell's missing nav and skip, its exit to `/welcome/experience` (`:52`), and the `/welcome/*` screens still open for a learner who has finished the tutorial (Back from the first dashboard lands on `/welcome/placement`; starting from there now goes to `/dashboard`) | `Dashboard.tsx:95-99`, `UserContext.tsx:188-191`, `FTUELesson.tsx:11-23,48,52` |
 | 10 | ~~**2 HIGH dependency advisories** in `react-router` / `react-router-dom`~~ ✅ **Fixed 2026-09-24** — #266 (react-router and react-router-dom → 7.18.4, `c4c6609`) and #258 (postcss → 8.5.28, `c8c9976`) merged into `dev` and deployed; `npm audit --omit=dev` reports 0 vulnerabilities | `package.json:27` |
 | 11 | **Open redirect after auth** — `?redirect=` followed verbatim, on a domain users are asked to trust with credentials | `AuthModal.tsx:110-112,126-128` |
 | 12 | **Contact form silently discards messages** while saying they were received | `Contact.tsx:36-38` |

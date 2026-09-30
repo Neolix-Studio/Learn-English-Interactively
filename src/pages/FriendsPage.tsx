@@ -1,6 +1,6 @@
 import { SkeletonFriendRow } from '../components/SkeletonLoader';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { api } from '../utils/api';
 import { useUser } from '../context/UserContext';
@@ -26,7 +26,10 @@ interface PendingRequest {
 export const FriendsPage: React.FC = () => {
   const { data, isGuest, isLoading } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
+  // A directly opened page has no in-app history ('default' key), so ← goes to the path instead of doing nothing.
+  const goBack = () => (location.key === 'default' ? navigate('/dashboard', { replace: true }) : navigate(-1));
 
   const queryClient = useQueryClient();
   const { data: friendsData, isLoading: friendsLoading, refetch } = useQuery({
@@ -117,7 +120,7 @@ export const FriendsPage: React.FC = () => {
     <div className="profile-container" style={{ paddingBottom: '80px', maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
 
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '30px' }}>
-        <button className="back-btn" onClick={() => navigate(-1)} style={{ marginRight: '15px' }}>
+        <button className="back-btn" onClick={goBack} style={{ marginRight: '15px' }}>
           <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
         </button>
         <h1 style={{ margin: 0, fontSize: '2rem', color: 'var(--color-text-main)' }}>Friends</h1>
