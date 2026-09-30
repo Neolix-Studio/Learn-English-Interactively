@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LessonPlayer } from '../../components/LessonPlayer/LessonPlayer';
 import { useUser } from '../../context/UserContext';
@@ -7,16 +8,18 @@ export function FTUELesson() {
   const navigate = useNavigate();
   const { completeLesson } = useUser();
 
-  const curriculum = getCurriculum();
-  const a1Level = curriculum.A1;
-  const module1 = a1Level?.modules.find(m => m.id === 'Module_1') || a1Level?.modules[0];
-  const firstNode = module1?.nodes[0]?.originalData;
+  // One node object for the page's life: a new one makes LessonPlayer reload, and saving the lesson re-renders this page.
+  const firstNode = useMemo(() => {
+    const a1Level = getCurriculum().A1;
+    const module1 = a1Level?.modules.find(m => m.id === 'Module_1') || a1Level?.modules[0];
+    return module1?.nodes[0]?.originalData;
+  }, []);
 
   if (!firstNode) {
     return <div>Betöltés...</div>;
   }
 
-  const handleComplete = (scoreData: any) => {
+  const handleCommit = (scoreData: any) => {
     completeLesson(firstNode.id, scoreData.xpEarned, scoreData.accuracy, scoreData.completedLessonId, scoreData.isNodeComplete, true);
 
     try {
@@ -31,7 +34,9 @@ export function FTUELesson() {
     } catch (e) {
       console.error("Failed to save local progress", e);
     }
+  };
 
+  const handleComplete = () => {
     navigate('/dashboard', { state: { openAuth: true, fromFTUE: true } });
   };
 
@@ -43,6 +48,7 @@ export function FTUELesson() {
     <LessonPlayer
       lessonNode={firstNode}
       onExit={handleExit}
+      onCommit={handleCommit}
       onComplete={handleComplete}
       isTutorial={true}
     />

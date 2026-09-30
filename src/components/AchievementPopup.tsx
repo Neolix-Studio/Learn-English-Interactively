@@ -3,13 +3,22 @@ import React, { useEffect, useState } from 'react';
 export const AchievementPopup: React.FC = () => {
   const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState(false);
+  // A lesson is saved on its last answer, while the player is still open (#372). The toast waits
+  // until the player closes, so it never covers the lesson's buttons.
+  const [isLessonActive, setIsLessonActive] = useState(() => document.body.classList.contains('is-lesson-active'));
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => setIsLessonActive(document.body.classList.contains('is-lesson-active')));
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleAchievementUnlock = (e: Event) => {
       const customEvent = e as CustomEvent;
       if (customEvent.detail && customEvent.detail.achievements) {
         setUnlockedAchievements(prev => [...prev, ...customEvent.detail.achievements]);
-        setIsVisible(true);
+        if (!document.body.classList.contains('is-lesson-active')) setIsVisible(true);
       }
     };
 
@@ -20,6 +29,7 @@ export const AchievementPopup: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (isLessonActive) return;
     if (isVisible && unlockedAchievements.length > 0) {
       const timer = setTimeout(() => {
         setIsVisible(false);
@@ -30,9 +40,9 @@ export const AchievementPopup: React.FC = () => {
       const timer = setTimeout(() => setIsVisible(true), 500);
       return () => clearTimeout(timer);
     }
-  }, [isVisible, unlockedAchievements]);
+  }, [isVisible, unlockedAchievements, isLessonActive]);
 
-  if (!isVisible && unlockedAchievements.length === 0) return null;
+  if (isLessonActive || (!isVisible && unlockedAchievements.length === 0)) return null;
 
   const currentAchievement = unlockedAchievements[0];
 

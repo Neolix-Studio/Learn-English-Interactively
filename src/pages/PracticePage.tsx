@@ -59,8 +59,7 @@ export const PracticePage: React.FC = () => {
     }
   };
 
-  const handleComplete = (scoreData: any) => {
-    setIsPlaying(false);
+  const handleCommit = (scoreData: any) => {
     if (dynamicMistakesNode) {
       completeLesson(dynamicMistakesNode.id, scoreData.xpEarned, scoreData.accuracy);
     }
@@ -71,7 +70,8 @@ export const PracticePage: React.FC = () => {
       <LessonPlayer
         lessonNode={dynamicMistakesNode}
         onExit={() => setIsPlaying(false)}
-        onComplete={handleComplete}
+        onCommit={handleCommit}
+        onComplete={() => setIsPlaying(false)}
       />
     );
   }

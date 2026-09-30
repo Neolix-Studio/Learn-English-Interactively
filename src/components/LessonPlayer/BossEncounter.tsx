@@ -15,11 +15,12 @@ import type { ExerciseAnswer } from './exercises/answer';
 interface BossEncounterProps {
   lessonNode: any;
   onExit: () => void;
+  onCommit: (scoreData: any) => void;
   onComplete: (scoreData: any) => void;
 }
 
-export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit, onComplete }) => {
-  const { isGuest } = useUser();
+export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit, onCommit, onComplete }) => {
+  const { data: userData } = useUser();
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -34,6 +35,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
   const [selectedAnswerCorrect, setSelectedAnswerCorrect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isPostLesson, setIsPostLesson] = useState(false);
+  const [result, setResult] = useState<{ scoreData: any; pointsBefore: number } | null>(null);
   const [isDefeated, setIsDefeated] = useState(false);
 
   useEffect(() => {
@@ -111,6 +113,13 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
         setBossState('hit');
         setTimeout(() => setBossState(bossHealth - 1 <= 0 ? 'defeated' : 'idle'), 800);
 
+        // The win is saved on the answer that ends the fight. PostLesson only shows the result.
+        if (bossHealth - 1 <= 0 && !result) {
+          const scoreData = { xpEarned: 30, accuracy: Math.floor((playerHearts / 5) * 100), perfect: playerHearts === 5 };
+          setResult({ scoreData, pointsBefore: userData.points || 0 });
+          onCommit(scoreData);
+        }
+
       } else {
         setFeedback('incorrect');
         playSoundEffect('fail');
@@ -151,16 +160,16 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
     }
   };
 
-  if (isPostLesson) {
-    const accuracy = Math.floor((playerHearts / 5) * 100);
+  if (isPostLesson && result) {
+    const { scoreData, pointsBefore } = result;
 
     return (
       <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
         <PostLesson
-          baseXp={30}
-          accuracy={accuracy}
-          isGuest={isGuest}
-          onComplete={() => onComplete({ xpEarned: 30, accuracy, perfect: playerHearts === 5 })}
+          baseXp={scoreData.xpEarned}
+          accuracy={scoreData.accuracy}
+          pointsBefore={pointsBefore}
+          onComplete={() => onComplete(scoreData)}
         />
       </div>
     );

@@ -31,7 +31,7 @@ export const Dashboard: React.FC = () => {
   const isMobileViewport = () => window.matchMedia('(max-width: 991px)').matches;
 
   useEffect(() => {
-    if (!isLoading && data?.onboarding_completed === true) {
+    if (!isLoading && data.scores?.tutorial_done === true) {
       const tourCompleted = localStorage.getItem('lexipaws_tour_completed');
       if (!tourCompleted) {
         if (isMobileViewport()) {
@@ -41,7 +41,7 @@ export const Dashboard: React.FC = () => {
         setRunTour(true);
       }
     }
-  }, [isLoading, data?.onboarding_completed]);
+  }, [isLoading, data.scores?.tutorial_done]);
 
   const handleTourEnd = () => {
     setRunTour(false);
@@ -93,10 +93,10 @@ export const Dashboard: React.FC = () => {
   }, [isMobileNavOpen, isMobileStatsOpen]);
 
   useEffect(() => {
-    if (!isLoading && data.onboarding_completed === false) {
+    if (!isLoading && !data.scores?.tutorial_done) {
       navigate('/welcome/start');
     }
-  }, [isLoading, data.onboarding_completed, navigate]);
+  }, [isLoading, data.scores?.tutorial_done, navigate]);
 
   const handleNodeClick = (nodeData: any) => {
     const isPremium = data.subscription_tier === 'premium' || data.subscription_tier === 'lifetime';
@@ -192,11 +192,11 @@ export const Dashboard: React.FC = () => {
         <LessonPlayer 
           lessonNode={activeLesson}
           onExit={() => setActiveLesson(null)}
-          onComplete={(scoreData) => {
+          onCommit={(scoreData) => {
             localStorage.removeItem('neolix_active_lesson');
-            completeLesson(activeLesson.id, scoreData.xpEarned, scoreData.accuracy, scoreData.completedLessonId, scoreData.isNodeComplete, scoreData.isTutorial); 
-            setActiveLesson(null);
+            completeLesson(activeLesson.id, scoreData.xpEarned, scoreData.accuracy, scoreData.completedLessonId, scoreData.isNodeComplete, scoreData.isTutorial);
           }}
+          onComplete={() => setActiveLesson(null)}
         />
       )}
 
@@ -205,11 +205,11 @@ export const Dashboard: React.FC = () => {
         <BossEncounter 
           lessonNode={activeLesson}
           onExit={() => setActiveLesson(null)}
-          onComplete={(scoreData) => {
+          onCommit={(scoreData) => {
             localStorage.removeItem('neolix_active_lesson');
             completeLesson(activeLesson.id, scoreData.xpEarned, scoreData.accuracy);
-            setActiveLesson(null);
           }}
+          onComplete={() => setActiveLesson(null)}
         />
       )}
       

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LessonPlayer } from '../../components/LessonPlayer/LessonPlayer';
 import { useUser } from '../../context/UserContext';
@@ -11,15 +11,14 @@ export function CharacterLesson() {
   const { completeLesson, data } = useUser();
   const lang = data.base_language || 'hu';
 
-  const path = `../../../data/${lang}/characters/${id}.json`;
-  const charData = (characterModules[path] as any)?.default || characterModules[path] || {};
+  // One node object per lesson: a new one makes LessonPlayer reload, and saving the lesson re-renders this page.
+  const charNode = useMemo(() => {
+    const path = `../../../data/${lang}/characters/${id}.json`;
+    const charData = (characterModules[path] as any)?.default || characterModules[path] || {};
+    return { id: `char_lesson_${id}`, ...charData };
+  }, [id, lang]);
 
-  const charNode = {
-    id: `char_lesson_${id}`,
-    ...charData
-  };
-
-  const handleComplete = (scoreData: any) => {
+  const handleCommit = (scoreData: any) => {
     completeLesson(charNode.id, scoreData.xpEarned, scoreData.accuracy, scoreData.completedLessonId, true, false);
 
     try {
@@ -40,7 +39,9 @@ export function CharacterLesson() {
     } catch (e) {
       console.error(e);
     }
+  };
 
+  const handleComplete = (scoreData: any) => {
     navigate('/characters', { state: { updatedCharacters: scoreData.characters || id?.replace('_pairs', '').split('_') || [] } });
   };
 
@@ -52,6 +53,7 @@ export function CharacterLesson() {
     <LessonPlayer
       lessonNode={charNode}
       onExit={handleExit}
+      onCommit={handleCommit}
       onComplete={handleComplete}
       isTutorial={false}
     />

@@ -174,18 +174,17 @@ asserts++;
 // matrix.mjs fails a cell that writes no PNG, so a matrix run always captures the result screen.
 if (args.shots || args.matrix) steps.push({ shot: 'result' });
 
-// Leave the result screen, which is what saves the lesson, and compare what was saved with what was shown.
+// The lesson was saved on its last answer (#372). Leave the result screen and compare what was saved with what was shown.
 const START_POINTS = GUEST ? 245 : 1240;
 steps.push({ click: '.post-lesson-next-wrap .btn', after: 600 });
 if (GUEST) {
-  steps.push({ clickText: 'Később', tag: 'button', after: 800 });
   const flawless = mistakes === 0;
   const expected = `points ${START_POINTS + xp}, flawless ${flawless}, q_acc_100 ${flawless ? 1 : 0}, q_acc_90 ${accuracy >= 90 ? 1 : 0}`;
   steps.push({ eval: `(() => { const p = JSON.parse(localStorage.getItem('neolix_guest_progress')); const seen = 'points ' + p.points + ', flawless ' + (p.scores.achievements || []).includes('flawless') + ', q_acc_100 ' + p.quest_progress.q_acc_100 + ', q_acc_90 ' + p.quest_progress.q_acc_90; return ${check(`seen === '${expected}'`, `'saved for the guest: ' + seen`)}; })()` });
   asserts++;
 } else {
-  // The save is debounced by 1.5 s; shot.mjs prints it as a MOCK POST save_progress line.
-  steps.push({ wait: 2500 });
+  // shot.mjs prints the save as a MOCK POST save_progress line.
+  steps.push({ wait: 1000 });
 }
 
 const done = levels.slice(0, LEVEL - 1).map((l) => l.id);

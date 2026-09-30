@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
 
 interface PostLessonProps {
   baseXp: number;
   accuracy: number;
-  isGuest: boolean;
+  // The lesson is already saved when this renders, so the count-up starts from the points before it.
+  pointsBefore: number;
   isTutorial?: boolean;
   isCharacterLesson?: boolean;
   onComplete: () => void;
 }
 
-export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGuest, isTutorial, isCharacterLesson, onComplete }) => {
-  const { data } = useUser();
+export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, pointsBefore, isTutorial, isCharacterLesson, onComplete }) => {
   const { t } = useTranslation();
-  const initialXp = data?.points || 0;
+  const initialXp = pointsBefore;
   const targetXp = initialXp + baseXp;
 
   const [currentScreen, setCurrentScreen] = useState(1);
@@ -58,27 +57,13 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
   }, [currentScreen, baseXp, accuracy, initialXp, targetXp]);
 
   const handleNext = () => {
+    // The first-lesson sequence is 1 → 5 → 6. Screens 2–4 and 7–8 showed invented numbers and are gone (Q13);
+    // screen 9, the sign-up wall, is gone while there is no guest mode (Q1).
     if (currentScreen === 1) {
-      if (!isTutorial) {
-        if (isGuest) {
-          setCurrentScreen(9);
-        } else {
-          onComplete();
-        }
+      if (!isTutorial || isCharacterLesson) {
+        onComplete();
         return;
       }
-      if (isCharacterLesson) {
-        if (isGuest) {
-          setCurrentScreen(9);
-        } else {
-          onComplete();
-        }
-        return;
-      }
-    }
-
-    // The first-lesson sequence is 1 → 5 → 6 → 9. Screens 2–4 and 7–8 showed invented numbers and are gone (Q13).
-    if (currentScreen === 1) {
       setCurrentScreen(5);
     } else if (currentScreen === 6) {
       if (selectedStreak === null) {
@@ -88,8 +73,6 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
       const existingData = JSON.parse(localStorage.getItem('ftue_marketing_data') || '{}');
       existingData.streakCommitment = selectedStreak;
       localStorage.setItem('ftue_marketing_data', JSON.stringify(existingData));
-      setCurrentScreen(9);
-    } else if (currentScreen === 9) {
       onComplete();
     } else {
       setCurrentScreen(prev => prev + 1);
@@ -141,11 +124,6 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
           100% { filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.5)); transform: scale(1); }
         }
 
-        @keyframes float3D {
-          0% { transform: translateY(0) rotateX(5deg) rotateY(0deg); }
-          50% { transform: translateY(-15px) rotateX(-5deg) rotateY(10deg); }
-          100% { transform: translateY(0) rotateX(5deg) rotateY(0deg); }
-        }
         @keyframes popInBubble {
           0% { transform: scale(0) translateY(20px); opacity: 0; transform-origin: bottom right; }
           70% { transform: scale(1.1) translateY(0); opacity: 1; }
@@ -268,8 +246,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
             padding-top: 0 !important;
           }
 
-          .post-lesson-next-wrap .btn,
-          .post-lesson-auth-actions .btn {
+          .post-lesson-next-wrap .btn {
             width: 100%;
             min-height: 48px;
             font-size: 1rem !important;
@@ -455,49 +432,15 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
         </div>
       )}
 
-      {currentScreen === 9 && (
-        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '500px', animation: 'fadeIn 0.5s' }}>
-          <div style={{ fontSize: '5rem', marginBottom: '1rem', animation: 'float3D 3s infinite ease-in-out' }}>🔒</div>
-          <h2 style={{ color: 'var(--color-text-main)', fontSize: '2.5rem', marginBottom: '1rem', textAlign: 'center' }}>{t('post_lesson.save_progress_title')}</h2>
-          <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', marginBottom: '3rem', fontSize: '1.2rem', lineHeight: '1.6' }}>
-            {t('post_lesson.save_progress_desc')}
-          </p>
-
-          <div className="post-lesson-auth-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
-              <button
-                className="btn btn-primary"
-                style={{ padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }}
-                onClick={() => {
-                  localStorage.setItem("forceBetaRequestModal", "true");
-                  window.location.href = "/";
-                }}
-              >
-                {t('post_lesson.create_profile_btn')}
-              </button>
-              <button
-                className="btn"
-                style={{ cursor: 'pointer', background: 'transparent', border: '2px solid rgba(0,0,0,0.1)', color: 'var(--color-text-muted)', padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', transition: 'background 0.2s' }}
-                onClick={onComplete}
-                onMouseOver={e => e.currentTarget.style.background = 'rgba(0,0,0,0.05)'}
-                onMouseOut={e => e.currentTarget.style.background = 'transparent'}
-              >
-                {t('post_lesson.later_btn')}
-              </button>
-          </div>
-        </div>
-      )}
-
-      {currentScreen !== 9 && (
-        <div className="post-lesson-next-wrap" style={{ width: '100%', maxWidth: '600px', marginTop: 'auto', paddingTop: '2rem' }}>
-          <button
-            className="btn btn-primary"
-            style={{ width: '100%', padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }}
-            onClick={handleNext}
-          >
-            {t('post_lesson.continue_btn')}
-          </button>
-        </div>
-      )}
+      <div className="post-lesson-next-wrap" style={{ width: '100%', maxWidth: '600px', marginTop: 'auto', paddingTop: '2rem' }}>
+        <button
+          className="btn btn-primary"
+          style={{ width: '100%', padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }}
+          onClick={handleNext}
+        >
+          {t('post_lesson.continue_btn')}
+        </button>
+      </div>
     </div>
   );
 };

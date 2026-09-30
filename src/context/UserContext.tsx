@@ -17,6 +17,7 @@ export interface UserProgressData {
         active_nameplate?: string;
         node_state?: Record<string, any>;
         achievements?: string[];
+        tutorial_done?: boolean;
     };
     role: "user" | "admin";
     subscription_tier: "free" | "premium" | "lifetime";
@@ -24,7 +25,6 @@ export interface UserProgressData {
     active_quests: any[];
     quest_progress: Record<string, any>;
     completed_quests_today: any[];
-    onboarding_completed?: boolean;
     base_language?: string;
     avatar?: string | null;
     energy?: number;
@@ -44,7 +44,7 @@ export interface UserContextType {
     data: UserProgressData;
     activeLevel: string;
     setActiveLevel: (level: string) => void;
-    updateProgress: (newData: Partial<UserProgressData>) => void;
+    updateProgress: (newData: Partial<UserProgressData>, saveNow?: boolean) => void;
     clearGuestData: () => void;
     addXP: (amount: number) => void;
     completeLesson: (nodeId: string, xpEarned: number, accuracy: number, subLessonId?: string, isNodeComplete?: boolean, isTutorial?: boolean) => void;
@@ -80,7 +80,6 @@ const defaultUserData: UserProgressData = {
     active_quests: [],
     quest_progress: {},
     completed_quests_today: [],
-    onboarding_completed: false,
     energy: 5,
     last_energy_refill: new Date().toISOString(),
     learnedWords: [],
@@ -153,7 +152,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         completed_quests_today: completedQuestsToday || [],
                         base_language: langParam && (langParam === 'sk' || langParam === 'hu') ? langParam : (hostname.endsWith('.sk') ? 'sk' : (hostname.endsWith('.hu') ? 'hu' : (userMetadata.base_language || 'hu'))),
                         avatar: userMetadata.avatar || null,
-                        onboarding_completed: Object.keys(completed || {}).length > 0 || (progressData.points || 0) > 0,
                         energy: progressData.energy ?? 5,
                         last_energy_refill: progressData.last_energy_refill ?? new Date().toISOString(),
                         learnedWords: progressData.learnedWords || [],
@@ -185,6 +183,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         initialData.energy = 5;
                         initialData.last_energy_refill = new Date().toISOString();
                     }
+                }
+
+                // Progress saved before the flag existed means the first lesson is done.
+                if (!initialData.scores.tutorial_done && (Object.keys(initialData.completed || {}).length > 0 || (initialData.points || 0) > 0)) {
+                    initialData.scores = { ...initialData.scores, tutorial_done: true };
                 }
 
                 const today = new Date().toISOString().split('T')[0];
@@ -350,31 +353,35 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return {success: false, message: res.error || "Hiba történt a mentés során."};
     };
 
-    const updateProgress = (newData: Partial<UserProgressData>) => {
+    const saveProgress = (progress: UserProgressData) => {
+        api.fetch('save_progress', {
+            points: progress.points,
+            completed: progress.completed,
+            scores: progress.scores,
+            quest_progress: progress.quest_progress,
+            completed_quests_today: progress.completed_quests_today
+        }).then((res) => {
+            if (res?.success) {
+                window.dispatchEvent(new CustomEvent('lexipawsProgressSaved'));
+            }
+        });
+    };
+
+    // saveNow skips the 1500 ms wait: a finished lesson must not depend on the tab staying open.
+    const updateProgress = (newData: Partial<UserProgressData>, saveNow = false) => {
+        if (!isGuest && saveNow) {
+            if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+            saveProgress({ ...data, ...newData });
+        }
+
         setData(prev => {
             const updated = { ...prev, ...newData };
 
-            if (!updated.onboarding_completed) {
-                updated.onboarding_completed = Object.keys(updated.completed || {}).length > 0 || (updated.points || 0) > 0;
-            }
-
             if (isGuest) {
                 localStorage.setItem("neolix_guest_progress", JSON.stringify(updated));
-            } else {
+            } else if (!saveNow) {
                 if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-                saveTimeoutRef.current = setTimeout(() => {
-                    api.fetch('save_progress', {
-                        points: updated.points,
-                        completed: updated.completed,
-                        scores: updated.scores,
-                        quest_progress: updated.quest_progress,
-                        completed_quests_today: updated.completed_quests_today
-                    }).then((res) => {
-                        if (res?.success) {
-                            window.dispatchEvent(new CustomEvent('lexipawsProgressSaved'));
-                        }
-                    });
-                }, 1500);
+                saveTimeoutRef.current = setTimeout(() => saveProgress(updated), 1500);
             }
 
             return updated;
@@ -423,7 +430,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             }
         }
 
-        const newScores = { ...data.scores };
+        const newScores = { ...data.scores, tutorial_done: true };
         if (!newScores.earned_xp_per_node) {
             newScores.earned_xp_per_node = {};
         }
@@ -516,7 +523,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             progressUpdate.last_energy_refill = new Date().toISOString();
         }
 
-        updateProgress(progressUpdate);
+        updateProgress(progressUpdate, true);
     };
 
     return (

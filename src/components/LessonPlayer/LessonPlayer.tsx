@@ -28,6 +28,9 @@ import { useTranslation } from 'react-i18next';
 interface LessonPlayerProps {
   lessonNode: any;
   onExit: () => void;
+  // Saves the result: called once, when the last item is resolved.
+  onCommit: (scoreData: any) => void;
+  // Leaves the lesson: called on the result screens' last 'Tovább'.
   onComplete: (scoreData: any) => void;
   isTutorial?: boolean;
 }
@@ -155,7 +158,7 @@ function selectLessonItems(data: any, lessonNode: any, userData: any, isGuest: b
   return { rawItems: Array.isArray(data) ? data : [], isLastSubLesson: true };
 }
 
-export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, onComplete, isTutorial = false }) => {
+export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, onCommit, onComplete, isTutorial = false }) => {
   const { isGuest, data: userData, activeLevel, syncLearnedWords } = useUser();
   const { t } = useTranslation();
   const [questions, setQuestions] = useState<QuestionData[]>([]);
@@ -175,6 +178,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const [answer, setAnswer] = useState<ExerciseAnswer>(NO_ANSWER);
   const [isLoading, setIsLoading] = useState(true);
   const [isPostLesson, setIsPostLesson] = useState(false);
+  const [result, setResult] = useState<{ scoreData: any; pointsBefore: number } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -246,10 +250,36 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const completedQuestions = currentIndex + (feedback !== 'none' ? 1 : 0);
   const progressPercent = (completedQuestions / questions.length) * 100;
 
+  const isLastQuestion = currentIndex + 1 >= questions.length;
+
+  // The lesson is saved the moment its last item is resolved. PostLesson only shows the result.
+  const commitLesson = (finalCorrect: number, finalMistakes: number) => {
+    if (result) return;
+
+    // One value each for the result screen and the save. A skipped item is neither right nor wrong.
+    const gradedCount = finalCorrect + finalMistakes;
+    const scoreData = {
+      xpEarned: Math.max(5, 15 - finalMistakes),
+      accuracy: gradedCount > 0 ? Math.floor((finalCorrect / gradedCount) * 100) : 100,
+      perfect: finalMistakes === 0,
+      completedLessonId: activeSubLessonId,
+      isNodeComplete: isLastSubLesson,
+      isTutorial: isTutorial || !userData.scores?.tutorial_done,
+      characters: characters
+    };
+
+    if (introducedWords && introducedWords.length > 0) {
+      syncLearnedWords(introducedWords);
+    }
+    setResult({ scoreData, pointsBefore: userData.points || 0 });
+    onCommit(scoreData);
+  };
+
   const handleSkipExercise = () => {
     stopAudio();
     setFeedback('skipped');
     playSoundEffect('warning');
+    if (isLastQuestion) commitLesson(correctCount, mistakes);
   };
 
   const isAnswered = feedback !== 'none';
@@ -304,6 +334,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     if (currentIndex + 1 < questions.length) {
       setCurrentIndex(prev => prev + 1);
     } else {
+      commitLesson(correctCount, mistakes);
       setIsPostLesson(true);
     }
   };
@@ -343,6 +374,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         setFeedback('correct');
         playSoundEffect('success');
         setCorrectCount(prev => prev + 1);
+        if (isLastQuestion) commitLesson(correctCount + 1, mistakes);
       } else {
         setFeedback('incorrect');
         playSoundEffect('fail');
@@ -357,6 +389,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             });
           }).catch(console.error);
         }
+        if (isLastQuestion) commitLesson(correctCount, mistakes + 1);
       }
     } else {
       stopAudio();
@@ -399,34 +432,18 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     );
   }
 
-  if (isPostLesson) {
-    // One value each for the result screen and the save. A skipped item is neither right nor wrong.
-    const gradedCount = correctCount + mistakes;
-    const xpEarned = Math.max(5, 15 - mistakes);
-    const accuracy = gradedCount > 0 ? Math.floor((correctCount / gradedCount) * 100) : 100;
+  if (isPostLesson && result) {
+    const { scoreData, pointsBefore } = result;
 
     return (
       <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
         <PostLesson
-          baseXp={xpEarned}
-          accuracy={accuracy}
-          isGuest={isGuest}
-          isTutorial={isTutorial || userData.points === 0}
+          baseXp={scoreData.xpEarned}
+          accuracy={scoreData.accuracy}
+          pointsBefore={pointsBefore}
+          isTutorial={scoreData.isTutorial}
           isCharacterLesson={lessonNode.id.startsWith('char_lesson_')}
-          onComplete={() => {
-            if (introducedWords && introducedWords.length > 0) {
-              syncLearnedWords(introducedWords);
-            }
-            onComplete({
-              xpEarned,
-              accuracy,
-              perfect: mistakes === 0,
-              completedLessonId: activeSubLessonId,
-              isNodeComplete: isLastSubLesson,
-              isTutorial: isTutorial || userData.points === 0,
-              characters: characters
-            });
-          }}
+          onComplete={() => onComplete(scoreData)}
         />
       </div>
     );
