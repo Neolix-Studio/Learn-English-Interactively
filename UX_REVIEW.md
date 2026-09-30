@@ -465,6 +465,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Effort:** S (numbers) / M (returning sequence)
 - **Where:** `components/LessonPlayer/LessonPlayer.tsx:369-389`, `components/LessonPlayer/PostLesson.tsx:14-89,310-338,343-665`, `pages/Dashboard.tsx:197,210`, `pages/Welcome/FTUELesson.tsx:20`, `pages/PracticePage.tsx:64`, `pages/Characters/CharacterLesson.tsx:23`, `context/UserContext.tsx:436-505`
 - **Related:** SOT §6, §8, WP-B3; C27, C33, C36, C57; decision Q13.
+- **Q13 answered (#370, 2026-09-30):** the owner confirmed that tutorial screens 2–4 and 7–8 are dropped, not rebuilt. The finding stays open: UX0a-5 (#371).
 
 ### C27 · Daily state is hollow: streak +1 per app open, quests reroll per load, shields inert, no daily goal — **major**
 - **Server half changed (#359, 2026-09-30), finding still open:** a save no longer resets `daily_quests_date`, `active_quests`, the streak or the shields (WP-B1), and ignores client values for them (WP-B1b). Nothing the learner sees changed: the client still sends none of them through an endpoint that stores them, so quests still reroll and the streak still grows on every load. **Owner decision the same day, for the fix below:** a new account starts with 0 shields (in code); 1 after the intro lesson and 1 more after registering, then the shop and later random quizzes (not built).
@@ -832,6 +833,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Effort:** S
 - **Where:** `locales/hu.json:108-127`, `pages/Welcome/WelcomeStartScreen.tsx:29-32`, `pages/Welcome/HearAboutUsScreen.tsx:73-76`, `pages/Welcome/WhyLearningScreen.tsx:75`, `pages/Welcome/ExperienceScreen.tsx:8-14,81-84`, `components/SidebarRight.tsx:168-182`, `components/ModuleBanner.tsx:15`, `components/LessonPlayer/PostLesson.tsx:310-668`
 - **Related:** WP-G4; C16, C25, C48; decisions Q13, Q14; C-4.
+- **Q13 answered (#370, 2026-09-30):** drop the Score screens, do not define the score. The finding stays open: the screens go in UX0a-5 (#371), the copied lines in UX0c-2 (#419).
 
 ### C58 · Fixed-pixel layouts break at 200% text, with Slovak strings, at 320 px and in landscape — **major**
 - **What happens:** at a 195 px viewport (about 200% page zoom) the progress bar collapses to an 8 px dot, image cards overlap and clip, 'TOVÁBB' covers 'Helytelen!' and the answer, and the module banner fills the screen. The feedback CTA is a fixed-width uppercase button, so SK 'POKRAČOVAŤ' (123.5 px of text in 116 px) spills at 320/360 on every answered item. In landscape 844×390 the second row of image cards falls under the footer; at 320×568 the phonics compare answers sit behind the footer. Title Case calques read as machine translation ('Napi Széria', 'Jutalom Falatok', SK 'Začať: +10 Bodov' — "Start: +10 points").
@@ -910,6 +912,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Effort:** S
 - **Where:** `components/modals/ShopModal.tsx:72-75,116-121`, `components/RewardPopup.tsx:94,101`, `context/UserContext.tsx:195-202,440-460`, `locales/hu.json:9,39,79,98,112,123,139,187`, `components/modals/FeedbackRefillModal.tsx:76,130`
 - **Related:** SOT §8; C27, C65; decision Q13.
+- **Q13 answered (#370, 2026-09-30):** the one Hungarian name for the currency is 'Lexi-falat' ("Lexi treat"), still shown next to the existing 🦴 (no new art). The finding stays open: the rename is D3b (#402).
 
 ### C63 · No voice or register guide — **minor**
 - **What happens:** eight learner-addressed Slovak strings are masculine-only, five of them on the reward sequence ('Dosiahol si novú úroveň vedomostí!' — "You [masc.] reached a new level of knowledge!", 'Odomkol si…', 'Dostal si 5 kostí!', 'Si veľmi šikovný!' — "You're [masc.] very clever!"). 'Kérjük várjon...' is the only truly formal Hungarian UI string ('Kérjük' — "we ask" — with te-forms is normal company voice). The Slovak gateway uses the formal plural 'Učte sa' beside informal 'Vyber si'. Lexi's persona flips between 'Üdvözlünk' ("We welcome you") and 'Üdvözöllek!' ("I welcome you!") on the same screen, and feedback is one identical line per state.
@@ -1029,7 +1032,7 @@ Duolingo's mechanics, translated into a dog's world, using art already on disk w
 | **Honest Lexi reactions** | Result tiers mapped to jump / happy / thinking; the rest pose at zero energy | No (within the pixel ceiling) | C25, C55 |
 | **Lexi on the path** | A small head beside the current node, doubling as the Continue anchor | No — but the panel's "sleepy" and "excited" variants don't exist (C-3); use existing expressions | C67 |
 | **'Lexi kiásott egy ládát!'** ("Lexi dug up a chest!") | An itemised chest-reveal sheet: `tyler-jump` over `coins-and-stars-explosion-big` | No for the sheet; a digging pose would be new art (C-3) | C26, WP-B2 |
-| **Progress to the next treat** | 'még 60 csont a Szériavédőig' ("60 more bones to the shield") bar with the bone icon | No; the animated treat jar the panel proposed is new art (C-3) | C26 |
+| **Progress to the next treat** | 'még 60 Lexi-falat a Szériavédőig' ("60 more Lexi treats to the shield"; the name per Q13, 2026-09-30) bar with the bone icon | No; the animated treat jar the panel proposed is new art (C-3) | C26 |
 | **'Falka'** ("Pack") | A friends-only weekly board shown before the public leagues | No | N7, decision Q11 |
 | **Out of energy? Practise for free** | The rest sheet offers mistakes, a story or a sound; each refills 1 ⚡ up to a daily cap | No | C-6, decision Q9, C18 closed first |
 | **Sound of the day** | One minute on the learner's weakest sound, as a quest option | No | pre-generated audio (C-8), C13–C16 |
@@ -1040,12 +1043,12 @@ Tone (C-13): keep the dog wink light and adult. Treat and dog-bowl copy may read
 
 ### 5e. Language: glossary and voice sheet
 
-Recommended home: `docs/LANGUAGE_SHEET.md`, mirrored as a `terms` namespace in each locale file so a rename is one edit. **⚑ = flagged by the panel for native Slovak confirmation**; the owner signs off the whole Slovak column, and a Hungarian native signs off the Hungarian one. The currency name is decision Q13.
+Recommended home: `docs/LANGUAGE_SHEET.md`, mirrored as a `terms` namespace in each locale file so a rename is one edit. **⚑ = flagged by the panel for native Slovak confirmation**; the owner signs off the whole Slovak column, and a Hungarian native signs off the Hungarian one. The currency name is decision Q13 — **answered 2026-09-30 (#370): 'Lexi-falat'** ("Lexi treat").
 
 | Concept | Hungarian | Slovak | Retire |
 |---|---|---|---|
 | XP | XP (glossed once as 'tapasztalati pont') | XP (once as 'body skúseností') | 'Pont' / 'Bod' for XP |
-| Currency | csont (10 csont, nincs elég csontod) | kostička ⚑ (1 kostička, 3 kostičky, 5 kostičiek) | Lexi Treats, Jutalom Falatok, Maškrty |
+| Currency | Lexi-falat (10 Lexi-falat; 5 Lexi-falatot kaptál — "you got 5 Lexi treats"; nincs elég Lexi-falatod — "you don't have enough Lexi treats") · *Q13, 2026-09-30; the panel's 'csont' ("bone") was not chosen* | not decided — D3b-sk; candidate Lexi-maškrta ⚑ (the panel's 'kostička' was the pair of 'csont') | Csont, Lexi Treats, Jutalom Falatok, Maškrty |
 | Streak | napi széria; 7 napos széria | denná séria; 7-dňová séria | sorozat |
 | Streak shield | szériavédő | ochrana série ⚑ | Streak Shield, Menedék, szériavédelem |
 | Energy | energia | energia | the 🔋 icon |
@@ -1054,7 +1057,7 @@ Recommended home: `docs/LANGUAGE_SHEET.md`, mirrored as a `terms` namespace in e
 | Sub-lesson | lecke ('Italok · 2. lecke a 4-ből') | lekcia ('Nápoje · lekcia 2 zo 4') | |
 | Node / module | téma / 1. modul | téma / 1. modul | 'Module 1:' |
 | CEFR level | szint ('Szinted') | úroveň ('Tvoja úroveň') | 'Utazás' / 'Cesta' |
-| Personal level, score | hidden until defined (Q13) | same | 'Személyes szint', 'LexiPaws-pontszám' |
+| Personal level, score | the score: deleted with its screens (Q13, 2026-09-30); the personal level: hidden until defined | same | 'Személyes szint', 'LexiPaws-pontszám', 'LexiPaws Skála' |
 | League / leaderboard | Bronz liga / ranglista | Bronzová liga / rebríček | |
 | Grammar guide | Nyelvtan | Gramatika | Útmutató, Sprievodca |
 | Sounds mode | Kiejtés | Výslovnosť | Karakterek, Znaky |
@@ -1084,7 +1087,7 @@ Same conventions as `REMEDIATION_PLAN.md`: one package = one working session (UX
 |---|---|---|---|---|---|---|
 | **UX-0a Lesson truth** | C01 (colour override, icon, clamp, Igaz/Hamis, phonics answer, skip chime), C02, C13, C14, C15 (ungraded), C25 numbers, C12 (render explanations), C06 (no prompt tooltip) | The core loop stops misreporting right and wrong | None. C25's accuracy pass-through is WP-B3's first row; it is client-only, so it can land here ahead of B1 (note the exception in the progress log) and be ticked there. RP couples B3's `phonics_match` row to it: land both together. C15 per Q8 | M | fix | A wrong answer shows a red title, ✖ and the full answer at every width; CHECK is disabled with no answer; a perfect `cons_s_z` run shows 100%; shown XP equals saved XP; 0% is never green; a wrong story answer shows its explanation |
 | **UX-0b Don't lose the lesson** | C36, C22 worst cases (replace-navigation, `tutorial_done`, quit sheet), N6, N8 | Work is never silently lost or merged | Can land with WP-B4's unload flush; N8 goes with WP-B1's cron prerequisite (same file) | S–M | fix | Reload or Back on PostLesson screen 1 keeps the lesson; a new user lands on the path after lesson 1; Back from the first dashboard never reopens the tutorial; login with guest data on the device asks first |
-| **UX-0c Copy one-liners** | C62 fixes, C10 'Én fáradt', C60 glosses, C57 verbatim lines, C40 claims, C61 quest copy, C63 Slovak gender, C39 streak key | The cheapest credibility fixes | Q13 for the Score strings; the owner for Slovak | S | fix | No parenthetical glosses, no 'Ők (He', no verbatim Duolingo lines (grep); node titles corrected |
+| **UX-0c Copy one-liners** | C62 fixes, C10 'Én fáradt', C60 glosses, C57 verbatim lines, C40 claims, C61 quest copy, C63 Slovak gender, C39 streak key | The cheapest credibility fixes | Q13 for the Score strings (answered 2026-09-30: delete them); the owner for Slovak | S | fix | No parenthetical glosses, no 'Ők (He', no verbatim Duolingo lines (grep); node titles corrected |
 | **UX-0d Navigation quick fixes** | C66 (bar everywhere, Learn item, logo), C67, C68, C47, C37 stopgap, C30 className, C40 in-app picker, N2 | Home is reachable and anchored; the tour stops nagging | None. The bottom bar on `/practice`, `/leaderboard` and `/characters` is a WP-C3 row and the tour's localisation is WP-D3's first item: tick them there | S–M | fix | Bottom bar on every signed-in route; the path opens centred on the current node; a locked node can't start a lesson; the tour never renders off-screen and speaks HU/SK |
 | **UX-0e Honest surfaces, Slovak interim** | C59 interim (Slovak e-mails, waitlist), C18 error vs empty, C28 (image, locale, no upsell), C09 payload, N11, C42 mailto | Nothing claims success when it failed | Q5 for the Slovak gate | S | fix | An API error on Mistakes shows an error and retry; a Slovak applicant gets Slovak e-mails; a report carries item id and answers; an expired invite shows a next step before the form |
 | **UX-1 Design foundation** | C48, C49, C50, C51, C53 quick fix, C56 wordmark | The look stops being defined by accidents | **= WP-C1**, plus the prototype split that opens **WP-C2** | M–L | fix (Phase C) | WP-C1's done-when; no heading computes 'Outfit'; no transparent-fill heading outside the wordmark; every CTA passes 4.5:1 text / 3:1 non-text in both themes by script; `/welcome/*` is dark in dark mode |
@@ -1145,7 +1148,7 @@ All panel owner questions and the critic's constraint items, deduplicated into 1
 | **Q10** | UX-5 | Streak: one completed lesson per local day, or a daily goal? Reset or keep today's inflated streaks? Push reminders in the wrapper, asked right after the day-1 goal pick? | One lesson per day; keep current numbers and count honestly from the fix; ask for push only after the goal pick | Resetting is honest but punishes testers for a bug; a goal-based streak is harder for beginners |
 | **Q11** | UX-6, C30, C35 | Leagues: weekly cohorts with promotion, or lifetime-XP tiers (SOT Q18)? Does League get a bottom tab, or does the fourth tab go to Quests? | A League tab with a locked state under 150 XP; decide cohorts vs tiers before redesigning the page, and match the copy to the answer | Cohorts need cron work and bot-free boards (WP-E0); tiers make 'juss feljebb' ("climb higher") untrue |
 | **Q12** | UX-6, C68 | Can learners skip ahead on the path? | Locks stay hard for the Beta; later, skipping = passing the WP-F4 module exam (C-14), not a second gate | Hard locks frustrate false beginners |
-| **Q13** | UX-0c, UX-8 | Naming the economy: 'csont' / 'kostička' ("bone") or a branded 'Lexi-falat' / 'Lexi-maškrta' ("Lexi treat")? The 'LexiPaws score': define it (words known, CEFR can-dos) or delete its screens? | 'csont' / 'kostička'; delete the Score screens until the metric exists | A branded name is more distinctive but longer and harder to decline |
+| **Q13** | UX-0c, UX-8 | Naming the economy: 'csont' / 'kostička' ("bone") or a branded 'Lexi-falat' / 'Lexi-maškrta' ("Lexi treat")? The 'LexiPaws score': define it (words known, CEFR can-dos) or delete its screens? | 'csont' / 'kostička'; delete the Score screens until the metric exists<br>✅ **Answered 2026-09-30 (#370): the currency is 'Lexi-falat'** ("Lexi treat") — the owner chose the branded name over the recommended 'csont'. Only the Hungarian name is decided; the Slovak one ('Lexi-maškrta' is the matching candidate) is settled in D3b-sk. **The Score screens are deleted** until a metric exists, as recommended: tutorial screens 2–4 and 7–8 go in UX0a-5 (#371), and the 'LexiPaws-pontszám' strings with them. | A branded name is more distinctive but longer and harder to decline |
 | **Q14** | UX-1, UX-9 (WP-G4) | Identity vs Duolingo: an MIT icon set instead of emoji (SOT Q14)? Sentence-case or ALL-CAPS buttons? Keep the 3-D lip in brand colour? Purchased themes dark-only or with light variants? | Lucide or Phosphor for chrome; sentence case; the lip only if the other Duolingo signatures go (C-4); label Fall and Halloween as dark themes | Green + lip + caps + Duolingo's celebration order rebuilds Duolingo's look; emoji are cheap and friendly |
 | **Q15** | UX-2, UX-3, UX-9 | Accessibility bar and art: WCAG 2.2 AA for the Beta (EAA, SOT Q26)? Lock orientation? Accept Lexi at its real pixel sizes, or run an upscale pass? Revive the chat-style fill_blanks with Lexi as speaker, or delete it? | AA; no orientation lock (C-1); small Lexi now and an upscale pass later if wanted; delete the chat branch until content exists | An orientation lock hides C58 instead of fixing it and conflicts with WCAG 1.3.4 and the EAA |
 

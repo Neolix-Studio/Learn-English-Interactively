@@ -5,7 +5,7 @@
 > **Audited:** 2026-08-28 · **Against commit:** `7b2a8f2` (2026-07-27) · **Branch:** `codex/mobile-ui-audit`
 > **Method:** 13 parallel subsystem readers + an adversarial verification pass. Every claim below carries a `file:line`. Claims that survived adversarial re-checking are unmarked; anything softer is labelled ⚠️ *unverified*.
 >
-> **Owner decisions recorded:** 2026-08-28 — see [§12.1](#121-settled-design-decisions--owner-2026-08-28) (accent, typeface, mascot), [§6](#matching-what-ships-and-what-does-not--owner-2026-08-28) (matching), [§10](#session--auth) (HTTPS redirect) and [§20](#full-release-readiness-beyond-beta) (exams as a full-release gate). **Decisions are not audit findings** — they describe what the product *will* be, not what the code does today, and each names the change it implies. Anything a decision cannot settle from the repo alone is marked ⚠️ *needs live verification*.
+> **Owner decisions recorded:** 2026-08-28 — see [§12.1](#121-settled-design-decisions--owner-2026-08-28) (accent, typeface, mascot), [§6](#matching-what-ships-and-what-does-not--owner-2026-08-28) (matching), [§10](#session--auth) (HTTPS redirect) and [§20](#full-release-readiness-beyond-beta) (exams as a full-release gate); 2026-09-30 — [§21](#21-open-questions-for-the-owner) (UX Q13: the currency is 'Lexi-falat', the 'LexiPaws score' screens are deleted). **Decisions are not audit findings** — they describe what the product *will* be, not what the code does today, and each names the change it implies. Anything a decision cannot settle from the repo alone is marked ⚠️ *needs live verification*.
 >
 > **Status catch-up:** 2026-09-30, against `origin/dev` @ `c8c9976`. Three things this audit reported have since been fixed on `dev` and are marked where they appear: the deploy hardening (WP-A3, `450b9dd`), the `save_progress` clamp bypass and rate limit (WP-B0, `92b6f18`), and the two HIGH dependency advisories (`c4c6609`, `c8c9976`). The rows are kept and dated rather than deleted ([§22 B](#b-update-protocol)). Everything not marked is still as audited.
 
@@ -425,7 +425,7 @@ Three consequences worth knowing before this is implemented:
 
 ### `PostLesson.tsx` (713 lines)
 
-Nine screens. **Screens 2–8 are static FTUE theatre** — the level-up, the flag, the 50% scale bar, the "1" streak, the 100%-wide quest bar (`:620`) and the bone rain read no real data. Screen 9 is the guest signup wall.
+Nine screens. **Screens 2–8 are static FTUE theatre** — the level-up, the flag, the 50% scale bar, the "1" streak, the 100%-wide quest bar (`:620`) and the bone rain read no real data. Screen 9 is the guest signup wall. **Owner decision 2026-09-30 (UX Q13, #370): the 'LexiPaws score' is not defined; its screens are deleted.** Tutorial screens 2–4 and 7–8 are removed in UX0a-5 (#371); until that lands, the code is as described here.
 
 Screen 9 has **no `isGuest` guard**, and `LessonPlayer.tsx:407` passes `isTutorial={isTutorial || userData.points === 0}` — so **any logged-in user finishing their first lesson is shown the guest signup wall**, whose button sets `forceBetaRequestModal` and hard-redirects them out of the app to `/`.
 
@@ -519,7 +519,7 @@ Almost all of it traces back to finding #1:
 - **`cron_reset_leaderboards.php` is not idempotent** — no "already ran this period" guard. Two `?type=weekly` invocations double every prize.
 - **The economy is unbalanced ~100×** — a lesson pays 1 bone, the cheapest item costs 100. Excluding the 100-bone guest grant and the +20 feedback widget, the Halloween theme is ~500 lessons away.
 - **`data/quests.json` is dead data.** The live pool is hardcoded Hungarian at `UserContext.tsx:195-202` with different ids, a different schema and 1–2 bone rewards vs the file's 5–50. The file is still shipped by `build_release.js:61` and is the *one* file `validate_json.js` really validates.
-- **Bones have four names in the UI:** "Lexi Treats", "Csont", "Jutalom Falatok", "Maškrty".
+- **Bones have four names in the UI:** "Lexi Treats", "Csont", "Jutalom Falatok", "Maškrty". **Owner decision 2026-09-30 (UX Q13, #370): the one Hungarian name is 'Lexi-falat'** ("Lexi treat"); see §21. The UI still shows the four names until D3b (#402) renames them.
 
 ### The minting holes, precisely
 
@@ -1331,6 +1331,14 @@ Grouped by what they block. These genuinely need your answer — I can implement
 29. **Should the ~14 legacy docs be deleted or moved to the `docs/archive/` that `CLEANUP_PLAN.md` specified but never created?**
 30. **Do you want a manual approval gate on production deploys**, given there is no rollback and no version stamp?
 31. **Should `README.md` become a real README?** Public repo — what is public-safe?
+
+### Answered questions from `UX_REVIEW.md` §7
+The UI/UX review keeps its own owner questions (`Q1`–`Q15`, `UX_REVIEW.md` §7). An answered one is recorded there and here.
+
+- ~~**UX Q13 — What is the currency called, and is the 'LexiPaws score' defined or deleted?**~~ **ANSWERED 2026-09-30 (#370).**
+  - **The currency is 'Lexi-falat'** ("Lexi treat"). The owner chose the branded name over the review's recommendation, 'csont' ("bone"). Forms: '10 Lexi-falat', '5 Lexi-falatot kaptál' ("you got 5 Lexi treats"), 'nincs elég Lexi-falatod' ("you don't have enough Lexi treats"). It replaces all four names in §8 ('Lexi Treats', 'Csont', 'Jutalom Falatok', 'Maškrty'). The icon stays the existing 🦴: no new art. Only the Hungarian name is decided; the Slovak one is decided in D3b-sk ('Lexi-maškrta' is the matching candidate).
+  - **The 'LexiPaws score' is deleted, not defined.** Its screens go until a real metric exists: `PostLesson` tutorial screens 2–4 and 7–8 (§6) and the 'LexiPaws-pontszám' / 'LexiPaws Skála' strings.
+  - **What it changes, and where:** nothing in the code yet. UX0a-5 (#371) removes the screens; D3b (#402) writes the glossary and the `terms` namespace with `terms.currency` = 'Lexi-falat'; UX0c-2 (#419) rewrites the copied lines.
 
 ---
 
