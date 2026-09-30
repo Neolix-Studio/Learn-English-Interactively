@@ -1345,7 +1345,7 @@ The UI/UX review keeps its own owner questions (`Q1`–`Q15`, `UX_REVIEW.md` §7
   - **Inflated streaks are kept, not reset.** No stored number changes; from the fix onward the streak grows only by the rule above.
   - **Shields: used automatically, one per missed day, at most 3 held.** The owner chose 3 over the review's recommended 2. The grants decided in #359 stand (0 at signup, 1 after the intro lesson, 1 after registering, then the shop).
   - **Push permission: asked once, right after the day-1 goal pick** in the wrapped app, never on first open.
-  - **What it changes, and where:** nothing in the code yet. B3b (#381) computes the streak on the server, uses shields and enforces the cap; UX5-3 (#469) shows the 'Lexi őrködött' ("Lexi kept watch") notice, the today state and the count; UX5-12 (#565) adds the goal ring that resets at the same midnight. The push prompt has no issue of its own yet: it belongs to the wrapper work.
+  - **What it changes, and where:** nothing in the code yet. B3b (#381) computes the streak on the server, uses shields and enforces the cap; UX5-3 (#469) shows the 'Lexi őrködött' ("Lexi kept watch") notice, the today state and the count; UX5-12 (#565) adds the goal ring that resets at the same midnight. The push prompt is APP-push (#587), filed with this answer in the App milestone behind the wrapper (#577); who sends the reminders is not specified yet.
 
 ---
 
