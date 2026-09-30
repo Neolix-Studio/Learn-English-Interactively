@@ -6,6 +6,8 @@
 > **Method:** 13 parallel subsystem readers + an adversarial verification pass. Every claim below carries a `file:line`. Claims that survived adversarial re-checking are unmarked; anything softer is labelled ⚠️ *unverified*.
 >
 > **Owner decisions recorded:** 2026-08-28 — see [§12.1](#121-settled-design-decisions--owner-2026-08-28) (accent, typeface, mascot), [§6](#matching-what-ships-and-what-does-not--owner-2026-08-28) (matching), [§10](#session--auth) (HTTPS redirect) and [§20](#full-release-readiness-beyond-beta) (exams as a full-release gate). **Decisions are not audit findings** — they describe what the product *will* be, not what the code does today, and each names the change it implies. Anything a decision cannot settle from the repo alone is marked ⚠️ *needs live verification*.
+>
+> **Status catch-up:** 2026-09-30, against `origin/dev` @ `c8c9976`. Three things this audit reported have since been fixed on `dev` and are marked where they appear: the deploy hardening (WP-A3, `450b9dd`), the `save_progress` clamp bypass and rate limit (WP-B0, `92b6f18`), and the two HIGH dependency advisories (`c4c6609`, `c8c9976`). The rows are kept and dated rather than deleted ([§22 B](#b-update-protocol)). Everything not marked is still as audited.
 
 ---
 
@@ -52,14 +54,14 @@ Now the four things that matter more than everything else combined:
 | # | What | Where | Effect |
 |---|---|---|---|
 | **1** | **Every autosave wipes 11 database columns.** The client sends 5 of 17 fields; the server substitutes hardcoded defaults for the rest and `ON DUPLICATE KEY UPDATE`s all 17. | `UserContext.tsx:366-372` → `api.php:966-985` → `api.php:1059-1085` | Streak, energy, active theme, daily quests, level and shields are destroyed on every save. Cascades into ~8 other "bugs" that are really this one. |
-| **2** | **The economy is client-authoritative and mintable.** Reward math runs in the browser; the only server defence is per-request delta caps, and `save_progress` / `update_progress` have **no rate limit**. | `api.php:1007-1041`, no `security_rate_limit` call on either action | +100 XP and +100 bones per request, indefinitely. The leaderboard — a headline Beta feature — is fully forgeable. Guest-migration at signup bypasses even the caps (`api.php:667-696` merges with `max()`, uncapped). |
+| **2** | **The economy is client-authoritative and mintable.** Reward math runs in the browser; the only server defence is per-request delta caps, and `save_progress` / `update_progress` have **no rate limit**. | `api.php:1007-1041`, no `security_rate_limit` call on either action | +100 XP and +100 bones per request, indefinitely. The leaderboard — a headline Beta feature — is fully forgeable. Guest-migration at signup bypasses even the caps (`api.php:667-696` merges with `max()`, uncapped). **Part-fixed @ `92b6f18` (WP-B0, 2026-08-31):** `save_progress` is now limited to 45 requests / 60 s per user, which slows the loop but does not cap it; `update_progress` and the signup merge are unchanged — see [§16](#16-known-broken-inventory-ranked) row 3. |
 | **3** | **The Slovak product does not exist.** `data/sk/` is a copy of `data/hu/` (one node file differs, 17 stories missing). The base-language field inside both trees is literally named `"hu"`. `roadmapLoader` defaults to `'hu'` and both callers omit the argument. | `roadmapLoader.ts:28` + `Roadmap.tsx:20`, `FTUELesson.tsx:10`; `LessonPlayer.tsx:23` hard-imports `data/hu/vocabulary.json` | `lexipaws.sk` advertises *"Učte sa anglicky po slovensky"* and serves a Hungarian course. A Slovak beginner cannot complete one exercise. |
-| **4** | **`lexipaws.eu/` may be a 404 in production and staging cannot reveal it.** `.htaccess:4-5` rewrites the apex to `gateway.html`, which exists nowhere in the repo, `public/`, `dist/`, or `release/`. | `.htaccess:4-5` (verified target missing) | Works today only if Apache's rewrite loop falls through to the SPA rule. The condition is scoped to `lexipaws.eu`, so `dev.lexipaws.eu` never exercises it. **Check this by hand before anything else.** |
+| **4** | **`lexipaws.eu/` may be a 404 in production and staging cannot reveal it.** `.htaccess:4-5` rewrites the apex to `gateway.html`, which exists nowhere in the repo, `public/`, `dist/`, or `release/`. | `.htaccess:4-5` (verified target missing) | Works today only if Apache's rewrite loop falls through to the SPA rule. The condition is scoped to `lexipaws.eu`, so `dev.lexipaws.eu` never exercises it. **Check this by hand before anything else.** ✅ **Fixed @ `450b9dd` (WP-A3, 2026-08-29):** the rewrite was removed, so the apex now takes the same SPA path as `.hu` and `.sk`. It is still unproven on production, which serves an empty docroot until the cutover (WP-A4). |
 
 Two more that are cheap to fix and disproportionately visible:
 
 - **`BETA_INVITES_ENABLED` fails *open*.** `api.php:260-262` returns a pass when the flag is unset, and `write_db_config.js:4-6` turns any missing GitHub secret into `''`. One forgotten secret and public registration is wide open. The client-side gate (`AuthModal.tsx:40`) only hides a tab.
-- **`npm audit --omit=dev` reports 2 HIGH advisories** — `react-router` / `react-router-dom` 7.12.0–7.18.1 (GHSA-qwww-vcr4-c8h2). `package.json:36` pins `^7.18.1`. There is no `dependabot.yml`.
+- ~~**`npm audit --omit=dev` reports 2 HIGH advisories** — `react-router` / `react-router-dom` 7.12.0–7.18.1 (GHSA-qwww-vcr4-c8h2). `package.json:36` pins `^7.18.1`.~~ ✅ **Fixed 2026-09-24:** Dependabot PRs #266 (react-router and react-router-dom → 7.18.4, `c4c6609`) and #258 (postcss → 8.5.28, `c8c9976`) were merged into `dev` and deployed. `npm audit --omit=dev` reports 0 vulnerabilities and no Dependabot alert is open (re-checked 2026-09-30). There is still no `dependabot.yml`; the PRs come from GitHub's security updates, and `dependabot-automerge.yml` merges the patch and minor ones ([§14](#14-build-deploy-ci-and-tests)).
 
 **Beta readiness in one sentence:** the target date in `docs/BETA_READINESS.md` is 2026-09-01, that is four days from this audit, the last commit was a month ago, and Gates 2 and 7 are self-reported as unaudited and not started. The date is not reachable; see [§20](#20-beta-readiness-honestly) for what a realistic version looks like.
 
@@ -117,7 +119,9 @@ The inverse failure exists too: `FillBlanks.tsx:121-138`'s compose-card classes 
 
 *(Tyler is the owner's real dog, and the origin of the name "Lexipaws" — but the in-product character is Lexi.)* The 26 `tyler-*.png` files are legacy filenames and should be renamed; that rename also fixes the live 404s in §13.
 
-#### 3. Slovak is in scope for the first Beta
+#### 3. The first Beta is Hungarian-only; Slovak follows it
+
+*Owner decision 2026-09-24, reversing the earlier constraint "Slovak is in scope for the first Beta" (recorded 2026-08-28).* Slovak comes after the Beta, still as a translation of the Hungarian version. Until then, Slovak visitors (`lexipaws.sk`, `?lang=sk`, `base_language = 'sk'`) get an honest 'Čoskoro po slovensky' holding state instead of the Hungarian course (UX_REVIEW C59's interim fix).
 
 `data/sk/` was created as a deliberate **placeholder** to mark the intent, never as real content. The base-language field is being restructured to sibling `"hu"` / `"sk"` keys in a single tree (Option A, owner-approved) — see §9.
 
@@ -482,7 +486,7 @@ Almost all of it traces back to finding #1:
 ### The minting holes, precisely
 
 1. **Signup/login guest migration is uncapped.** `handleSignup` stores `guest_migration.scores` verbatim and `mergeGuestProgressIntoUser` (`api.php:667-696`) merges numerics with `max()` and **no cap**. The payload is `localStorage["neolix_guest_progress"]`, fully user-controlled. Editing one key before logging in grants arbitrary bones, XP, achievements and streak — bypassing every delta cap.
-2. **`save_progress` / `update_progress` have no rate limit.** The only `security_rate_limit` calls in `api.php` are on beta request, signup, login, forgot/reset password and feedback. A loop mints +100 XP and +100 bones per request forever.
+2. **`save_progress` / `update_progress` have no rate limit.** The only `security_rate_limit` calls in `api.php` are on beta request, signup, login, forgot/reset password and feedback. A loop mints +100 XP and +100 bones per request forever. **Part-fixed @ `92b6f18` (WP-B0):** `handleSaveProgress` now calls `security_rate_limit('save_progress_<user_id>', 45, 60)` ([api.php:1161](api.php:1161)). That is a rate reduction, not a cap, and the counter is session-backed ([§10](#rate-limiting-is-not-rate-limiting)); `update_progress` ([api.php:1221](api.php:1221)) still has no limit. Both remain WP-B2.
 3. **Mass assignment.** `parseProgressData` writes 17 client-supplied fields straight through. Only points, bones, shields, node `current_level` and energy are checked. `unlocked_items`, `active_theme`, `level`, `completed`, `earned_xp_per_node` are stored verbatim — a client can hand itself every cosmetic and every completed node, bypassing the paid `buy_cosmetic` path entirely.
 4. **Client-driven email bombing.** `streak_count` is unvalidated input, and `api.php:1104-1113` sends a milestone email whenever the incoming streak exceeds the stored one and equals 7/30/100. Alternating between 6 and 7 sends an email per round trip through the live SMTP account — risking the sender reputation of `noreply@lexipaws.eu` exactly when Beta invites need to land in inboxes.
 
@@ -854,7 +858,7 @@ Ordered by impact ÷ effort. **Items 1–6 need no new art at all.**
 
 `scripts/build_release.js` wipes `release/`, copies `dist/`, then `data/hu`, `data/sk`, `data/migrations`, `templates`, PHPMailer, and 14 individual PHP files.
 
-**Ordering is load-bearing:** Vite copies `public/.htaccess` into `dist/`, and line 48 then **overwrites it** with the root `.htaccess`. This matters because the two files have **materially different CSP** — `public/.htaccess:36` declares `script-src 'self'` with no font or analytics allowances, which would block GA4, Headway **and the Nunito webfont**. It is dead configuration whose only purpose is to be overwritten.
+**Ordering is load-bearing:** Vite copies `public/.htaccess` into `dist/`, and line 48 then **overwrites it** with the root `.htaccess`. This matters because the two files have **materially different CSP** — `public/.htaccess:36` declares `script-src 'self'` with no font or analytics allowances, which would block GA4, Headway **and the Nunito webfont**. It is dead configuration whose only purpose is to be overwritten. ✅ **Fixed @ `450b9dd` (WP-A3):** `public/.htaccess` was deleted, so the root `.htaccess` is the only one and the copy order no longer matters.
 
 `release/` also ships **2.7 MB of curriculum JSON that nothing reads** — no deployable PHP touches `data/`, and the frontend inlines it at build time. It is simultaneously publicly downloadable at `/data/hu/…`, so the whole curriculum is scrapeable and ships twice.
 
@@ -864,11 +868,15 @@ Shared Apache at Websupport.sk over **FTPS port 21**. No SSH, no containers, no 
 
 Deploy order: **upload everything → run remote migrations → health check.** By the time anything can fail, production has already been overwritten. **There is no rollback step anywhere** — `docs/guides/cicd_user_story.md:33-34` lists "Rollback Capability" as an acceptance criterion and it is unimplemented.
 
-**The health check is a false green.** `verify-deploy.yml:177` uses `curl -f`, which only fails on HTTP ≥ 400 — but `api.php:41-43` (missing `db_config.php`) and `:59-63` (PDO failure) both `echo` a JSON error and **exit with HTTP 200**. A deploy that lost its database config reports success and posts "🚀 CD Deploy Succeeded" to Slack. The check only proves Apache can execute PHP.
+**The health check is a false green.** `verify-deploy.yml:177` uses `curl -f`, which only fails on HTTP ≥ 400 — but `api.php:41-43` (missing `db_config.php`) and `:59-63` (PDO failure) both `echo` a JSON error and **exit with HTTP 200**. A deploy that lost its database config reports success and posts "🚀 CD Deploy Succeeded" to Slack. The check only proves Apache can execute PHP. ✅ **Fixed @ `450b9dd` (WP-A3, 2026-08-29):** the health check now fails unless the body of `api.php?action=get_session` contains `"session"` (`verify-deploy.yml:256-258`), so a dead database turns the deploy red. The order is unchanged — it still reports after the upload, so it detects a broken deploy but does not prevent one.
+
+**What else WP-A3 changed (`450b9dd`).** The release bundle is uploaded as a workflow artifact before `db_config.php` is generated, behind an assertion that fails the job if any credential file is in it (`verify-deploy.yml:175-188`), so there is now something to restore from by hand. `workflow_dispatch` redeploys a target without a code push, and only when the chosen target matches the branch it was launched from. `.htaccess:23-25` denies `.ftp-deploy-sync-state.json` — it returned 200 with 69,475 bytes before and returns **403** now (re-checked 2026-09-30). Migrations 04, 07 and 11 are idempotent. There is still no automatic rollback.
 
 `main` deploys to production **automatically on push** with no manual approval gate, no GitHub Environment protection, and no version stamp.
 
 **Branch policy — solo-maintainer mode (owner, 2026-09-23).** The project has one developer, so PR review was removed. `dev` is the **default branch** and accepts **direct pushes**, with no required reviews and no required status checks. It still blocks force-push and deletion. Every push runs CI, and the deploy job `needs: verify`, so a red build lands on the branch but never reaches `dev.lexipaws.eu`. `main` keeps its classic protection (1 approval, strict `Verify (CI)` + `Analyze Code`, enforced for admins) until the React cutover. Deploys are serialised per target with a `concurrency` group. `dependabot-automerge.yml` merges green patch and minor Dependabot PRs into `dev` and dispatches the deploy itself, because a `GITHUB_TOKEN` merge does not fire `push` workflows.
+
+**Dependabot state (2026-09-24, re-checked 2026-09-30).** #266 (react-router and react-router-dom → 7.18.4, `c4c6609`) and #258 (postcss → 8.5.28, `c8c9976`) were merged into `dev` on 2026-09-24 and deployed green at `c8c9976` (CI/CD run 35975312643). #266 is a grouped update, which the auto-merge workflow skips by design, so it was merged by hand. #257, #264 and #265 targeted `main` and were closed unmerged on 2026-09-23. No Dependabot PR or alert is open, and the remote has only `dev` and `main`.
 
 ### Workflows
 
@@ -877,12 +885,12 @@ Deploy order: **upload everything → run remote migrations → health check.** 
 | `verify-deploy.yml` | push/PR on main+dev, manual dispatch | ✅ The only real gate — on `dev` it gates the **deploy**, not the push. PHP lint, security scan, oxlint, JSON validate, build, sandbox migrations against `mariadb:10.6`. |
 | `codeql-analysis.yml` | push/PR + weekly | ✅ Required check `Analyze Code` on `main` only (advisory on `dev`) — but **`javascript-typescript` only. The entire PHP backend is unscanned.** |
 | `cypress.yml` | `workflow_dispatch` only | ❌ Gates nothing, and cannot run (see below) |
-| `sonar-sync.yml` | after CI + daily cron | ❌ Two broken integrations (see below) |
+| `sonar-sync.yml` | after CI + daily cron | ❌ Two broken integrations (see below). **Disabled since 2026-09-24**, after it filed 86 duplicate issues in one night. |
 | `dependabot-automerge.yml` | after CI on a Dependabot PR | Merges patch and minor bumps into `dev` once all PR checks pass, then dispatches a `dev` deploy. |
 
 CI pins **Node 20** and **PHP 8.2**; this machine runs Node 26 and PHP 8.5. Local and CI do not run the same runtimes.
 
-`npm ci || npm install` (`:44`, `:143`) defeats the purpose of `npm ci` — a drifted lockfile silently falls through and passes green. *(The lock is in sync today.)*
+`npm ci || npm install` (`:44`, `:143`) defeats the purpose of `npm ci` — a drifted lockfile silently falls through and passes green. *(The lock is in sync today.)* **Half-fixed @ `450b9dd` (WP-A3):** the deploy job now runs `npm ci --ignore-scripts` (`verify-deploy.yml:164`); the verify job still has the fallback (`:53`).
 
 The lint step is labelled "Run ESLint" but runs oxlint, which **exits 0 with 45 warnings**. It blocks nothing.
 
@@ -907,7 +915,7 @@ That is `cypress/e2e/home.cy.js` in full. There are no unit tests, no component 
 
 ### Two silently-broken automations
 
-- **`sync_sonar_issues.js` can never deduplicate.** The issue body it writes contains no `<!-- SonarCloudKey: … -->` marker, but the dedup pass at `:183` extracts existing keys with a regex for exactly that marker. `existingKeys` is always empty, so **the daily midnight cron re-creates a GitHub issue for every unresolved SonarCloud finding, every day, forever.** Left running through Beta, real tester bug reports become unfindable.
+- **`sync_sonar_issues.js` can never deduplicate.** The issue body it writes contains no `<!-- SonarCloudKey: … -->` marker, but the dedup pass at `:183` extracts existing keys with a regex for exactly that marker. `existingKeys` is always empty, so **the daily midnight cron re-creates a GitHub issue for every unresolved SonarCloud finding, every day, forever.** Left running through Beta, real tester bug reports become unfindable. **This happened on 2026-09-24:** one nightly run filed 86 duplicate `[SonarCloud]` issues (#267–#352) between 02:35 and 02:38 UTC. All 86 were closed as not planned the same morning, and the workflow was disabled that day (`gh workflow disable`; `gh workflow list --all` shows `disabled_manually`). The script is not repaired, so re-enabling the workflow repeats the flood; deleting both files is WP-H3. SonarCloud findings live only in the SonarCloud dashboard.
 - **Its GitHub Projects calls cannot work.** `sonar-sync.yml:16-17` grants only `permissions: issues: write`; the default `GITHUB_TOKEN` has no Projects v2 scope and workflow `permissions:` cannot grant one. Every project call fails, every failure is swallowed into `console.error`, and the workflow still reports success.
 
 ### Local-only artifacts
@@ -955,9 +963,9 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 | # | Issue | Where |
 |---|---|---|
 | 1 | **`save_progress` wipes 11 columns per call** — streak, energy, theme, quests, shields, level | `UserContext.tsx:366` + `api.php:966,1059` |
-| 2 | **`lexipaws.eu/` may 404** — `.htaccess` rewrites the apex to a missing `gateway.html`, and staging cannot reveal it | `.htaccess:4-5` |
-| 3 | **Unbounded XP/bones minting** — no rate limit on `save_progress`/`update_progress`; uncapped `max()` merge at signup. ⏳ **`save_progress` has a limiter in flight — PR #263 (WP-B0), 45 requests / 60 s, keyed on `user_id`; measured 60/60 requests accepted on `dev` vs 45/60 on the branch.** `update_progress` and the uncapped signup merge are untouched and remain WP-B2, as does moving the counters out of `$_SESSION`. | `api.php:667-696`, `:1007-1041` |
-| 3b | **One request permanently disarms every anti-cheat clamp.** A `scores` value of `0` → `parseProgressData` stores `json_encode(0)` = the string `"0"` → on every later request `!empty($currentDbProgress['scores'])` is **false** (verified: `empty("0") === true` in PHP), so the entire bones / streak_shields / node_state clamp block is skipped from then on. Next payload writes raw. ⚠️ **Mechanism corrected 2026-08-29 by running the attack against a real database** — a lone `POST {"scores":0}` to `save_progress` is **not** sufficient. If the row already holds non-empty scores the clamp block runs, `json_decode("0", true)` is not an array, and `[]` is stored instead — truthy as `"[]"`, so nothing is disarmed. The poisoning needs the stored `scores` to be **empty at that moment**, which two paths reach: a **fresh account's first `save_progress`** (no `user_progress` row → `$currentDbProgress` is false → block skipped), and **signup**, where [api.php:557](api.php:557) passes `guest_migration.scores` to `json_encode` unguarded — so `{"guest_migration":{"scores":0}}` writes `"0"` in **one unauthenticated request**. The signup path is the cheaper one and was not previously recorded here. `mergeGuestProgressIntoUser` is already `is_array`-guarded at [api.php:602](api.php:602). ⏳ **Fix in flight — PR #263 (WP-B0), not yet merged; `dev` is still exploitable.** | [api.php:1019](api.php:1019), [api.php:970](api.php:970), [api.php:557](api.php:557) |
+| 2 | ~~**`lexipaws.eu/` may 404** — `.htaccess` rewrites the apex to a missing `gateway.html`, and staging cannot reveal it~~ ✅ **Fixed @ `450b9dd` (WP-A3, PR #262, 2026-08-29)** — the rewrite was removed; the apex now takes the same SPA fallback as `.hu` and `.sk`. Confirm on production at the cutover (WP-A4). | `.htaccess` (rule removed) |
+| 3 | **Unbounded XP/bones minting** — no rate limit on `save_progress`/`update_progress`; uncapped `max()` merge at signup. ✅ **Part-fixed @ `92b6f18` (WP-B0, PR #263, merged 2026-08-31): `save_progress` is limited to 45 requests / 60 s, keyed on `user_id` ([api.php:1161](api.php:1161)).** Measured on a throwaway database: 60/60 requests accepted before the fix, 45 accepted and 15 throttled after it (re-run against `origin/dev` on 2026-09-24 and 2026-09-30). This slows minting; it does not cap it. **Still open (WP-B2):** `update_progress` has no limit, the signup merge is uncapped, and the counters live in `$_SESSION`. | `api.php:667-696`, [api.php:1161](api.php:1161), [api.php:1221](api.php:1221) |
+| 3b | **One request permanently disarms every anti-cheat clamp.** A `scores` value of `0` → `parseProgressData` stores `json_encode(0)` = the string `"0"` → on every later request `!empty($currentDbProgress['scores'])` is **false** (verified: `empty("0") === true` in PHP), so the entire bones / streak_shields / node_state clamp block is skipped from then on. Next payload writes raw. ⚠️ **Mechanism corrected 2026-08-29 by running the attack against a real database** — a lone `POST {"scores":0}` to `save_progress` is **not** sufficient. If the row already holds non-empty scores the clamp block runs, `json_decode("0", true)` is not an array, and `[]` is stored instead — truthy as `"[]"`, so nothing is disarmed. The poisoning needs the stored `scores` to be **empty at that moment**, which two paths reach: a **fresh account's first `save_progress`** (no `user_progress` row → `$currentDbProgress` is false → block skipped), and **signup**, where [api.php:557](api.php:557) passes `guest_migration.scores` to `json_encode` unguarded — so `{"guest_migration":{"scores":0}}` writes `"0"` in **one unauthenticated request**. The signup path is the cheaper one and was not previously recorded here. `mergeGuestProgressIntoUser` is already `is_array`-guarded at [api.php:602](api.php:602). ✅ **Fixed @ `92b6f18` (WP-B0, PR #263, merged 2026-08-31).** The clamps now run whenever a payload carries `scores`, against the decoded stored row (`clampProgressAgainstStored()`, [api.php:1055](api.php:1055)), so an already-poisoned `"0"` row is re-clamped on its next save. `encodeScores()` ([api.php:967](api.php:967)) turns any non-array `scores` into `{}` on both write paths — `save_progress` ([api.php:978](api.php:978)) and signup ([api.php:558](api.php:558)) — so the falsy value can no longer be stored. `tools/local/testing/save_progress_security_test.sh --ref origin/dev` passes all 8 checks (2026-09-24 and 2026-09-30). The description above is the bug as it was; its line numbers are from before the fix. | [api.php:1055](api.php:1055), [api.php:967](api.php:967), [api.php:558](api.php:558) |
 | 3c | **`last_active_date` is never set to `CURDATE()` by anything.** The only writers are `cron_notifications.php:69` (sets it to *yesterday*) and `save_progress` (null). So any row that once matches `cron_notifications.php`'s at-risk query can never stop matching. Currently harmless only because every autosave nulls the column — meaning **the save_progress bug is suppressing a worse bug.** Fixing one without the other destroys legacy users' shields and streaks. | [cron_notifications.php:54-97](cron_notifications.php:54) |
 | 4 | **`BETA_INVITES_ENABLED` fails open** — one missing secret opens public registration | `api.php:260-262`, `write_db_config.js:4-6` |
 | 5 | **One unsolvable exercise blocks Module 2** (uncommitted working-tree edit) | `data/hu/A1/Module_2…/node3_family_ties.json` |
@@ -965,7 +973,7 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 | 7 | **`user_metadata` table does not exist** — the energy-refill-for-feedback loop always throws | `api.php:1713,1726` |
 | 8 | **Registered users are shown the guest signup wall** after their first lesson and ejected to `/` | `PostLesson.tsx:668`, `LessonPlayer.tsx:374` |
 | 9 | **Onboarding trap** — a registered user with zero progress is bounced to `/welcome/start` on every dashboard visit, and the welcome shell has no nav, no skip, and exits back to `/welcome/experience` | `Dashboard.tsx:95-99`, `UserContext.tsx:156`, `FTUELesson.tsx:39` |
-| 10 | **2 HIGH dependency advisories** in `react-router` / `react-router-dom` | `package.json:36` |
+| 10 | ~~**2 HIGH dependency advisories** in `react-router` / `react-router-dom`~~ ✅ **Fixed 2026-09-24** — #266 (react-router and react-router-dom → 7.18.4, `c4c6609`) and #258 (postcss → 8.5.28, `c8c9976`) merged into `dev` and deployed; `npm audit --omit=dev` reports 0 vulnerabilities | `package.json:27` |
 | 11 | **Open redirect after auth** — `?redirect=` followed verbatim, on a domain users are asked to trust with credentials | `AuthModal.tsx:110-112,126-128` |
 | 12 | **Contact form silently discards messages** while saying they were received | `Contact.tsx:36-38` |
 
@@ -1085,6 +1093,7 @@ Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a bl
 
 | Doc | Why |
 |---|---|
+| `UX_REVIEW.md` | **Newest (2026-09-23).** Verified UI/UX review of `dev` @ `f1d3dc8`: 146 findings → 71 root causes, all adversarially re-verified (0 refuted), plus 12 gap findings, with a refactor plan mapped onto the WP ids here. Owns the UX layer; this file stays the engineering truth. |
 | `MOBILE_UI_AUDIT.md` | Newest (2026-07-27). All six findings verified implemented. Honest about what did *not* reproduce and what remains untested. |
 | `docs/THEME_UPDATE_GUIDE.md` | **The best-calibrated doc in the repo.** Its unchecked to-do list still describes the codebase exactly. |
 | `docs/security/PHP_SECURITY_BASELINE.md` | Every claim verified true. |
@@ -1117,7 +1126,7 @@ Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a bl
 ### Special cases
 
 - **`docs/guides/lessons_and_folders_to_be_created.md`** (1339 lines) — despite the name it contains **no folder plan, no schema, and no naming convention**. It is a flat bank of 1200 hand-authored A1 exercises for Lessons 2–9, in three identical shapes per lesson, with **no answer keys, no ids, no hu/sk translations**, and formats that map to none of the app's implemented exercise types. If Beta scope assumes Lessons 2–9 ship, **that content does not exist in loadable form.** (Also: its "LESSON 2: THE VERB TO BE" heading drills *to have*; line 838 reads "EXISTTENTIAL"; Lesson 9 Ex. 3 has 51 items, not 50.)
-- **`reference/product-design/`** — the visual spec of record, and genuinely useful. `Complete FTUE experience/` holds the canonical 33-screen flow. Note lexicographic sort scrambles it (10 before 2), one filename contains a colon, and naming is inconsistent across its four sets.
+- **`reference/product-design/`** — useful as a **flow** reference, **not** a visual spec: *(corrected 2026-09-23)* every UI screenshot in it is a capture of **Duolingo's own product** (`duolingo.com` URLs, Duo the owl, Super upsells), desktop-width and dark mode. `Complete FTUE experience/` is Duolingo's 33-screen Hungarian onboarding. Note lexicographic sort scrambles it (10 before 2), **two** filenames contain a colon (FTUE 11 and 17), and naming is inconsistent across its four sets. Where the live app copies Duolingo's colours and Hungarian copy verbatim, see `UX_REVIEW.md` C57.
 
 ---
 
@@ -1127,7 +1136,7 @@ Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a bl
 
 | Gate | Doc says | Actually |
 |---|---|---|
-| **1. Staging stable** | in progress | ⚠️ Pipeline works. No staging accounts or invite codes exist. Health check is a false green. |
+| **1. Staging stable** | in progress | ⚠️ Pipeline works. No staging accounts or invite codes exist. ~~Health check is a false green.~~ *(Fixed @ `450b9dd`, WP-A3 — see [§14](#hosting--deploy).)* |
 | **2. Core loop works** | not fully audited | ❌ **Now audited: it does not.** Progress persistence loses 11 columns per save; streak/energy/themes/quests are all broken by it. |
 | **3. Audio reliable** | partially hardened | ❌ 30 syntheses/IP/hour vs. aggressive preloading. 100% of phonics is TTS with `audioUrl: null` everywhere. No key is exposed to the frontend ✅, but the proxy has no session check. |
 | **4. Data & curriculum safe** | mostly in place | ⚠️ JSON validation is theatre (1 of 144 files). One unsolvable exercise. Slovak is untranslated. |
@@ -1165,7 +1174,7 @@ Grouped by what they block. These genuinely need your answer — I can implement
 
 ### Blocks the Beta date
 1. **Is 2026-09-01 still the target?** Several docs hardcode it.
-2. ~~**Is Slovak in scope for the first Beta?**~~ **ANSWERED — yes.** This is already a standing owner constraint (§2, constraint #3) and drives all of Phase D; recorded here 2026-08-28 so it stops being re-asked. The `lexipaws.sk` credibility problem stands as a *defect* rather than an open question: until Phase D lands, the `.sk` domain promises a Slovak course and serves a Hungarian one.
+2. ~~**Is Slovak in scope for the first Beta?**~~ **ANSWERED — yes.** This is already a standing owner constraint (§2, constraint #3) and drives all of Phase D; recorded here 2026-08-28 so it stops being re-asked. The `lexipaws.sk` credibility problem stands as a *defect* rather than an open question: until Phase D lands, the `.sk` domain promises a Slovak course and serves a Hungarian one. **Superseded 2026-09-24 — no:** the owner decided the first Beta is Hungarian-only and Slovak follows it (§2 constraint #3). Phase D's Slovak work moves after the Beta; in the Beta, the `.sk` defect is handled by a 'coming soon' holding state instead of the Hungarian course.
 3. **Does the invite gate stay for the public Beta**, or does registration open?
 
 ### Blocks content work
@@ -1229,19 +1238,22 @@ These checks re-test the highest-stakes claims. If any output changes, the corre
 # 1. Does save_progress still send only 5 fields? (expect: points, completed, scores, quest_progress, completed_quests_today)
 sed -n '366,372p' src/context/UserContext.tsx
 
-# 2. Does the UPSERT still write all 17 columns?
-sed -n '1059,1065p' api.php
+# 2. Does the UPSERT still write all 17 columns? (line range moved by WP-B0; re-pointed 2026-09-30.
+#    Expect 17 column names in the INSERT list and 16 `= VALUES(...)` lines until WP-B1 shortens the list.)
+sed -n '1183,1202p' api.php
 
 # 3. Is accuracy still hardcoded to 100 at all 5 call sites? (expect 5 lines, all ending ", 100")
 grep -rn "completeLesson(" src/ | grep -v "const completeLesson"
 
-# 4. Does gateway.html exist yet? (expect: no output = still broken)
+# 4. Is the dead gateway.html rewrite still gone? (FIXED @ 450b9dd, WP-A3: expect no output from either command.
+#    Output from grep means the rewrite is back; the file itself was never meant to exist.)
+grep -n 'gateway' .htaccess
 find . -name gateway.html -not -path './node_modules/*'
 
 # 5. Does the invite gate still fail open? (expect: `return ['id' => null, 'error' => null];`)
 sed -n '260,263p' api.php
 
-# 6. Dependency advisories
+# 6. Dependency advisories (expect: "found 0 vulnerabilities" since #266 and #258 merged on 2026-09-24)
 npm audit --omit=dev
 
 # 7. hu/sk content drift (expect: only node3_family_ties.json + stories 5-21)
@@ -1280,7 +1292,8 @@ for h in lexipaws.eu lexipaws.hu lexipaws.sk dev.lexipaws.eu; do
   printf '%-18s ' "$h"; curl -s -m 15 -D - -o /dev/null "https://$h/api.php?action=csrf_token" | grep -i '^set-cookie' || echo 'no cookie (404 until A4)'
 done
 
-# 17. Is the deploy manifest still public on dev? (expect 403 once WP-A3 merges; was 200 + 69,475 bytes on 2026-08-28)
+# 17. Is the deploy manifest denied on dev? (expect "403 199 bytes" — WP-A3 merged 2026-08-29 @ 450b9dd, VERIFIED 2026-09-24
+#     and 2026-09-30. It was 200 + 69,475 bytes on 2026-08-28; a 200 here means the .htaccess deny rule was lost.)
 curl -s -o /dev/null -m 15 -w '%{http_code} %{size_download} bytes\n' https://dev.lexipaws.eu/.ftp-deploy-sync-state.json
 
 # 18. Is the accent still a single non-theme-scoped value? (expect: no --color-accent-in inside the dark block until C1)

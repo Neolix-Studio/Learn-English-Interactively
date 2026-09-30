@@ -33,6 +33,11 @@ libs/PHPMailer/*
 !libs/PHPMailer/LICENSE
 !libs/PHPMailer/VERSION
 
+# Claude Code: .claude/launch.json (the preview server config) is tracked on purpose.
+# Per-machine settings and scratch worktrees stay local.
+.claude/settings.local.json
+.claude/worktrees/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

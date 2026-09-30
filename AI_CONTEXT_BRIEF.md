@@ -2,6 +2,8 @@
 
 > **Purpose.** This file onboards any AI assistant given access to this folder — ChatGPT desktop, a new Claude Code session, anything. Paste the block in §0 to start, or just point the assistant here.
 >
+> **Retired 2026-09-24:** the ChatGPT workflow this file describes (§0, §4, §5) is no longer used — the owner works with Claude Code only. The OPS-claude backlog item replaces it with a root `CLAUDE.md`.
+>
 > **Why it exists.** This repository contains **two different applications**, and most of its documentation describes the wrong one. An assistant that reads the code without this warning will confidently reach wrong conclusions.
 
 ---
@@ -12,12 +14,13 @@ Paste this into a fresh ChatGPT session that has this folder connected:
 
 ```
 You have access to the folder for Lexipaws, a gamified web app that teaches English to Hungarian
-and Slovak speakers. Before answering anything about it, read these three files in full and treat
+and Slovak speakers. Before answering anything about it, read these files in full and treat
 them as ground truth:
 
   1. AI_CONTEXT_BRIEF.md   — this file: constraints, traps, how we work together
   2. SOURCE_OF_TRUTH.md    — verified description of how the code actually works
   3. REMEDIATION_PLAN.md   — the prioritised backlog, split into session-sized work packages
+  4. UX_REVIEW.md          — verified UI/UX review and refactor plan (read before any UI/UX work)
 
 YOUR ROLE
 You are my brainstorming partner and prompt author. You do NOT write production code — Claude Code
@@ -44,7 +47,8 @@ CRITICAL CONTEXT — you will get this wrong without it
 NON-NEGOTIABLE CONSTRAINTS (my decisions — do not relitigate unless I ask)
   1. Mobile-first. Users are on phones. Every layout starts at 320-390px and enhances upward.
   2. The mascot is named Lexi. (Tyler is my real dog; the tyler-*.png files are legacy names.)
-  3. Slovak ships in the first beta, using sibling "hu"/"sk" keys in one data tree.
+  3. The first beta is Hungarian-only (decided 2026-09-24). Slovak follows it as a translation of
+     the Hungarian, using sibling "hu"/"sk" keys in one data tree.
   4. Theme default is `system` — follow the OS. Both light and dark must be correct.
   5. No designer budget. Prefer fixes that reuse assets already on disk.
 
@@ -92,7 +96,7 @@ These are owner decisions. They are **not** derivable from the code, and they ha
 
 1. **Mobile-first.** Target users are on phones. Start every layout at 320–390 px and enhance upward. *The CSS is currently authored desktop-first (38 `max-width` queries vs 16 `min-width`), which is the structural reason mobile keeps breaking — see REMEDIATION_PLAN.md Phase C.*
 2. **The mascot is named Lexi.** (Tyler is the owner's real dog and the origin of the name; the 26 `tyler-*.png` files are legacy filenames.)
-3. **Slovak is in scope for the first Beta.** `data/sk/` was a deliberate placeholder, never real content. The approved approach is sibling `"hu"` / `"sk"` keys in one tree — REMEDIATION_PLAN.md Phase D.
+3. **The first Beta is Hungarian-only; Slovak follows it.** *(Owner decision 2026-09-24; until then this read "Slovak is in scope for the first Beta".)* Slovak is still a translation of the Hungarian version, and until it ships `lexipaws.sk` shows an honest 'coming soon' state instead of the Hungarian course. `data/sk/` was a deliberate placeholder, never real content. The approved approach is sibling `"hu"` / `"sk"` keys in one tree — REMEDIATION_PLAN.md Phase D, now scheduled after the Beta.
 4. **Theme default is `system`** (follow the OS). Not dark-by-default. Both light and dark must be correct.
 5. **No designer budget.** Art is AI-generated; the owner does not draw. Prefer fixes that reuse assets already on disk. Six of the nine recommended art fixes need no new art at all.
 
