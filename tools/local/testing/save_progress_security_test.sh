@@ -35,12 +35,13 @@
 #
 # Exits non-zero if any check fails.
 #
-# WP-B1 note: B1 (stop save_progress destroying 11 columns) must add its own
-# assertions that level, streak_count, streak_shields, unlocked_items,
-# active_theme, earned_xp_per_node, daily_quests_date, active_quests, energy
-# and last_energy_refill survive an autosave that does not mention them.
-# last_active_date is the exception: every save has to keep writing it
-# (group 6), because the cron's gates (group 7) rely on it.
+# Group 4 also holds the WP-B1 and WP-B1b checks (#359): level, streak_count,
+# streak_shields, unlocked_items, active_theme, earned_xp_per_node,
+# daily_quests_date, active_quests, energy and last_energy_refill survive an
+# autosave, a client cannot write them, and a new row gets the same values
+# from signup and from a first save. last_active_date is the exception: every
+# save has to keep writing it (group 6), because the cron's gates (group 7)
+# rely on it. Against the commit before #359 (--ref e6d7345) these checks fail.
 
 set -uo pipefail
 
@@ -356,6 +357,89 @@ if [ "$CODE" = "200" ] && [ "$("${DB[@]}" -e "SELECT COUNT(*) FROM user_progress
 then pass "user with no user_progress row inserts cleanly (no fatal on the INSERT path)"
 else fail "save failed for a user with no progress row (HTTP $CODE)"; fi
 
+# WP-B1 (#359): an autosave changes only what it sends. Every column the client
+# never sends gets a value that no default produces, then the exact payload of
+# the React autosave arrives: five fields (UserContext.tsx).
+D0="$(day 0)"
+"${DB[@]}" <<'SQL'
+UPDATE user_progress SET
+  completed='{"n1":true}', quest_progress='{"q_xp_50":10}', completed_quests_today='[]',
+  level=7, streak_count=12, streak_shields=3, last_active_date='2026-07-01',
+  unlocked_items='["fall"]', active_theme='fall', earned_xp_per_node='{"n1":40}',
+  daily_quests_date='2026-09-01', active_quests='[{"id":"q_xp_50"}]',
+  energy=3, last_energy_refill='2026-09-01 10:00:00'
+WHERE user_id=4;
+SQL
+KEPT_COLUMNS=(level streak_count streak_shields unlocked_items active_theme earned_xp_per_node
+              daily_quests_date active_quests energy last_energy_refill)
+KEPT_VALUES=(7 12 3 '["fall"]' fall '{"n1":40}'
+             2026-09-01 '[{"id":"q_xp_50"}]' 3 '2026-09-01 10:00:00')
+# The names of the kept columns whose value is no longer the seeded one.
+changed_columns() {
+  local i out=""
+  for i in "${!KEPT_COLUMNS[@]}"; do
+    [ "$(col "$1" "${KEPT_COLUMNS[$i]}")" = "${KEPT_VALUES[$i]}" ] || out="$out ${KEPT_COLUMNS[$i]}"
+  done
+  printf '%s' "${out# }"
+}
+whole_row() { "${DB[@]}" -e "SELECT * FROM user_progress WHERE user_id=$1"; }
+
+AUTOSAVE='{"points":1060,"completed":{"n1":true,"n2":true},"scores":{"bones":61,"streak_shields":1,"node_state":{"n1":{"current_level":4}}},"quest_progress":{"q_xp_50":50},"completed_quests_today":["q_xp_50"]}'
+post 4 "$AUTOSAVE" >/dev/null
+for i in "${!KEPT_COLUMNS[@]}"; do
+  GOT="$(col 4 "${KEPT_COLUMNS[$i]}")"
+  if [ "$GOT" = "${KEPT_VALUES[$i]}" ]; then pass "${KEPT_COLUMNS[$i]} survives an autosave that does not send it"
+  else fail "${KEPT_COLUMNS[$i]} is [$GOT] after an autosave, it was [${KEPT_VALUES[$i]}]"; fi
+done
+ROW="$("${DB[@]}" -e "SELECT CONCAT_WS('|',points,completed,scores,quest_progress,completed_quests_today,last_active_date) FROM user_progress WHERE user_id=4")"
+if [ "$ROW" = "1060|{\"n1\":true,\"n2\":true}|{\"bones\":61,\"streak_shields\":1,\"node_state\":{\"n1\":{\"current_level\":4}}}|{\"q_xp_50\":50}|[\"q_xp_50\"]|$D0" ]
+then pass "the five fields it does send are stored, and last_active_date is today"
+else fail "the sent fields were stored as: $ROW"; fi
+
+# WP-B1b (#359): a client cannot write the other columns either. Each payload
+# is the same autosave with extra keys, so nothing at all may change.
+BEFORE="$(whole_row 4)"
+for EXTRA in '"active_theme":"halloween"' \
+             '"streak_shields":999999' \
+             '"energy":0' \
+             '"level":99,"unlocked_items":["halloween","fall"]' \
+             '"streak_count":365,"daily_quests_date":"2031-01-01","active_quests":[{"id":"x"}],"last_energy_refill":"2031-01-01 00:00:00","earned_xp_per_node":{"n1":9999}'; do
+  post 4 "${AUTOSAVE%?},$EXTRA}" >/dev/null
+  if [ "$(whole_row 4)" = "$BEFORE" ]; then pass "an autosave carrying {$EXTRA} leaves the whole row unchanged"
+  else fail "{$EXTRA} changed the row (columns:$(changed_columns 4))"; fi
+done
+# Sent on their own, the same keys change none of the ten columns. (Such a
+# payload still empties the five fields a client owns, as any payload that
+# leaves those out always has.)
+for BARE in '{"active_theme":"halloween"}' '{"streak_shields":999999}' '{"energy":0}' \
+            '{"level":99,"unlocked_items":["halloween","fall"]}'; do
+  post 4 "$BARE" >/dev/null
+done
+CHANGED="$(changed_columns 4)"
+if [ -z "$CHANGED" ]; then pass "the same keys sent on their own change none of the ten columns"
+else fail "bare payloads changed: $CHANGED"; fi
+
+# One default set for a new row, whichever path inserts it: the first save of
+# a user with no row (here with every column in the payload), and signup.
+NEW_ROW='1|0|0|system'
+new_row() { "${DB[@]}" -e "SELECT CONCAT_WS('|',level,streak_count,streak_shields,active_theme) FROM user_progress WHERE user_id=$1"; }
+"${DB[@]}" -e "DELETE FROM user_progress WHERE user_id=3;
+               INSERT INTO beta_invites (invite_code_hash) VALUES (SHA2('SPTEST-INVITE', 256));"
+post 3 '{"points":10,"completed":{"n1":true},"scores":{"bones":5},"level":99,"streak_count":365,"streak_shields":999999,"active_theme":"halloween","unlocked_items":["halloween"],"earned_xp_per_node":{"n1":9999},"daily_quests_date":"2031-01-01","active_quests":[{"id":"x"}],"energy":0,"last_energy_refill":"2031-01-01 00:00:00"}' >/dev/null
+FIRST="$(new_row 3)"
+REST="$("${DB[@]}" -e "SELECT CONCAT_WS('|',unlocked_items,earned_xp_per_node,IFNULL(daily_quests_date,'<NULL>'),active_quests,energy,last_energy_refill < '2030-01-01') FROM user_progress WHERE user_id=3")"
+if [ "$FIRST" = "$NEW_ROW" ] && [ "$REST" = '[]|{}|<NULL>|[]|5|1' ]
+then pass "a first save creates the row with the defaults ($NEW_ROW), whatever the client sends"
+else fail "a first save created level|streak|shields|theme [$FIRST] and [$REST]"; fi
+
+curl -s -o /dev/null -H "Content-Type: application/json" \
+     -d '{"email":"signup@test.local","password":"Sptest-1234","username":"signuptester","beta_invite_code":"SPTEST-INVITE"}' \
+     "$BASE?action=signup"
+SIGNED="$("${DB[@]}" -e "SELECT CONCAT_WS('|',up.level,up.streak_count,up.streak_shields,up.active_theme) FROM user_progress up JOIN users u ON u.id = up.user_id WHERE u.email='signup@test.local'")"
+if [ "$SIGNED" = "$NEW_ROW" ] && [ "$SIGNED" = "$FIRST" ]
+then pass "signup and a first save give a new row the same defaults"
+else fail "signup created [$SIGNED], a first save created [$FIRST] (expected $NEW_ROW for both)"; fi
+
 # ============================================ 5. paths moved by the B0 refactor
 echo
 echo "5. logic moved out of handleSaveProgress still behaves"
@@ -368,14 +452,17 @@ if [ "$L1" = "2|40|40" ] && [ "$L2" = "2|70|70" ]
 then pass "awardLeagueXp: +40 then +30 accumulates to 70, league_id 2 at 1040 points"
 else fail "league XP wrong: after first save [$L1], after second [$L2] (expected 2|40|40 then 2|70|70)"; fi
 
-"${DB[@]}" -e "UPDATE users SET notification_preferences='{\"milestones\":false}' WHERE id=4;
-               UPDATE user_progress SET streak_count=6 WHERE user_id=4;"
-START="$(python3 -c 'import time;print(time.time())')"
+# The milestone e-mail used to fire when the client sent a higher streak_count
+# than the stored one. That value is ignored now (WP-B1b), so a client cannot
+# raise the streak or make the server send mail. A mail attempt would show up
+# in the server log: no SMTP password is configured here.
+"${DB[@]}" -e "UPDATE user_progress SET streak_count=6 WHERE user_id=4;"
+mail_attempts() { grep -c 'SMTP_PASS is not configured' "$SANDBOX/php-server.log"; }
+ATTEMPTS="$(mail_attempts)"
 CODE="$(post 4 '{"points":1080,"streak_count":7,"scores":{"bones":55}}')"
-ELAPSED="$(python3 -c 'import time,sys;print(round(time.time()-float(sys.argv[1]),3))' "$START")"
-if [ "$CODE" = "200" ] && [ "$(col 4 streak_count)" = "7" ]
-then pass "sendStreakMilestoneEmails: streak 6->7 with milestones=false succeeds without SMTP (${ELAPSED}s)"
-else fail "milestone path broke the save (HTTP $CODE)"; fi
+if [ "$CODE" = "200" ] && [ "$(col 4 streak_count)" = "6" ] && [ "$(mail_attempts)" = "$ATTEMPTS" ]
+then pass "sendStreakMilestoneEmails: a streak_count of 7 from the client is ignored and sends no milestone e-mail"
+else fail "client streak_count: HTTP $CODE, stored streak [$(col 4 streak_count)], mail attempts $ATTEMPTS -> $(mail_attempts)"; fi
 
 # =================================================== 6. the activity-day writer
 echo
@@ -417,12 +504,11 @@ else fail "lexipaws_activity_date() returned [$GOT]"; fi
 echo
 echo "7. cron_notifications.php leaves stale rows alone and keys mail on activity"
 seed
-# User 4 gets today's date from a real save. Until WP-B1 that save also zeroes
-# streak_count, so the streak is put back by hand: the row then looks the way
-# a saved-today row will after B1, and only the date keeps the cron away.
+# User 4 gets today's date from a real save. The save keeps the streak and the
+# shields (WP-B1), so only the date keeps the cron away from this row.
+"${DB[@]}" -e "UPDATE user_progress SET streak_count=5, streak_shields=2 WHERE user_id=4"
 post 4 '{"points":1010,"scores":{"bones":55}}' >/dev/null
 "${DB[@]}" <<SQL
-UPDATE user_progress SET streak_count=5, streak_shields=2 WHERE user_id=4;
 INSERT INTO users (id, email, password_hash, username, last_login_at) VALUES
   (11, 'legacy@test.local',   'x', 'legacytester',   '2026-07-01 08:00:00'),
   (12, 'neverset@test.local', 'x', 'neversettester', NOW()),

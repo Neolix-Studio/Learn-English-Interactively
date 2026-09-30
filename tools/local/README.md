@@ -82,6 +82,7 @@ share one database, so there is no safe remote target for write tests.
 | Group | What it proves |
 |---|---|
 | 1-5 | `save_progress` clamps an inflated payload, cannot be disarmed, is throttled, and leaves honest traffic alone (WP-B0). |
+| 4, 5 | An autosave leaves the ten columns it does not send as they were, a client cannot write them, signup and a first save create a row with the same defaults, and a `streak_count` from the client is ignored and sends no mail (WP-B1 and WP-B1b, #359). |
 | 6 | Every successful save sets `last_active_date` to the learner's day in Europe/Budapest and ignores a date sent by the client (#358). |
 | 7 | The cron leaves legacy, never-stamped and saved-today rows alone, takes one shield per missed day, and keys the inactivity e-mail on activity, not on the last login (#358). |
 | 8 | A `last_active_date` from before the cut-off day is never acted on (#358). |
@@ -99,7 +100,8 @@ Requires `mariadb` from Homebrew (`brew install mariadb`); the server does not
 need to be running. `--ref` is how you show a check detects the bug it claims
 to: run it against `dev` before WP-B0 (`--ref 450b9dd`) and checks 1-3 fail
 while 4-5 pass; against the commit before #358 (`--ref 2408107`) groups 1-5
-pass and 6-8 fail. With `--ref` the PHP files and `templates/` come from that
+pass and 6-8 fail; against the commit before #359 (`--ref e6d7345`) 21 checks
+fail, 19 of them in group 4. With `--ref` the PHP files and `templates/` come from that
 ref; the migrations always come from the working tree.
 
 **In CI.** The verify job of `verify-deploy.yml` runs the suite on every push,

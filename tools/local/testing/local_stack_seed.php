@@ -79,7 +79,7 @@ $pdo->prepare('INSERT INTO user_leagues (user_id, league_id, weekly_xp, monthly_
 // A brand-new learner: exactly the rows handleSignup writes.
 $insertUser->execute([seed_env('SEED_NEW_EMAIL'), $passwordHash, seed_env('SEED_NEW_USERNAME'), 'unknown', null]);
 $newId = (int)$pdo->lastInsertId();
-$insertProgress->execute([$newId, 0, '{}', '{}', 1, 0, 2, null]);
+$insertProgress->execute([$newId, 0, '{}', '{}', 1, 0, 0, null]);
 $insertSubscription->execute([$newId]);
 
 // An unused invite code, hashed the way lockBetaInviteForSignup looks it up.

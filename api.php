@@ -557,10 +557,14 @@ function handleSignup(PDO $pdo, array $data) {
         $completed = isset($guestMigration['completed']) ? json_encode($guestMigration['completed']) : json_encode(new stdClass());
         $scores = encodeScores($guestMigration['scores'] ?? null);
 
+        $defaults = newProgressRowDefaults();
         $stmtProgress = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, active_theme)
-            VALUES (?, ?, ?, ?, 1, 0, 2, 'system')");
-        $stmtProgress->execute([$userId, $points, $completed, $scores]);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmtProgress->execute([
+            $userId, $points, $completed, $scores,
+            $defaults['level'], $defaults['streak_count'], $defaults['streak_shields'], $defaults['active_theme']
+        ]);
 
         $stmtSub = $pdo->prepare("INSERT INTO user_subscriptions (user_id, role, subscription_tier) VALUES (?, 'user', 'free')");
         $stmtSub->execute([$userId]);
@@ -666,14 +670,16 @@ function mergeGuestProgressIntoUser(PDO $pdo, int $userId, array $guestMigration
         $progress = $stmt->fetch();
 
         if (!$progress) {
+            $defaults = newProgressRowDefaults();
             $stmtInsert = $pdo->prepare("INSERT INTO user_progress
                 (user_id, points, completed, scores, level, streak_count, streak_shields, active_theme)
-                VALUES (?, ?, ?, ?, 1, 0, 2, 'system')");
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             $stmtInsert->execute([
                 $userId,
                 $guestPoints,
                 json_encode($guestCompleted),
-                json_encode($guestScores)
+                json_encode($guestScores),
+                $defaults['level'], $defaults['streak_count'], $defaults['streak_shields'], $defaults['active_theme']
             ]);
             $pdo->commit();
             return;
@@ -971,25 +977,41 @@ function encodeScores($scores): string {
     return json_encode($scores);
 }
 
+/**
+ * What a new user_progress row holds in the columns a client may not write.
+ * This is the only default set: signup, the guest-merge insert and the first
+ * save_progress of a user with no row all take their values from here.
+ */
+function newProgressRowDefaults(): array {
+    return [
+        'level' => 1,
+        'streak_count' => 0,
+        'streak_shields' => 0,
+        'last_active_date' => null,
+        'unlocked_items' => json_encode([]),
+        'active_theme' => 'system',
+        'earned_xp_per_node' => json_encode(new stdClass()),
+        'daily_quests_date' => null,
+        'active_quests' => json_encode([]),
+        'energy' => 5,
+        'last_energy_refill' => date('Y-m-d H:i:s')
+    ];
+}
+
+/**
+ * Reads the five fields a client may write and nothing else. Every other
+ * column gets its new-row default, which handleSaveProgress uses only when it
+ * inserts a row: a level, streak, shield count, theme, item list, quest set or
+ * energy value sent by a client is ignored.
+ */
 function parseProgressData(array $data) {
     return [
         'points' => isset($data['points']) ? intval($data['points']) : 0,
         'completed' => isset($data['completed']) ? json_encode($data['completed']) : json_encode(new stdClass()),
         'scores' => encodeScores($data['scores'] ?? null),
-        'level' => isset($data['level']) ? intval($data['level']) : 1,
-        'streak_count' => isset($data['streak_count']) ? intval($data['streak_count']) : 0,
-        'streak_shields' => isset($data['streak_shields']) ? intval($data['streak_shields']) : 0,
-        'last_active_date' => !empty($data['last_active_date']) ? $data['last_active_date'] : null,
-        'unlocked_items' => isset($data['unlocked_items']) ? json_encode($data['unlocked_items']) : json_encode([]),
-        'active_theme' => !empty($data['active_theme']) ? $data['active_theme'] : 'default',
-        'earned_xp_per_node' => isset($data['earned_xp_per_node']) ? json_encode($data['earned_xp_per_node']) : json_encode(new stdClass()),
-        'daily_quests_date' => !empty($data['daily_quests_date']) ? $data['daily_quests_date'] : null,
-        'active_quests' => isset($data['active_quests']) ? json_encode($data['active_quests']) : json_encode([]),
         'quest_progress' => isset($data['quest_progress']) ? json_encode($data['quest_progress']) : json_encode(new stdClass()),
-        'completed_quests_today' => isset($data['completed_quests_today']) ? json_encode($data['completed_quests_today']) : json_encode([]),
-        'energy' => isset($data['energy']) ? intval($data['energy']) : 5,
-        'last_energy_refill' => !empty($data['last_energy_refill']) ? $data['last_energy_refill'] : date('Y-m-d H:i:s')
-    ];
+        'completed_quests_today' => isset($data['completed_quests_today']) ? json_encode($data['completed_quests_today']) : json_encode([])
+    ] + newProgressRowDefaults();
 }
 
 function clampNodeState(array $incomingScores, array $currentScores, $userId): array {
@@ -1064,7 +1086,6 @@ function clampProgressAgainstStored(array $parsed, $currentDbProgress, $userId):
         }
     }
 
-    $parsed['energy'] = max(0, min(5, intval($parsed['energy'])));
     $parsed['scores'] = clampScores($parsed['scores'], $currentDbProgress, $userId);
 
     return $parsed;
@@ -1185,6 +1206,10 @@ function handleSaveProgress(PDO $pdo, array $data) {
         // column, so last_active_date has to stay in the UPDATE list below.
         $parsed['last_active_date'] = lexipaws_activity_date();
 
+        // The INSERT sets every column, for a user who has no row yet. The
+        // UPDATE list names only what a save may change on an existing row:
+        // the five fields the client sends and the activity day. A column
+        // added to it is overwritten with its new-row default on every save.
         $stmt = $pdo->prepare("INSERT INTO user_progress
             (user_id, points, completed, scores, level, streak_count, streak_shields, last_active_date, unlocked_items, active_theme, earned_xp_per_node, daily_quests_date, active_quests, quest_progress, completed_quests_today, energy, last_energy_refill)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -1192,19 +1217,9 @@ function handleSaveProgress(PDO $pdo, array $data) {
             points = VALUES(points),
             completed = VALUES(completed),
             scores = VALUES(scores),
-            level = VALUES(level),
-            streak_count = VALUES(streak_count),
-            streak_shields = VALUES(streak_shields),
             last_active_date = VALUES(last_active_date),
-            unlocked_items = VALUES(unlocked_items),
-            active_theme = VALUES(active_theme),
-            earned_xp_per_node = VALUES(earned_xp_per_node),
-            daily_quests_date = VALUES(daily_quests_date),
-            active_quests = VALUES(active_quests),
             quest_progress = VALUES(quest_progress),
-            completed_quests_today = VALUES(completed_quests_today),
-            energy = VALUES(energy),
-            last_energy_refill = VALUES(last_energy_refill)");
+            completed_quests_today = VALUES(completed_quests_today)");
 
         $stmt->execute([
             $userId, $parsed['points'], $parsed['completed'], $parsed['scores'],
@@ -1214,6 +1229,8 @@ function handleSaveProgress(PDO $pdo, array $data) {
         ]);
 
         awardLeagueXp($pdo, $userId, $parsed, $currentDbProgress);
+        // Sends nothing for now: a streak_count from the client is ignored, and
+        // no server code counts the streak yet, so it never rises here (WP-B3).
         sendStreakMilestoneEmails($currentDbProgress, $parsed);
 
         echo json_encode(['success' => true]);
