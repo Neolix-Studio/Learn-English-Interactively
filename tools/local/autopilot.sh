@@ -15,6 +15,8 @@
 
 set -u
 cd "$(dirname "$0")/../.." || exit 1
+# The native installer puts claude in ~/.local/bin, which a shell may not have on its PATH yet.
+export PATH="$HOME/.local/bin:$PATH"
 
 MAX="${1:-10}"
 LOG_DIR="$HOME/Library/Logs/lexipaws-autopilot"
