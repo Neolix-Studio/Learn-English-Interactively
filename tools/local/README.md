@@ -7,10 +7,63 @@ These scripts are for local maintenance, previews, and one-off asset work. They 
 - `assets/`: one-off image/audio/transcript helper scripts.
 - `email/`: local email preview generators.
 - `maintenance/`: local or token-protected database/user maintenance scripts.
-- `testing/`: integration tests that run the PHP API against a throwaway database.
+- `testing/`: the one-command local stack, and integration tests, both running the PHP API against a throwaway database.
 - `ux-shots/`: headless-Chrome screenshots of the React app at every Beta viewport, in light and dark.
 
 Use maintenance scripts carefully. Some can modify or destroy database data.
+
+## Local stack
+
+`testing/local_stack.sh` runs the real PHP backend behind the real UI on a
+**throwaway MariaDB instance it creates and destroys itself**. Use it whenever a
+change has to be seen working end to end: `dev` and production share one
+database, and the `db_config.php` in the repo root holds its live credentials,
+so a plain `php -S` from the repo root writes to production data.
+
+```
+./tools/local/testing/local_stack.sh up        # start, seed, print the logins
+npm run dev                                    # then open http://app.localhost:5173
+./tools/local/testing/local_stack.sh sync      # after editing PHP or adding a migration
+./tools/local/testing/local_stack.sh sql "SELECT user_id, points FROM user_progress"
+./tools/local/testing/local_stack.sh status    # is it up? prints the logins again
+./tools/local/testing/local_stack.sh down      # stop everything, delete the data
+```
+
+What `up` does, in about ten seconds:
+
+- Copies the deployable PHP (the list `scripts/build_release.js` ships) into
+  `/tmp/lexipaws-local-stack/app` and writes a config of its own there. The
+  repo's `db_config.php` is never read, copied or written.
+- Starts a MariaDB with its data in the same directory, reachable only through
+  a unix socket (no TCP port), and runs `php migrate.php` from zero.
+- Seeds, with `testing/local_stack_seed.php`: a **returning learner** (1,240 XP,
+  streak 12, three nodes done, five weak words at A1), a **new learner** (0 XP),
+  and one **unused invite code**. `up` prints the e-mail addresses, the shared
+  password and the invite link.
+- Starts `php -S 127.0.0.1:8000` - the address `vite.config.ts` proxies to -
+  from the sandbox, with `open_basedir` set to the stack directory, so PHP
+  cannot open any file in the repo.
+
+Things to know:
+
+- **The sandbox is a copy.** PHP edits in the repo are served only after
+  `sync`, which also applies new migrations. Frontend edits need nothing: Vite
+  serves them as usual. `down` then `up` gives a fresh database.
+- **Use `http://app.localhost:5173`**, not `localhost:5173`: on plain
+  `localhost` the app switches its auth guards off. The PHP allow-lists do not
+  know that host, so the sandbox maps its `Origin` to `http://localhost:5173`
+  before each request (`origin_shim.php`); no other origin is mapped.
+- **No outbound calls.** The generated config has no TTS key, no SMTP password
+  and no Slack webhook: lesson audio falls back to the browser's voice, and
+  e-mails (welcome, password reset) are logged as not sent in
+  `php-server.log`.
+- `up` refuses to start while anything else listens on `127.0.0.1:8000`, since
+  that could be a `php -S` on the live database.
+- `down` deletes only a directory this script created. After a reboot `/tmp`
+  is empty and the stack is simply gone; run `up` again.
+- Requires `php` and `mariadb` from Homebrew (`brew install mariadb`); the
+  MariaDB service does not need to be running. `LEXIPAWS_STACK_DIR` moves the
+  directory (keep it short: unix sockets have a path limit).
 
 ## Testing
 

@@ -194,6 +194,19 @@ No `LICENSE`, `SECURITY.md`, `CONTRIBUTING.md`, `CODEOWNERS`, issue/PR templates
 
 Three processes. `vite.config.ts:9-25` proxies exactly four paths to `127.0.0.1:8000`.
 
+**Use the local stack (added 2026-09-30, #355).** `dev` and production share one database and the `db_config.php` on this machine holds its live credentials, so the by-hand recipe further down writes to production data. `tools/local/testing/local_stack.sh` starts the same three processes on a throwaway database instead:
+
+```bash
+./tools/local/testing/local_stack.sh up      # throwaway MariaDB + migrations + seeds + php -S 127.0.0.1:8000
+npm run dev                                  # then http://app.localhost:5173 (real auth guards)
+./tools/local/testing/local_stack.sh sync    # after editing PHP: the backend is a sandbox COPY
+./tools/local/testing/local_stack.sh down    # stop, delete the data
+```
+
+It serves a copy of the deployable PHP from `/tmp/lexipaws-local-stack/app` with a generated config and `open_basedir` confined to that directory, never reading the repo's `db_config.php`; MariaDB listens on a unix socket only. `up` seeds a returning learner (1,240 XP, streak 12, five weak words), a new learner and an unused invite code, and prints the logins. No TTS key, SMTP password or Slack webhook is configured, so nothing leaves the machine. Details: `tools/local/README.md`.
+
+**By hand, from scratch** (a machine with no `db_config.php` yet; line 3 of the recipe overwrites an existing one):
+
 ```bash
 cd "/Users/ladislav/Documents/Documents - Ladislav’s MacBook Pro/Neolix Studio/Learn English Website with NeolixStudio"
 npm ci
@@ -207,6 +220,7 @@ npm run dev                              # terminal B — http://localhost:5173
 **Traps, all confirmed by reading the code:**
 
 - **On `localhost`, every auth guard is off.** `isLocalDevHost()` (`devEnvironment.ts:1-3`) checks only the hostname string, so guests reach every guarded route (`App.tsx:37`) and `Home.tsx:61` swaps the CTAs for a "Localhost teszt mód" panel. There is no `import.meta.env.DEV` reinforcement — a tunnel or hosts-file alias resolving to `localhost` would open staging the same way.
+- **`http://app.localhost:5173` keeps the guards on, but PHP rejects its POSTs.** That host is not in `$allowed_origins` (`api.php:7-18`) or `security_allowed_origins()` (`security.php:22-35`), so against a plain `php -S` every POST, login included, returns 403 "Invalid request origin." The local stack maps that one origin to `http://localhost:5173` inside its sandbox; production code is unchanged.
 - **`/report_problem.php` is not in the proxy list** but `ReportProblemModal.tsx:56` posts to it. Report-a-problem is broken under `npm run dev`. Same gap for `/submit_feedback.php` and `/audio/`.
 - **Curriculum JSON is not fetched at runtime.** `roadmapLoader.ts:25-26` and `storyLoader.ts:17` use `import.meta.glob(…, { eager: true })`. Editing `data/` needs a rebuild/HMR cycle, not a refresh.
 - The `db_config.php` currently on this machine defines only `DB_*` and `SMTP_*`. Every consumer guards with `defined()`, so the app boots — but TTS errors out and password reset throws (`api.php:237`).
@@ -220,6 +234,7 @@ npm run dev                              # terminal B — http://localhost:5173
 | `npm run validate:json` | Parses 144 files; applies a real schema check to **one** (`data/quests.json`). Prints "144/144 matched known schema checks" regardless. |
 | `npm run security:php` | 4-pattern line-regex smoke scan over 20 PHP files. Exits 0. |
 | `npm run package:release` | Wipes and rebuilds `release/` (~38 MB). |
+| `./tools/local/testing/local_stack.sh up` | Real `api.php` behind `npm run dev` on a **throwaway MariaDB** (socket only), seeded with two learners, an invite code and weak words; `php -S 127.0.0.1:8000` serves a sandbox copy that cannot open repo files. `sync` re-copies the PHP and applies new migrations, `sql "…"` queries the database, `status` reprints the logins, `down` stops everything and deletes the data. Added 2026-09-30 (#355). |
 | `node tools/local/ux-shots/matrix.mjs --path /dashboard --preset returning-guest` | Screenshots one route in headless Chrome at 320×568, 360×800, 390×844, 768×1024 and 1280×800, light and dark (10 PNGs, git-ignored `out/`). Needs only `npm run dev`; **never starts PHP and no request reaches it** — every backend call is answered from a mock or as "backend down" — and GA4 and Headway are blocked. `shot.mjs` beside it takes one capture or a scripted flow. Added 2026-09-30 (#354); see `tools/local/ux-shots/README.md`. |
 
 ### Current build output

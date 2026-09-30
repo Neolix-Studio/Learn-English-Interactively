@@ -86,6 +86,9 @@ fault in the tool: `--lang sk` does reach the app (`guest_base_language` becomes
 | `http://localhost:5173` (default) | Dev mode: auth guards are off and Home shows a "Localhost teszt mód" panel instead of the real buttons. With no mock the app runs as a **guest** (progress in `localStorage`). |
 | `http://app.localhost:5173` | Behaves like production: the real Home buttons and the real auth guards. Use it with a mock to be a **logged-in learner**. Chrome resolves `*.localhost` by itself; nothing to set up. |
 
+This tool always answers the backend from a mock. To click through the app against the real PHP
+backend instead, in an ordinary browser, start `../testing/local_stack.sh up` (see `../README.md`).
+
 ## Presets
 
 `--preset NAME` picks the host, the `localStorage` seed and the backend mock in one go
