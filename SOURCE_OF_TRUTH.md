@@ -5,7 +5,7 @@
 > **Audited:** 2026-08-28 · **Against commit:** `7b2a8f2` (2026-07-27) · **Branch:** `codex/mobile-ui-audit`
 > **Method:** 13 parallel subsystem readers + an adversarial verification pass. Every claim below carries a `file:line`. Claims that survived adversarial re-checking are unmarked; anything softer is labelled ⚠️ *unverified*.
 >
-> **Owner decisions recorded:** 2026-08-28 — see [§12.1](#121-settled-design-decisions--owner-2026-08-28) (accent, typeface, mascot), [§6](#matching-what-ships-and-what-does-not--owner-2026-08-28) (matching), [§10](#session--auth) (HTTPS redirect) and [§20](#full-release-readiness-beyond-beta) (exams as a full-release gate); 2026-09-30 — [§21](#21-open-questions-for-the-owner) (UX Q13: the currency is 'Lexi-falat', the 'LexiPaws score' screens are deleted; UX Q10: the streak rule, the shield cap of 3 and the push timing; UX Q2: all ages in the Beta with a parent's consent under 16, under-18s visible on public boards; UX Q3: what the landing may promise; UX Q6: no English glosses in the chrome, informal 'te' except legal). **Decisions are not audit findings** — they describe what the product *will* be, not what the code does today, and each names the change it implies. Anything a decision cannot settle from the repo alone is marked ⚠️ *needs live verification*.
+> **Owner decisions recorded:** 2026-08-28 — see [§12.1](#121-settled-design-decisions--owner-2026-08-28) (accent, typeface, mascot), [§6](#matching-what-ships-and-what-does-not--owner-2026-08-28) (matching), [§10](#session--auth) (HTTPS redirect) and [§20](#full-release-readiness-beyond-beta) (exams as a full-release gate); 2026-09-30 — [§21](#21-open-questions-for-the-owner) (UX Q13: the currency is 'Lexi-falat', the 'LexiPaws score' screens are deleted; UX Q10: the streak rule, the shield cap of 3 and the push timing; UX Q2: all ages in the Beta with a parent's consent under 16, under-18s visible on public boards; UX Q3: what the landing may promise; UX Q6: no English glosses in the chrome, informal 'te' except legal; UX Q12: locks stay hard in the Beta). **Decisions are not audit findings** — they describe what the product *will* be, not what the code does today, and each names the change it implies. Anything a decision cannot settle from the repo alone is marked ⚠️ *needs live verification*.
 >
 > **Status catch-up:** 2026-09-30, against `origin/dev` @ `c8c9976`. Three things this audit reported have since been fixed on `dev` and are marked where they appear: the deploy hardening (WP-A3, `450b9dd`), the `save_progress` clamp bypass and rate limit (WP-B0, `92b6f18`), and the two HIGH dependency advisories (`c4c6609`, `c8c9976`). The rows are kept and dated rather than deleted ([§22 B](#b-update-protocol)). Everything not marked is still as audited.
 
@@ -1376,6 +1376,10 @@ The UI/UX review keeps its own owner questions (`Q1`–`Q15`, `UX_REVIEW.md` §7
   - **Register: informal 'te' everywhere except the legal pages**, which keep formal 'Ön'. As recommended.
   - **What it changes, and where:** nothing in the code yet. UX0c-2 (#419) removes the glosses; D3b (#402) writes both rules into the voice sheet; UX0c-4a (#421) flags every 'Ön' outside legal and every gloss in its first-pass list. The in-app language switch and the Slovak register stay with Q5.
 
+- ~~**UX Q12 — Can learners skip ahead on the path?**~~ **ANSWERED 2026-09-30 (#369).**
+  - **No, not in the Beta: locks stay hard.** Nodes open in order; a locked node never starts a lesson or spends energy. As recommended.
+  - **Later:** skipping ahead will mean passing the WP-F4 module exam (`UX_REVIEW.md` C-14), not a second, separate gate.
+  - **What it changes, and where:** nothing in the code yet. UX0d-2 (#390) stops locked nodes from starting lessons (C68).
 ---
 
 ## 22. Keeping this file honest
