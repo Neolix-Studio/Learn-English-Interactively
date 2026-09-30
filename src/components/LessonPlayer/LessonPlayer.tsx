@@ -78,6 +78,33 @@ function enrichQuestion(
   };
 }
 
+function getCorrectAnswerText(question: QuestionData, t: (key: string) => string): string {
+  switch (question.type) {
+    case 'true_false': {
+      const expected = question.answer ?? question.correctAnswer;
+      const isTrue = typeof expected === 'string' ? expected.toLowerCase() === 'true' : !!expected;
+      return isTrue ? t('lesson.answer_true') : t('lesson.answer_false');
+    }
+    case 'phonics_listen_choose':
+      return (question.options || []).find((option: any) => option.correct)?.text || '';
+    case 'phonics_compare':
+      return question.isSame ? t('lesson.answer_same_word') : t('lesson.answer_different_words');
+    case 'phonics_match':
+      return (question.pairs || []).map((pair: any) => pair.text).join(', ');
+    case 'phonics_speak':
+      return question.word || '';
+    case 'fill_blanks':
+    case 'sentence_builder': {
+      const expected = question.correctAnswer ?? question.answer ?? '';
+      return String(Array.isArray(expected) ? expected[0] : expected).split('/')[0];
+    }
+    default: {
+      const expected = question.correctAnswer ?? question.answer ?? '';
+      return Array.isArray(expected) ? expected.join(', ') : String(expected);
+    }
+  }
+}
+
 function readLegacyCompletedLessons(lessonNodeId: string) {
   try {
     const localProgStr = localStorage.getItem('user_local_progress');
@@ -224,7 +251,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const handleSkipExercise = () => {
     stopAudio();
     setFeedback('skipped');
-    playSoundEffect('success');
+    playSoundEffect('warning');
   };
 
   const isInterstitial = currentQuestion?.type === 'morale_boost' || currentQuestion?.type === 'harder_encouragement';
@@ -483,40 +510,38 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         {renderExercise()}
       </main>
 
-      <footer className={`interactive-footer ${feedback !== 'none' ? 'has-feedback' : ''}`} style={{
+      <footer className={`interactive-footer ${feedback !== 'none' ? 'has-feedback' : ''}`} data-state={feedback} style={{
         padding: '1.5rem 2rem',
         borderTop: 'var(--glass-border)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        background: feedback === 'correct' ? 'rgba(16, 185, 129, 0.1)' : feedback === 'incorrect' ? 'rgba(239, 68, 68, 0.1)' : feedback === 'skipped' ? 'rgba(245, 158, 11, 0.1)' : 'var(--color-bg-surface)',
-        transition: 'background 0.3s'
+        justifyContent: 'space-between'
       }}>
-        <div className="interactive-feedback-slot" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+        <div className="interactive-feedback-slot" role="status" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           {feedback === 'correct' && (
-            <div className="interactive-feedback-message" style={{ color: '#059669', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ width: '40px', height: '40px', background: '#10B981', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✓</div>
-              <div>
+            <div className="interactive-feedback-message" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div className="interactive-feedback-icon" aria-hidden="true">✓</div>
+              <div className="interactive-feedback-text">
                 <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lesson.correct_title')}</h3>
-                <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>{t('lesson.correct_desc')}</p>
+                <p style={{ margin: 0, fontSize: '0.9rem' }}>{t('lesson.correct_desc')}</p>
               </div>
             </div>
           )}
           {feedback === 'incorrect' && (
-            <div className="interactive-feedback-message" style={{ color: '#B91C1C', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-               <div style={{ width: '40px', height: '40px', background: '#EF4444', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✖</div>
-               <div>
+            <div className="interactive-feedback-message" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+               <div className="interactive-feedback-icon" aria-hidden="true">✖</div>
+               <div className="interactive-feedback-text">
                  <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lesson.incorrect_title')}</h3>
-                 <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>{t('lesson.incorrect_desc')} <strong>{currentQuestion.correctAnswer || currentQuestion.answer}</strong></p>
+                 <p style={{ margin: 0, fontSize: '0.9rem' }}>{t('lesson.incorrect_desc')} <strong>{getCorrectAnswerText(currentQuestion, t)}</strong></p>
                </div>
             </div>
           )}
           {feedback === 'skipped' && (
-            <div className="interactive-feedback-message" style={{ color: '#D97706', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ width: '40px', height: '40px', background: '#F59E0B', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>✓</div>
-              <div>
+            <div className="interactive-feedback-message" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div className="interactive-feedback-icon" aria-hidden="true">»</div>
+              <div className="interactive-feedback-text">
                 <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{t('lesson.skipped_title')}</h3>
-                <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>{t('lesson.skipped_desc')}</p>
+                <p style={{ margin: 0, fontSize: '0.9rem' }}>{t('lesson.skipped_desc')}</p>
               </div>
             </div>
           )}

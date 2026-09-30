@@ -56,6 +56,11 @@ class AudioSynthesizer {
         this.playTone(600, 'sine', 0.05);
     }
 
+    playWarning() {
+        this.playTone(392, 'triangle', 0.12);
+        setTimeout(() => this.playTone(392, 'triangle', 0.18), 140);
+    }
+
     playSuccess() {
         this.playTone(440, 'sine', 0.1);
         setTimeout(() => this.playTone(554.37, 'sine', 0.1), 100);
@@ -243,11 +248,13 @@ export function preloadTTS(texts: string[]): void {
     });
 }
 
-export function playSoundEffect(type: 'success' | 'fail' | 'pop') {
+export function playSoundEffect(type: 'success' | 'fail' | 'warning' | 'pop') {
     if (type === 'success') {
         AudioSynth.playCorrect();
     } else if (type === 'fail') {
         AudioSynth.playIncorrect();
+    } else if (type === 'warning') {
+        AudioSynth.playWarning();
     } else if (type === 'pop') {
         AudioSynth.playPop();
     }

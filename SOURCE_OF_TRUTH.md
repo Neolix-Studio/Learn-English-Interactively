@@ -109,7 +109,7 @@ The target audience is Hungarian and Slovak learners on **phones**. Every layout
 
 Base styles (no media query) are therefore **desktop** styles. Any new component written without a media query is desktop-only by default, and mobile breaks silently. *Forgetting mobile is the architecture's default behaviour.*
 
-The inverse failure exists too: `FillBlanks.tsx:121-138`'s compose-card classes are defined **only** inside `max-width` blocks in `interactive.css` (blocks opening at lines 520, 1006, 1104), so **920 exercises are completely unstyled above 600 px width** — an invisible blank and a stack of bare divs on desktop.
+The inverse failure exists too: `FillBlanks.tsx:121-138`'s compose-card classes are defined **only** inside `max-width` blocks in `interactive.css` (blocks opening at lines 666, 1132, 1230), so **920 exercises are completely unstyled above 600 px width** — an invisible blank and a stack of bare divs on desktop.
 
 **Convention going forward:** write the mobile layout as the base rule with no media query; add `@media (min-width: …)` only to enhance for larger screens. Never add a new `max-width` block to shrink a desktop layout down.
 
@@ -248,7 +248,7 @@ dist/assets/storyLoader-*.js      79.68 kB │ gzip:  15.19 kB   ← the ONLY sp
 dist/assets/index-*.js         1,728.41 kB │ gzip: 359.50 kB   ← everything else
 ```
 
-No `React.lazy` anywhere. All ~20 route components, the lesson player, Joyride, and 2.4 MB of curriculum JSON are in the initial bundle an anonymous visitor downloads. `vite.config.ts` sets no `manualChunks` and no image optimisation. Build also warns about two ineffective dynamic imports (`i18next` in `UserContext.tsx:222`, `utils/api` in `LessonPlayer.tsx:274`).
+No `React.lazy` anywhere. All ~20 route components, the lesson player, Joyride, and 2.4 MB of curriculum JSON are in the initial bundle an anonymous visitor downloads. `vite.config.ts` sets no `manualChunks` and no image optimisation. Build also warns about two ineffective dynamic imports (`i18next` in `UserContext.tsx:222`, `utils/api` in `LessonPlayer.tsx:301`).
 
 ---
 
@@ -309,7 +309,7 @@ Migration at auth time extracts **only `{points, completed, scores}`** (`guestPr
 | Key | Written by | Read by |
 |---|---|---|
 | `neolix_guest_progress` | `UserContext.tsx:362` | `UserContext.tsx:171`, `guestProgress.ts:8` |
-| `user_local_progress` | `FTUELesson.tsx:30` | `guestProgress.ts:9`, `LessonPlayer.tsx:83` (legacy) |
+| `user_local_progress` | `FTUELesson.tsx:30` | `guestProgress.ts:9`, `LessonPlayer.tsx:110` (legacy) |
 | `guest_base_language` | `i18n.ts:16,24,27` | `i18n.ts` |
 | `guest_character_progress` | `Characters.tsx:17`, `CharacterLesson.tsx:26,39` | same — **used for logged-in users too; never synced or migrated** |
 | `ftue_marketing_data` | `HearAboutUsScreen:19`, `WhyLearningScreen:19`, `PostLesson:81` | `AuthModal.tsx:69` — **which runs before those screens ever render** |
@@ -353,17 +353,19 @@ The three ❌ rows are live bugs: the "Bejelentkezés" buttons on the 404 page a
 ### Lifecycle
 
 1. Mount adds `body.is-lesson-active`; cleanup calls `stopAudio()`.
-2. `selectLessonItems()` (`:106`) resolves items in priority order `lessons[]` → `levels[0].exercises` → `items` → the node itself. For `lessons[]` it picks the first sub-lesson not in `scores.node_state[nodeId].completedLessons`, **falling back to the *last* one when all are done** — so replaying a finished node always replays Part 4.
+2. `selectLessonItems()` (`:133`) resolves items in priority order `lessons[]` → `levels[0].exercises` → `items` → the node itself. For `lessons[]` it picks the first sub-lesson not in `scores.node_state[nodeId].completedLessons`, **falling back to the *last* one when all are done** — so replaying a finished node always replays Part 4.
 3. `enrichQuestion` (`:63`) attaches the dictionary and computes `newWords`.
-4. Every exercise calls `onAnswer(isCorrect)` eagerly; the player just stores the last value (`:220`). **All answer validation lives inside the exercise components.**
-5. `handleCheck` (`:232`) — first press builds `textToRead`, fires TTS, sets feedback, and on a wrong answer POSTs `log_failed_exercise`. Second press advances.
+4. Every exercise calls `onAnswer(isCorrect)` eagerly; the player just stores the last value (`:247`). **All answer validation lives inside the exercise components.**
+5. `handleCheck` (`:259`) — first press builds `textToRead`, fires TTS, sets feedback, and on a wrong answer POSTs `log_failed_exercise`. Second press advances.
 6. Completion renders `<PostLesson>` with a hardcoded `baseXp={15}` and `accuracy = max(0, 100 - mistakes*20)`.
+
+**Feedback banner (UX0a-1, #360, 2026-09-30).** The footer carries `data-state` = `none | correct | incorrect | skipped` (`:513`) and the message renders inside a slot that is always in the DOM with `role="status"` (`:520`), so a screen reader announces it. No colour is inline any more: `interactive.css:497-545` defines twelve `--feedback-*` tokens (title colour, banner background, icon fill and icon glyph, for success, danger and warning) for light and for dark, the dark set also serving the `fall` and `halloween` themes, and `:552-571` maps the state to a set. Every text pair is at least 4.8:1. The answer line comes from `getCorrectAnswerText()` (`:81`): 'Igaz'/'Hamis' for `true_false`, the correct option's text for `phonics_listen_choose`, the matching button label for `phonics_compare`, the pair words for `phonics_match`, the word for `phonics_speak`, the first accepted answer for `fill_blanks`, otherwise `correctAnswer ?? answer`. Below 601 px the banner stacks (`interactive.css:574`): icon, title and the whole answer on a full-width row, then a full-width 'TOVÁBB' of at least 44 px; from 601 px it is the old row (`:623`). Skipping plays `playSoundEffect('warning')` (`:254`, `audio.ts:59`), no longer the success chime. **The submit button's own colours are still inline hex** (`:554-555`, C48).
 
 **There is no hearts/lives system inside a lesson.** Mistakes are uncapped and never end the run. The only gate is the global `energy` counter. **Wrong answers are never re-queued inside the lesson** — the only repetition path is server-side via `user_failed_exercises` → PracticePage.
 
 ### Exercise registry
 
-Dispatch is a `switch` at `LessonPlayer.tsx:297-330`. Counts are from a `jq` census across all 144 files in `data/`.
+Dispatch is a `switch` at `LessonPlayer.tsx:324-357`. Counts are from a `jq` census across all 144 files in `data/`.
 
 | `type` | Component | Validation | Count |
 |---|---|---|---|
@@ -391,13 +393,13 @@ Today it cannot count against anything. `PhonicsMatch.tsx:74-76` calls `onAnswer
 
 Three consequences worth knowing before this is implemented:
 
-- **"Affects accuracy" and "feeds weak-item practice" are the same switch.** `LessonPlayer.tsx:270-281` increments `mistakes` *and* POSTs `log_failed_exercise` off the same `onAnswer(false)`. Reporting a mispairing therefore also pushes it into `user_failed_exercises` → `get_weak_words` → PracticePage, whether or not that was intended. It is almost certainly the right behaviour for a phonics contrast the learner just confused — but it is a coupling, not a choice made separately.
+- **"Affects accuracy" and "feeds weak-item practice" are the same switch.** `LessonPlayer.tsx:297-308` increments `mistakes` *and* POSTs `log_failed_exercise` off the same `onAnswer(false)`. Reporting a mispairing therefore also pushes it into `user_failed_exercises` → `get_weak_words` → PracticePage, whether or not that was intended. It is almost certainly the right behaviour for a phonics contrast the learner just confused — but it is a coupling, not a choice made separately.
 - ✅ **The rule is settled (owner, 2026-08-28): a `phonics_match` exercise incurs *at most one* mistake, and only if at least one mispairing occurred.** Report `onAnswer(false)` once any mispairing has happened, regardless of how many wrong taps follow — never a penalty per tap. The exercise still cannot be failed and still cannot block the lesson; only the score moves. This matters because `accuracy = max(0, 100 - mistakes*20)` is unusually steep: four mistakes already lands a learner at 20%, so a per-tap penalty on a drag-and-match exercise would be punitive out of all proportion to the error.
 - **It is inert until the accuracy hardcode is gone.** All five `completeLesson` call sites pass the literal `100` (§8). Until WP-B3 passes `scoreData.accuracy` through, a correctly-reported mispairing changes the in-lesson counter and the `log_failed_exercise` row, but nothing the user's profile records.
 
 ### Audio / TTS
 
-- Chimes are synthesized with WebAudio oscillators (`audio.ts`). Volume from `localStorage.adhd_volume`, defaulting to **1.0** (`:73`) while `SidebarLeft.tsx:29` shows the slider at **50**. The UI lies on first run.
+- Chimes are synthesized with WebAudio oscillators (`audio.ts`): success (two rising sine notes), fail (two falling sawtooth notes), warning (two level triangle notes at 392 Hz, used for a skipped exercise since #360) and pop. Volume from `localStorage.adhd_volume`, defaulting to **1.0** (`:78`) while `SidebarLeft.tsx:29` shows the slider at **50**. The UI lies on first run.
 - `playTTS` → in-memory cache → `GET /api/tts.php` → fallback to `window.speechSynthesis`.
 - **Every `audioUrl` in `data/` is `null`** (960/960 phonics slots). 100% of pronunciation audio is runtime TTS from one Google voice (`en-US-Journey-F`).
 - **`api/tts.php:80` allows 30 uncached syntheses per hour**, while `WordOrder.tsx:45` preloads *every tile of every word-order question* with no in-flight dedupe. A learner meeting new vocabulary exhausts the quota inside one lesson and silently drops to browser TTS — a different voice, or none at all on some mobile browsers.
@@ -407,9 +409,9 @@ Three consequences worth knowing before this is implemented:
 
 Nine screens. **Screens 2–8 are static FTUE theatre** — the level-up, the flag, the 50% scale bar, the "1" streak, the 100%-wide quest bar (`:620`) and the bone rain read no real data. Screen 9 is the guest signup wall.
 
-Screen 9 has **no `isGuest` guard**, and `LessonPlayer.tsx:374` passes `isTutorial={isTutorial || userData.points === 0}` — so **any logged-in user finishing their first lesson is shown the guest signup wall**, whose button sets `forceBetaRequestModal` and hard-redirects them out of the app to `/`.
+Screen 9 has **no `isGuest` guard**, and `LessonPlayer.tsx:401` passes `isTutorial={isTutorial || userData.points === 0}` — so **any logged-in user finishing their first lesson is shown the guest signup wall**, whose button sets `forceBetaRequestModal` and hard-redirects them out of the app to `/`.
 
-`PostLesson` also always animates **+15 XP** (`LessonPlayer.tsx:371`) while `:381` reports `Math.max(5, 15 - mistakes)`. Six mistakes → the screen says 15, the user gets 9.
+`PostLesson` also always animates **+15 XP** (`LessonPlayer.tsx:398`) while `:408` reports `Math.max(5, 15 - mistakes)`. Six mistakes → the screen says 15, the user gets 9.
 
 ---
 
@@ -445,7 +447,7 @@ lessons[].{ id: lesson_1..4, title: "Part n/4", introducedWords[], items[8|10|11
 
 ### Other content shapes
 
-- **Stories** — `{title, type:"reading_node", story:{en, hu}, items[15]}` (5 each of true_false / multiple_choice / type_in). `LessonPlayer.tsx:346,460` hardcode `story.hu`. Reached only from PracticePage via `getRandomStory()` — also with no language argument.
+- **Stories** — `{title, type:"reading_node", story:{en, hu}, items[15]}` (5 each of true_false / multiple_choice / type_in). `LessonPlayer.tsx:373,487` hardcode `story.hu`. Reached only from PracticePage via `getRandomStory()` — also with no language argument.
 - **Phonics** — `{id, type:"character_lesson", title, characters[IPA], lessons[5]}`. Progress stored per-IPA in `localStorage`, never server-side.
 - **Grammar** — `data/hu/grammar.json`, keyed `Module_1..7`. **Statically imported** by `GrammarModal.tsx:2`, so it is Hungarian-only for everyone.
 - **Vocabulary** — flat `Record<string,string>`, 172 entries. **Statically imported** from `data/hu/` by `LessonPlayer.tsx:23`.
@@ -489,7 +491,7 @@ Almost all of it traces back to finding #1:
 - **Purchased themes deactivate themselves.** The choice is written to `scores.active_theme` only. The `active_theme` column never receives it, and on the next load the column overwrites the JSON copy (`UserContext.tsx:139-141`). *(Until #359, 2026-09-30, every save also reset the column to `'default'`. It is now left alone, which does not help: nothing writes the choice into it. WP-B3.)* A user who paid 500 bones for Halloween loses it after any lesson. (The *inventory* row survives.)
 - **Daily quests reroll on every page load**, so the same three can be farmed repeatedly.
 - **The quest-persistence call is a guaranteed no-op.** `UserContext.tsx:229-235` posts to `update_progress`, which reads **only** `$data['xp']` (`api.php:1243-1290`) and errors when it is absent. No caller anywhere sends `xp`. `handleUpdateProgress` is entirely dead server code — *and it is also the endpoint an attacker would use to mint XP.*
-- **Achievements are noise.** `accuracy` is the literal `100` at all five `completeLesson` call sites (verified: `Dashboard.tsx:197,210`, `CharacterLesson.tsx:23`, `PracticePage.tsx:64`, `FTUELesson.tsx:20`). The `flawless` achievement and the `q_acc_100`/`q_acc_90` quests fire on everyone's first lesson. *(Nuance: `LessonPlayer.tsx:371` does compute a real accuracy and `PostLesson` consumes it — the value is discarded only at the `completeLesson` boundary.)*
+- **Achievements are noise.** `accuracy` is the literal `100` at all five `completeLesson` call sites (verified: `Dashboard.tsx:197,210`, `CharacterLesson.tsx:23`, `PracticePage.tsx:64`, `FTUELesson.tsx:20`). The `flawless` achievement and the `q_acc_100`/`q_acc_90` quests fire on everyone's first lesson. *(Nuance: `LessonPlayer.tsx:399` does compute a real accuracy and `PostLesson` consumes it — the value is discarded only at the `completeLesson` boundary.)*
 - **Friends is broken for anyone with a friend in a league.** `api.php:2083-2087` reads `monthly_xp` from `user_progress`; the column lives on `user_leagues` (`09_add_monthly_xp.sql`). The subquery sits inside `if ($friend['league_id'])`, so friends with no league row are skipped — but any league member throws, and the `catch` at `api.php:2110` collapses the whole response into an empty state.
 - **Streak shields are stored twice and never used.** `claim_reward` writes the `user_progress.streak_shields` **column**; the client reads `scores.streak_shields` (**JSON**). ~~The column is zeroed by the next save.~~ *(Fixed by #359, 2026-09-30: a save keeps the column.)* Leaderboard shield rewards are kept now, but still invisible: the client shows only the JSON copy. Nothing anywhere decrements a shield against a missed day. *(Corrected 2026-09-30: `cron_notifications.php` does, on the **column**, which the client never reads. See [§10](#10-backend-api), "`cron_notifications.php` and the panel cron jobs".)* **Owner decision, 2026-09-30 (#359):** a new account starts with **0** shields. The learner gets 1 after the intro lesson and 1 more after registering; after that shields come from the shop and, later, from random quizzes (not built). Only the 0 exists in code (`newProgressRowDefaults()`, `api.php:989`; signup inserted 2 until #359, and the column's schema default is still 2, `01_add_gamification_columns.sql:7`, which no insert relies on). The two grants are not built; they belong with the one-store decision in WP-B3.
 - **The sidebar leaderboard always shows Bronze** — `SidebarRight.tsx:27` calls `get_leaderboard` with no `league_id` and `api.php:1430` defaults to league 1. The locale string even hardcodes *"Heti Ranglista (Bronz Liga)"*.
@@ -736,13 +738,13 @@ The last two are cheap DoS amplifiers during an open Beta.
 - **`scaleUp` and `slideInRight` have no `@keyframes` anywhere** — four modal entrance animations silently do nothing. `fadeIn` is defined only inside `PostLesson.tsx`'s `<style>` tag but used by three other components, so it only animates while PostLesson happens to be mounted.
 - **Seven custom properties are used but never defined:** `--color-bg-body`, `--color-border`, `--color-bg-main`, `--color-bg-inset`, `--glass-border-color`, `--color-bg-active`, `--border-color`.
 - **`--glass-border` is a shorthand** (`1px solid #E5E7EB`) used as a color in four places — all invalid and dropped.
-- **`interactive.css:933-936` selects on inline-style string content:** `:has(.interactive-feedback-message[style*="rgb(5, 150, 105)"])`. Any change in how React serialises that colour silently breaks the correct-answer footer tint.
+- ~~**`interactive.css:933-936` selects on inline-style string content:** `:has(.interactive-feedback-message[style*="rgb(5, 150, 105)"])`. Any change in how React serialises that colour silently breaks the correct-answer footer tint.~~ ✅ Fixed (#360, 2026-09-30): the selector is gone, and so are the phone-only lime title (`#8bdc2a !important`), the rule that hid the ✓/✖ and the two-line clamp on the answer. The footer's `data-state` now picks the colours from the `--feedback-*` tokens (`interactive.css:497-571`, §6 Lifecycle).
 - **A third styling layer exists:** 22 `@keyframes` live inside `<style>` tags in six TSX components, some shadowing CSS-file definitions.
 - **`RewardPopup.css` hardcodes a dark gradient with white text** — unreadable by design on the default light theme. Same class of problem in `legal.css`.
 
 ### Breakpoints
 
-20 distinct values across 39 media queries, no shared scale. Three near-duplicate desktop thresholds coexist: **991 / 992 / 1199 / 1200** — and the design guide documents a fourth (1024). Two byte-identical media queries in `interactive.css` (lines 1180 and 1267) carry conflicting values.
+20 distinct values across 39 media queries, no shared scale. Three near-duplicate desktop thresholds coexist: **991 / 992 / 1199 / 1200** — and the design guide documents a fourth (1024). Two byte-identical media queries in `interactive.css` (lines 1306 and 1388) carry conflicting values. *(2026-09-30, #360: `interactive.css` gained one `@media (min-width: 601px)` block at `:623` for the feedback banner; 601 was already one of the values, so the distinct-value count is unchanged and the query count is one higher.)*
 
 **`root-fix.css` is two-thirds band-aid.** Its `overflow-x` and `box-sizing` rules duplicate `main.css`; only the `#root` flex-column rule is load-bearing. It was patching `index.css`'s `#root { width: 1126px }` — a threat that no longer exists since `index.css` was unhooked. Merge the `#root` rule into `main.css` and delete all three files.
 
@@ -974,7 +976,7 @@ This is the most important thing in this document. Each hop discards information
 | # | Hop | Where | What is lost |
 |---|---|---|---|
 | 1 | Node click, energy spent | `Dashboard.tsx:121` | Energy decrements in **client state only** |
-| 2 | Player computes reward | `LessonPlayer.tsx:381` `xpEarned: max(5, 15-mistakes)` | `PostLesson` is handed `baseXp={15}` unconditionally — the animation promises 15 while 9 may be granted |
+| 2 | Player computes reward | `LessonPlayer.tsx:408` `xpEarned: max(5, 15-mistakes)` | `PostLesson` is handed `baseXp={15}` unconditionally — the animation promises 15 while 9 may be granted |
 | 3 | `onComplete` → context | `Dashboard.tsx:197` `completeLesson(id, xp, 100, …)` | **Accuracy is the literal `100`.** The real value never crosses this boundary → `flawless` + accuracy quests always fire |
 | 4 | Reward engine | `UserContext.tsx:413-500` | Runs **entirely client-side**: bones, quests, achievements. Arrays are pushed into shallow copies (`:415,426,435,482`), mutating state still referenced by the current object |
 | 5 | Debounced write | `UserContext.tsx:363-374` | 1500 ms `setTimeout`. Payload is **only** `{points, completed, scores, quest_progress, completed_quests_today}` |
@@ -1016,7 +1018,7 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 | 5 | **One unsolvable exercise blocks Module 2** (uncommitted working-tree edit) | `data/hu/A1/Module_2…/node3_family_ties.json` |
 | 6 | **Friends is broken for anyone with a league friend** — wrong table for `monthly_xp` | `api.php:2083-2087` |
 | 7 | **`user_metadata` table does not exist** — the energy-refill-for-feedback loop always throws | `api.php:1801,1814` |
-| 8 | **Registered users are shown the guest signup wall** after their first lesson and ejected to `/` | `PostLesson.tsx:668`, `LessonPlayer.tsx:374` |
+| 8 | **Registered users are shown the guest signup wall** after their first lesson and ejected to `/` | `PostLesson.tsx:668`, `LessonPlayer.tsx:401` |
 | 9 | **Onboarding trap** — a registered user with zero progress is bounced to `/welcome/start` on every dashboard visit, and the welcome shell has no nav, no skip, and exits back to `/welcome/experience` | `Dashboard.tsx:95-99`, `UserContext.tsx:156`, `FTUELesson.tsx:39` |
 | 10 | ~~**2 HIGH dependency advisories** in `react-router` / `react-router-dom`~~ ✅ **Fixed 2026-09-24** — #266 (react-router and react-router-dom → 7.18.4, `c4c6609`) and #258 (postcss → 8.5.28, `c8c9976`) merged into `dev` and deployed; `npm audit --omit=dev` reports 0 vulnerabilities | `package.json:27` |
 | 11 | **Open redirect after auth** — `?redirect=` followed verbatim, on a domain users are asked to trust with credentials | `AuthModal.tsx:110-112,126-128` |
@@ -1090,10 +1092,10 @@ Roughly **1,100+ lines of dead application code** plus ~47% of the CSS will ship
 
 ### Accessibility
 
-Measured across all 68 `.tsx` files: **23 `aria-*` attributes in 9 files** (the other 59 have none), **2 `role=`, 2 `tabIndex`, 1 `onKeyDown`, 0 `aria-live`, 0 `.focus()`, 0 Escape handling.**
+Measured across all 68 `.tsx` files: **26 `aria-*` attributes in 10 files** (the other 58 have none), **3 `role=`, 2 `tabIndex`, 1 `onKeyDown`, 0 `aria-live`, 0 `.focus()`, 0 Escape handling.** *(Recounted 2026-09-30 after #360, which added the lesson banner's `role="status"` and three `aria-hidden` icons; before it: 23 in 9 files, 2 `role=`.)*
 
 - **None of the six modals** traps focus, restores focus on close, or closes on ESC. The lesson player is `position: fixed; inset: 0` over a live DOM with no `aria-modal` and no inert background.
-- **Every answer submission and feedback banner is a silent DOM swap with no `aria-live`** — a screen-reader user gets no announcement of right or wrong.
+- ~~**Every answer submission and feedback banner is a silent DOM swap with no `aria-live`** — a screen-reader user gets no announcement of right or wrong.~~ ✅ Fixed for the lesson feedback banner (#360, 2026-09-30): it renders inside a permanent `role="status"` region (`LessonPlayer.tsx:520`), which is an implicit polite live region, so the title and the correct answer are announced. **Still silent:** toasts, reward popups and the PostLesson screens (C24).
 - **`index.html:2` hardcodes `lang="hu"` on all three domains**, so Slovak text is announced with Hungarian phonetics — and the aria-labels that do exist are themselves hardcoded Hungarian.
 - The treasure chest is a bare `<div onClick>` (`Roadmap.tsx:241-243`) — the only div-with-onClick in the codebase, and it gates a reward.
 - `prefers-reduced-motion` is non-functional (§12) while the app runs infinite background loops.

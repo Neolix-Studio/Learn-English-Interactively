@@ -492,6 +492,152 @@
     position: relative;
 }
 
+/* Feedback banner. The footer's data-state picks one of three colour sets, and each
+   theme defines the sets once. C1b folds these tokens into the theme ramp. */
+:root {
+    --feedback-success-fg: #047857;
+    --feedback-success-bg: #ECFDF5;
+    --feedback-success-fill: #047857;
+    --feedback-success-on-fill: #FFFFFF;
+    --feedback-danger-fg: #B91C1C;
+    --feedback-danger-bg: #FEF2F2;
+    --feedback-danger-fill: #B91C1C;
+    --feedback-danger-on-fill: #FFFFFF;
+    --feedback-warning-fg: #B45309;
+    --feedback-warning-bg: #FFFBEB;
+    --feedback-warning-fill: #B45309;
+    --feedback-warning-on-fill: #FFFFFF;
+}
+
+/* The fall and halloween themes are dark surfaces too. */
+:root[data-theme="dark"],
+:root[data-theme="fall"],
+:root[data-theme="halloween"] {
+    --feedback-success-fg: #34D399;
+    --feedback-success-bg: #112B32;
+    --feedback-success-fill: #10B981;
+    --feedback-success-on-fill: #0F1524;
+    --feedback-danger-fg: #FCA5A5;
+    --feedback-danger-bg: #2C1D2A;
+    --feedback-danger-fill: #F87171;
+    --feedback-danger-on-fill: #0F1524;
+    --feedback-warning-fg: #FBBF24;
+    --feedback-warning-bg: #2C2824;
+    --feedback-warning-fill: #FBBF24;
+    --feedback-warning-on-fill: #0F1524;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --feedback-success-fg: #34D399;
+        --feedback-success-bg: #112B32;
+        --feedback-success-fill: #10B981;
+        --feedback-success-on-fill: #0F1524;
+        --feedback-danger-fg: #FCA5A5;
+        --feedback-danger-bg: #2C1D2A;
+        --feedback-danger-fill: #F87171;
+        --feedback-danger-on-fill: #0F1524;
+        --feedback-warning-fg: #FBBF24;
+        --feedback-warning-bg: #2C2824;
+        --feedback-warning-fill: #FBBF24;
+        --feedback-warning-on-fill: #0F1524;
+    }
+}
+
+.interactive-footer {
+    background: var(--color-bg-surface);
+    transition: background 0.3s;
+}
+
+.interactive-footer[data-state="correct"] {
+    --feedback-fg: var(--feedback-success-fg);
+    --feedback-bg: var(--feedback-success-bg);
+    --feedback-fill: var(--feedback-success-fill);
+    --feedback-on-fill: var(--feedback-success-on-fill);
+}
+
+.interactive-footer[data-state="incorrect"] {
+    --feedback-fg: var(--feedback-danger-fg);
+    --feedback-bg: var(--feedback-danger-bg);
+    --feedback-fill: var(--feedback-danger-fill);
+    --feedback-on-fill: var(--feedback-danger-on-fill);
+}
+
+.interactive-footer[data-state="skipped"] {
+    --feedback-fg: var(--feedback-warning-fg);
+    --feedback-bg: var(--feedback-warning-bg);
+    --feedback-fill: var(--feedback-warning-fill);
+    --feedback-on-fill: var(--feedback-warning-on-fill);
+}
+
+/* Phone first: the message takes the full width so the whole answer fits, the button sits below it. */
+.interactive-footer.has-feedback {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 0.75rem;
+    background: var(--feedback-bg);
+}
+
+.interactive-feedback-slot,
+.interactive-feedback-message,
+.interactive-feedback-text {
+    min-width: 0;
+}
+
+.interactive-feedback-message {
+    width: 100%;
+}
+
+.interactive-feedback-icon {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    line-height: 1;
+    background: var(--feedback-fill);
+    color: var(--feedback-on-fill);
+}
+
+.interactive-feedback-text {
+    overflow-wrap: break-word;
+}
+
+.interactive-feedback-message h3 {
+    color: var(--feedback-fg);
+}
+
+.interactive-feedback-message p {
+    color: var(--color-text-main);
+}
+
+.interactive-footer.has-feedback .interactive-submit-btn {
+    width: 100%;
+    min-height: 44px;
+}
+
+@media (min-width: 601px) {
+    .interactive-footer.has-feedback {
+        flex-direction: row;
+        align-items: center !important;
+        gap: 1rem;
+    }
+
+    .interactive-feedback-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+
+    .interactive-footer.has-feedback .interactive-submit-btn {
+        width: auto;
+    }
+}
+
 @media (max-width: 768px) {
     .image-choice-btn {
         padding: 1.2rem 0.5rem;
@@ -917,22 +1063,19 @@
         justify-content: center !important;
     }
 
+    /* Out of the layout but still in the accessibility tree: it is the role=status live region. */
     .interactive-footer:not(.has-feedback) .interactive-feedback-slot {
-        display: none !important;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
     }
 
     .interactive-footer.has-feedback {
         min-height: 78px;
-        align-items: center !important;
-        justify-content: space-between !important;
-        flex-direction: row !important;
         padding: 0.55rem 1rem calc(0.55rem + env(safe-area-inset-bottom)) !important;
         gap: 0.7rem !important;
-    }
-
-    .interactive-footer.has-feedback:has(.interactive-feedback-message[style*="rgb(5, 150, 105)"]),
-    .interactive-footer.has-feedback:has(.interactive-feedback-message[style*="#059669"]) {
-        background: rgba(139, 195, 74, 0.14) !important;
     }
 
     .interactive-feedback-slot {
@@ -942,32 +1085,21 @@
     }
 
     .interactive-feedback-message {
-        gap: 0 !important;
+        gap: 0.65rem !important;
         min-width: 0;
         width: 100%;
-        flex-direction: column;
         align-items: flex-start !important;
-    }
-
-    .interactive-feedback-message > div:first-child {
-        display: none !important;
     }
 
     .interactive-feedback-message h3 {
         font-size: clamp(1rem, 4.8vw, 1.28rem) !important;
         line-height: 1.1;
-        color: #8bdc2a !important;
         white-space: nowrap;
     }
 
     .interactive-feedback-message p {
-        font-size: clamp(0.68rem, 3vw, 0.78rem) !important;
-        line-height: 1.25;
+        line-height: 1.3;
         white-space: normal;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
         max-width: 100%;
     }
 
@@ -994,12 +1126,6 @@
         font-size: 0.95rem !important;
         letter-spacing: 0 !important;
         text-transform: none !important;
-    }
-
-    .interactive-footer.has-feedback .interactive-submit-btn {
-        flex: 0 0 124px;
-        width: 124px;
-        padding-inline: 0.75rem !important;
     }
 }
 
@@ -1255,11 +1381,6 @@
 
     .interactive-submit-btn {
         min-height: 40px;
-    }
-
-    .interactive-footer.has-feedback .interactive-submit-btn {
-        flex-basis: 116px;
-        width: 116px;
     }
 }
 
