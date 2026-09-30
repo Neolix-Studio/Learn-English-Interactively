@@ -23,6 +23,11 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
   const [displayedAccuracy, setDisplayedAccuracy] = useState(0);
   const [selectedStreak, setSelectedStreak] = useState<number | null>(null);
 
+  // Success green is for a result that is one. Below 60% the card is neutral.
+  const accuracyTone = accuracy < 60
+    ? { background: 'var(--color-bg-surface)', border: 'var(--color-border)', label: 'var(--color-text-muted)', value: 'var(--color-text-main)' }
+    : { background: 'rgba(16,185,129,0.1)', border: 'var(--color-success)', label: 'var(--color-success)', value: 'var(--color-success)' };
+
   useEffect(() => {
     if (currentScreen === 1) {
       const duration = 1500;
@@ -72,7 +77,10 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
       }
     }
 
-    if (currentScreen === 6) {
+    // The first-lesson sequence is 1 → 5 → 6 → 9. Screens 2–4 and 7–8 showed invented numbers and are gone (Q13).
+    if (currentScreen === 1) {
+      setCurrentScreen(5);
+    } else if (currentScreen === 6) {
       if (selectedStreak === null) {
         alert(t('post_lesson.streak_warning'));
         return;
@@ -80,7 +88,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
       const existingData = JSON.parse(localStorage.getItem('ftue_marketing_data') || '{}');
       existingData.streakCommitment = selectedStreak;
       localStorage.setItem('ftue_marketing_data', JSON.stringify(existingData));
-      setCurrentScreen(7);
+      setCurrentScreen(9);
     } else if (currentScreen === 9) {
       onComplete();
     } else {
@@ -127,14 +135,6 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes slideRight {
-          from { width: 0%; }
-          to { width: 100%; }
-        }
-        @keyframes slideRightPartial {
-          from { width: 0%; }
-          to { width: 50%; }
-        }
         @keyframes pulseFire {
           0% { filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.5)); transform: scale(1); }
           50% { filter: drop-shadow(0 0 30px rgba(245, 158, 11, 0.8)); transform: scale(1.05); }
@@ -146,23 +146,10 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
           50% { transform: translateY(-15px) rotateX(-5deg) rotateY(10deg); }
           100% { transform: translateY(0) rotateX(5deg) rotateY(0deg); }
         }
-        @keyframes glowPulse3D {
-          0% { transform: scale(1) rotateZ(0deg); opacity: 0.5; }
-          50% { transform: scale(1.2) rotateZ(180deg); opacity: 0.8; }
-          100% { transform: scale(1) rotateZ(360deg); opacity: 0.5; }
-        }
-        @keyframes popIn {
-          0% { transform: scale(0.5); opacity: 0; }
-          70% { transform: scale(1.1); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
         @keyframes popInBubble {
           0% { transform: scale(0) translateY(20px); opacity: 0; transform-origin: bottom right; }
           70% { transform: scale(1.1) translateY(0); opacity: 1; }
           100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-        @keyframes fallDown {
-          to { transform: translateY(400px) rotate(360deg); opacity: 0; }
         }
 
         .streak-option {
@@ -184,8 +171,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
           box-sizing: border-box;
         }
 
-        .post-lesson-hero-image,
-        .post-lesson-reward-image {
+        .post-lesson-hero-image {
           transform: scale(2.35);
           transform-origin: center;
         }
@@ -258,21 +244,6 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
             line-height: 1.05;
           }
 
-          .post-lesson-stage {
-            width: min(100%, 240px) !important;
-            height: min(58vw, 240px) !important;
-            margin-bottom: 1rem !important;
-          }
-
-          .post-lesson-stage img {
-            max-width: 100%;
-            max-height: 100%;
-          }
-
-          .post-lesson-card {
-            padding: 1.25rem !important;
-          }
-
           .post-lesson-chat {
             flex-direction: column;
             align-items: center !important;
@@ -332,126 +303,11 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
               <div style={{ color: '#F59E0B', fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.earned_xp')}</div>
               <div className="post-lesson-metric-value" style={{ fontSize: '2.5rem', color: '#F59E0B', fontWeight: 800 }}>+{displayedXp}</div>
             </div>
-            <div className="post-lesson-metric-card" style={{ background: 'rgba(16,185,129,0.1)', border: '2px solid var(--color-success)', borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
-              <div style={{ color: 'var(--color-success)', fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.accuracy')}</div>
-              <div className="post-lesson-metric-value" style={{ fontSize: '2.5rem', color: 'var(--color-success)', fontWeight: 800 }}>{displayedAccuracy}%</div>
+            <div className="post-lesson-metric-card" data-tone={accuracy < 60 ? 'neutral' : 'success'} style={{ background: accuracyTone.background, border: `2px solid ${accuracyTone.border}`, borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
+              <div style={{ color: accuracyTone.label, fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.accuracy')}</div>
+              <div className="post-lesson-metric-value" style={{ fontSize: '2.5rem', color: accuracyTone.value, fontWeight: 800 }}>{displayedAccuracy}%</div>
             </div>
           </div>
-        </div>
-      )}
-
-      {currentScreen === 2 && (
-        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
-          <h2 style={{ color: 'var(--color-text-main)', fontSize: '2.5rem', marginBottom: '3rem', textAlign: 'center', animation: 'slideUp 0.6s ease-out' }}>{t('post_lesson.level_up')}</h2>
-
-          <div className="post-lesson-stage" style={{ position: 'relative', width: '300px', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '2rem', perspective: '1000px' }}>
-
-             <div style={{ position: 'absolute', width: '250px', height: '250px', background: 'radial-gradient(circle, rgba(147, 51, 234, 0.6) 0%, rgba(147, 51, 234, 0) 70%)', borderRadius: '50%', zIndex: 0, animation: 'glowPulse3D 4s infinite linear' }}></div>
-
-             <div style={{ position: 'absolute', top: '20px', left: '40px', fontSize: '2rem', animation: 'float3D 3s infinite ease-in-out', zIndex: 1, filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }}>✨</div>
-             <div style={{ position: 'absolute', bottom: '40px', right: '20px', fontSize: '1.5rem', animation: 'float3D 4s infinite ease-in-out reverse', zIndex: 1, filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }}>⭐</div>
-
-             <div style={{ zIndex: 2, transformStyle: 'preserve-3d', animation: 'float3D 4s infinite ease-in-out' }}>
-                <img src="/assets/images/Transparent PNGs/tyler-jump.png" alt="Lexi Jump" style={{ width: '280px', height: '280px', objectFit: 'contain', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.3))', transform: 'translateZ(50px)' }} />
-             </div>
-
-             <div style={{ position: 'absolute', bottom: '-10px', width: '220px', height: '30px', background: 'rgba(0, 0, 0, 0.2)', borderRadius: '50%', filter: 'blur(8px)', zIndex: 0, transform: 'rotateX(60deg)' }}></div>
-          </div>
-        </div>
-      )}
-
-      {currentScreen === 3 && (
-        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
-
-          <div style={{ position: 'relative', animation: 'popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
-            <svg viewBox="0 0 100 100" width="160" height="160" style={{ filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.2))' }}>
-                <clipPath id="flag-clip">
-                    <rect x="10" y="10" width="80" height="80" rx="16" ry="16" />
-                </clipPath>
-                <g clipPath="url(#flag-clip)">
-                    <rect x="10" y="10" width="80" height="80" fill="#fff" />
-                    <rect x="10" y="10" width="80" height="11.4" fill="#E0162B" />
-                    <rect x="10" y="32.8" width="80" height="11.4" fill="#E0162B" />
-                    <rect x="10" y="55.6" width="80" height="11.4" fill="#E0162B" />
-                    <rect x="10" y="78.4" width="80" height="11.4" fill="#E0162B" />
-                    <rect x="10" y="10" width="40" height="42.8" fill="#0052A5" />
-                    <circle cx="20" cy="20" r="1.5" fill="#fff"/><circle cx="30" cy="20" r="1.5" fill="#fff"/><circle cx="40" cy="20" r="1.5" fill="#fff"/>
-                    <circle cx="25" cy="27" r="1.5" fill="#fff"/><circle cx="35" cy="27" r="1.5" fill="#fff"/>
-                    <circle cx="20" cy="34" r="1.5" fill="#fff"/><circle cx="30" cy="34" r="1.5" fill="#fff"/><circle cx="40" cy="34" r="1.5" fill="#fff"/>
-                    <circle cx="25" cy="41" r="1.5" fill="#fff"/><circle cx="35" cy="41" r="1.5" fill="#fff"/>
-                </g>
-                <rect x="10" y="10" width="80" height="80" rx="16" ry="16" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="3" />
-            </svg>
-
-            <div style={{ position: 'absolute', bottom: '-15px', right: '-15px', background: '#3B82F6', color: 'white', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '2rem', fontWeight: 900, border: '4px solid white', boxShadow: '0 4px 10px rgba(0,0,0,0.2)' }}>
-              1
-            </div>
-          </div>
-
-          <h2 style={{ color: 'var(--color-text-main)', fontSize: '2.2rem', textAlign: 'center', marginTop: '3rem' }}>
-            {t('post_lesson.score_unlocked')}
-          </h2>
-        </div>
-      )}
-
-      {currentScreen === 4 && (
-        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '3rem' }}>
-             <svg viewBox="0 0 100 100" width="60" height="60">
-                 <clipPath id="flag-clip-sm">
-                     <rect x="0" y="0" width="100" height="100" rx="20" ry="20" />
-                 </clipPath>
-                 <g clipPath="url(#flag-clip-sm)">
-                     <rect x="0" y="0" width="100" height="100" fill="#fff" />
-                     <rect x="0" y="0" width="100" height="14" fill="#E0162B" />
-                     <rect x="0" y="28" width="100" height="14" fill="#E0162B" />
-                     <rect x="0" y="56" width="100" height="14" fill="#E0162B" />
-                     <rect x="0" y="84" width="100" height="14" fill="#E0162B" />
-                     <rect x="0" y="0" width="50" height="50" fill="#0052A5" />
-                 </g>
-                 <rect x="0" y="0" width="100" height="100" rx="20" ry="20" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="4" />
-             </svg>
-             <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-text-main)' }}>{t('post_lesson.scale_title')}</div>
-          </div>
-
-          <div className="post-lesson-card" style={{ background: 'var(--color-bg-surface)', border: '2px solid rgba(0,0,0,0.05)', borderRadius: '1.5rem', padding: '2rem', width: '100%', marginBottom: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontWeight: 800, color: '#3B82F6', fontSize: '1.2rem' }}>
-                  <span>1</span>
-                  <span style={{ color: 'var(--color-text-muted)' }}>2</span>
-              </div>
-
-              <div style={{
-                  width: '100%',
-                  height: '24px',
-                  background: 'var(--color-bg-surface)',
-                  borderRadius: '12px',
-                  position: 'relative',
-                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1), inset 0 -1px 2px rgba(255,255,255,0.8)'
-              }}>
-                  <div style={{
-                      width: '50%',
-                      height: '100%',
-                      borderRadius: '12px',
-                      background: 'linear-gradient(180deg, #60A5FA 0%, #3B82F6 100%)',
-                      boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.2), 0 2px 5px rgba(59, 130, 246, 0.4)',
-                      animation: 'slideRightPartial 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
-                      position: 'relative',
-                      overflow: 'hidden'
-                  }}>
-                      <div style={{
-                          position: 'absolute',
-                          top: 0, left: 0, right: 0, height: '40%',
-                          background: 'linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%)',
-                          borderRadius: '12px 12px 0 0'
-                      }}></div>
-                  </div>
-              </div>
-          </div>
-
-          <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', fontSize: '1.3rem', lineHeight: '1.6', maxWidth: '500px' }}>
-            {t('post_lesson.scale_desc_1')} <strong style={{color: 'var(--color-text-main)'}}>{t('post_lesson.scale_desc_2')}</strong>.
-          </p>
         </div>
       )}
 
@@ -596,72 +452,6 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, isGues
               </button>
             ))}
           </div>
-        </div>
-      )}
-
-      {currentScreen === 7 && (
-        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
-          <h2 style={{ color: 'var(--color-text-main)', fontSize: '2rem', marginBottom: '3rem' }}>{t('post_lesson.daily_quest')}</h2>
-          <div className="post-lesson-card" style={{ background: 'var(--color-bg-surface)', border: '2px solid rgba(0,0,0,0.05)', borderRadius: '1.5rem', padding: '2rem', width: '100%', display: 'flex', alignItems: 'center', gap: '1.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: '3.5rem' }}>🎯</div>
-              <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', marginBottom: '0.8rem', color: 'var(--color-text-main)', fontSize: '1.2rem' }}>{t('post_lesson.quests_completed')}</div>
-
-                  <div style={{
-                      width: '100%',
-                      height: '20px',
-                      background: 'var(--color-bg-surface)',
-                      borderRadius: '10px',
-                      position: 'relative',
-                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1), inset 0 -1px 2px rgba(255,255,255,0.8)'
-                  }}>
-                      <div style={{
-                          width: '100%',
-                          height: '100%',
-                          borderRadius: '10px',
-                          background: 'linear-gradient(180deg, #FCD34D 0%, #F59E0B 100%)',
-                          boxShadow: 'inset 0 2px 3px rgba(255,255,255,0.5), inset 0 -2px 3px rgba(0,0,0,0.2), 0 2px 6px rgba(245, 158, 11, 0.4)',
-                          animation: 'slideRight 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
-                          position: 'relative',
-                          overflow: 'hidden'
-                      }}>
-                          <div style={{
-                              position: 'absolute',
-                              top: 0, left: 0, right: 0, height: '40%',
-                              background: 'linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%)',
-                              borderRadius: '10px 10px 0 0'
-                          }}></div>
-                      </div>
-                  </div>
-
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem', fontSize: '1rem', color: 'var(--color-text-muted)', fontWeight: 'bold' }}>
-                      <span>{baseXp} XP</span>
-                  </div>
-              </div>
-          </div>
-        </div>
-      )}
-
-      {currentScreen === 8 && (
-        <div className="post-lesson-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '600px', animation: 'fadeIn 0.5s' }}>
-          <div style={{ position: 'relative', width: '100%', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', overflow: 'hidden', marginBottom: '2rem' }}>
-              {[...Array(12)].map((_, i) => (
-                <div key={i} style={{
-                  position: 'absolute',
-                  top: '-50px',
-                  left: `${10 + Math.random() * 80}%`,
-                  transform: `rotate(${Math.random() * 360}deg)`,
-                  animation: `fallDown 1.2s ease-in forwards ${Math.random() * 0.5}s`
-                }}>
-                  <span style={{ fontSize: '2rem', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }}>🦴</span>
-                </div>
-              ))}
-              <img src="/assets/images/Transparent PNGs/star-and-coin-explosion.png" alt="Explosion" style={{ position: 'absolute', width: '150%', height: '150%', objectFit: 'contain', zIndex: -1, opacity: 0.5 }} />
-              <img className="post-lesson-reward-image" src="/assets/images/Transparent PNGs/tyler-jump.png" alt="Lexi Reward" style={{ width: '220px', height: '220px', objectFit: 'contain', zIndex: 1, filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.2))', animation: 'popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
-          </div>
-
-          <h2 style={{ color: 'var(--color-accent-in)', fontSize: '2.5rem', textAlign: 'center', margin: '0' }}>{t('post_lesson.bones_reward')}</h2>
-          <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', marginTop: '0.8rem', fontSize: '1.3rem', fontWeight: 600 }}>{t('post_lesson.goal_reached')}</p>
         </div>
       )}
 

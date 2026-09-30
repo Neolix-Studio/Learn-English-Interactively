@@ -161,6 +161,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mistakes, setMistakes] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
   const [activeSubLessonId, setActiveSubLessonId] = useState<string | undefined>(undefined);
   const [isLastSubLesson, setIsLastSubLesson] = useState<boolean>(true);
   const [isReadingStory, setIsReadingStory] = useState(lessonNode?.type === 'reading_node');
@@ -341,6 +342,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
       if (answer.isCorrect) {
         setFeedback('correct');
         playSoundEffect('success');
+        setCorrectCount(prev => prev + 1);
       } else {
         setFeedback('incorrect');
         playSoundEffect('fail');
@@ -398,11 +400,16 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   }
 
   if (isPostLesson) {
+    // One value each for the result screen and the save. A skipped item is neither right nor wrong.
+    const gradedCount = correctCount + mistakes;
+    const xpEarned = Math.max(5, 15 - mistakes);
+    const accuracy = gradedCount > 0 ? Math.floor((correctCount / gradedCount) * 100) : 100;
+
     return (
       <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
         <PostLesson
-          baseXp={15}
-          accuracy={Math.max(0, 100 - (mistakes * 20))}
+          baseXp={xpEarned}
+          accuracy={accuracy}
           isGuest={isGuest}
           isTutorial={isTutorial || userData.points === 0}
           isCharacterLesson={lessonNode.id.startsWith('char_lesson_')}
@@ -411,7 +418,8 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
               syncLearnedWords(introducedWords);
             }
             onComplete({
-              xpEarned: Math.max(5, 15 - mistakes),
+              xpEarned,
+              accuracy,
               perfect: mistakes === 0,
               completedLessonId: activeSubLessonId,
               isNodeComplete: isLastSubLesson,

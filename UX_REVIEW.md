@@ -183,7 +183,7 @@ Do not build on these.
 - **F4** "The footer doesn't jump" — CHECK changes size and moves sideways (C03).
 - **F5** "Dark feedback tints read well" — the dark tints are legible (9.6:1), but the phone title is lime in both themes, so a wrong answer reads as success (C01).
 - **F6** "Report sends enough context" — it cannot identify the item (C09).
-- **F7** "Accuracy is computed honestly" — 8 of 15 correct shows 0% (C25).
+- **F7** "Accuracy is computed honestly" — 8 of 15 correct shows 0% (C25). ✅ Fixed (#371, 2026-09-30): it shows 53%.
 - **F8** "Readable node states" — locked nodes are playable; current and completed look alike (C68).
 - **F9** Profile's loading skeleton — it never renders (C46).
 - **F10** The desktop rail — it cuts off items on laptop heights (N2).
@@ -468,6 +468,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Where:** `components/LessonPlayer/LessonPlayer.tsx:369-389`, `components/LessonPlayer/PostLesson.tsx:14-89,310-338,343-665`, `pages/Dashboard.tsx:197,210`, `pages/Welcome/FTUELesson.tsx:20`, `pages/PracticePage.tsx:64`, `pages/Characters/CharacterLesson.tsx:23`, `context/UserContext.tsx:436-505`
 - **Related:** SOT §6, §8, WP-B3; C27, C33, C36, C57; decision Q13.
 - **Q13 answered (#370, 2026-09-30):** the owner confirmed that tutorial screens 2–4 and 7–8 are dropped, not rebuilt. The finding stays open: UX0a-5 (#371).
+- ✅ Fixed (#371, 2026-09-30), the numbers and the tutorial screens: XP is computed once and the same value is shown and saved (8 of 15 right: '+8' on screen, +8 in `save_progress`); accuracy is correct ÷ answered, rounded down (8 of 15 → 53%, 14 of 15 → 93%); all five `completeLesson` callers pass it, so 'Flawless', `q_acc_100` and `q_acc_90` need the accuracy they name; below 60% the accuracy card is neutral, not green; tutorial screens 2–4 and 7–8 are deleted, so a first lesson ends 1 → streak → goal pick → save wall. `phonics_match` now counts one mistake when any pairing was wrong (WP-B3). **Still open:** 'Hibák átnézése' ("Review mistakes") under a low result; the static "1"-day streak screen; the data-driven sequence for returning learners (after C27); the save wall for signed-in learners (UX0b-1, #372).
 
 ### C27 · Daily state is hollow: streak +1 per app open, quests reroll per load, shields inert, no daily goal — **major**
 - **Server half changed (#359, 2026-09-30), finding still open:** a save no longer resets `daily_quests_date`, `active_quests`, the streak or the shields (WP-B1), and ignores client values for them (WP-B1b). Nothing the learner sees changed: the client still sends none of them through an endpoint that stores them, so quests still reroll and the streak still grows on every load. **Owner decision the same day, for the fix below:** a new account starts with 0 shields (in code); 1 after the intro lesson and 1 more after registering, then the shop and later random quizzes (not built).

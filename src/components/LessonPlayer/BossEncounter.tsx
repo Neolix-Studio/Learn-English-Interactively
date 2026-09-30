@@ -152,13 +152,15 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
   };
 
   if (isPostLesson) {
+    const accuracy = Math.floor((playerHearts / 5) * 100);
+
     return (
       <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
         <PostLesson
           baseXp={30}
-          accuracy={Math.floor((playerHearts / 5) * 100)}
+          accuracy={accuracy}
           isGuest={isGuest}
-          onComplete={() => onComplete({ xpEarned: 30, perfect: playerHearts === 5 })}
+          onComplete={() => onComplete({ xpEarned: 30, accuracy, perfect: playerHearts === 5 })}
         />
       </div>
     );

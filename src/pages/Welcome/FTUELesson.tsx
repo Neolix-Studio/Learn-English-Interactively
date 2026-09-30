@@ -17,7 +17,7 @@ export function FTUELesson() {
   }
 
   const handleComplete = (scoreData: any) => {
-    completeLesson(firstNode.id, scoreData.xpEarned, 100, scoreData.completedLessonId, scoreData.isNodeComplete, true);
+    completeLesson(firstNode.id, scoreData.xpEarned, scoreData.accuracy, scoreData.completedLessonId, scoreData.isNodeComplete, true);
 
     try {
       const progress = {

@@ -20,7 +20,7 @@ export function CharacterLesson() {
   };
 
   const handleComplete = (scoreData: any) => {
-    completeLesson(charNode.id, scoreData.xpEarned, 100, scoreData.completedLessonId, true, false);
+    completeLesson(charNode.id, scoreData.xpEarned, scoreData.accuracy, scoreData.completedLessonId, true, false);
 
     try {
       const localCharProgress = JSON.parse(localStorage.getItem('guest_character_progress') || '{}');

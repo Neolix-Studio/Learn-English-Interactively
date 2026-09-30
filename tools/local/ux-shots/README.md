@@ -187,13 +187,20 @@ node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z
 # level 2, a PNG of items 1 to 7 before and after CHECK, at every lesson viewport, light and dark
 node tools/local/ux-shots/sound-lesson.mjs --id vowels_o_ow --level 2 --shots 1,2,3,4,5,6,7 --matrix --lesson
 
-# items 1 and 4 answered wrongly: 60%, and the two log_failed_exercise requests are printed
+# items 1 and 4 answered wrongly: +13 XP and 77% (7 of 9), and the two log_failed_exercise requests are printed
 node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --wrong 1,4
+
+# three wrong pairings on match item 2: it still finishes, and counts as one mistake
+node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --mispair 2
+
+# as the returning guest, with the two accuracy quests active: 'flawless' and the quests must not move
+node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --guest --wrong 4
 ```
 
 It exits 1 when a check fails: a compare option that is no longer selected one second after the tap,
-a match tile left unmatched, an item graded differently from what was tapped, a wrong percentage on
-the result screen, or a `log_failed_exercise` request too many or too few. `--help` lists the flags.
+a match tile left unmatched, an item graded differently from what was tapped, a wrong XP or percentage
+on the result screen, saved points that differ from the XP shown, or a `log_failed_exercise` request
+too many or too few. `--help` lists the flags.
 
 ## Steps
 

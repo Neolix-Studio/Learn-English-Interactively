@@ -194,7 +194,7 @@ export const Dashboard: React.FC = () => {
           onExit={() => setActiveLesson(null)}
           onComplete={(scoreData) => {
             localStorage.removeItem('neolix_active_lesson');
-            completeLesson(activeLesson.id, scoreData.xpEarned, 100, scoreData.completedLessonId, scoreData.isNodeComplete, scoreData.isTutorial); 
+            completeLesson(activeLesson.id, scoreData.xpEarned, scoreData.accuracy, scoreData.completedLessonId, scoreData.isNodeComplete, scoreData.isTutorial); 
             setActiveLesson(null);
           }}
         />
@@ -207,7 +207,7 @@ export const Dashboard: React.FC = () => {
           onExit={() => setActiveLesson(null)}
           onComplete={(scoreData) => {
             localStorage.removeItem('neolix_active_lesson');
-            completeLesson(activeLesson.id, scoreData.xpEarned, 100);
+            completeLesson(activeLesson.id, scoreData.xpEarned, scoreData.accuracy);
             setActiveLesson(null);
           }}
         />

@@ -62,7 +62,7 @@ export const PracticePage: React.FC = () => {
   const handleComplete = (scoreData: any) => {
     setIsPlaying(false);
     if (dynamicMistakesNode) {
-      completeLesson(dynamicMistakesNode.id, scoreData.xpEarned, 100);
+      completeLesson(dynamicMistakesNode.id, scoreData.xpEarned, scoreData.accuracy);
     }
   };
 

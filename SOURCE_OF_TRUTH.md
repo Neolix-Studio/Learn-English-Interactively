@@ -321,7 +321,7 @@ Migration at auth time extracts **only `{points, completed, scores}`** (`guestPr
 | `user_local_progress` | `FTUELesson.tsx:30` | `guestProgress.ts:9`, `LessonPlayer.tsx:111` (legacy) | person |
 | `guest_base_language` | `i18n.ts:16,24,27` | `i18n.ts` | device |
 | `guest_character_progress` | `Characters.tsx:17`, `CharacterLesson.tsx:26,39` | same — **used for logged-in users too; never synced or migrated** | person |
-| `ftue_marketing_data` | `HearAboutUsScreen:19`, `WhyLearningScreen:19`, `PostLesson:81`, `Onboarding.tsx:42` | `AuthModal.tsx:114` — **which runs before those screens ever render** | person |
+| `ftue_marketing_data` | `HearAboutUsScreen:19`, `WhyLearningScreen:19`, `PostLesson:88`, `Onboarding.tsx:42` | `AuthModal.tsx:114` — **which runs before those screens ever render** | person |
 | `lexipaws_tour_completed` | `Dashboard.tsx:50` | `Dashboard.tsx:35` | person |
 | `neolix_active_lesson` | `Dashboard.tsx:129` | `Dashboard.tsx:105` | person |
 | `hasSeenWordTooltipGuide` | `InteractiveSentence.tsx:59` | `InteractiveSentence.tsx:19` | person |
@@ -329,7 +329,7 @@ Migration at auth time extracts **only `{points, completed, scores}`** (`guestPr
 | `last_feedback_refill` | `FeedbackRefillModal.tsx:49` | `Dashboard.tsx:109` (one-hour cooldown of the refill survey, client-side only) | person |
 | `adhd_volume` | `SidebarLeft.tsx:243` | `SidebarLeft.tsx:28`, `audio.ts:74` | device |
 | `neolix_reduced_motion` | `SidebarLeft.tsx:53` | `SidebarLeft.tsx:44` | device |
-| `forceBetaRequestModal` | `PostLesson.tsx:681` | `Home.tsx:92` ✅ | device |
+| `forceBetaRequestModal` | `PostLesson.tsx:471` | `Home.tsx:92` ✅ | device |
 | **`forceLoginModal`** | `NotFoundPage.tsx:7`, `SidebarRight.tsx:177` | **nothing** ❌ | device |
 | **`forceRegisterModal`** | **nothing** | `Home.tsx:92` ❌ | device |
 | **`neolix_language`** | `Gateway.tsx:10` | **nothing** ❌ | device |
@@ -371,7 +371,7 @@ The three ❌ rows are live bugs: the "Bejelentkezés" buttons on the 404 page a
 3. `enrichQuestion` (`:64`) attaches the dictionary and computes `newWords`.
 4. Every exercise reports `onAnswer({ hasAnswer, isCorrect, value })` (`exercises/answer.ts`) as the learner answers. The player keeps the last report in one `answer` state (`:174`) and puts it back to `NO_ANSWER` every time the index moves (`goToNextQuestion`, `:301`). The exercise is mounted under a key made of the index and the item id (`:516`), so every item starts with fresh local state. **All answer validation lives inside the exercise components.**
 5. `handleCheck` (`:310`) — while there is no answer it does nothing (`:318`), and the button carries `aria-disabled` and neutral grey until `canSubmit` (`:299`). With an answer, the first press builds `textToRead`, fires TTS, sets feedback, and on a wrong answer POSTs `log_failed_exercise` (`:351`). Second press advances. An interstitial card, or an item whose type has no exercise component, shows 'TOVÁBB' and advances ungraded (`:298`).
-6. Completion renders `<PostLesson>` with a hardcoded `baseXp={15}` and `accuracy = max(0, 100 - mistakes*20)`.
+6. Completion computes the two numbers once (`LessonPlayer.tsx:403-406`, UX0a-5, #371, 2026-09-30): `xpEarned = max(5, 15 − mistakes)` and `accuracy = floor(correct ÷ graded × 100)`, where graded = correct + wrong answers. A skipped item and the two interstitial cards are neither; with nothing graded the accuracy is 100. It is rounded down so that only a lesson without a mistake reaches 100. The same two values go to `<PostLesson>` (`:411-412`) and into `onComplete`'s `scoreData` (`:421-422`). *(Before #371: `baseXp={15}` and `accuracy = max(0, 100 - mistakes*20)`.)*
 
 **Feedback banner (UX0a-1, #360, 2026-09-30).** The footer carries `data-state` = `none | correct | incorrect | skipped` (`:521`) and the message renders inside a slot that is always in the DOM with `role="status"` (`:528`), so a screen reader announces it. No colour is inline any more: `interactive.css:499-565` defines twelve `--feedback-*` tokens (title colour, banner background, icon fill and icon glyph, for success, danger and warning) for light and for dark, the dark set also serving the `fall` and `halloween` themes, and `:572-591` maps the state to a set. Every text pair is at least 4.8:1. The answer line comes from `getCorrectAnswerText()` (`:82`): 'Igaz'/'Hamis' for `true_false`, the correct option's text for `phonics_listen_choose`, the matching button label for `phonics_compare`, the pair words for `phonics_match`, the word for `phonics_speak`, the first accepted answer for `fill_blanks`, otherwise `correctAnswer ?? answer`. Below 601 px the banner stacks (`interactive.css:625`): icon, title and the whole answer on a full-width row, then a full-width 'TOVÁBB' of at least 44 px; from 601 px it is the old row (`:674`). Skipping plays `playSoundEffect('warning')` (`:251`, `audio.ts:59`), no longer the success chime. **The submit button's own colours are still inline hex** (`:563-564`, C48).
 
@@ -393,7 +393,7 @@ Dispatch is a `switch` at `LessonPlayer.tsx:259-292`. Counts are from a `jq` cen
 | `phonics_compare` | `PhonicsCompare.tsx` | `question.isSame` | 404 |
 | `phonics_speak` | `PhonicsSpeak.tsx` | **always `onAnswer(true)`** | 404 |
 | `image_choice` | `ImageChoice.tsx` | `opt.correct` | 264 |
-| `phonics_match` | `PhonicsMatch.tsx` | all pairs matched — **cannot be wrong** · ⚠️ *owner has decided this must change — see below* | 204 |
+| `phonics_match` | `PhonicsMatch.tsx` | all pairs matched; graded wrong, once, if any pairing on the way was wrong (#371) — see below | 204 |
 | `true_false` | `TrueFalse.tsx` | `question.answer` | 125 |
 | `multiple_choice` | `MultipleChoice.tsx` | **exact string** | 125 |
 | `type_in` | `TypeIn.tsx` | `trim().toLowerCase()` | 125 |
@@ -407,13 +407,15 @@ Dispatch is a `switch` at `LessonPlayer.tsx:259-292`. Counts are from a `jq` cen
 
 **Second decision: a wrong `phonics_match` attempt must count against accuracy, while the exercise stays forgiving.**
 
-Today it cannot count against anything. `PhonicsMatch.tsx:76-78` reports a correct answer once every tile is matched *(since #362 a tile is identified by its position in the item, `:21-23`, an audio tile and a text tile match when their texts are equal, `:70`, and the item is complete when all `pairs.length × 2` tiles are matched; #361's distinct-text count is gone, and so are the three items with a duplicated pair, C14)*, and the mismatch branch (`:79-86`) only flashes red for 800 ms before clearing the selection. Since the learner cannot advance without eventually matching every pair, the exercise is **unconditionally correct** — it inflates lesson accuracy and never records a mistake.
+✅ **Built (UX0a-5, #371, 2026-09-30).** `PhonicsMatch` keeps a `hadMispairing` ref (`PhonicsMatch.tsx:20`), set in the mismatch branch (`:83`) and cleared with the question (`:34`). When the last pair is matched it reports `isCorrect: !hadMispairing.current` (`:80`). So three wrong pairings or thirty are one mistake, the item can always be finished, and CHECK then shows 'Helytelen!' with the pair words, logs one `log_failed_exercise` row and lowers the accuracy that `completeLesson` now receives. Proof: `node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --mispair 2`. The paragraphs below describe the state before #371 and the reasoning; they are kept for the record.
+
+Before #371 it could not count against anything. `PhonicsMatch.tsx:76-78` *(now `:79-81`)* reported a correct answer once every tile is matched *(since #362 a tile is identified by its position in the item, `:21-23`, an audio tile and a text tile match when their texts are equal, `:70`, and the item is complete when all `pairs.length × 2` tiles are matched; #361's distinct-text count is gone, and so are the three items with a duplicated pair, C14)*, and the mismatch branch (`:79-86`) only flashes red for 800 ms before clearing the selection. Since the learner cannot advance without eventually matching every pair, the exercise is **unconditionally correct** — it inflates lesson accuracy and never records a mistake.
 
 Three consequences worth knowing before this is implemented:
 
-- **"Affects accuracy" and "feeds weak-item practice" are the same switch.** `LessonPlayer.tsx:346-357` increments `mistakes` *and* POSTs `log_failed_exercise` off the same wrong answer. Reporting a mispairing therefore also pushes it into `user_failed_exercises` → `get_weak_words` → PracticePage, whether or not that was intended. It is almost certainly the right behaviour for a phonics contrast the learner just confused — but it is a coupling, not a choice made separately.
-- ✅ **The rule is settled (owner, 2026-08-28): a `phonics_match` exercise incurs *at most one* mistake, and only if at least one mispairing occurred.** Report `onAnswer(false)` once any mispairing has happened, regardless of how many wrong taps follow — never a penalty per tap. The exercise still cannot be failed and still cannot block the lesson; only the score moves. This matters because `accuracy = max(0, 100 - mistakes*20)` is unusually steep: four mistakes already lands a learner at 20%, so a per-tap penalty on a drag-and-match exercise would be punitive out of all proportion to the error.
-- **It is inert until the accuracy hardcode is gone.** All five `completeLesson` call sites pass the literal `100` (§8). Until WP-B3 passes `scoreData.accuracy` through, a correctly-reported mispairing changes the in-lesson counter and the `log_failed_exercise` row, but nothing the user's profile records.
+- **"Affects accuracy" and "feeds weak-item practice" are the same switch.** `LessonPlayer.tsx:349-357` increments `mistakes` *and* POSTs `log_failed_exercise` off the same wrong answer. Reporting a mispairing therefore also pushes it into `user_failed_exercises` → `get_weak_words` → PracticePage, whether or not that was intended. It is almost certainly the right behaviour for a phonics contrast the learner just confused — but it is a coupling, not a choice made separately.
+- ✅ **The rule is settled (owner, 2026-08-28): a `phonics_match` exercise incurs *at most one* mistake, and only if at least one mispairing occurred.** Report `onAnswer(false)` once any mispairing has happened, regardless of how many wrong taps follow — never a penalty per tap. The exercise still cannot be failed and still cannot block the lesson; only the score moves. This mattered because `accuracy = max(0, 100 - mistakes*20)` was unusually steep: four mistakes already landed a learner at 20%, so a per-tap penalty on a drag-and-match exercise would have been punitive out of all proportion to the error. *(Since #371 accuracy is correct ÷ graded; the one-mistake rule stands.)*
+- ~~**It is inert until the accuracy hardcode is gone.** All five `completeLesson` call sites pass the literal `100` (§8). Until WP-B3 passes `scoreData.accuracy` through, a correctly-reported mispairing changes the in-lesson counter and the `log_failed_exercise` row, but nothing the user's profile records.~~ ✅ Fixed (#371, 2026-09-30): the hardcode went in the same push.
 
 ### Audio / TTS
 
@@ -423,13 +425,15 @@ Three consequences worth knowing before this is implemented:
 - **`api/tts.php:80` allows 30 uncached syntheses per hour**, while `WordOrder.tsx:47` preloads *every tile of every word-order question* with no in-flight dedupe. A learner meeting new vocabulary exhausts the quota inside one lesson and silently drops to browser TTS — a different voice, or none at all on some mobile browsers.
 - **No speech recognition exists.** `grep -rn "SpeechRecognition|getUserMedia|MediaRecorder" src/` returns nothing. `PhonicsSpeak` is a 2-second `setTimeout` that always awards a correct answer. 404 curriculum items depend on it.
 
-### `PostLesson.tsx` (713 lines)
+### `PostLesson.tsx` (503 lines)
 
-Nine screens. **Screens 2–8 are static FTUE theatre** — the level-up, the flag, the 50% scale bar, the "1" streak, the 100%-wide quest bar (`:620`) and the bone rain read no real data. Screen 9 is the guest signup wall. **Owner decision 2026-09-30 (UX Q13, #370): the 'LexiPaws score' is not defined; its screens are deleted.** Tutorial screens 2–4 and 7–8 are removed in UX0a-5 (#371); until that lands, the code is as described here.
+Four screens, still numbered 1, 5, 6 and 9: the result (`:281`), the "1"-day streak (`:314`), the streak-goal pick (`:371`) and the guest signup wall (`:458`). A first lesson walks 1 → 5 → 6 → 9 (`handleNext`, `:60-98`); every other lesson shows screen 1 only, then screen 9 for a guest. **Screens 5 and 6 are still static FTUE theatre**: the "1" and the week row read no real data. **Owner decision 2026-09-30 (UX Q13, #370): the 'LexiPaws score' is not defined; its screens are deleted.** ✅ Done (UX0a-5, #371, 2026-09-30): tutorial screens 2–4 (level-up, flag, 50% scale bar) and 7–8 (100%-wide quest bar, bone rain) are gone, with their five keyframes and three phone rules. Their `post_lesson.*` strings stay in `hu.json` until UX0c-2 (#419) removes them.
 
-Screen 9 has **no `isGuest` guard**, and `LessonPlayer.tsx:407` passes `isTutorial={isTutorial || userData.points === 0}` — so **any logged-in user finishing their first lesson is shown the guest signup wall**, whose button sets `forceBetaRequestModal` and hard-redirects them out of the app to `/`.
+On screen 1 the accuracy card is success green from 60% up and neutral below it (`accuracyTone`, `:26-29`; the card carries `data-tone="success|neutral"`): surface background, border token, muted label, main-text value, in light and dark.
 
-`PostLesson` also always animates **+15 XP** (`LessonPlayer.tsx:404`) while `:414` reports `Math.max(5, 15 - mistakes)`. Six mistakes → the screen says 15, the user gets 9.
+Screen 9 has **no `isGuest` guard**, and `LessonPlayer.tsx:414` passes `isTutorial={isTutorial || userData.points === 0}` — so **any logged-in user finishing their first lesson is shown the guest signup wall**, whose button sets `forceBetaRequestModal` and hard-redirects them out of the app to `/`.
+
+~~`PostLesson` also always animates **+15 XP** (`LessonPlayer.tsx:404`) while `:414` reports `Math.max(5, 15 - mistakes)`. Six mistakes → the screen says 15, the user gets 9.~~ ✅ Fixed (#371, 2026-09-30): one `xpEarned` (`LessonPlayer.tsx:405`) is both shown and saved. Measured with 8 of 15 right: '+8' and '53%' on screen, `save_progress` carries 1240 + 8 = 1248 points.
 
 ---
 
@@ -509,7 +513,7 @@ Almost all of it traces back to finding #1:
 - **Purchased themes deactivate themselves.** The choice is written to `scores.active_theme` only. The `active_theme` column never receives it, and on the next load the column overwrites the JSON copy (`UserContext.tsx:139-141`). *(Until #359, 2026-09-30, every save also reset the column to `'default'`. It is now left alone, which does not help: nothing writes the choice into it. WP-B3.)* A user who paid 500 bones for Halloween loses it after any lesson. (The *inventory* row survives.)
 - **Daily quests reroll on every page load**, so the same three can be farmed repeatedly.
 - **The quest-persistence call is a guaranteed no-op.** `UserContext.tsx:229-235` posts to `update_progress`, which reads **only** `$data['xp']` (`api.php:1243-1290`) and errors when it is absent. No caller anywhere sends `xp`. `handleUpdateProgress` is entirely dead server code — *and it is also the endpoint an attacker would use to mint XP.*
-- **Achievements are noise.** `accuracy` is the literal `100` at all five `completeLesson` call sites (verified: `Dashboard.tsx:197,210`, `CharacterLesson.tsx:23`, `PracticePage.tsx:65`, `FTUELesson.tsx:20`). The `flawless` achievement and the `q_acc_100`/`q_acc_90` quests fire on everyone's first lesson. *(Nuance: `LessonPlayer.tsx:405` does compute a real accuracy and `PostLesson` consumes it — the value is discarded only at the `completeLesson` boundary.)*
+- ~~**Achievements are noise.** `accuracy` is the literal `100` at all five `completeLesson` call sites (verified: `Dashboard.tsx:197,210`, `CharacterLesson.tsx:23`, `PracticePage.tsx:65`, `FTUELesson.tsx:20`). The `flawless` achievement and the `q_acc_100`/`q_acc_90` quests fire on everyone's first lesson.~~ ✅ Fixed (#371, 2026-09-30): all five pass `scoreData.accuracy`, the value the result screen shows (§6; the dead `BossEncounter` passes its hearts-based one). Measured as the returning guest on `cons_s_z`: one mistake → 88%, no `flawless`, `q_acc_100` 0, `q_acc_90` 0; a clean run → 100%, `flawless`, both quests +1. `q_acc_90` counts a lesson at 90% **or above** (`UserContext.tsx:459`) although its text says 'feletti' ("above"); not changed.
 - **Friends is broken for anyone with a friend in a league.** `api.php:2083-2087` reads `monthly_xp` from `user_progress`; the column lives on `user_leagues` (`09_add_monthly_xp.sql`). The subquery sits inside `if ($friend['league_id'])`, so friends with no league row are skipped — but any league member throws, and the `catch` at `api.php:2110` collapses the whole response into an empty state.
 - **Streak shields are stored twice and never used.** `claim_reward` writes the `user_progress.streak_shields` **column**; the client reads `scores.streak_shields` (**JSON**). ~~The column is zeroed by the next save.~~ *(Fixed by #359, 2026-09-30: a save keeps the column.)* Leaderboard shield rewards are kept now, but still invisible: the client shows only the JSON copy. Nothing anywhere decrements a shield against a missed day. *(Corrected 2026-09-30: `cron_notifications.php` does, on the **column**, which the client never reads. See [§10](#10-backend-api), "`cron_notifications.php` and the panel cron jobs".)* **Owner decision, 2026-09-30 (#359):** a new account starts with **0** shields. The learner gets 1 after the intro lesson and 1 more after registering; after that shields come from the shop and, later, from random quizzes (not built). Only the 0 exists in code (`newProgressRowDefaults()`, `api.php:989`; signup inserted 2 until #359, and the column's schema default is still 2, `01_add_gamification_columns.sql:7`, which no insert relies on). The two grants are not built; they belong with the one-store decision in WP-B3. **Owner decision 2026-09-30 (UX Q10, #365): a shield is used automatically, one per missed day, and a learner holds at most 3.** No cap exists in code today: the shop adds 1 per purchase with no limit (`ShopModal.tsx:26`), `claim_reward` adds to the column with no limit (`api.php:1586`), and the only bound is the +3-per-save clamp on the JSON copy (`api.php:1068-1071`). B3b (#381).
 - **The sidebar leaderboard always shows Bronze** — `SidebarRight.tsx:27` calls `get_leaderboard` with no `league_id` and `api.php:1430` defaults to league 1. The locale string even hardcodes *"Heti Ranglista (Bronz Liga)"*.
@@ -911,7 +915,7 @@ Renderings 2, 3 and 4 *do* share a consistent character design — dark blue-gre
 
 **All 26 "Transparent PNGs" are the full 768×1364 source sheet with everything else erased — not crops.** Alpha bounding boxes: `tyler-jump.png` = 241×343, **7.9% of the canvas**; `tyler-head.png` 1.7%; the head expressions **0.6%**.
 
-With `objectFit: contain` in `PostLesson.tsx:312`'s 200×200 box, the dog renders at roughly **35×50 px, offset below centre**. That is the lesson-completion celebration — the app's emotional payoff — and the mascot is a thumbnail floating in empty space. Same defect at 280px and 220px on the level-up and reward screens.
+With `objectFit: contain` in `PostLesson.tsx:312`'s 200×200 box, the dog renders at roughly **35×50 px, offset below centre**. That is the lesson-completion celebration — the app's emotional payoff — and the mascot is a thumbnail floating in empty space. *(The level-up and reward screens, which had the same defect at 280px and 220px, were deleted in #371; the image is now `PostLesson.tsx:283`.)*
 
 ### Icon system: four parallel systems
 
@@ -1036,8 +1040,8 @@ This is the most important thing in this document. Each hop discards information
 | # | Hop | Where | What is lost |
 |---|---|---|---|
 | 1 | Node click, energy spent | `Dashboard.tsx:121` | Energy decrements in **client state only** |
-| 2 | Player computes reward | `LessonPlayer.tsx:414` `xpEarned: max(5, 15-mistakes)` | `PostLesson` is handed `baseXp={15}` unconditionally — the animation promises 15 while 9 may be granted |
-| 3 | `onComplete` → context | `Dashboard.tsx:197` `completeLesson(id, xp, 100, …)` | **Accuracy is the literal `100`.** The real value never crosses this boundary → `flawless` + accuracy quests always fire |
+| 2 | Player computes reward | `LessonPlayer.tsx:405-406` `xpEarned = max(5, 15-mistakes)`, `accuracy = floor(correct ÷ graded × 100)` | ~~`PostLesson` is handed `baseXp={15}` unconditionally — the animation promises 15 while 9 may be granted~~ ✅ Fixed (#371, 2026-09-30): `PostLesson` shows the same two values that are saved |
+| 3 | `onComplete` → context | `Dashboard.tsx:197` `completeLesson(id, xp, scoreData.accuracy, …)` | ~~**Accuracy is the literal `100`.** The real value never crosses this boundary → `flawless` + accuracy quests always fire~~ ✅ Fixed (#371, 2026-09-30) |
 | 4 | Reward engine | `UserContext.tsx:413-500` | Runs **entirely client-side**: bones, quests, achievements. Arrays are pushed into shallow copies (`:415,426,435,482`), mutating state still referenced by the current object |
 | 5 | Debounced write | `UserContext.tsx:363-374` | 1500 ms `setTimeout`. Payload is **only** `{points, completed, scores, quest_progress, completed_quests_today}` |
 | 6 | Transport | `utils/api.ts:33-71` | CSRF token cached and never invalidated; **no 403 refetch**. A stale token stops all saves silently and permanently |
@@ -1047,7 +1051,7 @@ This is the most important thing in this document. Each hop discards information
 
 **Hops 3 and 5 each independently discard information, and hop 6 can silently stop the whole chain.** Hops 7 and 8 did too, until #359 (2026-09-30).
 
-There is **no `beforeunload`, `pagehide`, `sendBeacon`, `visibilitychange`, `navigator.onLine`, or service worker anywhere in `src/`.** The 1500 ms debounce is the only write trigger, and several flows navigate with `window.location.href` (`ProfilePage.tsx:48`, `PostLesson.tsx:682`, `SidebarRight.tsx:167,177`, `NotFoundPage.tsx:8`). **Finish a lesson, immediately close the tab or log out, and it is gone.**
+There is **no `beforeunload`, `pagehide`, `sendBeacon`, `visibilitychange`, `navigator.onLine`, or service worker anywhere in `src/`.** The 1500 ms debounce is the only write trigger, and several flows navigate with `window.location.href` (`ProfilePage.tsx:48`, `PostLesson.tsx:472`, `SidebarRight.tsx:167,177`, `NotFoundPage.tsx:8`). **Finish a lesson, immediately close the tab or log out, and it is gone.**
 
 ### The one fix that resolves the most
 
@@ -1078,7 +1082,7 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 | 5 | **One unsolvable exercise blocks Module 2** (uncommitted working-tree edit) | `data/hu/A1/Module_2…/node3_family_ties.json` |
 | 6 | **Friends is broken for anyone with a league friend** — wrong table for `monthly_xp` | `api.php:2083-2087` |
 | 7 | **`user_metadata` table does not exist** — the energy-refill-for-feedback loop always throws | `api.php:1801,1814` |
-| 8 | **Registered users are shown the guest signup wall** after their first lesson and ejected to `/` | `PostLesson.tsx:668`, `LessonPlayer.tsx:407` |
+| 8 | **Registered users are shown the guest signup wall** after their first lesson and ejected to `/` | `PostLesson.tsx:458`, `LessonPlayer.tsx:414` |
 | 9 | **Onboarding trap** — a registered user with zero progress is bounced to `/welcome/start` on every dashboard visit, and the welcome shell has no nav, no skip, and exits back to `/welcome/experience` | `Dashboard.tsx:95-99`, `UserContext.tsx:156`, `FTUELesson.tsx:39` |
 | 10 | ~~**2 HIGH dependency advisories** in `react-router` / `react-router-dom`~~ ✅ **Fixed 2026-09-24** — #266 (react-router and react-router-dom → 7.18.4, `c4c6609`) and #258 (postcss → 8.5.28, `c8c9976`) merged into `dev` and deployed; `npm audit --omit=dev` reports 0 vulnerabilities | `package.json:27` |
 | 11 | **Open redirect after auth** — `?redirect=` followed verbatim, on a domain users are asked to trust with credentials | `AuthModal.tsx:110-112,126-128` |
@@ -1388,8 +1392,13 @@ sed -n '1007,1015p' api.php
 grep -n 'lexipaws_activity_date' security.php api.php cron_notifications.php
 sed -n '29p;80,89p' cron_notifications.php
 
-# 3. Is accuracy still hardcoded to 100 at all 5 call sites? (expect 5 lines, all ending ", 100")
+# 3. Does every completeLesson caller pass the real accuracy? (FIXED by #371, 2026-09-30: expect 5 lines, each with
+#    `scoreData.xpEarned, scoreData.accuracy`. A literal 100 means 'flawless' and the accuracy quests fire for everyone again.)
 grep -rn "completeLesson(" src/ | grep -v "const completeLesson"
+
+# 3b. Is the XP that is shown the XP that is saved, and is accuracy correct ÷ graded? (expect: "PASSED … result +13 XP
+#    and 77%, saved as 1253 points, 2 log_failed_exercise request(s)"; needs `npm run dev`; #371)
+node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --wrong 1,4
 
 # 4. Is the dead gateway.html rewrite still gone? (FIXED @ 450b9dd, WP-A3: expect no output from either command.
 #    Output from grep means the rewrite is back; the file itself was never meant to exist.)
@@ -1425,8 +1434,11 @@ grep -rn -- '--color-primary:\|--level-a1:\|--color-bg:\|--color-surface:' src/a
 # 13. Do the font tokens still point at fonts nothing loads? (expect: Outfit + Inter until C1 lands)
 grep -n -- '--font-heading:\|--font-body:' src/assets/css/main.css
 
-# 14. Can phonics_match still never be wrong? (expect: onAnswer(true) only, no onAnswer(false) outside the reset effect)
+# 14. Does a wrong pairing in phonics_match still count, once? (FIXED by #371, 2026-09-30: expect two lines, the reset
+#    `onAnswer(NO_ANSWER)` and `isCorrect: !hadMispairing.current`; `isCorrect: true` means it can never be wrong again.
+#    Then, with `npm run dev` running: three wrong pairings, the item still finishes, "result +14 XP and 88%", one log row.)
 grep -n 'onAnswer(' src/components/LessonPlayer/exercises/PhonicsMatch.tsx
+node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --mispair 2
 
 # 14b. Can every sound item be answered by ear, and does each have its own id? (expect: "OK: …", exit 0; #362)
 node tools/local/testing/check_phonics_items.mjs
@@ -1465,7 +1477,7 @@ Several findings from the first pass were wrong or overstated and were corrected
 - `Onboarding.tsx` is **dead code**, so its broken `lexi-head.png` does not ship. The `lexi-mascot.png` 404 *does*.
 - `get_friends` fails for friends with a **non-null `league_id`**, not for every accepted friend.
 - The `get_session` TypeError is real but does **not** break the deploy health check (no session cookie → early return), and is rarer than implied.
-- `LessonPlayer` does **not** throw its computed accuracy away — `PostLesson` consumes it. It is discarded at the `completeLesson` boundary.
+- `LessonPlayer` does **not** throw its computed accuracy away — `PostLesson` consumes it. It is discarded at the `completeLesson` boundary. *(No longer discarded since #371.)*
 - The reduced-motion block loses **only** its `animation-duration` declaration; the other five apply. The conclusion (animations run at full duration) still holds.
 - `PrivacyPolicy.tsx:101-106` **does** name the Slovak DPA. The real defect is the undisclosed processor list.
 - "A forgotten GitHub secret fails closed" is true for the cron/migrate token gate and **false** for `BETA_INVITES_ENABLED`, which fails open.

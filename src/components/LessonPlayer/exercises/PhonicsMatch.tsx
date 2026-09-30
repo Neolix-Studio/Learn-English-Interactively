@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
 import { NO_ANSWER, type ExerciseAnswer } from './answer';
 
@@ -16,6 +16,8 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
 
   const [matchedIds, setMatchedIds] = useState<string[]>([]);
   const [errorIds, setErrorIds] = useState<string[]>([]);
+  // One wrong pairing or ten: the exercise counts as one mistake, and it can still be finished.
+  const hadMispairing = useRef(false);
 
   useEffect(() => {
     // A tile is identified by its position in the item, so two pairs with the same text stay two tiles.
@@ -29,6 +31,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
     setSelectedAudioId(null);
     setSelectedTextId(null);
     setErrorIds([]);
+    hadMispairing.current = false;
     onAnswer(NO_ANSWER);
   }, [question]);
 
@@ -74,9 +77,10 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
       setSelectedTextId(null);
 
       if (newMatched.length === question.pairs.length * 2) {
-        onAnswer({ hasAnswer: true, isCorrect: true, value: null });
+        onAnswer({ hasAnswer: true, isCorrect: !hadMispairing.current, value: null });
       }
     } else {
+      hadMispairing.current = true;
       setErrorIds([audioId, textId]);
       setTimeout(() => {
         setSelectedAudioId(null);
