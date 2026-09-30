@@ -73,7 +73,7 @@ Read the ids the issue cites (`WP-…`, `C..`, `N..`, `Q..`, `UX-…`, `SOT §�
 
 ### 3. Implement
 
-Do what the issue's "Done when" asks, and only that. When you find something else broken, do not fix it in this push: list it under "Seen, not changed" in the evidence comment and tell the owner.
+Do what the issue's "Done when" asks, and only that. When you find something else broken, do not fix it in this push: list it under "Seen, not changed" in the evidence comment and tell the owner. If no open issue on Project 1 covers it, file one in the house format (a `KEY · Title` issue shaped like its neighbours, with milestone and the board's Status, Priority, Size, Phase, Kind and Area) and name it in the comment.
 
 ### 4. Verify
 
