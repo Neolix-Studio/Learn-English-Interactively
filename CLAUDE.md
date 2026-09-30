@@ -17,7 +17,7 @@ Safety. These have no exceptions; if a task seems to need one, stop and ask the 
 
 - **Push only to `dev`.** Never push to `main`, never force-push, never amend a pushed commit. `main` is the owner's, untouched until the Beta cutover (WP-A4). No PRs and no feature branches: commit on `dev`.
 - **Never run PHP against the real `db_config.php`, and never write to the live database.** `dev.lexipaws.eu` and production share one database until H2c (#483), and the `db_config.php` in the repo root holds its live credentials. So no `php -S`, no `php migrate.php` and no `php <script>` from the repo root, and do not print or copy that file. `php -l` is safe. Anything that needs a backend runs on the local stack (step 4). On `dev.lexipaws.eu`, only look: no sign-up, no form submit, no request that saves.
-- **A new file in `data/migrations/` is a write to the live database**: the deploy applies it on the next push. It must be additive and safe to run twice, proven from zero on the local stack, and the owner must say yes to it before the push.
+- **A new file in `data/migrations/` is a write to the live database**: the deploy applies it on the next push. It must be additive and safe to run twice, proven from zero on the local stack, and the owner must say yes to it before the push. Ask with a link to the `.sql` file, so he reads the exact statements.
 - **Never set `dangerous-clean-slate`** on an FTP deploy step. It would delete every uploaded avatar and the audio cache.
 
 Product. These are owner decisions; do not reopen them unless he asks.
@@ -142,7 +142,11 @@ Leave the issue open and its board item **In progress**.
 
 ### 9. Tell the owner how to check it
 
-End every session by telling the owner, in plain words, how to check the result himself: the address on `dev.lexipaws.eu` (or the command to run on his Mac), the steps to take, what he should see, and which phone width or theme to look at. No jargon and no file paths. If the change has no visible effect, say "nothing to test by hand" and name the automated check that proves it. The same steps go into the comment from step 8. Then ask him for his OK.
+End every session by telling the owner, in plain words, how to check the result himself: the address on `dev.lexipaws.eu` (or the command to run on his Mac), the steps to take, what he should see, and which phone width or theme to look at. No jargon and no file paths. If the change has no visible effect, say "nothing to test by hand" and name the automated check that proves it. The same steps go into the comment from step 8.
+
+**Say every time whether he has to run anything in the database** (owner request, 2026-09-30). Usually the answer is "nothing to run in the database": the deploy applies the files in `data/migrations/` by itself. When he does have to run SQL by hand, do not run it for him. Put it in `tools/local/maintenance/sql/NNN_what_it_does.sql`, with a comment at the top saying what it does, whether to run it before or after the deploy, and what he should see afterwards; commit it with the issue; and give him a clickable link to that file in the chat, so it opens beside the conversation as text he can copy and paste into the database tool. Do not paste long SQL into the chat instead of the link.
+
+Then ask him for his OK.
 
 ### 10. Close, after the owner's OK
 
