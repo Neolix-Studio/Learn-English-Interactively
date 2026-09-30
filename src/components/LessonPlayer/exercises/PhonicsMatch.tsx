@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
+import { NO_ANSWER, type ExerciseAnswer } from './answer';
 
 interface PhonicsMatchProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
 }
 
 export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }) => {
@@ -27,7 +28,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
     setSelectedAudioId(null);
     setSelectedTextId(null);
     setErrorIds([]);
-    onAnswer(false);
+    onAnswer(NO_ANSWER);
   }, [question]);
 
   const handleAudioClick = (item: any) => {
@@ -71,8 +72,10 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
       setSelectedAudioId(null);
       setSelectedTextId(null);
 
-      if (newMatched.length === question.pairs.length) {
-        onAnswer(true);
+      // Two pairs with the same text share one pairId, so they match together.
+      const pairCount = new Set(question.pairs.map((p: any) => p.text)).size;
+      if (newMatched.length === pairCount) {
+        onAnswer({ hasAnswer: true, isCorrect: true, value: null });
       }
     } else {
       setErrorIds([audioId, textId]);

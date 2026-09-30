@@ -17,6 +17,7 @@ import { PhonicsListenChoose } from './exercises/PhonicsListenChoose';
 import { PhonicsMatch } from './exercises/PhonicsMatch';
 import { PhonicsCompare } from './exercises/PhonicsCompare';
 import { PhonicsSpeak } from './exercises/PhonicsSpeak';
+import { NO_ANSWER, type ExerciseAnswer } from './exercises/answer';
 
 import { useUser } from '../../context/UserContext';
 import { PostLesson } from './PostLesson';
@@ -170,7 +171,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const [characters, setCharacters] = useState<string[]>([]);
 
   const [feedback, setFeedback] = useState<'none' | 'correct' | 'incorrect' | 'skipped'>('none');
-  const [selectedAnswerCorrect, setSelectedAnswerCorrect] = useState<boolean>(false);
+  const [answer, setAnswer] = useState<ExerciseAnswer>(NO_ANSWER);
   const [isLoading, setIsLoading] = useState(true);
   const [isPostLesson, setIsPostLesson] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -244,30 +245,78 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   const completedQuestions = currentIndex + (feedback !== 'none' ? 1 : 0);
   const progressPercent = (completedQuestions / questions.length) * 100;
 
-  const handleAnswerSelected = (isCorrect: boolean) => {
-    setSelectedAnswerCorrect(isCorrect);
-  };
-
   const handleSkipExercise = () => {
     stopAudio();
     setFeedback('skipped');
     playSoundEffect('warning');
   };
 
-  const isInterstitial = currentQuestion?.type === 'morale_boost' || currentQuestion?.type === 'harder_encouragement';
+  const isAnswered = feedback !== 'none';
+
+  const renderExercise = () => {
+    if (!enrichedQuestion) return null;
+
+    switch (currentQuestion.type) {
+      case 'image_choice':
+        return <ImageChoice question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'word_order':
+        return <WordOrder question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'match_pairs':
+        return <MatchPairs question={enrichedQuestion} onAnswer={setAnswer} />;
+      case 'fill_blanks':
+        return <FillBlanks question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'true_false':
+        return <TrueFalse question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'multiple_choice':
+        return <MultipleChoice question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'type_in':
+        return <TypeIn question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'dictation':
+        return <Dictation question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'sentence_builder':
+        return <FillBlanks question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'morale_boost':
+        return <MoraleBoost question={enrichedQuestion} />;
+      case 'harder_encouragement':
+        return <HarderEncouragement question={enrichedQuestion} />;
+      case 'phonics_listen_choose':
+        return <PhonicsListenChoose question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'phonics_match':
+        return <PhonicsMatch question={enrichedQuestion} onAnswer={setAnswer} />;
+      case 'phonics_compare':
+        return <PhonicsCompare question={enrichedQuestion} onAnswer={setAnswer} isAnswered={isAnswered} />;
+      case 'phonics_speak':
+        return <PhonicsSpeak question={enrichedQuestion} onAnswer={setAnswer} onSkip={handleSkipExercise} isAnswered={isAnswered} />;
+      default:
+        return null;
+    }
+  };
+
+  const exercise = renderExercise();
+
+  // Nothing to grade: the two interstitial cards, and an item whose type has no exercise.
+  const isInterstitial = exercise === null || currentQuestion?.type === 'morale_boost' || currentQuestion?.type === 'harder_encouragement';
+  const canSubmit = isInterstitial || isAnswered || answer.hasAnswer;
+
+  const goToNextQuestion = () => {
+    setAnswer(NO_ANSWER);
+    if (currentIndex + 1 < questions.length) {
+      setCurrentIndex(prev => prev + 1);
+    } else {
+      setIsPostLesson(true);
+    }
+  };
 
   const handleCheck = () => {
     if (isInterstitial) {
       stopAudio();
-      if (currentIndex + 1 < questions.length) {
-        setCurrentIndex(prev => prev + 1);
-      } else {
-        setIsPostLesson(true);
-      }
+      goToNextQuestion();
       return;
     }
 
     if (feedback === 'none') {
+      if (!answer.hasAnswer) return;
+
       let textToRead = "";
       if (currentQuestion.type === 'word_order') {
         textToRead = currentQuestion.correctAnswer;
@@ -289,7 +338,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         playTTS(cleanText);
       }
 
-      if (selectedAnswerCorrect) {
+      if (answer.isCorrect) {
         setFeedback('correct');
         playSoundEffect('success');
       } else {
@@ -310,50 +359,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     } else {
       stopAudio();
       setFeedback('none');
-      if (currentIndex + 1 < questions.length) {
-        setCurrentIndex(prev => prev + 1);
-      } else {
-        setIsPostLesson(true);
-      }
-    }
-  };
-
-  const renderExercise = () => {
-    if (!enrichedQuestion) return null;
-
-    switch (currentQuestion.type) {
-      case 'image_choice':
-        return <ImageChoice question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'word_order':
-        return <WordOrder question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'match_pairs':
-        return <MatchPairs question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'fill_blanks':
-        return <FillBlanks question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'true_false':
-        return <TrueFalse question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'multiple_choice':
-        return <MultipleChoice question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'type_in':
-        return <TypeIn question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'dictation':
-        return <Dictation question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'sentence_builder':
-        return <FillBlanks question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'morale_boost':
-        return <MoraleBoost question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'harder_encouragement':
-        return <HarderEncouragement question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'phonics_listen_choose':
-        return <PhonicsListenChoose question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'phonics_match':
-        return <PhonicsMatch question={enrichedQuestion} onAnswer={handleAnswerSelected} />;
-      case 'phonics_compare':
-        return <PhonicsCompare question={enrichedQuestion} onAnswer={handleAnswerSelected} isAnswered={feedback !== 'none'} />;
-      case 'phonics_speak':
-        return <PhonicsSpeak question={enrichedQuestion} onAnswer={handleAnswerSelected} onSkip={handleSkipExercise} isAnswered={feedback !== 'none'} />;
-      default:
-        return <div>Ismeretlen feladattípus: {currentQuestion.type}</div>;
+      goToNextQuestion();
     }
   };
 
@@ -507,7 +513,9 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             <span style={{ fontSize: '1.2rem' }}>✨</span> {t('lesson.new_word')}
           </div>
         )}
-        {renderExercise()}
+        <React.Fragment key={`${currentIndex}-${currentQuestion.id ?? ''}`}>
+          {exercise ?? <div>Ismeretlen feladattípus: {currentQuestion.type}</div>}
+        </React.Fragment>
       </main>
 
       <footer className={`interactive-footer ${feedback !== 'none' ? 'has-feedback' : ''}`} data-state={feedback} style={{
@@ -550,9 +558,10 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
         <button
           className="btn btn-primary interactive-submit-btn"
           onClick={handleCheck}
+          aria-disabled={!canSubmit}
           style={{
-            background: (feedback === 'correct' || isInterstitial) ? '#10B981' : feedback === 'incorrect' ? '#EF4444' : feedback === 'skipped' ? '#F59E0B' : 'var(--color-accent-in)',
-            borderBottom: `4px solid ${(feedback === 'correct' || isInterstitial) ? '#059669' : feedback === 'incorrect' ? '#B91C1C' : feedback === 'skipped' ? '#D97706' : 'var(--color-accent-on)'}`,
+            background: !canSubmit ? 'var(--submit-disabled-bg)' : (feedback === 'correct' || isInterstitial) ? '#10B981' : feedback === 'incorrect' ? '#EF4444' : feedback === 'skipped' ? '#F59E0B' : 'var(--color-accent-in)',
+            borderBottom: `4px solid ${!canSubmit ? 'var(--submit-disabled-lip)' : (feedback === 'correct' || isInterstitial) ? '#059669' : feedback === 'incorrect' ? '#B91C1C' : feedback === 'skipped' ? '#D97706' : 'var(--color-accent-on)'}`,
             borderTop: 'none',
             borderLeft: 'none',
             borderRight: 'none',
@@ -560,10 +569,10 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             padding: '1rem 3rem',
             fontSize: '1.2rem',
             fontWeight: 'bold',
-            color: 'white',
+            color: canSubmit ? 'white' : 'var(--submit-disabled-fg)',
             textTransform: 'uppercase',
             letterSpacing: '1px',
-            cursor: 'pointer',
+            cursor: canSubmit ? 'pointer' : 'default',
             transition: 'all 0.2s',
             minWidth: '180px'
           }}

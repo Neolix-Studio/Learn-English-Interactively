@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { playTTS } from '../../../utils/audio';
 import { QuestionHeader } from '../QuestionHeader';
+import { NO_ANSWER, type ExerciseAnswer } from './answer';
 
 interface DictationProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
+  isAnswered?: boolean;
 }
 
-export const Dictation: React.FC<DictationProps> = ({ question, onAnswer }) => {
+export const Dictation: React.FC<DictationProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [inputValue, setInputValue] = useState('');
 
   const sentence = question.sentence || question.correctAnswer;
 
   useEffect(() => {
-    setInputValue('');
-    onAnswer(false);
-
     const timer = setTimeout(() => {
       playTTS(sentence);
     }, 500);
@@ -27,10 +26,15 @@ export const Dictation: React.FC<DictationProps> = ({ question, onAnswer }) => {
     const val = e.target.value;
     setInputValue(val);
 
+    if (val.trim() === '') {
+      onAnswer(NO_ANSWER);
+      return;
+    }
+
     const cleanAnswer = val.trim().toLowerCase().replace(/[.,!?]/g, '');
     const cleanCorrect = sentence.trim().toLowerCase().replace(/[.,!?]/g, '');
 
-    onAnswer(cleanAnswer === cleanCorrect);
+    onAnswer({ hasAnswer: true, isCorrect: cleanAnswer === cleanCorrect, value: val });
   };
 
   return (
@@ -71,6 +75,7 @@ export const Dictation: React.FC<DictationProps> = ({ question, onAnswer }) => {
         type="text"
         value={inputValue}
         onChange={handleChange}
+        readOnly={isAnswered}
         placeholder="Kattints ide a gépeléshez..."
         style={{
           width: '100%',

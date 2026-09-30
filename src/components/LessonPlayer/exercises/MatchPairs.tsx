@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
+import { NO_ANSWER, type ExerciseAnswer } from './answer';
 
 interface MatchPairsProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
 }
 
 export const MatchPairs: React.FC<MatchPairsProps> = ({ question, onAnswer }) => {
@@ -24,7 +25,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({ question, onAnswer }) =>
 
     setItems(newItems);
     setSelectedIds([]);
-    onAnswer(false);
+    onAnswer(NO_ANSWER);
   }, [question]);
 
   const handleItemClick = (id: string) => {
@@ -48,7 +49,7 @@ export const MatchPairs: React.FC<MatchPairsProps> = ({ question, onAnswer }) =>
         setSelectedIds([]);
 
         if (newItems.every(i => i.matched)) {
-          onAnswer(true);
+          onAnswer({ hasAnswer: true, isCorrect: true, value: null });
         }
       } else {
         setSelectedIds([selectedIds[0], id]);

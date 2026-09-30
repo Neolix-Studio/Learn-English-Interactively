@@ -10,6 +10,7 @@ import { MatchPairs } from './exercises/MatchPairs';
 import { FillBlanks } from './exercises/FillBlanks';
 import { TrueFalse } from './exercises/TrueFalse';
 import { Dictation } from './exercises/Dictation';
+import type { ExerciseAnswer } from './exercises/answer';
 
 interface BossEncounterProps {
   lessonNode: any;
@@ -82,8 +83,8 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
 
   const currentQuestion = questions[currentIndex];
 
-  const handleAnswerSelected = (isCorrect: boolean) => {
-    setSelectedAnswerCorrect(isCorrect);
+  const handleAnswerSelected = (answer: ExerciseAnswer) => {
+    setSelectedAnswerCorrect(answer.isCorrect);
   };
 
   const handleCheck = () => {
@@ -129,6 +130,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
       }
     } else {
       setFeedback('none');
+      setSelectedAnswerCorrect(false);
       if (bossHealth <= 0) {
         setIsPostLesson(true);
       } else if (currentIndex + 1 < questions.length) {
@@ -238,7 +240,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
 
       <main style={{ position: 'relative', zIndex: 20, padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'white', borderTopLeftRadius: '32px', borderTopRightRadius: '32px', boxShadow: '0 -10px 40px rgba(0,0,0,0.3)', minHeight: '40vh' }}>
         <h3 style={{ color: 'var(--color-text-muted)', margin: '0 0 1rem 0', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.9rem' }}>Támadás (Kérdés {questions.length - bossHealth + 1} / {questions.length})</h3>
-        {renderExercise()}
+        <React.Fragment key={currentIndex}>{renderExercise()}</React.Fragment>
       </main>
 
       <footer style={{

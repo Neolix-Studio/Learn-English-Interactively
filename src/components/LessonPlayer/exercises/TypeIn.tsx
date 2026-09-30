@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
 import { sanitizeHtml } from '../../../utils/sanitizeHtml';
+import { NO_ANSWER, type ExerciseAnswer } from './answer';
 
 interface TypeInProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
+  isAnswered?: boolean;
 }
 
-export const TypeIn: React.FC<TypeInProps> = ({ question, onAnswer }) => {
+export const TypeIn: React.FC<TypeInProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [inputValue, setInputValue] = useState('');
-
-  useEffect(() => {
-    setInputValue('');
-    onAnswer(false);
-  }, [question]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setInputValue(val);
 
+    if (val.trim() === '') {
+      onAnswer(NO_ANSWER);
+      return;
+    }
+
     const correctAnswer = question.correctAnswer || question.answer;
 
     const isCorrect = val.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
-    onAnswer(isCorrect);
+    onAnswer({ hasAnswer: true, isCorrect, value: val });
   };
 
   const title = question.instruction || "Írd be a hiányzó szót!";
@@ -74,6 +76,7 @@ export const TypeIn: React.FC<TypeInProps> = ({ question, onAnswer }) => {
               type="text"
               value={inputValue}
               onChange={handleChange}
+              readOnly={isAnswered}
               placeholder="Ide írd a választ..."
               style={{
                   width: '100%',

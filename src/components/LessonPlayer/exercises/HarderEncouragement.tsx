@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface HarderEncouragementProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
 }
 
-export const HarderEncouragement: React.FC<HarderEncouragementProps> = ({ question, onAnswer }) => {
-  useEffect(() => {
-    onAnswer(true);
-  }, []);
-
+export const HarderEncouragement: React.FC<HarderEncouragementProps> = ({ question }) => {
   return (
     <div style={{ width: '100%', maxWidth: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
       <div style={{ fontSize: '6rem', marginBottom: '1rem' }}>

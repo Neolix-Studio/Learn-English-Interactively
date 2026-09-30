@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface MoraleBoostProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
 }
 
-export const MoraleBoost: React.FC<MoraleBoostProps> = ({ question, onAnswer }) => {
-  useEffect(() => {
-    onAnswer(true);
-  }, []);
-
+export const MoraleBoost: React.FC<MoraleBoostProps> = ({ question }) => {
   return (
     <div style={{ width: '100%', maxWidth: '500px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
       <div style={{ fontSize: '6rem', marginBottom: '1rem' }}>

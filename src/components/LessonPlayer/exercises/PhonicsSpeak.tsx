@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { playAudioClip } from '../../../utils/audio';
+import type { ExerciseAnswer } from './answer';
 
 interface PhonicsSpeakProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
   onSkip?: () => void;
   isAnswered?: boolean;
 }
@@ -32,7 +33,7 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
       setIsListening(false);
       setHasSpoken(true);
 
-      onAnswer(true);
+      onAnswer({ hasAnswer: true, isCorrect: true, value: null });
     }, 2000);
   };
 
@@ -41,7 +42,7 @@ export const PhonicsSpeak: React.FC<PhonicsSpeakProps> = ({ question, onAnswer, 
     if (onSkip) {
       onSkip();
     } else {
-      onAnswer(true);
+      onAnswer({ hasAnswer: true, isCorrect: true, value: null });
     }
   };
 

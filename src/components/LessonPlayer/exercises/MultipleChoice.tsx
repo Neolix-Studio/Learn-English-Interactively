@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
 import { sanitizeHtml } from '../../../utils/sanitizeHtml';
+import { getOptionState, type ExerciseAnswer } from './answer';
 
 interface MultipleChoiceProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
+  isAnswered?: boolean;
 }
 
-export const MultipleChoice: React.FC<MultipleChoiceProps> = ({ question, onAnswer }) => {
+export const MultipleChoice: React.FC<MultipleChoiceProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [selectedOpt, setSelectedOpt] = useState<string | null>(null);
 
-  useEffect(() => {
-    setSelectedOpt(null);
-    onAnswer(false);
-  }, [question]);
+  const correctAnswer = question.correctAnswer || question.answer;
 
   const handleSelect = (opt: string) => {
+    if (isAnswered) return;
+
     setSelectedOpt(opt);
-    const correctAnswer = question.correctAnswer || question.answer;
-    onAnswer(opt === correctAnswer);
+    onAnswer({ hasAnswer: true, isCorrect: opt === correctAnswer, value: opt });
   };
 
   const title = question.instruction || "Válaszd ki a helyes választ!";
@@ -59,17 +59,19 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({ question, onAnsw
               key={`${opt}-${i}`}
               onClick={() => handleSelect(opt)}
               className="lesson-option-btn"
+              data-option-state={getOptionState(isSelected, opt === correctAnswer, isAnswered)}
+              aria-disabled={isAnswered}
               style={{
                 padding: '1.2rem',
                 fontSize: '1.2rem',
                 borderRadius: '12px',
-                cursor: 'pointer',
+                cursor: isAnswered ? 'default' : 'pointer',
                 transition: 'all 0.2s',
                 fontWeight: 'bold',
-                background: isSelected ? 'var(--color-accent-in)' : 'var(--color-bg-base)',
-                color: isSelected ? 'white' : 'var(--color-text-main)',
-                border: isSelected ? '2px solid var(--color-accent-on)' : '2px solid var(--glass-border-color, var(--color-text-muted))',
-                boxShadow: isSelected ? '0 2px 0 var(--color-accent-on)' : '0 4px 0 var(--glass-border-color, var(--color-text-muted))',
+                background: 'var(--option-bg, var(--color-bg-base))',
+                color: 'var(--option-fg, var(--color-text-main))',
+                border: '2px solid var(--option-border, var(--glass-border-color, var(--color-text-muted)))',
+                boxShadow: isSelected ? '0 2px 0 var(--option-border)' : '0 4px 0 var(--glass-border-color, var(--color-text-muted))',
                 transform: isSelected ? 'translateY(2px)' : 'none',
                 textAlign: 'left'
               }}

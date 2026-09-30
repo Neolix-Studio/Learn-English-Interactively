@@ -1,33 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
 import { sanitizeHtml } from '../../../utils/sanitizeHtml';
+import { getOptionState, type ExerciseAnswer } from './answer';
 
 interface TrueFalseProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
+  isAnswered?: boolean;
 }
 
-export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer }) => {
+export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    setSelectedAnswer(null);
-    onAnswer(false);
-  }, [question]);
+  let expected = question.answer;
+  if (expected === undefined && question.correctAnswer !== undefined) {
+    if (typeof question.correctAnswer === 'string') {
+      expected = question.correctAnswer.toLowerCase() === 'true';
+    } else {
+      expected = !!question.correctAnswer;
+    }
+  }
 
   const handleSelect = (value: boolean) => {
+    if (isAnswered) return;
+
     setSelectedAnswer(value);
+    onAnswer({ hasAnswer: true, isCorrect: value === expected, value });
+  };
 
-    let expected = question.answer;
-    if (expected === undefined && question.correctAnswer !== undefined) {
-      if (typeof question.correctAnswer === 'string') {
-        expected = question.correctAnswer.toLowerCase() === 'true';
-      } else {
-        expected = !!question.correctAnswer;
-      }
-    }
-
-    onAnswer(value === expected);
+  const getOptionStyle = (value: boolean): React.CSSProperties => {
+    const isSelected = selectedAnswer === value;
+    return {
+      flex: 1,
+      maxWidth: '200px',
+      padding: '1.5rem',
+      fontSize: '1.5rem',
+      borderRadius: '16px',
+      cursor: isAnswered ? 'default' : 'pointer',
+      transition: 'all 0.2s',
+      fontWeight: 'bold',
+      background: 'var(--option-bg, var(--color-bg-surface))',
+      border: '2px solid var(--option-border, transparent)',
+      color: 'var(--option-fg, var(--color-text-main))',
+      boxShadow: isSelected ? '0 2px 0 var(--option-border)' : 'none',
+      transform: isSelected ? 'translateY(2px)' : 'none'
+    };
   };
 
   const title = question.instruction || "Igaz vagy Hamis?";
@@ -69,42 +86,18 @@ export const TrueFalse: React.FC<TrueFalseProps> = ({ question, onAnswer }) => {
         <button
           onClick={() => handleSelect(true)}
           className="lesson-option-btn"
-          style={{
-            flex: 1,
-            maxWidth: '200px',
-            padding: '1.5rem',
-            fontSize: '1.5rem',
-            borderRadius: '16px',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-            fontWeight: 'bold',
-            background: selectedAnswer === true ? 'rgba(16, 185, 129, 0.2)' : 'var(--color-bg-surface)',
-            border: `2px solid ${selectedAnswer === true ? '#10B981' : 'var(--glass-border)'}`,
-            color: selectedAnswer === true ? '#10B981' : 'var(--color-text-main)',
-            boxShadow: selectedAnswer === true ? '0 2px 0 #10B981' : '0 4px 0 var(--glass-border)',
-            transform: selectedAnswer === true ? 'translateY(2px)' : 'none'
-          }}
+          data-option-state={getOptionState(selectedAnswer === true, expected === true, isAnswered)}
+          aria-disabled={isAnswered}
+          style={getOptionStyle(true)}
         >
           Igaz ✅
         </button>
         <button
           onClick={() => handleSelect(false)}
           className="lesson-option-btn"
-          style={{
-            flex: 1,
-            maxWidth: '200px',
-            padding: '1.5rem',
-            fontSize: '1.5rem',
-            borderRadius: '16px',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-            fontWeight: 'bold',
-            background: selectedAnswer === false ? 'rgba(239, 68, 68, 0.2)' : 'var(--color-bg-surface)',
-            border: `2px solid ${selectedAnswer === false ? '#EF4444' : 'var(--glass-border)'}`,
-            color: selectedAnswer === false ? '#EF4444' : 'var(--color-text-main)',
-            boxShadow: selectedAnswer === false ? '0 2px 0 #EF4444' : '0 4px 0 var(--glass-border)',
-            transform: selectedAnswer === false ? 'translateY(2px)' : 'none'
-          }}
+          data-option-state={getOptionState(selectedAnswer === false, expected === false, isAnswered)}
+          aria-disabled={isAnswered}
+          style={getOptionStyle(false)}
         >
           Hamis ❌
         </button>

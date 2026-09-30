@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { QuestionHeader } from '../QuestionHeader';
 import { sanitizeHtml } from '../../../utils/sanitizeHtml';
 import { LexiMascot } from '../../LexiMascot';
+import { getOptionState, type ExerciseAnswer } from './answer';
 
 interface FillBlanksProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
+  isAnswered?: boolean;
 }
 
-export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer }) => {
+export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
-  useEffect(() => {
-    setSelectedWord(null);
-    onAnswer(false);
-  }, [question]);
+  const expected = Array.isArray(question.answer) ? question.answer[0] : question.answer;
+  const correctAnswer = String(expected ?? '').split('/')[0];
 
   const handleSelect = (word: string) => {
+    if (isAnswered) return;
+
     setSelectedWord(word);
-
-    const correctAnswer = Array.isArray(question.answer)
-      ? question.answer[0].split('/')[0]
-      : question.answer.split('/')[0];
-
-    onAnswer(word === correctAnswer);
+    onAnswer({ hasAnswer: true, isCorrect: word === correctAnswer, value: word });
   };
 
   const huText = question.hu || "Válaszd ki a helyes szót a mondat kiegészítéséhez!";
@@ -129,7 +126,12 @@ export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer }) =>
             <div className="fill-blank-compose-answer">
               <span>{sentenceBeforeBlank}</span>
               {selectedWord ? (
-                <span className="fill-blank-answer">{selectedWord}</span>
+                <span
+                  className="fill-blank-answer"
+                  data-option-state={getOptionState(true, selectedWord === correctAnswer, isAnswered)}
+                >
+                  {selectedWord}
+                </span>
               ) : (
                 <span className="fill-blank-slot" aria-label="hiányzó szó"></span>
               )}
@@ -148,17 +150,19 @@ export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer }) =>
               key={`${opt}-${i}`}
               onClick={() => handleSelect(opt)}
               className="lesson-option-btn"
+              data-option-state={getOptionState(isSelected, opt === correctAnswer, isAnswered)}
+              aria-disabled={isAnswered}
               style={{
                 padding: '1rem',
                 fontSize: '1.2rem',
                 borderRadius: '12px',
-                cursor: 'pointer',
+                cursor: isAnswered ? 'default' : 'pointer',
                 transition: 'all 0.2s',
                 fontWeight: 'bold',
-                background: isSelected ? 'rgba(16, 185, 129, 0.16)' : 'var(--color-bg-surface)',
-                color: 'var(--color-text-main)',
-                border: isSelected ? '2px solid #86EFAC' : '2px solid var(--glass-border)',
-                boxShadow: isSelected ? '0 0 18px rgba(134, 239, 172, 0.42), 0 3px 0 rgba(134, 239, 172, 0.55)' : '0 4px 0 var(--glass-border)',
+                background: 'var(--option-bg, var(--color-bg-surface))',
+                color: 'var(--option-fg, var(--color-text-main))',
+                border: '2px solid var(--option-border, transparent)',
+                boxShadow: isSelected ? '0 2px 0 var(--option-border)' : 'none',
                 transform: isSelected ? 'translateY(2px)' : 'none'
               }}
             >

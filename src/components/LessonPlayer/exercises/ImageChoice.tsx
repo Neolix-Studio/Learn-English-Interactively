@@ -3,26 +3,26 @@ import { QuestionHeader } from '../QuestionHeader';
 
 import svgDictionaryRaw from '../../../assets/svgDictionary.json';
 import { sanitizeSvg } from '../../../utils/sanitizeHtml';
+import { getOptionState, type ExerciseAnswer } from './answer';
 const svgDictionary: Record<string, string> = svgDictionaryRaw;
 
 interface ImageChoiceProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
+  isAnswered?: boolean;
 }
 
-export const ImageChoice: React.FC<ImageChoiceProps> = ({ question, onAnswer }) => {
+export const ImageChoice: React.FC<ImageChoiceProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  React.useEffect(() => {
-    setSelectedId(null);
-  }, [question]);
 
   const displayWord = question.word || question.correctAnswer || '';
   const instruction = `Melyik ezek közül a(z) "${displayWord}"?`;
 
   const handleSelect = (id: string, isCorrect: boolean) => {
+    if (isAnswered) return;
+
     setSelectedId(id);
-    onAnswer(isCorrect);
+    onAnswer({ hasAnswer: true, isCorrect, value: id });
   };
 
   return (
@@ -43,14 +43,17 @@ export const ImageChoice: React.FC<ImageChoiceProps> = ({ question, onAnswer }) 
           return (
             <button
               key={opt.id}
-              onClick={() => handleSelect(opt.id, opt.correct)}
+              onClick={() => handleSelect(opt.id, !!opt.correct)}
               className="image-choice-btn"
+              data-option-state={getOptionState(isSelected, !!opt.correct, isAnswered)}
+              aria-disabled={isAnswered}
               style={{
-                background: isSelected ? 'var(--color-accent-in)' : 'var(--color-bg-surface)',
-                color: isSelected ? 'var(--color-bg-base)' : 'var(--color-text-main)',
-                border: isSelected ? '2px solid var(--color-accent-on)' : '2px solid rgba(255,255,255,0.1)',
-                boxShadow: isSelected ? '0 2px 0 var(--color-accent-on)' : '0 4px 0 rgba(0,0,0,0.2)',
+                background: 'var(--option-bg, var(--color-bg-surface))',
+                color: 'var(--option-fg, var(--color-text-main))',
+                border: '2px solid var(--option-border, rgba(255,255,255,0.1))',
+                boxShadow: isSelected ? '0 2px 0 var(--option-border)' : '0 4px 0 rgba(0,0,0,0.2)',
                 transform: isSelected ? 'translateY(2px)' : 'none',
+                cursor: isAnswered ? 'default' : 'pointer',
               }}
             >
               <div>

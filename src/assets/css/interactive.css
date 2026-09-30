@@ -493,7 +493,9 @@
 }
 
 /* Feedback banner. The footer's data-state picks one of three colour sets, and each
-   theme defines the sets once. C1b folds these tokens into the theme ramp. */
+   theme defines the sets once. C1b folds these tokens into the theme ramp.
+   --option-selected-* is an answer picked but not yet checked, --submit-disabled-* is
+   the footer button while there is nothing to check. */
 :root {
     --feedback-success-fg: #047857;
     --feedback-success-bg: #ECFDF5;
@@ -507,6 +509,12 @@
     --feedback-warning-bg: #FFFBEB;
     --feedback-warning-fill: #B45309;
     --feedback-warning-on-fill: #FFFFFF;
+    --option-selected-fg: #1D4ED8;
+    --option-selected-bg: #EFF6FF;
+    --option-selected-border: #2563EB;
+    --submit-disabled-fg: #4B5563;
+    --submit-disabled-bg: #E5E7EB;
+    --submit-disabled-lip: #D1D5DB;
 }
 
 /* The fall and halloween themes are dark surfaces too. */
@@ -525,6 +533,12 @@
     --feedback-warning-bg: #2C2824;
     --feedback-warning-fill: #FBBF24;
     --feedback-warning-on-fill: #0F1524;
+    --option-selected-fg: #BFDBFE;
+    --option-selected-bg: #1E3A5F;
+    --option-selected-border: #60A5FA;
+    --submit-disabled-fg: #D1D5DB;
+    --submit-disabled-bg: #374151;
+    --submit-disabled-lip: #4B5563;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -541,6 +555,12 @@
         --feedback-warning-bg: #2C2824;
         --feedback-warning-fill: #FBBF24;
         --feedback-warning-on-fill: #0F1524;
+        --option-selected-fg: #BFDBFE;
+        --option-selected-bg: #1E3A5F;
+        --option-selected-border: #60A5FA;
+        --submit-disabled-fg: #D1D5DB;
+        --submit-disabled-bg: #374151;
+        --submit-disabled-lip: #4B5563;
     }
 }
 
@@ -568,6 +588,37 @@
     --feedback-bg: var(--feedback-warning-bg);
     --feedback-fill: var(--feedback-warning-fill);
     --feedback-on-fill: var(--feedback-warning-on-fill);
+}
+
+/* Answer options. The exercises read --option-* with their idle colour as the var() fallback:
+   a pick is neutral until CHECK, then green or red, and the right option gets an outline. */
+[data-option-state="selected"] {
+    --option-fg: var(--option-selected-fg);
+    --option-bg: var(--option-selected-bg);
+    --option-border: var(--option-selected-border);
+}
+
+[data-option-state="correct"] {
+    --option-fg: var(--feedback-success-fg);
+    --option-bg: var(--feedback-success-bg);
+    --option-border: var(--feedback-success-fill);
+}
+
+[data-option-state="wrong"] {
+    --option-fg: var(--feedback-danger-fg);
+    --option-bg: var(--feedback-danger-bg);
+    --option-border: var(--feedback-danger-fill);
+}
+
+button[data-option-state="correct"],
+button[data-option-state="answer"] {
+    outline: 3px solid var(--feedback-success-fill);
+    outline-offset: 2px;
+}
+
+.interactive-footer .interactive-submit-btn[aria-disabled="true"],
+.interactive-footer .interactive-submit-btn[aria-disabled="true"]:hover {
+    box-shadow: none;
 }
 
 /* Phone first: the message takes the full width so the whole answer fits, the button sits below it. */
@@ -853,8 +904,8 @@
 
     .fill-blank-answer {
         display: inline-block;
-        color: #10b981;
-        border-bottom: 3px solid #10b981;
+        color: var(--option-fg);
+        border-bottom: 3px solid var(--option-border);
         padding: 0 0.15rem 0.08rem;
         font-weight: 900;
     }

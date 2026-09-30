@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { playAudioClip } from '../../../utils/audio';
+import { getOptionState, type ExerciseAnswer } from './answer';
 
 interface PhonicsCompareProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
   isAnswered?: boolean;
 }
 
 export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const correctOption = question.isSame ? 'same' : 'different';
 
   const initialTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -22,9 +24,6 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
   }, [question]);
 
   useEffect(() => {
-    setSelectedOption(null);
-    onAnswer(false);
-
     initialTimeoutRef.current = setTimeout(() => {
       playAudio1();
 
@@ -37,17 +36,13 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (initialTimeoutRef.current) clearTimeout(initialTimeoutRef.current);
     };
-  }, [question, onAnswer, playAudio1, playAudio2]);
+  }, [question, playAudio1, playAudio2]);
 
   const handleSelect = (option: 'same' | 'different') => {
     if (isAnswered) return;
 
     setSelectedOption(option);
-
-    const isActuallySame = question.isSame;
-    const isCorrect = (option === 'same' && isActuallySame) || (option === 'different' && !isActuallySame);
-
-    onAnswer(isCorrect);
+    onAnswer({ hasAnswer: true, isCorrect: option === correctOption, value: option });
   };
 
   const handleManualPlay1 = () => {
@@ -65,15 +60,15 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
   const getOptionStyle = (option: 'same' | 'different') => {
     const isSelected = selectedOption === option;
     return {
-      background: isSelected ? 'var(--color-accent-in)' : 'var(--color-bg-surface)',
-      color: isSelected ? 'var(--color-bg-base)' : 'var(--color-text-main)',
-      border: isSelected ? '2px solid var(--color-accent-on)' : '2px solid rgba(255,255,255,0.1)',
+      background: 'var(--option-bg, var(--color-bg-surface))',
+      color: 'var(--option-fg, var(--color-text-main))',
+      border: '2px solid var(--option-border, rgba(255,255,255,0.1))',
       borderRadius: '16px',
       padding: '1.5rem',
       cursor: isAnswered ? 'default' : 'pointer',
       transition: 'all 0.2s',
-      boxShadow: isSelected && !isAnswered ? '0 2px 0 var(--color-accent-on)' : '0 4px 0 rgba(0,0,0,0.2)',
-      transform: isSelected && !isAnswered ? 'translateY(2px)' : 'none',
+      boxShadow: isSelected ? '0 2px 0 var(--option-border)' : '0 4px 0 rgba(0,0,0,0.2)',
+      transform: isSelected ? 'translateY(2px)' : 'none',
       fontSize: '1.2rem',
       fontWeight: 'bold',
       textAlign: 'center' as const,
@@ -133,10 +128,20 @@ export const PhonicsCompare: React.FC<PhonicsCompareProps> = ({ question, onAnsw
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
-        <button onClick={() => handleSelect('same')} style={getOptionStyle('same')}>
+        <button
+          onClick={() => handleSelect('same')}
+          data-option-state={getOptionState(selectedOption === 'same', correctOption === 'same', isAnswered)}
+          aria-disabled={isAnswered}
+          style={getOptionStyle('same')}
+        >
           ugyanazt a szót
         </button>
-        <button onClick={() => handleSelect('different')} style={getOptionStyle('different')}>
+        <button
+          onClick={() => handleSelect('different')}
+          data-option-state={getOptionState(selectedOption === 'different', correctOption === 'different', isAnswered)}
+          aria-disabled={isAnswered}
+          style={getOptionStyle('different')}
+        >
           két különböző szót
         </button>
       </div>

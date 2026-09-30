@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { playTTS, preloadTTS } from '../../../utils/audio';
 import { QuestionHeader } from '../QuestionHeader';
+import { NO_ANSWER, type ExerciseAnswer } from './answer';
 
 interface WordOrderProps {
   question: any;
-  onAnswer: (isCorrect: boolean) => void;
+  onAnswer: (answer: ExerciseAnswer) => void;
+  isAnswered?: boolean;
 }
 
 const shuffleArray = (array: string[]): string[] => {
@@ -30,7 +32,7 @@ const shuffleArray = (array: string[]): string[] => {
   return shuffled;
 };
 
-export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
+export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer, isAnswered = false }) => {
   const [sourceWords, setSourceWords] = useState<string[]>([]);
   const [targetWords, setTargetWords] = useState<string[]>([]);
   const isNativeTarget = question.targetLang === 'hu' || question.targetLang === 'sk';
@@ -39,7 +41,7 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
     const scrambled = shuffleArray(question.scrambledWords || []);
     setSourceWords(scrambled);
     setTargetWords([]);
-    onAnswer(false);
+    onAnswer(NO_ANSWER);
 
     if (!isNativeTarget && question.scrambledWords) {
       preloadTTS(scrambled);
@@ -47,6 +49,8 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
   }, [question, isNativeTarget]);
 
   const handleSourceClick = (word: string, index: number) => {
+    if (isAnswered) return;
+
     if (!isNativeTarget) {
       playTTS(word, 'en-US');
     }
@@ -61,6 +65,8 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
   };
 
   const handleTargetClick = (word: string, index: number) => {
+    if (isAnswered) return;
+
     if (!isNativeTarget) {
       playTTS(word, 'en-US');
     }
@@ -74,9 +80,18 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
   };
 
   const checkAnswer = (currentAssembled: string[]) => {
+    if (currentAssembled.length === 0) {
+      onAnswer(NO_ANSWER);
+      return;
+    }
+
     const assembledStr = currentAssembled.join(' ');
     const normalize = (s: string) => s.toLowerCase().replace(/[.,!?]/g, '').trim();
-    onAnswer(normalize(assembledStr) === normalize(question.correctAnswer));
+    onAnswer({
+      hasAnswer: true,
+      isCorrect: normalize(assembledStr) === normalize(question.correctAnswer),
+      value: assembledStr
+    });
   };
 
   const promptText = question.hu || question.prompt || "Fordítsd le ezt a mondatot";
@@ -108,13 +123,14 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
             key={`t-${i}`}
             className="interactive-word-chip"
             onClick={() => handleTargetClick(w, i)}
+            aria-disabled={isAnswered}
             style={{
               padding: '0.8rem 1.2rem',
               background: 'var(--color-bg-surface)',
               border: '2px solid var(--color-text-muted)',
               borderRadius: '12px',
               fontSize: '1.2rem',
-              cursor: 'pointer',
+              cursor: isAnswered ? 'default' : 'pointer',
               boxShadow: '0 2px 0 var(--color-text-muted)',
               color: 'var(--color-text-main)',
               transition: 'transform 0.1s'
@@ -131,13 +147,14 @@ export const WordOrder: React.FC<WordOrderProps> = ({ question, onAnswer }) => {
             key={`s-${i}`}
             className="interactive-word-chip"
             onClick={() => handleSourceClick(w, i)}
+            aria-disabled={isAnswered}
             style={{
               padding: '0.8rem 1.2rem',
               background: 'var(--color-bg-surface)',
               border: '2px solid var(--glass-border)',
               borderRadius: '12px',
               fontSize: '1.2rem',
-              cursor: 'pointer',
+              cursor: isAnswered ? 'default' : 'pointer',
               boxShadow: '0 2px 0 var(--glass-border)',
               color: 'var(--color-text-main)',
               transition: 'transform 0.1s'
