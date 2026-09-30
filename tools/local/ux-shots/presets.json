@@ -1,0 +1,40 @@
+{
+  "new-guest": {
+    "about": "First visit: nothing stored, backend down. localhost (dev mode).",
+    "base": "http://localhost:5173"
+  },
+  "returning-guest": {
+    "about": "Guest with 245 XP, streak 4, node 1 done, one lesson of node 2 done, energy 3. localhost (dev mode).",
+    "base": "http://localhost:5173",
+    "ls": "seeds/returning.json"
+  },
+  "zero-energy-guest": {
+    "about": "The returning guest with energy 0.",
+    "base": "http://localhost:5173",
+    "ls": "seeds/zero-energy-guest.json"
+  },
+  "signed-in": {
+    "about": "Logged-in KovacsAnna: 1,240 XP, streak 12, 180 bones, energy 4; leaderboard and friends mocked. app.localhost.",
+    "base": "http://app.localhost:5173",
+    "ls": "seeds/tour-done.json",
+    "mock": "mocks/loggedin.json"
+  },
+  "zero-energy": {
+    "about": "signed-in with energy 0 (starting a lesson opens the refill survey).",
+    "base": "http://app.localhost:5173",
+    "ls": "seeds/tour-done.json",
+    "mock": "mocks/zero-energy.json"
+  },
+  "league-reward": {
+    "about": "signed-in with one unclaimed weekly league reward (popup on /dashboard).",
+    "base": "http://app.localhost:5173",
+    "ls": "seeds/tour-done.json",
+    "mock": "mocks/league-reward.json"
+  },
+  "weak-words": {
+    "about": "signed-in with five failed exercises for /practice (mistakes mode).",
+    "base": "http://app.localhost:5173",
+    "ls": "seeds/tour-done.json",
+    "mock": "mocks/weak-words.json"
+  }
+}

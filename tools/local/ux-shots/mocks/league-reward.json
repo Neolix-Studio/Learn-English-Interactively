@@ -1,0 +1,17 @@
+{
+  "__extends": "loggedin.json",
+  "get_pending_rewards": {
+    "success": true,
+    "rewards": [
+      {
+        "id": 41,
+        "reward_type": "weekly_leaderboard",
+        "league_id": 2,
+        "placement": 1,
+        "bones_reward": 75,
+        "shields_reward": 1,
+        "title_reward": "Heti Bajnok"
+      }
+    ]
+  }
+}

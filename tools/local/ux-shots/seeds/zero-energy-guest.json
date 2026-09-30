@@ -1,0 +1,6 @@
+{
+  "__extends": "returning.json",
+  "neolix_guest_progress": {
+    "energy": 0
+  }
+}

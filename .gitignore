@@ -25,6 +25,7 @@ audio/
 avatars/
 logs/
 email_preview*.html
+tools/local/ux-shots/out/
 
 # Vendored PHPMailer: keep only runtime files needed by mailer.php
 libs/PHPMailer/*

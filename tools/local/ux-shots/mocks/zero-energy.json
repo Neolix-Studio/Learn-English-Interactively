@@ -1,0 +1,10 @@
+{
+  "__extends": "loggedin.json",
+  "get_session": {
+    "session": {
+      "progress": {
+        "energy": 0
+      }
+    }
+  }
+}

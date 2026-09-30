@@ -1,0 +1,123 @@
+{
+  "__extends": "loggedin.json",
+  "get_weak_words": {
+    "status": "success",
+    "data": [
+      {
+        "exercise_id": "item_38bbf52a",
+        "question_data": {
+          "type": "image_choice",
+          "word": "kávé",
+          "correctAnswer": "coffee",
+          "options": [
+            {
+              "id": "coffee",
+              "text": "coffee",
+              "correct": true
+            },
+            {
+              "id": "tea",
+              "text": "tea",
+              "correct": false
+            },
+            {
+              "id": "milk",
+              "text": "milk",
+              "correct": false
+            },
+            {
+              "id": "water",
+              "text": "water",
+              "correct": false
+            }
+          ],
+          "id": "item_38bbf52a"
+        },
+        "fail_count": 4
+      },
+      {
+        "exercise_id": "item_2a1975f0",
+        "question_data": {
+          "type": "word_order",
+          "hu": "Kávét, kérem.",
+          "correctAnswer": "Coffee, please.",
+          "scrambledWords": [
+            "Coffee,",
+            "tea,",
+            "hello",
+            "please.",
+            "or"
+          ],
+          "id": "item_2a1975f0"
+        },
+        "fail_count": 3
+      },
+      {
+        "exercise_id": "item_0d4c4eb3",
+        "question_data": {
+          "type": "fill_blanks",
+          "hu": "Kérem",
+          "sentence": "Coffee, ____.",
+          "answer": "please",
+          "options": [
+            "please",
+            "thanks",
+            "tea",
+            "coffee"
+          ],
+          "id": "item_0d4c4eb3"
+        },
+        "fail_count": 2
+      },
+      {
+        "exercise_id": "item_106e2913",
+        "question_data": {
+          "type": "image_choice",
+          "word": "tea",
+          "correctAnswer": "tea",
+          "options": [
+            {
+              "id": "coffee",
+              "text": "coffee",
+              "correct": false
+            },
+            {
+              "id": "tea",
+              "text": "tea",
+              "correct": true
+            },
+            {
+              "id": "milk",
+              "text": "milk",
+              "correct": false
+            },
+            {
+              "id": "water",
+              "text": "water",
+              "correct": false
+            }
+          ],
+          "id": "item_106e2913"
+        },
+        "fail_count": 2
+      },
+      {
+        "exercise_id": "item_6b383af7",
+        "question_data": {
+          "type": "word_order",
+          "hu": "Teát, kérem.",
+          "correctAnswer": "Tea, please.",
+          "scrambledWords": [
+            "Coffee",
+            "Tea,",
+            "please.",
+            "hello",
+            "thanks."
+          ],
+          "id": "item_6b383af7"
+        },
+        "fail_count": 1
+      }
+    ]
+  }
+}

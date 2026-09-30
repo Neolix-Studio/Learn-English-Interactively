@@ -1,0 +1,32 @@
+{
+  "csrf_token": {"csrf_token": "mock-token"},
+  "get_session": {"session": {
+    "user": {"id": 7, "email": "anna@example.com", "user_metadata": {"username": "KovacsAnna", "age_range": "25-34", "avatar": null, "base_language": "hu", "notification_preferences": {"marketing": false, "inactivity": true, "milestones": true, "weekly_report": true}}},
+    "progress": {"points": 1240, "completed": {"node1_ordering_a_drink": true, "node2_beverages": true, "node3_numbers": true},
+      "scores": {"bones": 180, "streak_count": 12, "streak_shields": 2, "level": 3, "achievements": ["first_lesson", "flawless"],
+        "node_state": {"node1_ordering_a_drink": {"completedLessons": ["lesson_1","lesson_2","lesson_3","lesson_4"]}, "node2_beverages": {"completedLessons": ["lesson_1","lesson_2","lesson_3","lesson_4"]}, "chest_Module_1": {"completedLessons": ["chest_opened"]}, "node3_numbers": {"completedLessons": ["lesson_1","lesson_2","lesson_3","lesson_4"]}, "node4_introductions": {"completedLessons": ["lesson_1","lesson_2"]}},
+        "earned_xp_per_node": {"node1_ordering_a_drink": 60, "node2_beverages": 55}},
+      "level": 3, "streak_count": 12, "streak_shields": 2, "last_active_date": null, "unlocked_items": [], "active_theme": "default",
+      "earned_xp_per_node": {}, "daily_quests_date": null, "active_quests": [], "quest_progress": {}, "completed_quests_today": [],
+      "energy": 4, "last_energy_refill": "__NOW_ISO__", "unlocked_themes": ["system", "light", "dark"]},
+    "subscription": {"role": "user", "subscription_tier": "free"}
+  }},
+  "get_vocabulary": {"success": true, "vocabulary": ["coffee", "tea", "water", "milk", "one", "two", "three", "hello", "name"]},
+  "get_pending_rewards": {"success": true, "rewards": []},
+  "get_leaderboard": {"success": true, "userRank": 4, "userXp": 310, "leaderboard": [
+    {"username": "PetraK", "xp": 820, "active_title": null, "active_border": null},
+    {"username": "Bence_22", "xp": 640, "active_title": null, "active_border": null},
+    {"username": "ZsofiaLearns", "xp": 455, "active_title": null, "active_border": null},
+    {"username": "KovacsAnna", "xp": 310, "active_title": null, "active_border": null},
+    {"username": "Mate", "xp": 290, "active_title": null, "active_border": null},
+    {"username": "Lili.english", "xp": 120, "active_title": null, "active_border": null},
+    {"username": "Gergo", "xp": 45, "active_title": null, "active_border": null}
+  ]},
+  "search_leaderboard": {"success": true, "results": []},
+  "get_friends": {"success": true, "friends": [
+    {"id": 11, "username": "PetraK", "avatar": null, "points": 2300, "league_name": "Silver", "league_id": 2, "rank": 3},
+    {"id": 12, "username": "Bence_22", "avatar": null, "points": 900, "league_name": "Bronze", "league_id": 1, "rank": 8}
+  ], "pending": [{"id": 13, "username": "Dora_M", "avatar": null}]},
+  "get_weak_words": {"status": "success", "data": []},
+  "__post_default": {"success": true}
+}

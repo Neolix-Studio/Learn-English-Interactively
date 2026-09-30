@@ -220,6 +220,7 @@ npm run dev                              # terminal B — http://localhost:5173
 | `npm run validate:json` | Parses 144 files; applies a real schema check to **one** (`data/quests.json`). Prints "144/144 matched known schema checks" regardless. |
 | `npm run security:php` | 4-pattern line-regex smoke scan over 20 PHP files. Exits 0. |
 | `npm run package:release` | Wipes and rebuilds `release/` (~38 MB). |
+| `node tools/local/ux-shots/matrix.mjs --path /dashboard --preset returning-guest` | Screenshots one route in headless Chrome at 320×568, 360×800, 390×844, 768×1024 and 1280×800, light and dark (10 PNGs, git-ignored `out/`). Needs only `npm run dev`; **never starts PHP and no request reaches it** — every backend call is answered from a mock or as "backend down" — and GA4 and Headway are blocked. `shot.mjs` beside it takes one capture or a scripted flow. Added 2026-09-30 (#354); see `tools/local/ux-shots/README.md`. |
 
 ### Current build output
 
