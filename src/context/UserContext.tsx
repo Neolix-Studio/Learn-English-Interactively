@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../utils/api';
+import { api, ApiError, isApiFailure } from '../utils/api';
 import { countLessonDay, settleStreak, STREAK_SHIELD_CAP } from '../utils/streak';
+import { ConnectionError, SaveErrorNotice } from '../components/ConnectionNotice';
+import type { SaveError } from '../components/ConnectionNotice';
 
 export interface UserProgressData {
     username: string;
@@ -109,14 +111,35 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [data, setData] = useState<UserProgressData>(defaultUserData);
     const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const { data: sessionData, isLoading: isSessionLoading } = useQuery({
+    const [saveError, setSaveError] = useState<SaveError | null>(null);
+    const pendingLessonRef = useRef<true | 'tutorial' | undefined>(undefined);
+    const latestDataRef = useRef<UserProgressData>(defaultUserData);
+    latestDataRef.current = data;
+
+    // A reply without a `session` key (a 500, a timeout, a database error) is not "signed out":
+    // the query fails and the app waits on ConnectionError instead of falling back to guest.
+    const { data: sessionData, isLoading: isSessionLoading, isError: isSessionError, isFetching: isSessionFetching, refetch: refetchSession } = useQuery({
         queryKey: ['session'],
-        queryFn: () => api.fetch('get_session'),
-        staleTime: Infinity
+        queryFn: async () => {
+            const res = await api.query('get_session');
+            if (!res || typeof res !== 'object' || !('session' in res)) {
+                throw new ApiError(res?.error || 'get_session returned no session key', 502, res);
+            }
+            return res;
+        },
+        staleTime: Infinity,
+        retry: 2
     });
 
+    // A refetch with no data puts the query back to pending; keep the error screen up until a session arrives.
+    const [sessionFailed, setSessionFailed] = useState(false);
     useEffect(() => {
-        if (isSessionLoading) return;
+        if (isSessionError) setSessionFailed(true);
+        else if (sessionData) setSessionFailed(false);
+    }, [isSessionError, sessionData]);
+
+    useEffect(() => {
+        if (isSessionLoading || isSessionError) return;
         const res = sessionData;
                 let initialData = defaultUserData;
 
@@ -135,11 +158,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     const subData = serverData.subscription || {};
                     const userMetadata = userData.user_metadata || {};
 
-                    try { completed = typeof progressData.completed === 'string' ? JSON.parse(progressData.completed) : progressData.completed; } catch(e){}
-                    try { scores = typeof progressData.scores === 'string' ? JSON.parse(progressData.scores) : progressData.scores; } catch(e){}
-                    try { questProgress = typeof progressData.quest_progress === 'string' ? JSON.parse(progressData.quest_progress) : progressData.quest_progress; } catch(e){}
-                    try { activeQuests = typeof progressData.active_quests === 'string' ? JSON.parse(progressData.active_quests) : progressData.activeQuests; } catch(e){}
-                    try { completedQuestsToday = typeof progressData.completed_quests_today === 'string' ? JSON.parse(progressData.completed_quests_today) : progressData.completed_quests_today; } catch(e){}
+                    const logParseError = (field: string) => (e: unknown) => console.warn(`get_session: could not parse progress.${field}`, e);
+                    try { completed = typeof progressData.completed === 'string' ? JSON.parse(progressData.completed) : progressData.completed; } catch(e){ logParseError('completed')(e); }
+                    try { scores = typeof progressData.scores === 'string' ? JSON.parse(progressData.scores) : progressData.scores; } catch(e){ logParseError('scores')(e); }
+                    try { questProgress = typeof progressData.quest_progress === 'string' ? JSON.parse(progressData.quest_progress) : progressData.quest_progress; } catch(e){ logParseError('quest_progress')(e); }
+                    try { activeQuests = typeof progressData.active_quests === 'string' ? JSON.parse(progressData.active_quests) : progressData.activeQuests; } catch(e){ logParseError('active_quests')(e); }
+                    try { completedQuestsToday = typeof progressData.completed_quests_today === 'string' ? JSON.parse(progressData.completed_quests_today) : progressData.completed_quests_today; } catch(e){ logParseError('completed_quests_today')(e); }
                     if (progressData.active_theme) {
                         scores.active_theme = progressData.active_theme === 'default' ? 'system' : progressData.active_theme;
                     }
@@ -248,7 +272,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 }
 
                 setIsLoading(false);
-    }, [sessionData, isSessionLoading]);
+    }, [sessionData, isSessionLoading, isSessionError]);
 
     useEffect(() => {
         if (data.energy !== undefined && data.last_energy_refill && data.energy < 5) {
@@ -398,7 +422,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     // lessonCompleted marks the save of a finished lesson, the only thing that raises the streak.
-    const saveProgress = (progress: UserProgressData, lessonCompleted?: true | 'tutorial') => {
+    // A lesson whose save failed keeps its flag until a later save gets through (countLessonDay counts a day once).
+    const saveProgress = (progress: UserProgressData, lessonFlag?: true | 'tutorial') => {
+        const lessonCompleted = lessonFlag ?? pendingLessonRef.current;
         api.fetch('save_progress', {
             ...(lessonCompleted ? { lesson_completed: lessonCompleted } : {}),
             points: progress.points,
@@ -407,22 +433,41 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             quest_progress: progress.quest_progress,
             completed_quests_today: progress.completed_quests_today
         }).then((res) => {
-            if (res?.success) {
-                if (typeof res.streak_count === 'number') {
-                    setData(prev => ({
-                        ...prev,
-                        scores: {
-                            ...prev.scores,
-                            streak_count: res.streak_count,
-                            streak_shields: res.streak_shields,
-                            streak_date: res.streak_date ?? null
-                        }
-                    }));
-                }
-                window.dispatchEvent(new CustomEvent('lexipawsProgressSaved'));
+            // api.fetch has already retried a 403 with a fresh token, so a failure here is real.
+            if (isApiFailure(res) || !res?.success) {
+                console.error('save_progress failed:', res);
+                if (lessonCompleted) pendingLessonRef.current = lessonCompleted;
+                if (isApiFailure(res) && res.httpStatus === 401) setSaveError('signed_out');
+                else if (isApiFailure(res) && res.offline) setSaveError('offline');
+                else setSaveError('failed');
+                return;
             }
+            pendingLessonRef.current = undefined;
+            setSaveError(null);
+            if (typeof res.streak_count === 'number') {
+                setData(prev => ({
+                    ...prev,
+                    scores: {
+                        ...prev.scores,
+                        streak_count: res.streak_count,
+                        streak_shields: res.streak_shields,
+                        streak_date: res.streak_date ?? null
+                    }
+                }));
+            }
+            window.dispatchEvent(new CustomEvent('lexipawsProgressSaved'));
         });
     };
+
+    const retrySave = () => {
+        saveProgress(latestDataRef.current);
+    };
+
+    useEffect(() => {
+        if (saveError !== 'offline' && saveError !== 'failed') return;
+        window.addEventListener('online', retrySave);
+        return () => window.removeEventListener('online', retrySave);
+    }, [saveError]);
 
     // saveNow skips the 1500 ms wait: a finished lesson must not depend on the tab staying open.
     const updateProgress = (newData: Partial<UserProgressData>, saveNow = false, lessonCompleted?: true | 'tutorial') => {
@@ -604,7 +649,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             updateLanguage,
             isLoading
         }}>
-            {children}
+            {sessionFailed ? (
+                <ConnectionError retrying={isSessionFetching} onRetry={() => { refetchSession(); }} />
+            ) : children}
+            {saveError && !isGuest && (
+                <SaveErrorNotice
+                    kind={saveError}
+                    onRetry={retrySave}
+                    onSignIn={() => { window.location.href = `/?login=true&redirect=${encodeURIComponent(window.location.pathname)}`; }}
+                    onDismiss={() => setSaveError(null)}
+                />
+            )}
         </UserContext.Provider>
     );
 };

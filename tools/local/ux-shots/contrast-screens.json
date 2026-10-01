@@ -52,6 +52,25 @@
     "path": "/practice",
     "wait": 2500
   },
+  "connection": {
+    "about": "get_session answers 500: the 'can't reach the server' screen with its retry button (#383).",
+    "base": "http://app.localhost:5173",
+    "path": "/dashboard",
+    "mock": { "__extends": "mocks/loggedin.json", "get_session": { "__status": 500, "__body": { "error": "Database error" } } },
+    "wait": 7000
+  },
+  "save-error": {
+    "about": "save_progress answers 500 after a lesson starts: the save-failed notice over the lesson (#383).",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "mock": { "__extends": "mocks/loggedin.json", "save_progress": { "__status": 500, "__body": { "error": "Database error" } } },
+    "wait": 2500,
+    "steps": [
+      { "click": ".roadmap-node.current", "after": 800 },
+      { "click": ".tooltip-start-btn", "after": 3000 },
+      { "contrast": "notice" }
+    ]
+  },
   "shop": {
     "about": "The shop dialog of a signed-in learner with 2 streak shields, opened from the tab bar.",
     "preset": "signed-in",

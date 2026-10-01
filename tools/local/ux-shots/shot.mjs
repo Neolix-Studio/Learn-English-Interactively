@@ -36,7 +36,8 @@
 //                       an inherited reply sends that reply late.
 //                       Unmocked GET -> __get_default (default {"error":"mock: unmocked"}); POST -> __post_default (default {"success":true}).
 //                       A mock file may start from another one: {"__extends": "loggedin.json", ...} (objects merge, the rest replaces).
-//                       Without --mock every backend request gets an empty 500, which is what Vite's proxy returns when PHP is not running.
+//                       Without --mock get_session answers {"session":null} (a guest) and every other backend request gets an
+//                       empty 500, which is what Vite's proxy returns when PHP is not running.
 //
 // FILE is looked up from the current folder first, then from this folder (so `--ls seeds/returning.json` works anywhere).
 // In seed and mock values, "__NOW_ISO__", "__NOW_MS__" and "__TODAY__" become the current time / UTC date.
@@ -214,7 +215,13 @@ listeners.push(async (m) => {
   const { requestId, request } = m.params;
   try {
     if (!mockMap) {
-      // What Vite's proxy answers when PHP is not running; the app then falls back to guest mode.
+      // A guest: get_session says "no session", as PHP does. Since #383 a failed get_session shows the
+      // connection-error screen instead of guest mode, so it cannot be left to the 500 below.
+      if (new URL(request.url).searchParams.get('action') === 'get_session') {
+        await send('Fetch.fulfillRequest', { requestId, responseCode: 200, responseHeaders: [{ name: 'Content-Type', value: 'application/json' }], body: Buffer.from('{"session":null}').toString('base64') });
+        return;
+      }
+      // What Vite's proxy answers when PHP is not running.
       await send('Fetch.fulfillRequest', { requestId, responseCode: 500, responseHeaders: [{ name: 'Content-Type', value: 'text/plain' }], body: '' });
       return;
     }

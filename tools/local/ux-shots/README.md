@@ -15,7 +15,9 @@ five viewports, light and dark, Hungarian (and Slovak when asked).
 - **It needs only the Vite dev server** (`npm run dev`, port 5173). It does not start it or stop it.
 - **It never starts PHP, and no request ever reaches PHP.** Every call to `api.php`, `report_problem.php`,
   `submit_feedback.php`, `upload_avatar.php` and `logout.php` is answered inside Chrome: from a mock file,
-  or with the empty `500` that Vite's proxy returns when PHP is not running. So it is safe to use even
+  or, with no mock, `get_session` as `{"session":null}` (a guest) and everything else with the empty `500`
+  that Vite's proxy returns when PHP is not running. Since #383 a `get_session` that fails shows the
+  "Nem érjük el a szervert" screen instead of guest mode; a mock without a `get_session` entry gets it too. So it is safe to use even
   while `php -S 127.0.0.1:8000` is running with a `db_config.php` that points at the live database.
 - **It blocks GA4 and Headway** (`googletagmanager.com`, `google-analytics.com`, `headwayapp.co`), so
   captures do not show up in production analytics. The TTS endpoint is blocked and `speechSynthesis`

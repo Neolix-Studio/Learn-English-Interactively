@@ -1047,14 +1047,14 @@ This is the most important thing in this document. Each hop discards information
 | 3 | `onCommit` → context | `Dashboard.tsx:197` `completeLesson(id, xp, scoreData.accuracy, …)`, on the last answer since #372 | ~~**Accuracy is the literal `100`.** The real value never crosses this boundary → `flawless` + accuracy quests always fire~~ ✅ Fixed (#371, 2026-09-30) |
 | 4 | Reward engine | `UserContext.tsx:413-500` | Runs **entirely client-side**: bones, quests, achievements. Arrays are pushed into shallow copies (`:415,426,435,482`), mutating state still referenced by the current object |
 | 5 | Write | `UserContext.tsx:356-392` | 1500 ms `setTimeout`, except `completeLesson`, which calls `updateProgress(…, true)` and saves at once (#372, 2026-09-30). Payload is **only** `{points, completed, scores, quest_progress, completed_quests_today}` |
-| 6 | Transport | `utils/api.ts:33-71` | CSRF token cached and never invalidated; **no 403 refetch**. A stale token stops all saves silently and permanently |
+| 6 | Transport | `utils/api.ts:109-165` | ~~CSRF token cached and never invalidated; **no 403 refetch**. A stale token stops all saves silently and permanently~~ ✅ Fixed (#383, 2026-10-01): a POST answered 403 drops the cached token, refetches it and is sent once more; a 401 drops it too. A save that still fails shows a notice (`UserContext.tsx` `saveProgress`, `components/ConnectionNotice.tsx`): signed out on 401, offline when there was no answer, failed otherwise. `save_progress` with no session answers 401 (`api.php:1260-1265`) |
 | 7 | Server parse | `api.php:1007-1015` | ~~**11 absent keys replaced with hardcoded defaults**~~ ✅ Fixed (#359, 2026-09-30): only the five sent fields are read. The defaults (`newProgressRowDefaults()`, `api.php:985-999`) are used only when a row is inserted |
 | 8 | Persist | `api.php:1213-1222` | ~~`ON DUPLICATE KEY UPDATE` writes `VALUES()` for **all 17 columns** → `level`→1, `streak_count`→0, `streak_shields`→0, `last_active_date`→today, `unlocked_items`→[], `active_theme`→'default', `earned_xp_per_node`→{}, `daily_quests_date`→NULL, `active_quests`→[], `energy`→5, `last_energy_refill`→now~~ ✅ Fixed (#359, 2026-09-30): the UPDATE list is `points`, `completed`, `scores`, `last_active_date` (set by the server at `api.php:1207`), `quest_progress` and `completed_quests_today`. The INSERT still names all 17 columns, for a user with no row. **Still lost here:** a payload that leaves out one of the five sent fields empties that field; the honest client always sends all five |
 | 9 | Leaderboard | `api.php:1094-1121` | `user_leagues` weekly/monthly XP derived from the points delta — the only place XP becomes competitive data |
 
-**Hops 3 and 5 each independently discard information, and hop 6 can silently stop the whole chain.** Hops 7 and 8 did too, until #359 (2026-09-30).
+**Hops 3 and 5 each independently discard information, and hop 6 can silently stop the whole chain.** Hops 7 and 8 did too, until #359 (2026-09-30). Hop 6 no longer stops silently since #383 (2026-10-01).
 
-There is **no `beforeunload`, `pagehide`, `sendBeacon`, `visibilitychange`, `navigator.onLine`, or service worker anywhere in `src/`.** The 1500 ms debounce is the only write trigger for everything except a finished lesson, and several flows navigate with `window.location.href` (`ProfilePage.tsx:48`, `SidebarRight.tsx:167,177`, `NotFoundPage.tsx:8`). ~~**Finish a lesson, immediately close the tab or log out, and it is gone.**~~ ✅ Narrowed (#372, 2026-09-30): the lesson is sent the moment its last item is answered, before the result screen, so reload, Back or closing on the result screen keeps it (measured: reload and Back on screen 1, then `get_session` has the XP and the `node_state` entry). Still open for WP-B4: a save that fails is not retried or shown, and other state still waits 1.5 s.
+There is **no `beforeunload`, `pagehide`, `sendBeacon`, `visibilitychange`, `navigator.onLine`, or service worker anywhere in `src/`.** The 1500 ms debounce is the only write trigger for everything except a finished lesson, and several flows navigate with `window.location.href` (`ProfilePage.tsx:48`, `SidebarRight.tsx:167,177`, `NotFoundPage.tsx:8`). ~~**Finish a lesson, immediately close the tab or log out, and it is gone.**~~ ✅ Narrowed (#372, 2026-09-30): the lesson is sent the moment its last item is answered, before the result screen, so reload, Back or closing on the result screen keeps it (measured: reload and Back on screen 1, then `get_session` has the XP and the `node_state` entry). Still open for WP-B4: a save that fails is not retried or shown, and other state still waits 1.5 s. ✅ Narrowed again (#383, 2026-10-01): a save that fails is shown, with a retry button (and an automatic retry on the browser's `online` event when it failed for lack of a connection); a finished lesson's `lesson_completed` flag rides on later saves until one gets through. Still open: nothing is flushed on unload, and other state still waits 1.5 s.
 
 ### The one fix that resolves the most
 
@@ -1183,9 +1183,9 @@ Measured across all 68 `.tsx` files: **26 `aria-*` attributes in 10 files** (the
 
 ### Error handling & observability
 
-- `api.fetch` never throws → react-query's error path is dead everywhere but one call site.
-- `updateProgress` ignores the save response except to fire a success event. **A failed save is invisible to the user, the console, and any monitor.**
-- Five empty `catch (e) {}` blocks swallow every session-parse failure (`UserContext.tsx:134-138`).
+- ~~`api.fetch` never throws → react-query's error path is dead everywhere but one call site.~~ ✅ Fixed (#383, 2026-10-01): `api.fetch` (`utils/api.ts`) still never throws, but every failure has one shape, `{error, httpStatus}` (0 = no answer, including a 15 s timeout); `api.query` throws an `ApiError` for react-query. `get_session` and `get_friends` use it; the other call sites still read `res.error`/`res.success` as before.
+- ~~`updateProgress` ignores the save response except to fire a success event. **A failed save is invisible to the user, the console, and any monitor.**~~ ✅ Fixed for the user and the console (#383, 2026-10-01): a failed save logs and shows `SaveErrorNotice`. Still invisible to any monitor (no error reporter).
+- ~~Five empty `catch (e) {}` blocks swallow every session-parse failure (`UserContext.tsx:134-138`).~~ ✅ Fixed (#383, 2026-10-01): each logs a `console.warn` naming the field.
 - `ErrorBoundary.componentDidCatch` only `console.error`s. **No production crash is reported anywhere.**
 - **19 `alert()`/`confirm()` calls across 9 files** are the entire failure and destructive-action UI.
 - **No error-tracking SDK of any kind.**
@@ -1194,7 +1194,7 @@ Measured across all 68 `.tsx` files: **26 `aria-*` attributes in 10 files** (the
 
 ### Network failure
 
-Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a blip demotes a logged-in user to guest; nothing is flushed on unload; a stale CSRF token stops saves permanently and silently; guarded routes render blank; there is no offline state, no retry affordance and no toast anywhere.
+Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a blip demotes a logged-in user to guest; nothing is flushed on unload; a stale CSRF token stops saves permanently and silently; guarded routes render blank; there is no offline state, no retry affordance and no toast anywhere. ✅ **Changed by #383 (2026-10-01):** a failed or hung `get_session` (no `session` key, after two retries) shows "Nem érjük el a szervert" ("We can't reach the server") with a retry button instead of guest mode; a stale CSRF token is refetched once; a failed save shows a notice with retry or sign-in. **Still true:** nothing is flushed on unload, guarded routes render blank while loading, and there is no offline mode beyond the save notice.
 
 ---
 

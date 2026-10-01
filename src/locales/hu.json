@@ -215,6 +215,20 @@
     "save": "Mentés",
     "cancel": "Mégse"
   },
+  "errors": {
+    "offline": "Nincs internetkapcsolat, vagy a szerver nem válaszol.",
+    "server": "A szerver hibát jelzett. Próbáld újra később.",
+    "connection_title": "Nem érjük el a szervert",
+    "connection_body": "Ellenőrizd az internetkapcsolatot, és próbáld újra.",
+    "retry": "Újrapróbálom",
+    "retrying": "Kapcsolódás…",
+    "save_failed": "Nem sikerült menteni a haladásodat.",
+    "save_offline": "Nincs kapcsolat, ezért a haladásodat még nem mentettük. Amint visszajön a net, újra megpróbáljuk.",
+    "signed_out": "Lejárt a bejelentkezésed, ezért a haladásodat nem tudtuk menteni. Jelentkezz be újra.",
+    "sign_in": "Bejelentkezés",
+    "dismiss": "Bezárás",
+    "friends_failed": "Nem sikerült betölteni a barátaidat."
+  },
   "shop": {
     "shield_cap": "Legfeljebb {{max}} pajzsod lehet."
   },

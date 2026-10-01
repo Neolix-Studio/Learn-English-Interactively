@@ -71,6 +71,7 @@ function measure(run) {
   if (s.preset) cmd.push('--preset', s.preset);
   if (s.base) cmd.push('--base', s.base);
   if (s.wait) cmd.push('--wait', String(s.wait));
+  if (s.mock) cmd.push('--mock', typeof s.mock === 'string' ? s.mock : JSON.stringify(s.mock));
   if (s.steps) {
     // A screenshot next to each measurement, so a failure can be looked at.
     const steps = s.steps.flatMap((st) => (st.contrast ? [{ shot: String(st.contrast) }, st] : [st]));

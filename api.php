@@ -1258,6 +1258,8 @@ function sendStreakMilestoneEmails($currentDbProgress, int $oldStreak, int $newS
 
 function handleSaveProgress(PDO $pdo, array $data) {
     if (!isset($_SESSION['user_id'])) {
+        // 401 tells the client the session is gone, so it shows "signed out" (B4a, #383).
+        http_response_code(401);
         echo json_encode(['error' => 'Munkamenet lejárt! Kérjük, jelentkezz be újra.']);
         return;
     }

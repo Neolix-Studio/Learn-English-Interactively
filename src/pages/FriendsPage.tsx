@@ -2,7 +2,7 @@ import { SkeletonFriendRow } from '../components/SkeletonLoader';
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../utils/api';
+import { api, ApiError } from '../utils/api';
 import { useUser } from '../context/UserContext';
 import { MobileBottomBar } from '../components/MobileBottomBar';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -32,14 +32,14 @@ export const FriendsPage: React.FC = () => {
   const goBack = () => (location.key === 'default' ? navigate('/dashboard', { replace: true }) : navigate(-1));
 
   const queryClient = useQueryClient();
-  const { data: friendsData, isLoading: friendsLoading, refetch } = useQuery({
+  const { data: friendsData, isLoading: friendsLoading, isError: friendsError, isFetching: friendsFetching, refetch } = useQuery({
     queryKey: ['friends'],
     queryFn: async () => {
-      const response = await api.fetch('get_friends');
+      const response = await api.query('get_friends');
       if (response.success) {
         return { friends: response.friends || [], pending: response.pending || [] };
       }
-      throw new Error('Failed to fetch');
+      throw new ApiError(response.error || response.message || 'get_friends failed', 200, response);
     },
     enabled: !isLoading && !isGuest
   });
@@ -176,6 +176,13 @@ export const FriendsPage: React.FC = () => {
         <h2 style={{ marginBottom: '15px' }}>My Friends ({friends.length})</h2>
         {loading ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>{Array.from({ length: 4 }).map((_, i) => <SkeletonFriendRow key={i} index={i} />)}</div>
+        ) : friendsError ? (
+          <div role="alert" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '20px', textAlign: 'center' }}>
+            <p style={{ margin: 0, color: 'var(--color-text-main)' }}>{t('errors.friends_failed')}</p>
+            <button type="button" className="connection-notice__btn connection-notice__btn--solid" onClick={() => refetch()} disabled={friendsFetching}>
+              {friendsFetching ? t('errors.retrying') : t('errors.retry')}
+            </button>
+          </div>
         ) : friends.length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--color-text-muted)', fontStyle: 'italic', padding: '20px' }}>You haven't added any friends yet.</p>
         ) : (
