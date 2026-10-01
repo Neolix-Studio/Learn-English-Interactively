@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useUser } from '../../context/UserContext';
 import { useTranslation } from 'react-i18next';
+import { STREAK_SHIELD_CAP } from '../../utils/streak';
 
 interface ShopModalProps {
   onClose: () => void;
@@ -10,25 +11,25 @@ const TABS = ['power_ups', 'coming_soon'] as const;
 type Tab = typeof TABS[number];
 
 export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
-  const { data, updateProgress, buyCosmetic } = useUser();
+  const { data, buyCosmetic, buyShield } = useUser();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('power_ups');
   const [buyFeedback, setBuyFeedback] = useState<string | null>(null);
 
   const bones = data.scores?.bones || 0;
+  const shields = data.scores?.streak_shields || 0;
+  const shieldsFull = shields >= STREAK_SHIELD_CAP;
+  const canBuyShield = bones >= 100 && !shieldsFull;
 
-  const handleBuyShield = () => {
-    if (bones >= 100) {
-      updateProgress({
-        scores: {
-          ...data.scores,
-          bones: bones - 100,
-          streak_shields: (data.scores?.streak_shields || 0) + 1,
-        },
-      });
+  const handleBuyShield = async () => {
+    if (!canBuyShield) return;
+    const res = await buyShield();
+    if (res.success) {
       setBuyFeedback('🛡️ Streak Shield vásárolva!');
-      setTimeout(() => setBuyFeedback(null), 2500);
+    } else {
+      setBuyFeedback(`❌ ${res.message || 'Sikertelen vásárlás'}`);
     }
+    setTimeout(() => setBuyFeedback(null), 2500);
   };
 
   const handleBuyTheme = async (themeId: string, cost: number) => {
@@ -115,19 +116,22 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
                     <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--color-text-main)', fontWeight: 700 }}>Streak Shield</h3>
                     <span style={{ background: 'color-mix(in srgb, #10B981 15%, transparent)', color: '#10B981', fontSize: '0.7rem', fontWeight: 700, padding: '0.1rem 0.5rem', borderRadius: '10px' }}>
-                      Tulajdonodban: {data.scores?.streak_shields || 0}
+                      Tulajdonodban: {shields}
                     </span>
                   </div>
                   <p style={{ margin: 0, fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>Megvédi a sorozatodat, ha kihagysz egy napot.</p>
+                  {shieldsFull && (
+                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.82rem', color: 'var(--color-text-muted)', fontWeight: 700 }}>{t('shop.shield_cap', { max: STREAK_SHIELD_CAP })}</p>
+                  )}
                 </div>
                 <button
                   onClick={handleBuyShield}
-                  disabled={bones < 100}
+                  disabled={!canBuyShield}
                   style={{
-                    flexShrink: 0, background: bones >= 100 ? 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))' : 'var(--color-bg-surface)',
-                    color: bones >= 100 ? 'white' : 'var(--color-text-muted)',
-                    border: 'none', padding: '0.5rem 1rem', borderRadius: '10px', fontWeight: 700, cursor: bones >= 100 ? 'pointer' : 'not-allowed',
-                    fontSize: '0.85rem', whiteSpace: 'nowrap', boxShadow: bones >= 100 ? '0 4px 12px rgba(79,70,229,0.3)' : 'none',
+                    flexShrink: 0, background: canBuyShield ? 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))' : 'var(--color-bg-surface)',
+                    color: canBuyShield ? 'white' : 'var(--color-text-muted)',
+                    border: 'none', padding: '0.5rem 1rem', borderRadius: '10px', fontWeight: 700, cursor: canBuyShield ? 'pointer' : 'not-allowed',
+                    fontSize: '0.85rem', whiteSpace: 'nowrap', boxShadow: canBuyShield ? '0 4px 12px rgba(79,70,229,0.3)' : 'none',
                     transition: 'all 0.2s',
                   }}
                 >

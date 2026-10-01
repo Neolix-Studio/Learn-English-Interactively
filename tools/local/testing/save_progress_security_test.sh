@@ -42,6 +42,12 @@
 # from signup and from a first save. last_active_date is the exception: every
 # save has to keep writing it (group 6), because the cron's gates (group 7)
 # rely on it. Against the commit before #359 (--ref e6d7345) these checks fail.
+#
+# Group 9 holds the B3b checks (#381): the server counts the streak when a
+# lesson is saved, once per day, takes one shield per missed day, caps shields
+# at 3 in the shop and in claim_reward, takes over a streak the client kept in
+# the scores JSON, and mails a milestone only for its own count. Group 7 checks
+# that cron_notifications.php no longer writes a streak or a shield.
 
 set -uo pipefail
 
@@ -269,7 +275,8 @@ post() {  # $1=user  $2=json  -> echoes the HTTP status
        -d "$2" "$BASE?action=save_progress"
 }
 col() { "${DB[@]}" -e "SELECT IFNULL($2,'<NULL>') FROM user_progress WHERE user_id=$1"; }
-# clamps allow bones <= current+100, shields <= current+3, node level <= current+1
+# clamps allow bones <= current+100 and node level <= current+1; shields are
+# the column's, so a client's copy in the JSON is dropped (#381) and reads as 0
 clamped() {
   col "$1" scores | python3 -c '
 import sys, json
@@ -307,7 +314,7 @@ seed
 echo
 echo "1. an already-poisoned scores=\"0\" row still gets clamped"
 post 1 "$INFLATED" >/dev/null
-if clamped 1 100 3 2; then pass "inflated payload clamped against a falsy stored value"
+if clamped 1 100 0 2; then pass "inflated payload clamped against a falsy stored value"
 else fail "clamps bypassed on a row holding \"0\""; fi
 
 # ========================================================== 2. two-step poisoning
@@ -318,7 +325,7 @@ STORED="$(col 3 scores)"
 if [ -n "$STORED" ] && [ "$STORED" != "0" ]; then pass "a scalar scores payload stored as [$STORED], not a falsy string"
 else fail "scores column poisoned with [$STORED]"; fi
 post 3 "$INFLATED" >/dev/null
-if clamped 3 100 3 2; then pass "follow-up inflated payload clamped"
+if clamped 3 100 0 2; then pass "follow-up inflated payload clamped"
 else fail "clamps bypassed after {\"scores\":0}"; fi
 
 # =============================================================== 3. rate limit
@@ -346,9 +353,9 @@ fi
 echo
 echo "4. honest traffic is unaffected"
 seed
-post 4 '{"points":1050,"scores":{"bones":60,"streak_shields":1,"node_state":{"n1":{"current_level":4}}}}' >/dev/null
+post 4 '{"points":1050,"scores":{"bones":60,"node_state":{"n1":{"current_level":4}}}}' >/dev/null
 ROW="$("${DB[@]}" -e "SELECT CONCAT(points,'|',scores) FROM user_progress WHERE user_id=4")"
-if [ "$ROW" = '1050|{"bones":60,"streak_shields":1,"node_state":{"n1":{"current_level":4}}}' ]
+if [ "$ROW" = '1050|{"bones":60,"node_state":{"n1":{"current_level":4}}}' ]
 then pass "legitimate payload stored byte-for-byte"
 else fail "legitimate payload altered: $ROW"; fi
 
@@ -384,7 +391,7 @@ changed_columns() {
 }
 whole_row() { "${DB[@]}" -e "SELECT * FROM user_progress WHERE user_id=$1"; }
 
-AUTOSAVE='{"points":1060,"completed":{"n1":true,"n2":true},"scores":{"bones":61,"streak_shields":1,"node_state":{"n1":{"current_level":4}}},"quest_progress":{"q_xp_50":50},"completed_quests_today":["q_xp_50"]}'
+AUTOSAVE='{"points":1060,"completed":{"n1":true,"n2":true},"scores":{"bones":61,"node_state":{"n1":{"current_level":4}}},"quest_progress":{"q_xp_50":50},"completed_quests_today":["q_xp_50"]}'
 post 4 "$AUTOSAVE" >/dev/null
 for i in "${!KEPT_COLUMNS[@]}"; do
   GOT="$(col 4 "${KEPT_COLUMNS[$i]}")"
@@ -392,7 +399,7 @@ for i in "${!KEPT_COLUMNS[@]}"; do
   else fail "${KEPT_COLUMNS[$i]} is [$GOT] after an autosave, it was [${KEPT_VALUES[$i]}]"; fi
 done
 ROW="$("${DB[@]}" -e "SELECT CONCAT_WS('|',points,completed,scores,quest_progress,completed_quests_today,last_active_date) FROM user_progress WHERE user_id=4")"
-if [ "$ROW" = "1060|{\"n1\":true,\"n2\":true}|{\"bones\":61,\"streak_shields\":1,\"node_state\":{\"n1\":{\"current_level\":4}}}|{\"q_xp_50\":50}|[\"q_xp_50\"]|$D0" ]
+if [ "$ROW" = "1060|{\"n1\":true,\"n2\":true}|{\"bones\":61,\"node_state\":{\"n1\":{\"current_level\":4}}}|{\"q_xp_50\":50}|[\"q_xp_50\"]|$D0" ]
 then pass "the five fields it does send are stored, and last_active_date is today"
 else fail "the sent fields were stored as: $ROW"; fi
 
@@ -468,7 +475,7 @@ else fail "client streak_count: HTTP $CODE, stored streak [$(col 4 streak_count)
 echo
 echo "6. a successful save stamps last_active_date with the learner's day"
 seed
-D0="$(day 0)"; D1="$(day 1)"; D2="$(day 2)"; D3="$(day 3)"
+D0="$(day 0)"; D1="$(day 1)"; D2="$(day 2)"; D3="$(day 3)"; D4="$(day 4)"
 "${DB[@]}" -e "UPDATE user_progress SET last_active_date='2026-07-01' WHERE user_id=4"
 post 4 '{"points":1010,"scores":{"bones":55}}' >/dev/null
 GOT="$(col 4 last_active_date)"
@@ -502,10 +509,10 @@ else fail "lexipaws_activity_date() returned [$GOT]"; fi
 
 # ================================================= 7. cron_notifications.php
 echo
-echo "7. cron_notifications.php leaves stale rows alone and keys mail on activity"
+echo "7. cron_notifications.php writes no streak or shield and keys mail on activity"
 seed
 # User 4 gets today's date from a real save. The save keeps the streak and the
-# shields (WP-B1), so only the date keeps the cron away from this row.
+# shields (WP-B1).
 "${DB[@]}" -e "UPDATE user_progress SET streak_count=5, streak_shields=2 WHERE user_id=4"
 post 4 '{"points":1010,"scores":{"bones":55}}' >/dev/null
 "${DB[@]}" <<SQL
@@ -519,14 +526,15 @@ INSERT INTO users (id, email, password_hash, username, last_login_at) VALUES
 -- 11: a legacy row.                12: never stamped.
 -- 13: active today, but the last password login was 10 days ago.
 -- 14: idle for 3 days, although the login is fresh.
--- 15: missed exactly yesterday.    16: the same, with no shield left.
-INSERT INTO user_progress (user_id, points, scores, streak_count, streak_shields, last_active_date) VALUES
-  (11, 500, '{}', 5, 2, '2026-07-01'),
-  (12, 500, '{}', 5, 2, NULL),
-  (13, 500, '{}', 5, 2, '$D0'),
-  (14, 500, '{}', 5, 2, '$D3'),
-  (15, 500, '{}', 5, 2, '$D2'),
-  (16, 500, '{}', 5, 0, '$D2');
+-- 15: missed exactly yesterday, by its activity day and by its streak day.
+-- 16: the same, with no shield left.
+INSERT INTO user_progress (user_id, points, scores, streak_count, streak_shields, last_active_date, streak_date) VALUES
+  (11, 500, '{}', 5, 2, '2026-07-01', NULL),
+  (12, 500, '{}', 5, 2, NULL, NULL),
+  (13, 500, '{}', 5, 2, '$D0', NULL),
+  (14, 500, '{}', 5, 2, '$D3', NULL),
+  (15, 500, '{}', 5, 2, '$D2', '$D2'),
+  (16, 500, '{}', 5, 0, '$D2', '$D2');
 SQL
 for _ in 1 2 3; do ( cd "$SANDBOX/app" && php cron_notifications.php ) >> "$SANDBOX/cron.log" 2>&1; done
 sed 's/^/     | /' "$SANDBOX/cron.log"
@@ -568,21 +576,24 @@ if [ "$ROW" = "5|2|$D3" ] && [ "$(mail_line inactivity idle3)" -ge 1 ] && [ "$(m
 then pass "idle for 3 days: an inactivity e-mail is due; shields and streak are not touched"
 else fail "idle-3-days row is now [$ROW], inactivity lines: $(mail_line inactivity idle3)"; fi
 
+# The cron no longer takes the shield or ends the streak (#381): the server
+# does that at the learner's next save. It still says a shield paid for
+# yesterday; with no SMTP here, each run logs one "Could not send" line.
 ROW="$(streak_row 15)"
-if [ "$ROW" = "5|1|$D1" ] && [ "$(mail_line 'streak protected' missed1)" = "1" ]
-then pass "one missed day costs one shield across three runs, with one streak e-mail"
-else fail "missed-one-day row is now [$ROW] (expected 5|1|$D1), streak lines: $(mail_line 'streak protected' missed1)"; fi
+if [ "$ROW" = "5|2|$D2" ] && [ "$(mail_line 'streak protected' missed1)" -ge 1 ]
+then pass "missed yesterday with a shield: the streak e-mail is due, and three runs leave streak and shields alone"
+else fail "missed-one-day row is now [$ROW] (expected 5|2|$D2), streak lines: $(mail_line 'streak protected' missed1)"; fi
 
 ROW="$(streak_row 16)"
-if [ "$ROW" = "0|0|$D2" ]
-then pass "one missed day with no shield left ends the streak"
-else fail "no-shield row is now [$ROW] (expected 0|0|$D2)"; fi
+if [ "$ROW" = "5|0|$D2" ] && [ "$(mail_line 'streak protected' noshield)" = "0" ]
+then pass "missed yesterday with no shield: the cron leaves the streak alone and sends no streak e-mail"
+else fail "no-shield row is now [$ROW] (expected 5|0|$D2), streak lines: $(mail_line 'streak protected' noshield)"; fi
 
 # The next two mornings: every date moves one day further into the past, then
 # the cron runs once more. This is the case the old cron got wrong - it took a
 # shield from the legacy row every day until the streak was gone.
 for _ in 1 2; do
-  "${DB[@]}" -e "UPDATE user_progress SET last_active_date = last_active_date - INTERVAL 1 DAY WHERE user_id IN (4, 11, 12, 13, 14, 15, 16)"
+  "${DB[@]}" -e "UPDATE user_progress SET last_active_date = last_active_date - INTERVAL 1 DAY, streak_date = streak_date - INTERVAL 1 DAY WHERE user_id IN (4, 11, 12, 13, 14, 15, 16)"
   ( cd "$SANDBOX/app" && php cron_notifications.php ) >> "$SANDBOX/cron.log" 2>&1
 done
 
@@ -591,15 +602,10 @@ if [ "$ROW" = "5|2|2026-06-29" ] && never_mailed legacy
 then pass "two mornings later the legacy row still has its streak and both shields, and no e-mail"
 else fail "legacy row after two more mornings is [$ROW], or it was mailed"; fi
 
-ROW="$(streak_row 15)"
-if [ "$ROW" = "0|0|$D2" ]
-then pass "a second missed day takes the last shield, and a third ends the streak"
-else fail "missed-three-days row is now [$ROW] (expected 0|0|$D2)"; fi
-
-ROW="$(streak_row 4)"
-if [ "$ROW" = "5|1|$D1" ]
-then pass "the learner who saved two mornings ago has missed one day and lost one shield"
-else fail "saved-two-mornings-ago row is now [$ROW] (expected 5|1|$D1)"; fi
+ROWS="$(streak_row 15) $(streak_row 16) $(streak_row 4)"
+if [ "$ROWS" = "5|2|$D4 5|0|$D4 5|2|$D2" ]
+then pass "five runs over three mornings change no streak and no shield"
+else fail "rows after three mornings: [$ROWS] (expected 5|2|$D4 5|0|$D4 5|2|$D2)"; fi
 
 LINKS="$(cd "$SANDBOX/app" && php -r '
 require "mailer.php";
@@ -633,13 +639,143 @@ if [ "$ROWS" = "5|1|$D2 5|2|$D3" ] && ! grep -qE 'oldcron@|oldidle@' "$SANDBOX/c
 then pass "with the cut-off after both dates: no shield taken, no streak ended, no e-mail"
 else fail "rows before the cut-off are now [$ROWS], or one was mailed"; fi
 
-# The same rows with the cut-off three days back: now the cron acts on them,
-# so the cut-off was the only thing holding it back.
+# The same rows with the cut-off three days back: now the inactivity e-mail is
+# due, so the cut-off was the only thing holding it back. The shield stays:
+# the cron takes none since #381.
 ( cd "$SANDBOX/app" && SPTEST_TRUSTED_FROM="$D3" php cron_notifications.php ) > "$SANDBOX/cron-cutoff.log" 2>&1
 ROWS="$(streak_row 21) $(streak_row 22)"
-if [ "$ROWS" = "5|0|$D1 5|2|$D3" ] && grep -q 'inactivity email to oldidle@test.local' "$SANDBOX/cron-cutoff.log"
-then pass "with the cut-off before both dates: the shield is taken and the inactivity e-mail is due"
-else fail "rows after moving the cut-off are [$ROWS] (expected 5|0|$D1 5|2|$D3)"; fi
+if [ "$ROWS" = "5|1|$D2 5|2|$D3" ] && grep -q 'inactivity email to oldidle@test.local' "$SANDBOX/cron-cutoff.log"
+then pass "with the cut-off before both dates: the inactivity e-mail is due, and no shield is taken"
+else fail "rows after moving the cut-off are [$ROWS] (expected 5|1|$D2 5|2|$D3)"; fi
+
+# ================================================ 9. the server's streak (B3b)
+echo
+echo "9. the server counts the streak, spends shields and caps them at 3"
+seed
+call() {  # $1=user  $2=action  $3=json  -> echoes the response body
+  curl -s -b "PHPSESSID=sptestuser$1" \
+       -H "Content-Type: application/json" -H "X-CSRF-Token: $(tok "$1")" \
+       -d "$3" "$BASE?action=$2"
+}
+# streak_count|streak_shields|streak_date of one user
+streak3() {
+  "${DB[@]}" -e "SELECT CONCAT(streak_count,'|',streak_shields,'|',IFNULL(streak_date,'<NULL>')) FROM user_progress WHERE user_id=$1"
+}
+set_streak() {  # $1=user $2=count $3=shields $4=date or NULL
+  local d="NULL"; [ "$4" = "NULL" ] || d="'$4'"
+  "${DB[@]}" -e "UPDATE user_progress SET streak_count=$2, streak_shields=$3, streak_date=$d, scores='{\"bones\":500}' WHERE user_id=$1"
+}
+LESSON='{"points":1000,"scores":{"bones":500},"lesson_completed":true}'
+PLAIN='{"points":1000,"scores":{"bones":500}}'
+
+set_streak 4 0 0 NULL
+post 4 "$LESSON" >/dev/null
+post 4 "$LESSON" >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "1|0|$D0" ]; then pass "two lessons on one day raise the streak once (0 -> 1)"
+else fail "after two lessons the streak is [$ROW], expected 1|0|$D0"; fi
+
+curl -s -o /dev/null -b "PHPSESSID=sptestuser4" "$BASE?action=get_session"
+curl -s -o /dev/null -b "PHPSESSID=sptestuser4" "$BASE?action=get_session"
+post 4 "$PLAIN" >/dev/null
+post 4 '{"points":1000,"scores":{"bones":500,"streak_count":99},"streak_count":99}' >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "1|0|$D0" ]; then pass "opening the app twice and saving without a lesson leave the streak unchanged"
+else fail "app opens and plain saves moved the streak to [$ROW]"; fi
+
+set_streak 4 5 1 "$D2"
+post 4 "$LESSON" >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "6|0|$D0" ]; then pass "last lesson two days ago, 1 shield: the shield is spent and the streak goes on (5 -> 6)"
+else fail "one missed day with 1 shield gave [$ROW], expected 6|0|$D0"; fi
+
+set_streak 4 5 0 "$D2"
+post 4 "$LESSON" >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "1|0|$D0" ]; then pass "last lesson two days ago, 0 shields: the streak restarts at 1"
+else fail "one missed day with 0 shields gave [$ROW], expected 1|0|$D0"; fi
+
+set_streak 4 5 2 "$D4"
+post 4 "$LESSON" >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "1|0|$D0" ]; then pass "3 missed days, 2 shields: the streak restarts at 1 and both shields are gone"
+else fail "three missed days with 2 shields gave [$ROW], expected 1|0|$D0"; fi
+
+# get_session shows the streak as it stands today and writes nothing.
+set_streak 4 5 2 "$D3"
+SESSION="$(curl -s -b "PHPSESSID=sptestuser4" "$BASE?action=get_session" \
+  | python3 -c 'import sys,json;p=json.load(sys.stdin)["session"]["progress"];print(p["streak_count"],p["streak_shields"],p["streak_date"],sep="|")')"
+ROW="$(streak3 4)"
+if [ "$SESSION" = "5|0|$D1" ] && [ "$ROW" = "5|2|$D3" ]
+then pass "get_session shows 2 missed days paid by 2 shields (5|0) and leaves the row as it was"
+else fail "get_session showed [$SESSION], row is [$ROW] (expected 5|0|$D1 and 5|2|$D3)"; fi
+
+# A streak the client kept in the scores JSON before #381 is taken over.
+"${DB[@]}" -e "UPDATE user_progress SET streak_count=0, streak_shields=0, streak_date=NULL,
+               scores='{\"bones\":500,\"streak_count\":40,\"streak_shields\":2}' WHERE user_id=4"
+post 4 "$PLAIN" >/dev/null
+ROW="$(streak3 4)"; JSON="$(col 4 scores)"
+if [ "$ROW" = "40|2|<NULL>" ] && [ "$JSON" = '{"bones":500}' ]
+then pass "an inflated streak of 40 and 2 shields move from the JSON to the columns, unchanged"
+else fail "after taking over the JSON: columns [$ROW], scores [$JSON]"; fi
+post 4 "$LESSON" >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "41|2|$D0" ]; then pass "the next lesson counts on from the kept streak (40 -> 41)"
+else fail "the first counted lesson gave [$ROW], expected 41|2|$D0"; fi
+
+# The intro lesson gives one shield, once.
+set_streak 4 0 0 NULL
+post 4 '{"points":1000,"scores":{"bones":500,"tutorial_done":true},"lesson_completed":"tutorial"}' >/dev/null
+post 4 '{"points":1000,"scores":{"bones":500,"tutorial_done":true},"lesson_completed":"tutorial"}' >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "1|1|$D0" ]; then pass "the intro lesson counts the day and gives one shield, and sending it again gives none"
+else fail "after the intro lesson twice: [$ROW], expected 1|1|$D0"; fi
+
+# The cap: the shop and claim_reward stop at 3.
+set_streak 4 5 2 "$D0"
+BODY="$(call 4 buy_shield '{}')"
+ROW="$(streak3 4)"; BONES="$(col 4 "JSON_VALUE(scores,'$.bones')")"
+if [ "$ROW" = "5|3|$D0" ] && [ "$BONES" = "400" ] && printf '%s' "$BODY" | grep -q '"status":"success"'
+then pass "the shop sells a third shield for 100 (2 -> 3, 500 -> 400)"
+else fail "buying at 2 shields: [$ROW], bones $BONES, reply $BODY"; fi
+BODY="$(call 4 buy_shield '{}')"
+ROW="$(streak3 4)"; BONES="$(col 4 "JSON_VALUE(scores,'$.bones')")"
+if [ "$ROW" = "5|3|$D0" ] && [ "$BONES" = "400" ] && printf '%s' "$BODY" | grep -q '"code":"shield_cap"'
+then pass "at 3 shields the shop sells no fourth and takes no Lexi-falat"
+else fail "buying at 3 shields: [$ROW], bones $BONES, reply $BODY"; fi
+CODE="$(curl -s -o /dev/null -w '%{http_code}' -b "PHPSESSID=sptestuser4" "$BASE?action=buy_shield")"
+if [ "$CODE" = "405" ]; then pass "a GET cannot buy a shield (it would skip the CSRF check)"
+else fail "GET buy_shield answered HTTP $CODE"; fi
+
+"${DB[@]}" -e "INSERT INTO user_rewards (id, user_id, reward_type, league_id, placement, bones_reward, shields_reward, title_reward)
+               VALUES (901, 4, 'weekly_leaderboard', 1, 1, 50, 2, NULL), (902, 4, 'weekly_leaderboard', 1, 1, 0, 3, NULL)"
+set_streak 4 5 2 "$D0"
+call 4 claim_reward '{"reward_id":901}' >/dev/null
+ROW="$(streak3 4)"
+if [ "$ROW" = "5|3|$D0" ]; then pass "a claim_reward grant of 2 at 2 shields stops at 3"
+else fail "claim_reward of 2 at 2 shields gave [$ROW], expected 5|3|$D0"; fi
+set_streak 4 5 0 "$D0"
+call 4 claim_reward '{"reward_id":902}' >/dev/null
+SESSION="$(curl -s -b "PHPSESSID=sptestuser4" "$BASE?action=get_session" \
+  | python3 -c 'import sys,json;print(json.load(sys.stdin)["session"]["progress"]["streak_shields"])')"
+if [ "$SESSION" = "3" ]; then pass "a claimed shield grant is in the reply of the next get_session (what a reload shows)"
+else fail "after claiming 3 shields get_session shows [$SESSION]"; fi
+
+# Milestone mail follows the server's own count only.
+set_streak 4 6 0 "$D1"
+ATTEMPTS="$(mail_attempts)"
+for _ in 1 2 3; do
+  post 4 '{"points":1000,"scores":{"bones":500,"streak_count":6},"streak_count":6}' >/dev/null
+  post 4 '{"points":1000,"scores":{"bones":500,"streak_count":7},"streak_count":7}' >/dev/null
+done
+if [ "$(mail_attempts)" = "$ATTEMPTS" ] && [ "$(streak3 4)" = "6|0|$D1" ]
+then pass "posting streak_count 6, then 7, three times sends no milestone e-mail"
+else fail "client streak posts: mail attempts $ATTEMPTS -> $(mail_attempts), row [$(streak3 4)]"; fi
+post 4 "$LESSON" >/dev/null
+post 4 "$LESSON" >/dev/null
+if [ "$(mail_attempts)" = "$((ATTEMPTS + 1))" ] && [ "$(streak3 4)" = "7|0|$D0" ]
+then pass "a real day-7 lesson sends exactly one milestone e-mail, and a second lesson that day none"
+else fail "day-7 lessons: mail attempts $ATTEMPTS -> $(mail_attempts), row [$(streak3 4)]"; fi
 
 # ==================================================================== summary
 echo

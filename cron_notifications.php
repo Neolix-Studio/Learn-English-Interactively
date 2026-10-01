@@ -17,14 +17,12 @@ try {
 
     // One clock reading for the whole run, in learner days: see lexipaws_activity_date().
     $now = time();
-    $yesterday = lexipaws_activity_date(1, $now);
     $twoDaysAgo = lexipaws_activity_date(2, $now);
 
     // The first full day after save_progress began to stamp last_active_date
     // itself (#358). An earlier date may come from the old app's client, or
     // from this cron's earlier version, which took a shield from every stale
-    // row each night. Rows with such a date are never mailed and never
-    // touched. (The local stack and the test suite set their own day in the
+    // row each night. Rows with such a date get no inactivity e-mail. (The local stack and the test suite set their own day in the
     // config they generate.)
     $trustedFrom = defined('ACTIVITY_DATES_TRUSTED_FROM') ? ACTIVITY_DATES_TRUSTED_FROM : '2026-10-01';
 
@@ -72,66 +70,43 @@ try {
         }
     }
 
-    // Only a row last active exactly two days ago is at risk: that learner
-    // missed yesterday, and only yesterday. NULL and older dates are stale
-    // rows and are never touched. Moving last_active_date on to yesterday
-    // takes the row out of this query, so a missed day costs one shield
-    // however often the cron runs.
+    // This cron never writes a streak or a shield. The server settles them
+    // itself when the learner next saves, one shield per missed day (B3b,
+    // #381; streakState() in api.php). It only tells a learner whose streak
+    // covers the day before yesterday and who holds a shield that yesterday's
+    // missed day is paid by one. streak_date is written only by the server's
+    // own count, so legacy rows (NULL) are never matched.
     $stmtStreak = $pdo->prepare("
         SELECT u.id, u.email, u.username, u.last_streak_email_sent, u.notification_preferences, u.base_language,
-               up.streak_count, up.streak_shields, up.last_active_date
+               up.streak_count
         FROM users u
         JOIN user_progress up ON u.id = up.user_id
         WHERE up.streak_count > 0
-          AND up.last_active_date = ?
-          AND up.last_active_date >= ?
+          AND up.streak_shields > 0
+          AND up.streak_date = ?
     ");
-    $stmtStreak->execute([$twoDaysAgo, $trustedFrom]);
+    $stmtStreak->execute([$twoDaysAgo]);
     $atRiskUsers = $stmtStreak->fetchAll();
 
-    // Both writes repeat the date condition, so a save that lands after the
-    // SELECT above keeps its shield and its streak.
-    $consumeStmt = $pdo->prepare("
-        UPDATE user_progress
-        SET streak_shields = streak_shields - 1,
-            last_active_date = ?
-        WHERE user_id = ?
-          AND streak_shields > 0
-          AND last_active_date = ?
-    ");
-    $breakStmt = $pdo->prepare("UPDATE user_progress SET streak_count = 0 WHERE user_id = ? AND streak_shields <= 0 AND last_active_date = ?");
-
     foreach ($atRiskUsers as $user) {
-        if ($user['streak_shields'] > 0) {
-            $consumeStmt->execute([$yesterday, $user['id'], $twoDaysAgo]);
-            if ($consumeStmt->rowCount() === 0) {
-                continue;
-            }
+        $prefs = json_decode($user['notification_preferences'] ?? '{}', true);
+        if (isset($prefs['milestones']) && $prefs['milestones'] === false) {
+            echo "Skipped streak email for {$user['email']} due to preferences\n";
+            continue;
+        }
 
-            $prefs = json_decode($user['notification_preferences'] ?? '{}', true);
-            if (isset($prefs['milestones']) && $prefs['milestones'] === false) {
-                echo "Skipped streak email for {$user['email']} due to preferences\n";
-                continue;
-            }
-
-            if (empty($user['last_streak_email_sent']) || strtotime($user['last_streak_email_sent']) < strtotime('-24 hours')) {
-                $lang = $user['base_language'] ?? 'hu';
-                if (sendTemplateEmail($user['email'], 'streak_protected', [
-                    'username' => $user['username'],
-                    'currentStreak' => $user['streak_count'],
-                    'language' => $lang
-                ])) {
-                    $updateSent = $pdo->prepare("UPDATE users SET last_streak_email_sent = NOW() WHERE id = ?");
-                    $updateSent->execute([$user['id']]);
-                    echo "Sent streak protected email to {$user['email']}\n";
-                } else {
-                    echo "Could not send streak protected email to {$user['email']}\n";
-                }
-            }
-        } else {
-            $breakStmt->execute([$user['id'], $twoDaysAgo]);
-            if ($breakStmt->rowCount() > 0) {
-                echo "Broke streak for user {$user['email']}\n";
+        if (empty($user['last_streak_email_sent']) || strtotime($user['last_streak_email_sent']) < strtotime('-24 hours')) {
+            $lang = $user['base_language'] ?? 'hu';
+            if (sendTemplateEmail($user['email'], 'streak_protected', [
+                'username' => $user['username'],
+                'currentStreak' => $user['streak_count'],
+                'language' => $lang
+            ])) {
+                $updateSent = $pdo->prepare("UPDATE users SET last_streak_email_sent = NOW() WHERE id = ?");
+                $updateSent->execute([$user['id']]);
+                echo "Sent streak protected email to {$user['email']}\n";
+            } else {
+                echo "Could not send streak protected email to {$user['email']}\n";
             }
         }
     }

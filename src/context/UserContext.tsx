@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import type { ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../utils/api';
+import { countLessonDay, settleStreak, STREAK_SHIELD_CAP } from '../utils/streak';
 
 export interface UserProgressData {
     username: string;
@@ -9,8 +10,11 @@ export interface UserProgressData {
     completed: Record<string, any>;
     scores: {
         level?: number;
+        // Signed in, these three are the server's columns, copied in on load and
+        // after every save; the server drops them from the scores it stores.
         streak_count?: number;
         streak_shields?: number;
+        streak_date?: string | null;
         bones?: number;
         earned_xp_per_node?: Record<string, number>;
         active_theme?: string;
@@ -50,6 +54,7 @@ export interface UserContextType {
     completeLesson: (nodeId: string, xpEarned: number, accuracy: number, subLessonId?: string, isNodeComplete?: boolean, isTutorial?: boolean) => void;
     syncLearnedWords: (words: string[]) => void;
     buyCosmetic: (type: string, id: string, cost: number) => Promise<{success: boolean, message: string}>;
+    buyShield: () => Promise<{success: boolean, message?: string}>;
     updatePreferences: (prefs: any) => Promise<{success: boolean, message?: string}>;
     updateLanguage: (lang: string) => Promise<{success: boolean, message?: string}>;
     isLoading: boolean;
@@ -138,6 +143,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     if (progressData.active_theme) {
                         scores.active_theme = progressData.active_theme === 'default' ? 'system' : progressData.active_theme;
                     }
+                    scores = {
+                        ...(scores || {}),
+                        streak_count: progressData.streak_count ?? 0,
+                        streak_shields: progressData.streak_shields ?? 0,
+                        streak_date: progressData.streak_date ?? null
+                    };
 
                     initialData = {
                         username: userMetadata.username || userData.username || 'Vendég',
@@ -179,6 +190,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         initialData.scores.bones = 100;
                     }
 
+                    initialData.scores = { ...initialData.scores, ...settleStreak(initialData.scores) };
+
                     if (initialData.energy === undefined) {
                         initialData.energy = 5;
                         initialData.last_energy_refill = new Date().toISOString();
@@ -211,10 +224,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     initialData.active_quests.forEach(q => initialData.quest_progress[q.id] = 0);
                     initialData.completed_quests_today = [];
                     questsUpdated = true;
-
-                    if (initialData.scores) {
-                        initialData.scores.streak_count = (initialData.scores.streak_count || 0) + 1;
-                    }
                 }
 
                 if (langParam && (langParam === 'sk' || langParam === 'hu')) {
@@ -325,6 +334,41 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
+    // 100 Lexi-falat for one shield; refused at STREAK_SHIELD_CAP before anything is taken.
+    const buyShield = async () => {
+        const shields = data.scores?.streak_shields || 0;
+        const bones = data.scores?.bones || 0;
+        if (shields >= STREAK_SHIELD_CAP || bones < 100) return { success: false };
+
+        if (isGuest) {
+            updateProgress({ scores: { ...data.scores, bones: bones - 100, streak_shields: shields + 1 } });
+            return { success: true };
+        }
+
+        try {
+            const res = await api.fetch('buy_shield', {});
+            if (res && res.status === 'success') {
+                setData(prev => ({
+                    ...prev,
+                    scores: {
+                        ...prev.scores,
+                        bones: res.new_bones,
+                        streak_count: res.streak_count,
+                        streak_shields: res.streak_shields,
+                        streak_date: res.streak_date ?? null
+                    }
+                }));
+                return { success: true };
+            }
+            if (res?.code === 'shield_cap') {
+                setData(prev => ({ ...prev, scores: { ...prev.scores, streak_shields: res.streak_shields } }));
+            }
+            return { success: false, message: res?.message };
+        } catch {
+            return { success: false, message: 'Hálózati hiba' };
+        }
+    };
+
     const updatePreferences = async (prefs: any) => {
         if (isGuest) return {success: false, message: "Jelentkezz be a beállítások mentéséhez!"};
         setData(prev => ({
@@ -353,8 +397,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return {success: false, message: res.error || "Hiba történt a mentés során."};
     };
 
-    const saveProgress = (progress: UserProgressData) => {
+    // lessonCompleted marks the save of a finished lesson, the only thing that raises the streak.
+    const saveProgress = (progress: UserProgressData, lessonCompleted?: true | 'tutorial') => {
         api.fetch('save_progress', {
+            ...(lessonCompleted ? { lesson_completed: lessonCompleted } : {}),
             points: progress.points,
             completed: progress.completed,
             scores: progress.scores,
@@ -362,16 +408,27 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             completed_quests_today: progress.completed_quests_today
         }).then((res) => {
             if (res?.success) {
+                if (typeof res.streak_count === 'number') {
+                    setData(prev => ({
+                        ...prev,
+                        scores: {
+                            ...prev.scores,
+                            streak_count: res.streak_count,
+                            streak_shields: res.streak_shields,
+                            streak_date: res.streak_date ?? null
+                        }
+                    }));
+                }
                 window.dispatchEvent(new CustomEvent('lexipawsProgressSaved'));
             }
         });
     };
 
     // saveNow skips the 1500 ms wait: a finished lesson must not depend on the tab staying open.
-    const updateProgress = (newData: Partial<UserProgressData>, saveNow = false) => {
+    const updateProgress = (newData: Partial<UserProgressData>, saveNow = false, lessonCompleted?: true | 'tutorial') => {
         if (!isGuest && saveNow) {
             if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-            saveProgress({ ...data, ...newData });
+            saveProgress({ ...data, ...newData }, lessonCompleted);
         }
 
         setData(prev => {
@@ -444,10 +501,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             }
         }
 
+        // Signed in, the server counts the day and its reply replaces this.
+        Object.assign(newScores, countLessonDay(newScores));
+
         if (isTutorial) {
             newScores.bones = (newScores.bones || 0) + 5;
-            newScores.streak_shields = (newScores.streak_shields || 0) + 1;
-            newScores.streak_count = 1;
+            if (!data.scores.tutorial_done) {
+                newScores.streak_shields = Math.min(STREAK_SHIELD_CAP, (newScores.streak_shields || 0) + 1);
+            }
         } else {
             const earnedBones = data.subscription_tier === 'premium' || data.subscription_tier === 'lifetime' ? 3 : 1;
             newScores.bones = (newScores.bones || 0) + earnedBones;
@@ -523,7 +584,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             progressUpdate.last_energy_refill = new Date().toISOString();
         }
 
-        updateProgress(progressUpdate, true);
+        updateProgress(progressUpdate, true, isTutorial ? 'tutorial' : true);
     };
 
     return (
@@ -538,6 +599,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             completeLesson,
             syncLearnedWords,
             buyCosmetic,
+            buyShield,
             updatePreferences,
             updateLanguage,
             isLoading

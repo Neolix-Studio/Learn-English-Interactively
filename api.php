@@ -48,7 +48,9 @@ require_once __DIR__ . '/mailer.php';
 define('PASSWORD_REGEX', '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/');
 define('RATE_LIMIT_ERR_MSG', 'Túl sok kérés. Kérjük, próbáld újra később.');
 define('PASSWORD_ERR_MSG', 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.');
-define('APP_ALLOWED_HOSTS', ['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'neolix.studio', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
+define('STREAK_SHIELD_CAP', 3);
+define('STREAK_SCORE_KEYS', ['streak_count', 'streak_shields', 'streak_date']);
+define('APP_ALLOWED_HOSTS',['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'neolix.studio', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
 
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
@@ -151,6 +153,9 @@ switch ($action) {
         break;
     case 'buy_cosmetic':
         handleBuyCosmetic($pdo, $inputData);
+        break;
+    case 'buy_shield':
+        handleBuyShield($pdo);
         break;
     case 'claim_reward':
         handleClaimReward($pdo);
@@ -780,6 +785,7 @@ function formatUserProgress(array $progress) {
             'level' => 1,
             'streak_count' => 0,
             'streak_shields' => 0,
+            'streak_date' => null,
             'last_active_date' => null,
             'unlocked_items' => [],
             'active_theme' => 'default',
@@ -790,13 +796,17 @@ function formatUserProgress(array $progress) {
             'completed_quests_today' => []
         ];
     }
+    // The streak as it stands today, missed days already paid: what the next
+    // save will write (B3b, #381).
+    $streak = streakState($progress, lexipaws_activity_date());
     return [
         'points' => intval($progress['points']),
         'completed' => !empty($progress['completed']) ? json_decode($progress['completed']) : new stdClass(),
         'scores' => !empty($progress['scores']) ? json_decode($progress['scores']) : new stdClass(),
         'level' => intval($progress['level']),
-        'streak_count' => intval($progress['streak_count']),
-        'streak_shields' => intval($progress['streak_shields']),
+        'streak_count' => $streak['streak_count'],
+        'streak_shields' => $streak['streak_shields'],
+        'streak_date' => $streak['streak_date'],
         'last_active_date' => $progress['last_active_date'],
         'unlocked_items' => !empty($progress['unlocked_items']) ? json_decode($progress['unlocked_items']) : [],
         'active_theme' => $progress['active_theme'],
@@ -934,7 +944,7 @@ function handleGetSession(PDO $pdo) {
             return;
         }
 
-        $stmtProgress = $pdo->prepare("SELECT points, completed, scores, level, streak_count, streak_shields, last_active_date, unlocked_items, active_theme, earned_xp_per_node, daily_quests_date, active_quests, quest_progress, completed_quests_today, energy, last_energy_refill FROM user_progress WHERE user_id = ?");
+        $stmtProgress = $pdo->prepare("SELECT points, completed, scores, level, streak_count, streak_shields, streak_date, last_active_date, unlocked_items, active_theme, earned_xp_per_node, daily_quests_date, active_quests, quest_progress, completed_quests_today, energy, last_energy_refill FROM user_progress WHERE user_id = ?");
         $stmtProgress->execute([$userId]);
         $progress = $stmtProgress->fetch();
         $unlockedThemes = getUnlockedThemes($pdo, $userId);
@@ -1014,6 +1024,79 @@ function parseProgressData(array $data) {
     ] + newProgressRowDefaults();
 }
 
+/**
+ * The streak is the server's (B3b, #381). It lives in three user_progress
+ * columns: streak_count, streak_shields and streak_date, the last day the
+ * streak covers. A day counts when a lesson is completed on it, the day being
+ * the calendar day in Europe/Budapest, and every missed day costs one shield
+ * (owner, Q10, #365). A learner holds at most STREAK_SHIELD_CAP shields.
+ */
+function isStreakDate($value): bool {
+    return is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) === 1;
+}
+
+/**
+ * The streak as it stands on $today, from a user_progress row. Writes nothing.
+ *
+ * Before #381 the client kept its own streak and shields in the scores JSON.
+ * A row that still holds them there has them taken over, the higher number
+ * winning, so no streak shrinks (owner, Q10). Then every day missed since
+ * streak_date takes one shield, also when the shields cannot save the streak:
+ * 2 shields and 3 missed days end with streak 0 and 0 shields. The settled
+ * days are moved into streak_date, so settling twice takes nothing more.
+ */
+function streakState($row, string $today): array {
+    $row = is_array($row) ? $row : [];
+    $streak = max(0, intval($row['streak_count'] ?? 0));
+    $shields = max(0, intval($row['streak_shields'] ?? 0));
+    $date = isStreakDate($row['streak_date'] ?? null) ? $row['streak_date'] : null;
+
+    $scores = json_decode((string)($row['scores'] ?? ''), true);
+    if (is_array($scores)) {
+        $streak = max($streak, intval($scores['streak_count'] ?? 0));
+        $shields = max($shields, intval($scores['streak_shields'] ?? 0));
+        if ($date === null && isStreakDate($scores['streak_date'] ?? null)) {
+            $date = $scores['streak_date'];
+        }
+    }
+    $shields = min(STREAK_SHIELD_CAP, $shields);
+    if ($date !== null && $date > $today) {
+        $date = $today;
+    }
+
+    $utc = new DateTimeZone('UTC');
+    $yesterday = (new DateTimeImmutable($today, $utc))->modify('-1 day')->format('Y-m-d');
+    if ($date !== null && $streak > 0 && $date < $yesterday) {
+        $missed = (new DateTimeImmutable($date, $utc))->diff(new DateTimeImmutable($yesterday, $utc))->days;
+        $used = min($shields, $missed);
+        $shields -= $used;
+        if ($missed > $used) {
+            $streak = 0;
+        }
+        $date = $yesterday;
+    }
+
+    return ['streak_count' => $streak, 'streak_shields' => $shields, 'streak_date' => $date];
+}
+
+/** A completed lesson counts its day once: the second lesson of a day adds nothing. */
+function countLessonDay(array $state, string $today): array {
+    if ($state['streak_date'] !== $today) {
+        $state['streak_count'] += 1;
+        $state['streak_date'] = $today;
+    }
+    return $state;
+}
+
+function stripStreakKeys(array $scores): array {
+    return array_diff_key($scores, array_flip(STREAK_SCORE_KEYS));
+}
+
+function writeStreakState(PDO $pdo, $userId, array $state): void {
+    $stmt = $pdo->prepare("UPDATE user_progress SET streak_count = ?, streak_shields = ?, streak_date = ? WHERE user_id = ?");
+    $stmt->execute([$state['streak_count'], $state['streak_shields'], $state['streak_date'], $userId]);
+}
+
 function clampNodeState(array $incomingScores, array $currentScores, $userId): array {
     if (!isset($incomingScores['node_state']) || !is_array($incomingScores['node_state'])) {
         return $incomingScores;
@@ -1065,11 +1148,9 @@ function clampScores(string $incomingScoresJson, $currentDbProgress, $userId): s
         $incomingScores['bones'] = $currentBones + 100;
     }
 
-    $currentShields = intval($currentScores['streak_shields'] ?? 0);
-    $incomingShields = intval($incomingScores['streak_shields'] ?? $currentShields);
-    if ($incomingShields > $currentShields + 3) {
-        $incomingScores['streak_shields'] = $currentShields + 3;
-    }
+    // The streak and the shields are the server's columns: a client's copy in
+    // the JSON is dropped (B3b, #381).
+    $incomingScores = stripStreakKeys($incomingScores);
 
     return encodeScores(clampNodeState($incomingScores, $currentScores, $userId));
 }
@@ -1145,13 +1226,15 @@ function sendCommittedStreakEmail($currentDbProgress, int $newStreak, bool $mile
     }
 }
 
-function sendStreakMilestoneEmails($currentDbProgress, array $parsed): void {
-    if (!$currentDbProgress || !isset($currentDbProgress['streak_count'])) {
+/**
+ * $oldStreak and $newStreak are the server's own count before and after a
+ * lesson (countLessonDay), never a number from the client. The streak rises
+ * at most once a day, so a milestone mails at most once a day.
+ */
+function sendStreakMilestoneEmails($currentDbProgress, int $oldStreak, int $newStreak): void {
+    if (!$currentDbProgress || empty($currentDbProgress['email'])) {
         return;
     }
-
-    $oldStreak = intval($currentDbProgress['streak_count']);
-    $newStreak = intval($parsed['streak_count']);
 
     if ($newStreak <= $oldStreak) {
         return;
@@ -1188,13 +1271,21 @@ function handleSaveProgress(PDO $pdo, array $data) {
 
     $userId = $_SESSION['user_id'];
     $parsed = parseProgressData($data);
+    // Sent by the client with the save of a finished lesson: true, or
+    // 'tutorial' for the intro lesson. It is the only way the streak rises.
+    $lesson = $data['lesson_completed'] ?? null;
+    $lessonCompleted = $lesson === true || $lesson === 'tutorial';
 
     try {
+        // The row stays locked until the streak below is written, so a
+        // claim_reward or buy_shield in between cannot be overwritten.
+        $pdo->beginTransaction();
         $stmtCheck = $pdo->prepare("
-            SELECT up.scores, up.points, up.streak_count, u.email, u.username, u.marketing_data, u.notification_preferences, u.base_language
+            SELECT up.scores, up.points, up.streak_count, up.streak_shields, up.streak_date, u.email, u.username, u.marketing_data, u.notification_preferences, u.base_language
             FROM user_progress up
             JOIN users u ON u.id = up.user_id
             WHERE up.user_id = ?
+            FOR UPDATE
         ");
         $stmtCheck->execute([$userId]);
         $currentDbProgress = $stmtCheck->fetch();
@@ -1228,13 +1319,35 @@ function handleSaveProgress(PDO $pdo, array $data) {
             $parsed['energy'], $parsed['last_energy_refill']
         ]);
 
-        awardLeagueXp($pdo, $userId, $parsed, $currentDbProgress);
-        // Sends nothing for now: a streak_count from the client is ignored, and
-        // no server code counts the streak yet, so it never rises here (WP-B3).
-        sendStreakMilestoneEmails($currentDbProgress, $parsed);
+        // Written on every save: this also takes over a streak the client kept
+        // in the scores JSON, which the save above has just dropped from it.
+        $today = lexipaws_activity_date();
+        $before = streakState($currentDbProgress, $today);
+        $after = $before;
+        if ($lessonCompleted) {
+            $after = countLessonDay($before, $today);
+            // The intro lesson gives one shield, once (owner, #359).
+            $storedScores = $currentDbProgress ? json_decode((string)$currentDbProgress['scores'], true) : null;
+            if ($lesson === 'tutorial' && empty($storedScores['tutorial_done'])) {
+                $after['streak_shields'] = min(STREAK_SHIELD_CAP, $after['streak_shields'] + 1);
+            }
+        }
+        writeStreakState($pdo, $userId, $after);
+        $pdo->commit();
 
-        echo json_encode(['success' => true]);
+        awardLeagueXp($pdo, $userId, $parsed, $currentDbProgress);
+        sendStreakMilestoneEmails($currentDbProgress, $before['streak_count'], $after['streak_count']);
+
+        echo json_encode([
+            'success' => true,
+            'streak_count' => $after['streak_count'],
+            'streak_shields' => $after['streak_shields'],
+            'streak_date' => $after['streak_date']
+        ]);
     } catch (Exception $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
         error_log('Progress save error: ' . $e->getMessage());
         echo json_encode(['error' => 'Hiba a mentés során. Kérjük, próbáld újra később.']);
     }
@@ -1573,7 +1686,7 @@ function handleClaimReward($pdo) {
         $updateReward = $pdo->prepare("UPDATE user_rewards SET is_claimed = TRUE WHERE id = ?");
         $updateReward->execute([$reward['id']]);
 
-        $stmtProgress = $pdo->prepare("SELECT scores, streak_shields, active_title FROM user_progress WHERE user_id = ?");
+        $stmtProgress = $pdo->prepare("SELECT scores, streak_count, streak_shields, streak_date, active_title FROM user_progress WHERE user_id = ? FOR UPDATE");
         $stmtProgress->execute([$_SESSION['user_id']]);
         $progress = $stmtProgress->fetch();
         $unlockedThemes = getUnlockedThemes($pdo, $_SESSION['user_id']);
@@ -1583,15 +1696,18 @@ function handleClaimReward($pdo) {
             if (!isset($scores['bones'])) $scores['bones'] = 100;
 
             $scores['bones'] += (int)$reward['bones_reward'];
-            $newShields = (int)$progress['streak_shields'] + (int)$reward['shields_reward'];
+            // Shields stop at the cap: a grant at 3 leaves 3 (B3b, #381).
+            $streak = streakState($progress, lexipaws_activity_date());
+            $streak['streak_shields'] = min(STREAK_SHIELD_CAP, $streak['streak_shields'] + max(0, (int)$reward['shields_reward']));
 
             $newTitle = $progress['active_title'];
             if (!empty($reward['title_reward'])) {
                 $newTitle = $reward['title_reward'];
             }
 
-            $updateProgress = $pdo->prepare("UPDATE user_progress SET scores = ?, streak_shields = ?, active_title = ? WHERE user_id = ?");
-            $updateProgress->execute([json_encode($scores), $newShields, $newTitle, $_SESSION['user_id']]);
+            $updateProgress = $pdo->prepare("UPDATE user_progress SET scores = ?, active_title = ? WHERE user_id = ?");
+            $updateProgress->execute([encodeScores(stripStreakKeys($scores)), $newTitle, $_SESSION['user_id']]);
+            writeStreakState($pdo, $_SESSION['user_id'], $streak);
         }
 
         $pdo->commit();
@@ -1727,6 +1843,81 @@ function handleBuyCosmetic(PDO $pdo, array $data) {
             $pdo->rollBack();
         }
         error_log('Buy cosmetic error: ' . $e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'Hiba történt a vásárlás során.']);
+    }
+}
+
+/**
+ * The shop's streak shield. Priced here, not by the client, and refused at
+ * the cap before any Lexi-falat is taken (B3b, #381).
+ */
+function handleBuyShield(PDO $pdo) {
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Munkamenet lejárt!']);
+        return;
+    }
+    // It takes no input, so only a POST, which has passed the CSRF check, may buy.
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['status' => 'error', 'message' => 'Érvénytelen kérés']);
+        return;
+    }
+
+    $userId = $_SESSION['user_id'];
+    $cost = 100;
+
+    try {
+        $pdo->beginTransaction();
+
+        $stmtProgress = $pdo->prepare("SELECT scores, streak_count, streak_shields, streak_date FROM user_progress WHERE user_id = ? FOR UPDATE");
+        $stmtProgress->execute([$userId]);
+        $progressRow = $stmtProgress->fetch();
+
+        if (!$progressRow) {
+            $pdo->rollBack();
+            echo json_encode(['status' => 'error', 'message' => 'User nem található']);
+            return;
+        }
+
+        $streak = streakState($progressRow, lexipaws_activity_date());
+        if ($streak['streak_shields'] >= STREAK_SHIELD_CAP) {
+            $pdo->rollBack();
+            echo json_encode(['status' => 'error', 'code' => 'shield_cap', 'streak_shields' => $streak['streak_shields'], 'message' => 'Legfeljebb ' . STREAK_SHIELD_CAP . ' pajzsod lehet.']);
+            return;
+        }
+
+        $scores = $progressRow['scores'] ? json_decode($progressRow['scores'], true) : [];
+        $scores = is_array($scores) ? $scores : [];
+        $bones = isset($scores['bones']) ? (int)$scores['bones'] : 0;
+
+        if ($bones < $cost) {
+            $pdo->rollBack();
+            echo json_encode(['status' => 'error', 'message' => 'Nincs elég csontod!']);
+            return;
+        }
+
+        $scores['bones'] = $bones - $cost;
+        $streak['streak_shields'] += 1;
+
+        $updateProgress = $pdo->prepare("UPDATE user_progress SET scores = ? WHERE user_id = ?");
+        $updateProgress->execute([encodeScores(stripStreakKeys($scores)), $userId]);
+        writeStreakState($pdo, $userId, $streak);
+
+        $pdo->commit();
+
+        echo json_encode([
+            'status' => 'success',
+            'new_bones' => $scores['bones'],
+            'streak_count' => $streak['streak_count'],
+            'streak_shields' => $streak['streak_shields'],
+            'streak_date' => $streak['streak_date']
+        ]);
+
+    } catch (Exception $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        error_log('Buy shield error: ' . $e->getMessage());
         echo json_encode(['status' => 'error', 'message' => 'Hiba történt a vásárlás során.']);
     }
 }

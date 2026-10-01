@@ -51,5 +51,15 @@
     "preset": "signed-in",
     "path": "/practice",
     "wait": 2500
+  },
+  "shop": {
+    "about": "The shop dialog of a signed-in learner with 2 streak shields, opened from the tab bar.",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "wait": 2500,
+    "steps": [
+      { "clickText": "Bolt", "after": 900 },
+      { "contrast": "shop" }
+    ]
   }
 }

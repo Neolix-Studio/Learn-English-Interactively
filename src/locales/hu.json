@@ -215,6 +215,9 @@
     "save": "Mentés",
     "cancel": "Mégse"
   },
+  "shop": {
+    "shield_cap": "Legfeljebb {{max}} pajzsod lehet."
+  },
   "auth": {
     "merge_title": "Hozzáadod a fiókodhoz?",
     "merge_intro": "Ezen az eszközön vendégként szerzett haladást találtunk:",

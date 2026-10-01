@@ -113,9 +113,9 @@ node tools/local/ux-shots/matrix.mjs --path /practice --preset weak-words --wait
   --steps '[{"clickText":"Hibák","tag":"h3"},{"clickText":"Kezdés","tag":"button","after":1500},{"shot":"q1"}]'
 ```
 
-Two things the app itself does on every load, which you will see in the pictures: the streak shows one
-more than the preset says (13, not 12), and the three daily quests are picked at random. Both are
-finding C27; the presets are left as the review used them so that finding can still be reproduced.
+One thing the app itself does on every load, which you will see in the pictures: the three daily
+quests are picked at random (finding C27). The streak shows what the preset says (12); until #381 it
+showed one more on every load.
 The `signed-in` tour key is set; pass `--ls '{}'` to see the product tour.
 
 ### Making a variant
