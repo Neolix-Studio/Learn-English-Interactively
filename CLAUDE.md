@@ -185,9 +185,11 @@ When the owner later says "close #NNN", do the same four steps. If he reports a 
 
 Board commands need a token with the `project` scope. `gh auth status` shows which account is active; if it is not `TheNeolix`, prefix the command with `GH_TOKEN=$(gh auth token --user TheNeolix)`.
 
+**Keep board calls cheap.** `gh project item-list` downloads all ~500 cards and costs a large share of GitHub's hourly GraphQL budget (5,000 points, shared by every session); a few dozen calls exhaust it for an hour. Use it once, for step 1's pick. For one issue, use the query below. Run board commands as single plain commands with the ids written out: a `$(…)` substitution or a variable assignment around them is not pre-approved, so an autopilot session gets it refused.
+
 ```bash
-# the board item for an issue
-gh project item-list 1 --owner Neolix-Studio --limit 400 --format json --jq '.items[] | select(.content.number==NNN) | .id'
+# the board item and Status for one issue (cheap)
+gh api graphql -f query='query{repository(owner:"Neolix-Studio",name:"Learn-English-Interactively"){issue(number:NNN){projectItems(first:5){nodes{id fieldValueByName(name:"Status"){... on ProjectV2ItemFieldSingleSelectValue{name}}}}}}}' --jq '.data.repository.issue.projectItems.nodes[] | "\(.id) \(.fieldValueByName.name)"'
 
 # set its Status
 gh project item-edit --project-id PVT_kwDOEaE0CM4BbXar --id <item-id> \
