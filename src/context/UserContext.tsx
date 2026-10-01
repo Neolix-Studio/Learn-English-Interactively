@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api, ApiError, isApiFailure } from '../utils/api';
+import { api, ApiError, csrfHeader, isApiFailure } from '../utils/api';
 import { countLessonDay, settleStreak, STREAK_SHIELD_CAP } from '../utils/streak';
 import { ConnectionError, SaveErrorNotice } from '../components/ConnectionNotice';
 import type { SaveError } from '../components/ConnectionNotice';
@@ -59,6 +59,8 @@ export interface UserContextType {
     buyShield: () => Promise<{success: boolean, message?: string}>;
     updatePreferences: (prefs: any) => Promise<{success: boolean, message?: string}>;
     updateLanguage: (lang: string) => Promise<{success: boolean, message?: string}>;
+    // Sends unsaved progress now and resolves when the server has it (true) or the save failed (false).
+    flushProgress: () => Promise<boolean>;
     isLoading: boolean;
 }
 
@@ -116,6 +118,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const latestDataRef = useRef<UserProgressData>(defaultUserData);
     latestDataRef.current = data;
 
+    // Every signed-in change takes a number; a save carries the number it was sent at (B4b, #384).
+    // changeSeq > savedSeq means the server does not have the latest progress yet.
+    const changeSeqRef = useRef(0);
+    const savedSeqRef = useRef(0);
+    const failedSeqRef = useRef(0);
+    const pendingDataRef = useRef<UserProgressData | null>(null);
+    const inflightRef = useRef<{ seq: number; promise: Promise<boolean> } | null>(null);
+    const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const retryCountRef = useRef(0);
+
     // A reply without a `session` key (a 500, a timeout, a database error) is not "signed out":
     // the query fails and the app waits on ConnectionError instead of falling back to guest.
     const { data: sessionData, isLoading: isSessionLoading, isError: isSessionError, isFetching: isSessionFetching, refetch: refetchSession } = useQuery({
@@ -145,6 +157,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
                 if (res && res.session) {
                     setIsGuest(false);
+                    // Cache the token now: a save sent from pagehide cannot wait for one.
+                    csrfHeader();
                     const serverData = res.session;
 
                     let completed = {};
@@ -423,27 +437,43 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     // lessonCompleted marks the save of a finished lesson, the only thing that raises the streak.
     // A lesson whose save failed keeps its flag until a later save gets through (countLessonDay counts a day once).
-    const saveProgress = (progress: UserProgressData, lessonFlag?: true | 'tutorial') => {
+    // Every save is keepalive, so closing the tab or leaving through window.location.href
+    // does not cancel one already on its way. A save is the whole snapshot, so the newest one wins.
+    const saveProgress = (progress: UserProgressData, lessonFlag?: true | 'tutorial'): Promise<boolean> => {
         const lessonCompleted = lessonFlag ?? pendingLessonRef.current;
-        api.fetch('save_progress', {
+        const seq = changeSeqRef.current;
+        const promise = api.fetch('save_progress', {
             ...(lessonCompleted ? { lesson_completed: lessonCompleted } : {}),
             points: progress.points,
             completed: progress.completed,
             scores: progress.scores,
             quest_progress: progress.quest_progress,
             completed_quests_today: progress.completed_quests_today
-        }).then((res) => {
+        }, { keepalive: true }).then((res) => {
+            if (inflightRef.current?.promise === promise) inflightRef.current = null;
             // api.fetch has already retried a 403 with a fresh token, so a failure here is real.
             if (isApiFailure(res) || !res?.success) {
                 console.error('save_progress failed:', res);
                 if (lessonCompleted) pendingLessonRef.current = lessonCompleted;
-                if (isApiFailure(res) && res.httpStatus === 401) setSaveError('signed_out');
-                else if (isApiFailure(res) && res.offline) setSaveError('offline');
-                else setSaveError('failed');
-                return;
+                // A newer save already got through: this older snapshot does not matter.
+                if (savedSeqRef.current >= seq) return true;
+                failedSeqRef.current = Math.max(failedSeqRef.current, seq);
+                if (isApiFailure(res) && res.httpStatus === 401) {
+                    setSaveError('signed_out');
+                } else {
+                    setSaveError(isApiFailure(res) && res.offline ? 'offline' : 'failed');
+                    scheduleRetry();
+                }
+                return false;
             }
+            savedSeqRef.current = Math.max(savedSeqRef.current, seq);
             pendingLessonRef.current = undefined;
-            setSaveError(null);
+            if (seq >= failedSeqRef.current) {
+                setSaveError(null);
+                retryCountRef.current = 0;
+                if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+                retryTimerRef.current = null;
+            }
             if (typeof res.streak_count === 'number') {
                 setData(prev => ({
                     ...prev,
@@ -456,11 +486,52 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 }));
             }
             window.dispatchEvent(new CustomEvent('lexipawsProgressSaved'));
+            return true;
         });
+        inflightRef.current = { seq, promise };
+        return promise;
+    };
+
+    // Sends what the server does not have yet: the debounced change at once, or the snapshot whose save failed.
+    const flushProgress = (): Promise<boolean> => {
+        if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+        saveTimeoutRef.current = null;
+        const pending = pendingDataRef.current;
+        pendingDataRef.current = null;
+        if (changeSeqRef.current <= savedSeqRef.current) return Promise.resolve(true);
+        const inflight = inflightRef.current;
+        if (inflight && inflight.seq >= changeSeqRef.current) return inflight.promise;
+        return saveProgress(pending ?? latestDataRef.current);
+    };
+    const flushRef = useRef(flushProgress);
+    flushRef.current = flushProgress;
+
+    // A save that failed (a 429 from the throttle, a 500, no answer) is tried again on its own,
+    // spaced out so the retries stay far below save_progress's 45 per minute.
+    const RETRY_DELAYS_MS = [5000, 15000, 30000, 60000];
+    const scheduleRetry = () => {
+        if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+        const delay = RETRY_DELAYS_MS[Math.min(retryCountRef.current, RETRY_DELAYS_MS.length - 1)];
+        retryCountRef.current += 1;
+        retryTimerRef.current = setTimeout(() => {
+            retryTimerRef.current = null;
+            flushRef.current();
+        }, delay);
     };
 
     const retrySave = () => {
-        saveProgress(latestDataRef.current);
+        if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+        retryTimerRef.current = null;
+        flushRef.current();
+    };
+
+    // Closing the notice gives up on the retries; the next change sends the whole snapshot again.
+    const dismissSaveError = () => {
+        if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+        retryTimerRef.current = null;
+        retryCountRef.current = 0;
+        savedSeqRef.current = Math.max(savedSeqRef.current, changeSeqRef.current);
+        setSaveError(null);
     };
 
     useEffect(() => {
@@ -469,10 +540,28 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return () => window.removeEventListener('online', retrySave);
     }, [saveError]);
 
+    // Hiding or leaving the page sends the debounced change now, as a keepalive request (B4b, #384).
+    useEffect(() => {
+        const onHide = () => {
+            if (document.visibilityState === 'hidden') flushRef.current();
+        };
+        const onPageHide = () => { flushRef.current(); };
+        document.addEventListener('visibilitychange', onHide);
+        window.addEventListener('pagehide', onPageHide);
+        return () => {
+            document.removeEventListener('visibilitychange', onHide);
+            window.removeEventListener('pagehide', onPageHide);
+            if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+        };
+    }, []);
+
     // saveNow skips the 1500 ms wait: a finished lesson must not depend on the tab staying open.
     const updateProgress = (newData: Partial<UserProgressData>, saveNow = false, lessonCompleted?: true | 'tutorial') => {
+        if (!isGuest) changeSeqRef.current += 1;
         if (!isGuest && saveNow) {
             if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+            saveTimeoutRef.current = null;
+            pendingDataRef.current = null;
             saveProgress({ ...data, ...newData }, lessonCompleted);
         }
 
@@ -483,7 +572,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 localStorage.setItem("neolix_guest_progress", JSON.stringify(updated));
             } else if (!saveNow) {
                 if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-                saveTimeoutRef.current = setTimeout(() => saveProgress(updated), 1500);
+                pendingDataRef.current = updated;
+                saveTimeoutRef.current = setTimeout(() => {
+                    saveTimeoutRef.current = null;
+                    pendingDataRef.current = null;
+                    saveProgress(updated);
+                }, 1500);
             }
 
             return updated;
@@ -647,6 +741,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             buyShield,
             updatePreferences,
             updateLanguage,
+            flushProgress,
             isLoading
         }}>
             {sessionFailed ? (
@@ -657,7 +752,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     kind={saveError}
                     onRetry={retrySave}
                     onSignIn={() => { window.location.href = `/?login=true&redirect=${encodeURIComponent(window.location.pathname)}`; }}
-                    onDismiss={() => setSaveError(null)}
+                    onDismiss={dismissSaveError}
                 />
             )}
         </UserContext.Provider>

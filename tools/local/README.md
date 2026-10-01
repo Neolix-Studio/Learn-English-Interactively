@@ -142,6 +142,8 @@ node tools/local/testing/check_phonics_items.mjs
 
 `ux-shots/` captures the React app from headless Chrome with mocked backend replies. It needs only
 `npm run dev`; it never starts PHP and no request it makes reaches PHP. See `ux-shots/README.md`.
+The one exception is `ux-shots/unload-save.mjs` (#384), which runs against the local stack's real PHP
+to check that closing the tab, logging out and a refused save lose no progress.
 
 ```
 node tools/local/ux-shots/matrix.mjs --path /dashboard --preset returning-guest   # 5 viewports × light/dark

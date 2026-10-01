@@ -19,7 +19,7 @@ interface SidebarLeftProps {
 }
 
 export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen, onClose, tourLevelModalOpen = false, onTourLevelModalClose, highlightLeaderboardUnlock = false }) => {
-  const { data, activeLevel, setActiveLevel, updateProgress, buyCosmetic } = useUser();
+  const { data, activeLevel, setActiveLevel, updateProgress, buyCosmetic, flushProgress } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -115,6 +115,9 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
   };
 
   const handleLogout = async () => {
+    // Save first: logging out ends the session the save needs. A failed save keeps the learner
+    // signed in with the notice up; closing the notice lets the next click log out (B4b, #384).
+    if (!(await flushProgress())) return;
     try {
       await api.fetch('logout');
     } catch {}

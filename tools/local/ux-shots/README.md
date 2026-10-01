@@ -8,6 +8,8 @@ five viewports, light and dark, Hungarian (and Slovak when asked).
 - `matrix.mjs` runs `shot.mjs` once per viewport and theme for one route.
 - `sound-lesson.mjs` plays a whole sound lesson and checks the grades and the result screen.
 - `contrast.mjs` measures the text contrast of the key screens in light and dark and fails below WCAG AA.
+- `unload-save.mjs` is the exception to the rule below: it runs against the **local stack's real PHP** and
+  checks that closing the tab, logging out and a refused save lose no progress (see the section of that name).
 - `presets.json`, `seeds/`, `mocks/` are the app states: a new guest, a signed-in learner, zero energy…
 
 ## What it touches, and what it never touches
@@ -204,6 +206,25 @@ It exits 1 when a check fails: a compare option that is no longer selected one s
 a match tile left unmatched, an item graded differently from what was tapped, a wrong XP or percentage
 on the result screen, saved points that differ from the XP shown, or a `log_failed_exercise` request
 too many or too few. `--help` lists the flags.
+
+## Leaving the page without losing progress (real PHP)
+
+`unload-save.mjs` (#384) is the one script here that is **not** mocked: every request goes through Vite to
+the local stack, so start that first. It refuses a `--base` that is not on `localhost`.
+
+```bash
+./tools/local/testing/local_stack.sh up      # a fresh database: the scenarios play cons_s_z and cons_p_b level 1
+npm run dev
+node tools/local/ux-shots/unload-save.mjs                   # all four scenarios, about 2.5 minutes
+node tools/local/ux-shots/unload-save.mjs --only close-wait # one of close-lesson, close-wait, logout, throttle
+```
+
+It signs in as the stack's returning learner and checks: the tab closed 300 ms after a lesson's last
+answer keeps the lesson; the tab closed 200 ms after a theme change (which waits 1.5 s to save) keeps the
+theme; a logout 100 ms after a lesson and a change keeps both; and after 46 direct saves use up the
+throttle, the next save's 429 shows the Hungarian notice, is retried on its own until it lands, and opens
+no `alert()`. Exits 1 when a check fails. Run it on a fresh stack (`down`, then `up`): a lesson level
+already done opens at the next level.
 
 ## Contrast check
 

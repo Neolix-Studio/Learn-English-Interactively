@@ -36,7 +36,7 @@ const ACHIEVEMENT_DEF = [
 ];
 
 export const ProfilePage: React.FC = () => {
-  const { data, updateProgress, buyCosmetic, updatePreferences, updateLanguage, isGuest, isLoading } = useUser();
+  const { data, updateProgress, buyCosmetic, updatePreferences, updateLanguage, flushProgress, isGuest, isLoading } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -46,6 +46,8 @@ export const ProfilePage: React.FC = () => {
 
   const handleLogout = async () => {
     if (window.confirm('Are you sure you want to log out?')) {
+      // Save first; a failed save keeps the learner signed in with the notice up (B4b, #384).
+      if (!(await flushProgress())) return;
       await api.fetch('logout');
       clearPersonalStorage();
       window.location.href = '/';

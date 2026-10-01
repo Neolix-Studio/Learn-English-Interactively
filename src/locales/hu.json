@@ -222,7 +222,7 @@
     "connection_body": "Ellenőrizd az internetkapcsolatot, és próbáld újra.",
     "retry": "Újrapróbálom",
     "retrying": "Kapcsolódás…",
-    "save_failed": "Nem sikerült menteni a haladásodat.",
+    "save_failed": "Nem sikerült menteni a haladásodat. Hamarosan magától újra megpróbáljuk.",
     "save_offline": "Nincs kapcsolat, ezért a haladásodat még nem mentettük. Amint visszajön a net, újra megpróbáljuk.",
     "signed_out": "Lejárt a bejelentkezésed, ezért a haladásodat nem tudtuk menteni. Jelentkezz be újra.",
     "sign_in": "Bejelentkezés",

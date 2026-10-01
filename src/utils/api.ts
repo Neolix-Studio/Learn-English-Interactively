@@ -106,8 +106,17 @@ async function send(url: string, options: RequestInit, action: string): Promise<
   return { ...fields, error: message, httpStatus: res.ok ? 502 : res.status } satisfies ApiFailure;
 }
 
+// The browser refuses a keepalive request whose body, with the others in flight, passes 64 KiB.
+const KEEPALIVE_MAX_BODY = 60000;
+
+export interface FetchOptions {
+  // Let the request outlive the page (pagehide, a closed tab, window.location.href). With a cached
+  // CSRF token the request is dispatched before api.fetch first awaits (B4b, #384).
+  keepalive?: boolean;
+}
+
 export const api = {
-  async fetch(action: string, payload: any = null): Promise<any> {
+  async fetch(action: string, payload: any = null, fetchOptions: FetchOptions = {}): Promise<any> {
     let requestAction = action;
     const actionName = action.split('&')[0];
     const isReadOnly = readOnlyActions.has(actionName);
@@ -121,31 +130,31 @@ export const api = {
     const method = payload && !isReadOnly ? 'POST' : 'GET';
     const url = `/api.php?action=${requestAction}`;
 
-    const buildOptions = async (): Promise<RequestInit> => {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-      if (method === 'POST') {
-        Object.assign(headers, await csrfHeader());
-      }
+    const body = method === 'POST' ? JSON.stringify(payload) : undefined;
+    const keepalive = !!fetchOptions.keepalive && (body?.length ?? 0) <= KEEPALIVE_MAX_BODY;
+
+    const buildOptions = (csrf: Record<string, string>): RequestInit => {
       const options: RequestInit = {
         method,
-        headers,
+        headers: { 'Content-Type': 'application/json', ...csrf },
         credentials: 'same-origin',
+        keepalive,
       };
-      if (method === 'POST') {
-        options.body = JSON.stringify(payload);
+      if (body !== undefined) {
+        options.body = body;
       }
       return options;
     };
 
-    let res = await send(url, await buildOptions(), action);
+    // No await when the token is cached, so a keepalive request leaves inside a pagehide handler.
+    const csrf = method !== 'POST' ? {} : csrfToken ? { 'X-CSRF-Token': csrfToken } : await csrfHeader();
+    let res = await send(url, buildOptions(csrf), action);
 
     // The cached token belongs to a session that has since ended or been replaced:
     // fetch a fresh one and try once more.
     if (method === 'POST' && isApiFailure(res) && res.httpStatus === 403) {
       csrfToken = null;
-      res = await send(url, await buildOptions(), action);
+      res = await send(url, buildOptions(await csrfHeader()), action);
     }
 
     if (isApiFailure(res) && res.httpStatus === 401) {
