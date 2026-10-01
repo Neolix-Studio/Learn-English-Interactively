@@ -156,7 +156,7 @@ End every session by telling the owner, in plain words, how to check the result 
 
 - a new file in `data/migrations/` (commit it, **do not push**, and ask for his yes with a link to the `.sql` file; see the hard rules)
 - SQL he has to run by hand (step 9)
-- a check that only he can do: a real phone, a real e-mail inbox, a payment, his own account, or anything the local stack and the screenshot matrix cannot show. "He may want to look at it" is not enough; the "How to check it yourself" steps are for him to use later
+- a check that only he can do: a real phone, a real e-mail inbox, a payment, his own account, or anything the local stack and the screenshot matrix cannot show. "He may want to look at it" is not enough; the "How to check it yourself" steps are for him to use later. **A native-Hungarian check is not a reason to stop** (owner, 2026-10-01): the owner cannot read Hungarian, and one native reader checks everything in the proofreading pass (UX0c-4a #421 → 4b → 4c). Add the changed strings to #421 as "already changed, please confirm" and close the issue
 - a product decision, or an unanswered "Owner input needed" section
 - Verify or Deploy failed and a fix-forward commit did not make both green, or `dev.lexipaws.eu` fails the step 7 checks
 - anything the hard rules say to stop and ask about
