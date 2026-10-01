@@ -1,0 +1,55 @@
+{
+  "home": {
+    "about": "Home as a first-time visitor sees it (app.localhost: the real buttons, not the localhost test panel).",
+    "base": "http://app.localhost:5173",
+    "path": "/"
+  },
+  "login": {
+    "about": "The sign-in dialog over Home.",
+    "base": "http://app.localhost:5173",
+    "path": "/?login=true"
+  },
+  "welcome": {
+    "about": "The first onboarding screen.",
+    "preset": "new-guest",
+    "path": "/welcome/start"
+  },
+  "dashboard": {
+    "about": "The learning path of a signed-in learner.",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "wait": 2500
+  },
+  "lesson": {
+    "about": "A lesson item with an answer picked and ELLENŐRZÉS (Check) lit, then the feedback banner with TOVÁBB (Continue).",
+    "preset": "returning-guest",
+    "path": "/dashboard",
+    "wait": 2500,
+    "steps": [
+      { "click": ".roadmap-node.current", "after": 800 },
+      { "click": ".tooltip-start-btn", "after": 1500 },
+      { "click": ".image-choice-btn, .lesson-option-btn", "after": 500 },
+      { "contrast": "item" },
+      { "click": ".interactive-submit-btn", "after": 900 },
+      { "contrast": "feedback" }
+    ]
+  },
+  "leaderboard": {
+    "about": "The league table of a signed-in learner.",
+    "preset": "signed-in",
+    "path": "/leaderboard",
+    "wait": 2500
+  },
+  "profile": {
+    "about": "The profile of a signed-in learner.",
+    "preset": "signed-in",
+    "path": "/profile",
+    "wait": 2500
+  },
+  "practice": {
+    "about": "The practice hub of a signed-in learner.",
+    "preset": "signed-in",
+    "path": "/practice",
+    "wait": 2500
+  }
+}

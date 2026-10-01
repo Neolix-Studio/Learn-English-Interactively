@@ -7,6 +7,7 @@ five viewports, light and dark, Hungarian (and Slovak when asked).
 - `shot.mjs` takes one screenshot, or walks a list of steps (click, type, scroll…) and takes several.
 - `matrix.mjs` runs `shot.mjs` once per viewport and theme for one route.
 - `sound-lesson.mjs` plays a whole sound lesson and checks the grades and the result screen.
+- `contrast.mjs` measures the text contrast of the key screens in light and dark and fails below WCAG AA.
 - `presets.json`, `seeds/`, `mocks/` are the app states: a new guest, a signed-in learner, zero energy…
 
 ## What it touches, and what it never touches
@@ -202,6 +203,49 @@ a match tile left unmatched, an item graded differently from what was tapped, a 
 on the result screen, saved points that differ from the XP shown, or a `log_failed_exercise` request
 too many or too few. `--help` lists the flags.
 
+## Contrast check
+
+`contrast.mjs` is the contrast gate (UX_REVIEW C48). It opens each screen in `contrast-screens.json`
+(Home, the sign-in dialog, the first welcome screen, the path, a lesson item with ELLENŐRZÉS lit and its
+feedback banner with TOVÁBB, the leaderboard, the profile and practice) at 360×800, in light and in
+dark, and measures every text on screen against what is behind it.
+
+```bash
+node tools/local/ux-shots/contrast.mjs                        # every screen, light and dark
+node tools/local/ux-shots/contrast.mjs --screens lesson       # one screen
+node tools/local/ux-shots/contrast.mjs --list                 # the screens
+```
+
+```
+FAIL  lesson:item 360x800 light: 1 below AA (10 texts checked)
+      2.54:1 < 4.5:1  #FFFFFF on #10B981  16px/800  "Ellenőrzés"  button.btn.btn-primary
+```
+
+Each failing line gives the ratio and the bar it missed, the text and background colours it was
+measured with, the font size and weight, the text, and the element. **It exits 1 when any text is below
+AA**, when a screen could not be measured, or when a scripted click matched nothing (so a broken flow
+cannot pass by measuring the wrong screen); it exits 0 only when every screen passes. A screenshot of
+each measured screen goes to `out/contrast/`; `--json FILE` writes every measurement; `--w`/`--h`,
+`--schemes` and `--jobs` work as on the matrix. On `dev` today it fails: that is the C48 backlog, which
+WP-C1 (UX-1) is meant to bring to zero.
+
+How it measures:
+
+- **AA bars:** 4.5:1, or 3:1 for large text (24 px and up, or 18.66 px and up at weight 700+).
+- **What:** every element with text of its own whose centre is in the viewport and on top there, so the
+  page under a dialog or a lesson is skipped, and so is anything below the fold. To check further down,
+  add a screen with a `{"scroll":…}` step before its `{"contrast":"label"}` step.
+- **Background:** the background colours of the element and its ancestors, blended down to the first
+  opaque one, with the page as white below that. A gradient counts as each of its colour stops and the
+  worst one wins, so text on a gradient is judged on its weakest point.
+- **Not measured, but counted** on each line: text over a `url()` image, gradient-filled text
+  (`-webkit-text-fill-color: transparent`, C49's purple headings) and disabled controls (WCAG exempts
+  them). Opacity on an ancestor is ignored, and non-text contrast (a button's fill against the page,
+  3:1) is not measured.
+
+A single capture can measure too: `shot.mjs --contrast` after the screenshot, or a `{"contrast":"label"}`
+step anywhere in `--steps`, prints one `CONTRAST {…}` line of JSON.
+
 ## Steps
 
 `--steps` takes a JSON array, inline or in a file. Each step waits 250 ms afterwards, or `"after": ms`.
@@ -219,6 +263,7 @@ too many or too few. `--help` lists the flags.
 | `{"eval":"js"}` | run JavaScript in the page and print the result |
 | `{"text":true}` | print the visible text |
 | `{"measureTargets":true}` | print every visible control smaller than 44×44 px |
+| `{"contrast":"label"}` | print a `CONTRAST` line: every on-screen text below WCAG AA |
 
 Other useful flags: `--text` (print the page text), `--console` (print console errors and warnings),
 `--reduced` (reduced motion), `--full` (whole page), `--dpr 2` (sharper images).

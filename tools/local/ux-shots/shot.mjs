@@ -28,6 +28,7 @@
 //   --out-dir DIR       default: the folder of --out, else tools/local/ux-shots/out (git-ignored)
 //   --text              print visible page text (innerText) after load / at end
 //   --console           print console errors/warnings captured during the run
+//   --contrast [LABEL]  after the screenshot, print one CONTRAST line: every on-screen text below WCAG AA (contrast.mjs reads it)
 //   --mock FILE|JSON    mock the PHP backend: {"<action>": <json response>, "__post_default": {...}, "__get_default": {...}}
 //                       Intercepts /api.php?action=..., report_problem.php, submit_feedback.php, upload_avatar.php, logout.php.
 //                       A value may be {"__status": 500, "__body": ...} or {"__delay": ms, "__body": ...};
@@ -42,7 +43,7 @@
 //
 // Steps: {"shot":"name"[,"full":true]} {"click":"css"[,"nth":0]} (first VISIBLE match) {"clickText":"Text"[,"tag":"button"]}
 //        {"tap":[x,y]} {"type":"text"} {"key":"Enter"} {"wait":ms} {"scroll":px} {"scrollTo":"css"} {"eval":"js"}
-//        {"navigate":"/path"} {"viewport":[w,h]} {"scheme":"dark"} {"text":true} {"measureTargets":true}
+//        {"navigate":"/path"} {"viewport":[w,h]} {"scheme":"dark"} {"text":true} {"measureTargets":true} {"contrast":"label"}
 //        Each step waits 250 ms after, or "after": ms.
 //
 // Native alert()/confirm() dialogs are logged as `DIALOG …` and accepted, so they cannot hang a run.
@@ -299,8 +300,119 @@ async function centreOf(expr) {
 const VIS = `const vis = (e) => { const r = e.getBoundingClientRect(); if (r.width === 0 || r.height === 0) return false; let n = e; while (n && n.nodeType === 1) { const s = getComputedStyle(n); if (s.visibility === 'hidden' || s.display === 'none' || parseFloat(s.opacity) === 0) return false; n = n.parentElement; } return true; };`;
 const visibleQS = (sel, nth) => `(() => { ${VIS} const all = Array.from(document.querySelectorAll(${JSON.stringify(sel)})).filter(vis); return all[${nth || 0}] || null; })()`;
 const findByText = (text, tag) => `(() => { ${VIS} const want = ${JSON.stringify(text)}.toLowerCase(); const els = Array.from(document.querySelectorAll(${JSON.stringify(tag || 'button, a, [role=button], div, span, li, label, p, h1, h2, h3')})); let best = null; for (const e of els) { const t = (e.innerText || e.textContent || '').trim().toLowerCase(); if (t && t.includes(want) && vis(e)) { if (!best || (e.innerText||'').length < (best.innerText||'').length) best = e; } } return best; })()`;
+// WCAG text contrast of every element on screen that holds text of its own. Runs inside the page.
+// Foreground: computed color (its alpha composited onto the background). Background: the element's
+// and its ancestors' background-color layers, composited down to the first opaque one; a gradient
+// counts as each of its colour stops and the worst stop wins. Text over a url() image, gradient-filled
+// text (-webkit-text-fill-color: transparent) and disabled controls are not measured but counted.
+// Large text (>= 24 px, or >= 18.66 px at weight 700+) needs 3:1, the rest 4.5:1.
+function contrastProbe() {
+  const parse = (s) => {
+    const m = String(s).match(/rgba?\(([^)]+)\)/);
+    if (!m) return null;
+    const p = m[1].split(/[\s,/]+/).filter(Boolean).map(parseFloat);
+    return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 };
+  };
+  const over = (top, under) => {
+    const a = top.a + under.a * (1 - top.a);
+    if (a === 0) return { r: 0, g: 0, b: 0, a: 0 };
+    const mix = (k) => (top[k] * top.a + under[k] * under.a * (1 - top.a)) / a;
+    return { r: mix('r'), g: mix('g'), b: mix('b'), a };
+  };
+  const lum = (c) => {
+    const ch = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * ch(c.r) + 0.7152 * ch(c.g) + 0.0722 * ch(c.b);
+  };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const hex = (c) => '#' + [c.r, c.g, c.b].map((v) => Math.round(v).toString(16).padStart(2, '0')).join('').toUpperCase();
+  const WHITE = { r: 255, g: 255, b: 255, a: 1 };
+
+  // The possible backgrounds behind el: a list of opaque colours (one per gradient stop), or null for an image.
+  const backgrounds = (el) => {
+    let layers = [[]]; // each candidate is a list of translucent layers, top first
+    for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
+      const s = getComputedStyle(n);
+      const img = s.backgroundImage;
+      if (img && img !== 'none') {
+        if (/url\(/.test(img)) return null;
+        const stops = (img.match(/rgba?\([^)]+\)/g) || []).map(parse).filter(Boolean);
+        if (stops.length) {
+          layers = layers.flatMap((l) => stops.map((st) => [...l, st]));
+          if (stops.every((st) => st.a >= 1)) return layers;
+        }
+      }
+      const bg = parse(s.backgroundColor);
+      if (bg && bg.a > 0) {
+        layers = layers.map((l) => [...l, bg]);
+        if (bg.a >= 1) return layers;
+      }
+    }
+    return layers.map((l) => [...l, WHITE]); // the canvas
+  };
+  const flatten = (l) => l.slice().reverse().reduce((under, top) => over(top, under));
+
+  const disabled = (el) => !!el.closest('[disabled], [aria-disabled="true"]');
+  // On screen and on top: the centre of its box is in the viewport and hit-tests to it (or inside it),
+  // so the page under a dialog or a full-screen lesson is not measured.
+  const visible = (el) => {
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    const x = r.left + r.width / 2, y = r.top + r.height / 2;
+    if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) return false;
+    const hit = document.elementFromPoint(x, y);
+    if (!hit || !(el.contains(hit) || hit.contains(el))) return false;
+    for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
+      const s = getComputedStyle(n);
+      if (s.visibility === 'hidden' || s.display === 'none' || parseFloat(s.opacity) === 0) return false;
+    }
+    return true;
+  };
+  const describe = (el) => el.tagName.toLowerCase() + (typeof el.className === 'string' && el.className.trim() ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : '');
+
+  const failures = new Map();
+  let checked = 0, skippedImage = 0, skippedGradientText = 0, skippedDisabled = 0;
+  for (const el of document.body.querySelectorAll('*')) {
+    if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(el.tagName) || el.closest('svg')) continue;
+    const own = Array.from(el.childNodes).filter((n) => n.nodeType === 3).map((n) => n.textContent).join('').replace(/\s+/g, ' ').trim();
+    if (!own || !/[\p{L}\p{N}]/u.test(own) || !visible(el)) continue;
+    if (disabled(el)) { skippedDisabled++; continue; }
+    const s = getComputedStyle(el);
+    const fill = s.webkitTextFillColor || s.color;
+    const fg = parse(fill);
+    if (!fg || fg.a === 0) { skippedGradientText++; continue; }
+    const bgs = backgrounds(el);
+    if (!bgs) { skippedImage++; continue; }
+    checked++;
+    const size = parseFloat(s.fontSize);
+    const weight = parseInt(s.fontWeight, 10) || 400;
+    const large = size >= 24 || (size >= 18.66 && weight >= 700);
+    const need = large ? 3 : 4.5;
+    let worst = null;
+    for (const l of bgs) {
+      const bg = flatten(l);
+      const text = over(fg, bg);
+      const r = ratio(text, bg);
+      if (!worst || r < worst.ratio) worst = { ratio: r, fg: hex(text), bg: hex(bg) };
+    }
+    if (worst.ratio + 1e-9 >= need) continue;
+    // Rounded as contrast checkers do, but never up to the bar it failed (4.497 prints 4.49, not 4.50).
+    const ratioText = (Math.min(Math.round(worst.ratio * 100), need * 100 - 1) / 100).toFixed(2);
+    const key = [own.slice(0, 40), worst.fg, worst.bg, ratioText].join('|');
+    const seen = failures.get(key);
+    if (seen) { seen.count++; continue; }
+    failures.set(key, { text: own.slice(0, 40), ratio: ratioText, need, fg: worst.fg, bg: worst.bg, fgCss: fill, px: Math.round(size * 10) / 10, weight, el: describe(el), count: 1 });
+  }
+  return { checked, skippedImage, skippedGradientText, skippedDisabled, failures: [...failures.values()].sort((a, b) => a.ratio - b.ratio) };
+}
+
 const textDump = `(() => document.body.innerText.replace(/\\n{3,}/g, '\\n\\n').slice(0, 6000))()`;
 const measureTargets = `(() => { const sel = 'a, button, input, select, textarea, [role=button], [onclick], label[for]'; const out = []; document.querySelectorAll(sel).forEach((e) => { const r = e.getBoundingClientRect(); const s = getComputedStyle(e); if (r.width === 0 || r.height === 0 || s.visibility === 'hidden' || s.display === 'none') return; if (r.bottom < 0 || r.top > innerHeight) return; if (r.width < 44 || r.height < 44) { out.push({ tag: e.tagName.toLowerCase(), cls: (e.className && e.className.baseVal === undefined ? e.className : '').toString().slice(0, 60), text: (e.innerText || e.getAttribute('aria-label') || e.value || '').trim().slice(0, 40), w: Math.round(r.width), h: Math.round(r.height) }); } }); return out; })()`;
+
+// One CONTRAST line of JSON per measurement; contrast.mjs reads them.
+async function printContrast(label) {
+  const res = await evaluate(`(${contrastProbe})()`);
+  console.log('CONTRAST ' + JSON.stringify({ label: label === true ? 'page' : String(label), w: W, h: H, scheme: SCHEME, ...res }));
+}
 
 async function run() {
   await navigate(PATH);
@@ -308,6 +420,7 @@ async function run() {
   if (!steps) {
     const file = args.out || join(OUT_DIR, `${PREFIX}.png`);
     await screenshot(file, !!args.full);
+    if (args.contrast) await printContrast(args.contrast);
     if (args.text) console.log('TEXT>>>\n' + (await evaluate(textDump)) + '\n<<<TEXT');
     return;
   }
@@ -340,6 +453,7 @@ async function run() {
       else if (s.scheme) { SCHEME = s.scheme; await setMedia(); await sleep(300); }
       else if (s.text) console.log(`TEXT ${i}>>>\n` + (await evaluate(textDump)) + '\n<<<TEXT');
       else if (s.measureTargets) console.log(`TARGETS<44 ${i} ` + JSON.stringify(await evaluate(measureTargets)));
+      else if (s.contrast) await printContrast(s.contrast);
       await sleep(s.after || 250);
     } catch (e) {
       console.log(`STEP ${i} ERROR ${e.message}`);

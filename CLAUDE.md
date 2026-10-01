@@ -92,7 +92,7 @@ Depending on what changed:
 
 - **`api.php`, `security.php` or `cron_notifications.php`:** `./tools/local/testing/save_progress_security_test.sh` has to pass every check.
 - **Anything where the server and the UI have to work together:** the local stack, which runs the real PHP on a throwaway database. `./tools/local/testing/local_stack.sh up`, then `npm run dev`, then `http://app.localhost:5173`; `sync` after a PHP edit, `down` when finished. Details: `tools/local/README.md`.
-- **Any UI change:** the screenshot matrix, with `npm run dev` running: `node tools/local/ux-shots/matrix.mjs --path /route --preset <state>`. It gives 320×568, 360×800, 390×844, 768×1024 and 1280×800, each in light and dark; add `--lesson` for lesson screens. **Open and read every PNG**: the tool reports that a file was written, not that the screen is right. Once TOOL-checks (#380) exists, run its contrast check too. Details: `tools/local/ux-shots/README.md`.
+- **Any UI change:** the screenshot matrix, with `npm run dev` running: `node tools/local/ux-shots/matrix.mjs --path /route --preset <state>`. It gives 320×568, 360×800, 390×844, 768×1024 and 1280×800, each in light and dark; add `--lesson` for lesson screens. **Open and read every PNG**: the tool reports that a file was written, not that the screen is right. Run the contrast check too, `node tools/local/ux-shots/contrast.mjs` (add the screen you touched to `contrast-screens.json` if it is missing): it fails on `dev` until WP-C1, so the rule is that your change adds no failing line. Details: `tools/local/ux-shots/README.md`.
 
 Then tick through the issue's "Done when" list and keep the command and its output for each line.
 
