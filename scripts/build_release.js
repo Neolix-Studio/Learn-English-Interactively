@@ -53,7 +53,6 @@ copyFile('security.php');
 copyFile('logout.php');
 copyFile('upload_avatar.php');
 copyFile('report_problem.php');
-copyFile('submit_feedback.php');
 copyFile('cron_notifications.php');
 copyFile('cron_reset_leaderboards.php');
 copyFile('migrate.php');

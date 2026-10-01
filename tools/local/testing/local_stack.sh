@@ -53,7 +53,7 @@ MARKER_NAME=".lexipaws-local-stack"
 # list, so the repo's own database config can never be swept into the sandbox.
 APP_FILES="api.php api/tts.php beta_admin.php cron_notifications.php
 cron_reset_leaderboards.php logout.php mailer.php migrate.php report_problem.php
-security.php submit_feedback.php upload_avatar.php data/quests.json"
+security.php upload_avatar.php data/quests.json"
 
 die() { echo "FATAL: $*" >&2; exit 1; }
 

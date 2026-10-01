@@ -1989,23 +1989,19 @@ function sanitizeFeedbackAnswers(array $answers): array {
 
 function applyFeedbackReward(PDO $pdo, int $userId, string $type): bool {
     if ($type === 'energy_refill') {
-        $stmt = $pdo->prepare("SELECT last_feedback_refill FROM user_metadata WHERE user_id = ?");
-        $stmt->execute([$userId]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($row && $row['last_feedback_refill']) {
-            $lastRefill = new DateTime($row['last_feedback_refill']);
-            $now = new DateTime();
-            if (($now->getTimestamp() - $lastRefill->getTimestamp()) < 3600) {
-                echo json_encode(['success' => false, 'error' => 'Cooldown active. Try again later.']);
-                return false;
-            }
-        }
-
-        $stmt = $pdo->prepare("UPDATE user_metadata SET last_feedback_refill = CURRENT_TIMESTAMP WHERE user_id = ?");
-        $stmt->execute([$userId]);
-        $stmtEnergy = $pdo->prepare("UPDATE user_progress SET energy = 5, last_energy_refill = NOW() WHERE user_id = ?");
+        // One statement checks the one-hour cooldown and stamps it, so two
+        // parallel submits cannot both refill (22_add_last_feedback_refill.sql).
+        $stmtEnergy = $pdo->prepare("
+            UPDATE user_progress
+            SET energy = 5, last_energy_refill = NOW(), last_feedback_refill = NOW()
+            WHERE user_id = ?
+              AND (last_feedback_refill IS NULL OR last_feedback_refill <= NOW() - INTERVAL 1 HOUR)
+        ");
         $stmtEnergy->execute([$userId]);
+        if ($stmtEnergy->rowCount() === 0) {
+            echo json_encode(['success' => false, 'error' => 'Cooldown active. Try again later.']);
+            return false;
+        }
     }
 
     if ($type === 'widget') {
@@ -2256,7 +2252,8 @@ function handleGetFriends(PDO $pdo) {
             SELECT u.id, u.username, u.avatar,
                    IFNULL(up.points, 0) as points,
                    IFNULL(l.name, 'Unranked') as league_name,
-                   l.id as league_id
+                   l.id as league_id,
+                   IFNULL(ul.monthly_xp, 0) as monthly_xp
             FROM user_friends uf
             JOIN users u ON (u.id = uf.friend_id AND uf.user_id = ?) OR (u.id = uf.user_id AND uf.friend_id = ?)
             LEFT JOIN user_progress up ON u.id = up.user_id
@@ -2267,22 +2264,22 @@ function handleGetFriends(PDO $pdo) {
         $stmtAccepted->execute([$userId, $userId]);
         $friends = $stmtAccepted->fetchAll();
 
+        // monthly_xp lives on user_leagues (09_add_monthly_xp.sql), not user_progress.
+        $stmtRank = $pdo->prepare("
+            SELECT COUNT(*) + 1
+            FROM user_leagues
+            WHERE league_id = ? AND monthly_xp > ?
+        ");
         foreach ($friends as &$friend) {
             if ($friend['league_id']) {
-                $stmtRank = $pdo->prepare("
-                    SELECT COUNT(*) + 1 as rank
-                    FROM user_leagues ul2
-                    JOIN user_progress up2 ON ul2.user_id = up2.user_id
-                    WHERE ul2.league_id = ? AND up2.monthly_xp > (
-                        SELECT monthly_xp FROM user_progress WHERE user_id = ?
-                    )
-                ");
-                $stmtRank->execute([$friend['league_id'], $friend['id']]);
-                $friend['rank'] = $stmtRank->fetchColumn();
+                $stmtRank->execute([$friend['league_id'], $friend['monthly_xp']]);
+                $friend['rank'] = (int)$stmtRank->fetchColumn();
             } else {
                 $friend['rank'] = null;
             }
+            unset($friend['monthly_xp']);
         }
+        unset($friend);
 
         $stmtPending = $pdo->prepare("
             SELECT u.id, u.username, u.avatar

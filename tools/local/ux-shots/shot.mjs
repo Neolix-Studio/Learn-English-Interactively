@@ -30,7 +30,7 @@
 //   --console           print console errors/warnings captured during the run
 //   --contrast [LABEL]  after the screenshot, print one CONTRAST line: every on-screen text below WCAG AA (contrast.mjs reads it)
 //   --mock FILE|JSON    mock the PHP backend: {"<action>": <json response>, "__post_default": {...}, "__get_default": {...}}
-//                       Intercepts /api.php?action=..., report_problem.php, submit_feedback.php, upload_avatar.php, logout.php.
+//                       Intercepts /api.php?action=..., report_problem.php, upload_avatar.php, logout.php.
 //                       A value may be {"__status": 500, "__body": ...} or {"__delay": ms, "__body": ...};
 //                       without "__body" the rest of the value is the body, so {"__delay": 4000} on top of
 //                       an inherited reply sends that reply late.
@@ -207,7 +207,7 @@ await send('Runtime.enable');
 await send('Network.enable');
 
 // The PHP backend is never contacted: every request to it is answered here.
-await send('Fetch.enable', { patterns: ['api.php', 'report_problem.php', 'submit_feedback.php', 'upload_avatar.php', 'logout.php']
+await send('Fetch.enable', { patterns: ['api.php', 'report_problem.php', 'upload_avatar.php', 'logout.php']
   .map((f) => ({ urlPattern: `*/${f}*`, requestStage: 'Request' })) });
 listeners.push(async (m) => {
   if (m.method !== 'Fetch.requestPaused') return;

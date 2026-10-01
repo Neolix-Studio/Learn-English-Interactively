@@ -48,6 +48,11 @@
 # at 3 in the shop and in claim_reward, takes over a streak the client kept in
 # the scores JSON, and mails a milestone only for its own count. Group 7 checks
 # that cron_notifications.php no longer writes a streak or a shield.
+#
+# Group 10 holds the B3e checks (#382): get_friends answers with every friend
+# when one of them is in a league, and the energy refill for feedback works on
+# a database built from migrations, once an hour. Against the commit before
+# #382 (--ref 3e0f9e6) all four fail.
 
 set -uo pipefail
 
@@ -776,6 +781,43 @@ post 4 "$LESSON" >/dev/null
 if [ "$(mail_attempts)" = "$((ATTEMPTS + 1))" ] && [ "$(streak3 4)" = "7|0|$D0" ]
 then pass "a real day-7 lesson sends exactly one milestone e-mail, and a second lesson that day none"
 else fail "day-7 lessons: mail attempts $ATTEMPTS -> $(mail_attempts), row [$(streak3 4)]"; fi
+
+# =========================================== 10. friends and feedback refill (B3e)
+echo
+echo "10. get_friends survives a friend in a league; the feedback refill has a cooldown"
+seed
+# user 4 is friends with 1 (Silver, 300 this month) and 2 (no league row);
+# user 3 is not a friend but is ahead of 1 in Silver, so 1 ranks #2.
+"${DB[@]}" -e "INSERT INTO user_leagues (user_id, league_id, weekly_xp, monthly_xp) VALUES (1, 2, 120, 300), (3, 2, 200, 500);
+               INSERT INTO user_friends (user_id, friend_id, status) VALUES (4, 1, 'accepted'), (2, 4, 'accepted')"
+FRIENDS="$(curl -s -b "PHPSESSID=sptestuser4" "$BASE?action=get_friends" \
+  | python3 -c 'import sys,json
+d=json.load(sys.stdin)
+print(" ".join("%s:%s:%s" % (f["id"], f["league_name"], f["rank"]) for f in sorted(d.get("friends", []), key=lambda f: f["id"])) or d.get("error", "?"))')"
+if [ "$FRIENDS" = "1:Silver:2 2:Unranked:None" ]
+then pass "get_friends lists both friends, the one in a league ranked #2 by monthly XP"
+else fail "get_friends gave [$FRIENDS], expected [1:Silver:2 2:Unranked:None]"; fi
+
+"${DB[@]}" -e "UPDATE user_progress SET energy=0 WHERE user_id=2"
+BODY="$(call 2 submit_feedback '{"type":"energy_refill","answers":{"q":"a"}}')"
+ROW="$(col 2 "CONCAT(energy,'|',last_feedback_refill IS NOT NULL)")"
+if [ "$ROW" = "5|1" ] && printf '%s' "$BODY" | grep -q '"success":true'
+then pass "the first feedback refill fills energy to 5 and stamps the time"
+else fail "first refill: row [$ROW], reply $BODY"; fi
+
+"${DB[@]}" -e "UPDATE user_progress SET energy=0 WHERE user_id=2"
+BODY="$(call 2 submit_feedback '{"type":"energy_refill","answers":{"q":"a"}}')"
+ROW="$(col 2 energy)"
+if [ "$ROW" = "0" ] && printf '%s' "$BODY" | grep -q 'Cooldown active'
+then pass "a second refill within the hour is refused with the cooldown error and grants nothing"
+else fail "second refill: energy [$ROW], reply $BODY"; fi
+
+"${DB[@]}" -e "UPDATE user_progress SET last_feedback_refill = NOW() - INTERVAL 61 MINUTE WHERE user_id=2"
+BODY="$(call 2 submit_feedback '{"type":"energy_refill","answers":{"q":"a"}}')"
+ROW="$(col 2 energy)"
+if [ "$ROW" = "5" ] && printf '%s' "$BODY" | grep -q '"success":true'
+then pass "after the hour is over the refill works again"
+else fail "refill after 61 minutes: energy [$ROW], reply $BODY"; fi
 
 # ==================================================================== summary
 echo

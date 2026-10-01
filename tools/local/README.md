@@ -86,6 +86,7 @@ share one database, so there is no safe remote target for write tests.
 | 6 | Every successful save sets `last_active_date` to the learner's day in Europe/Budapest and ignores a date sent by the client (#358). |
 | 7 | The cron leaves legacy, never-stamped and saved-today rows alone, takes one shield per missed day, and keys the inactivity e-mail on activity, not on the last login (#358). |
 | 8 | A `last_active_date` from before the cut-off day is never acted on (#358). |
+| 10 | `get_friends` lists every friend when one is in a league, and the energy refill for feedback works once an hour (#382). |
 
 No SMTP password is configured, so the cron cannot send anything: a mail that
 is due shows up as a `Could not send ... email to ...` line in its output.
