@@ -671,7 +671,7 @@ The notifications job is a command, not a URL visit. It passes `security_require
 
 ## 11. Database
 
-Single MariaDB. Every backend script opens its own PDO connection from `db_config.php` constants. **No ORM, no shared connection helper, and no schema baseline** — the only declared schema is 22 `.sql` files in `data/migrations/`.
+Single MariaDB. Every backend script opens its own PDO connection from `db_config.php` constants. **No ORM, no shared connection helper, and no schema baseline** — the only declared schema is 24 `.sql` files in `data/migrations/` (00–23, two of them `04_`).
 
 The schema is **MariaDB-only** (`ADD COLUMN IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`). It will not apply to stock MySQL.
 
@@ -682,14 +682,14 @@ The schema is **MariaDB-only** (`ADD COLUMN IF NOT EXISTS`, `CREATE INDEX IF NOT
 | `users` | 00, 04, 06, 15, 16, 19 | email/username unique; `marketing_data` + `notification_preferences` JSON; `base_language` |
 | `user_progress` | 00, 01, 02, 07, 11 | **`user_id` is the PK.** 17 columns. `completed`/`scores` are TEXT JSON blobs. |
 | `user_subscriptions` | 00 | `role`, `subscription_tier` |
-| `user_failed_exercises` | **04 and 12 (identical)** | UNIQUE `(user_id, level, exercise_id)`. **No FK.** |
-| `leagues` / `user_leagues` | 05, 09 | Seeded **Bronze/Silver/Gold/Diamond** at 0/500/1500/5000. `user_leagues` has **no FK to users**. |
-| `user_rewards` | 10 | **FK commented out, no index on `user_id`** → `get_pending_rewards` full-scans |
+| `user_failed_exercises` | **04 and 12 (identical)**, 23 | UNIQUE `(user_id, level, exercise_id)`. FK CASCADE since 23 (#385). |
+| `leagues` / `user_leagues` | 05, 09, 23 | Seeded **Bronze/Silver/Gold/Diamond** at 0/500/1500/5000. `user_leagues` FK CASCADE to users since 23 (#385). |
+| `user_rewards` | 10, 23 | FK commented out in 10; index `idx_user_rewards_user_id` and FK CASCADE since 23 (#385) |
 | `user_vocabulary` | 13 | `strength`/`last_reviewed` are SRS scaffolding with zero readers |
 | `user_inventory` | 14 | The real source of theme ownership ✅ |
 | `user_friends` | 17 | PK `(user_id, friend_id)`, both FK CASCADE |
 | `beta_invites` / `beta_access_requests` | 20 | sha256 code hashes, sha256 ip_hash ✅ |
-| `character_progress` | 08 | **Created but never read or written by any PHP.** Dead table. |
+| `character_progress` | 08, 23 | **Created but never read or written by any PHP.** Dead table. FK CASCADE since 23 (#385). |
 | `migration_history` | 03 | Bootstrap |
 
 ### Tables that exist only at runtime
@@ -711,7 +711,7 @@ The schema is **MariaDB-only** (`ADD COLUMN IF NOT EXISTS`, `CREATE INDEX IF NOT
 |---|---|
 | Leaderboard `WHERE league_id ORDER BY weekly_xp DESC` | no `(league_id, weekly_xp)` / `(league_id, monthly_xp)` → index scan + filesort |
 | Friends join | `ON (…) OR (…)` across two columns defeats both indexes; `status` unindexed; per-friend rank query runs in a PHP loop (N+1) |
-| `get_pending_rewards` | `user_rewards` has only a PK → full scan |
+| ~~`get_pending_rewards`~~ | ~~`user_rewards` has only a PK → full scan~~ ✅ Fixed (#385, 2026-10-01): `idx_user_rewards_user_id` (migration 23) |
 | Password reset `WHERE reset_token = ?` | **unindexed full scan of `users`, on an unauthenticated endpoint** |
 | Beta rate limit `WHERE ip_hash = ?` | **unindexed, unauthenticated** |
 
@@ -719,7 +719,14 @@ The last two are cheap DoS amplifiers during an open Beta.
 
 ### No erasure path
 
-`grep "DELETE FROM users"` finds only migration 04. And `user_leagues`, `user_rewards`, `user_failed_exercises` and `character_progress` have **no `ON DELETE CASCADE`**, so a manual delete orphans rows rather than cleaning up. GDPR erasure needs those FKs first.
+`grep "DELETE FROM users"` finds only migration 04: the app has no delete-account action (§5, `ProfilePage.tsx`). ~~And `user_leagues`, `user_rewards`, `user_failed_exercises` and `character_progress` have **no `ON DELETE CASCADE`**, so a manual delete orphans rows rather than cleaning up. GDPR erasure needs those FKs first.~~ ✅ Fixed (#385, 2026-10-01): `23_add_user_cascade_foreign_keys.sql` deletes the rows that already belonged to no user, then adds `ON DELETE CASCADE` FKs from those four tables to `users(id)`. Every table with a user id now cascades, except `beta_invites.used_by_user_id`, which is `ON DELETE SET NULL` (20).
+
+**Operator erasure procedure** (by hand in phpMyAdmin, until the app has a delete-account action):
+
+1. `DELETE FROM users WHERE id = ?;` — this one statement removes the user's rows from `user_progress`, `user_subscriptions`, `user_leagues`, `user_rewards`, `user_failed_exercises`, `user_vocabulary`, `user_inventory`, `user_friends` (both directions) and `character_progress`, and clears `beta_invites.used_by_user_id`.
+2. Not keyed by user id, so not covered by step 1: the e-mail address in `beta_access_requests.email` and `beta_invites.email` (delete or blank those rows by e-mail), and the avatar file in `avatars/` named by `users.avatar` (`upload_avatar.php:95,120`; note the name before step 1).
+
+Proven on the local stack, against a database seeded with orphan rows and from zero: after step 1, `tools/local/testing/erasure_check.sql` lists every table and finds 0 rows naming the erased id.
 
 ---
 
