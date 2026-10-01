@@ -71,9 +71,11 @@ When `BETA_INVITES_ENABLED=true` on staging:
 - Email-bound invites must be used with the matching email address.
 - A successful registration should mark the invite as `used`.
 
-When `BETA_INVITES_ENABLED` is missing or false:
+When `BETA_INVITES_ENABLED` is missing or empty, the rules above apply too: the gate fails closed (#387).
 
-- Backend signup remains open for compatibility.
+When `BETA_INVITES_ENABLED` is `false` (or `0`, `no`, `off`):
+
+- Backend signup is open.
 - QA should still follow the invite-only UI path unless explicitly testing fallback behavior.
 
 ## QA Run Notes

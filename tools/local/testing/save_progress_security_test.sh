@@ -53,6 +53,12 @@
 # when one of them is in a league, and the energy refill for feedback works on
 # a database built from migrations, once an hour. Against the commit before
 # #382 (--ref 3e0f9e6) all four fail.
+#
+# Group 11 holds the E2 checks (#387): an origin outside the Lexipaws list gets
+# no CORS header and its POST is refused, localhost counts only under php -S,
+# and signup without an invite is refused when BETA_INVITES_ENABLED is unset.
+# Against the commit before #387 (--ref 034ee26) five of its seven checks fail;
+# Origin https://lexipaws.hu and the gate switched off pass on both.
 
 set -uo pipefail
 
@@ -140,6 +146,7 @@ FAILURES=0
 
 cleanup() {
   [ -n "${PHP_PID:-}" ] && kill "$PHP_PID" 2>/dev/null
+  [ -n "${GATE_PID:-}" ] && kill "$GATE_PID" 2>/dev/null
   if [ -n "$DB_HOST" ]; then
     # The server is not ours to stop. Drop the one database this run created.
     [ "$DB_CREATED" -eq 1 ] && "${DB_SERVER[@]}" -e "DROP DATABASE IF EXISTS $DB_NAME;" 2>/dev/null
@@ -191,7 +198,12 @@ define('SLACK_WEBHOOK_URL_FEEDBACK', '');
 define('CRON_SECRET', 'test');
 define('MAINTENANCE_TOKEN', 'test');
 define('APP_BASE_URL', 'http://localhost:$PORT');
-define('BETA_INVITES_ENABLED', 'true');
+// Group 11 starts a second server with SPTEST_INVITES set, to try the invite
+// gate unset ('unset' leaves the constant undefined) and switched off.
+\$sptestInvites = getenv('SPTEST_INVITES');
+if (\$sptestInvites !== 'unset') {
+    define('BETA_INVITES_ENABLED', \$sptestInvites === false ? 'true' : \$sptestInvites);
+}
 define('SMTP_HOST', 'localhost');
 define('SMTP_PORT', 465);
 define('SMTP_SECURE', 'ssl');
@@ -818,6 +830,58 @@ ROW="$(col 2 energy)"
 if [ "$ROW" = "5" ] && printf '%s' "$BODY" | grep -q '"success":true'
 then pass "after the hour is over the refill works again"
 else fail "refill after 61 minutes: energy [$ROW], reply $BODY"; fi
+
+# ============================================= 11. CORS allowlist and invite gate (E2)
+echo
+echo "11. only Lexipaws origins get CORS, and an unset invite flag keeps signup shut"
+acao() {  # $1=origin -> the Access-Control-Allow-Origin it gets on csrf_token, or <none>
+  curl -s -D - -o /dev/null -H "Origin: $1" "$BASE?action=csrf_token" \
+    | tr -d '\r' | sed -n 's/^[Aa]ccess-[Cc]ontrol-[Aa]llow-[Oo]rigin: //p' | grep . || echo "<none>"
+}
+GOT="$(acao https://neolix.studio)"
+if [ "$GOT" = "<none>" ]; then pass "Origin https://neolix.studio gets no Access-Control-Allow-Origin"
+else fail "Origin https://neolix.studio got Access-Control-Allow-Origin [$GOT]"; fi
+GOT="$(acao https://lexipaws.hu)"
+if [ "$GOT" = "https://lexipaws.hu" ]; then pass "Origin https://lexipaws.hu is allowed"
+else fail "Origin https://lexipaws.hu got [$GOT]"; fi
+CODE="$(curl -s -o /dev/null -w '%{http_code}' -b "PHPSESSID=sptestuser4" -H "Origin: https://neolix.studio" \
+        -H "Content-Type: application/json" -H "X-CSRF-Token: $(tok 4)" -d '{"points":1000}' "$BASE?action=save_progress")"
+if [ "$CODE" = "403" ]; then pass "a POST from https://neolix.studio is refused (403)"
+else fail "a POST from https://neolix.studio answered HTTP $CODE"; fi
+
+# Outside php -S (here the CLI) the list must hold no localhost origin.
+ORIGINS="$( cd "$SANDBOX/app" && php -r 'require "security.php"; echo implode(" ", security_allowed_origins());' )"
+if [ "$ORIGINS" = "https://dev.lexipaws.eu https://lexipaws.eu https://www.lexipaws.eu https://lexipaws.hu https://lexipaws.sk" ]
+then pass "on a real host the allowlist is the five Lexipaws origins, with no localhost"
+else fail "the allowlist outside php -S is [$ORIGINS]"; fi
+
+GATE_PORT=$((PORT + 1))
+gate_signup() {  # $1=SPTEST_INVITES value  $2=email  -> echoes the reply body
+  SPTEST_INVITES="$1" php -S "localhost:$GATE_PORT" -t "$SANDBOX/app" \
+      -d session.save_path="$SANDBOX/sessions" >>"$SANDBOX/php-gate.log" 2>&1 &
+  GATE_PID=$!
+  disown "$GATE_PID" 2>/dev/null || true
+  for _ in $(seq 1 20); do curl -sf -o /dev/null "http://localhost:$GATE_PORT/api.php?action=csrf_token" && break; sleep 0.5; done
+  curl -s -H "Content-Type: application/json" \
+       -d "{\"email\":\"$2\",\"password\":\"Gate-test1\",\"username\":\"${2%%@*}\"}" \
+       "http://localhost:$GATE_PORT/api.php?action=signup"
+  kill "$GATE_PID" 2>/dev/null; GATE_PID=""
+  for _ in $(seq 1 20); do curl -s -o /dev/null "http://localhost:$GATE_PORT/" || break; sleep 0.25; done
+}
+users_with() { "${DB[@]}" -e "SELECT COUNT(*) FROM users WHERE email='$1'"; }
+invite_refused() { python3 -c 'import sys,json;sys.exit(0 if "meghívó kód szükséges" in json.loads(sys.argv[1]).get("error","") else 1)' "$1" 2>/dev/null; }
+BODY="$(gate_signup unset gateunset@test.local)"
+if [ "$(users_with gateunset@test.local)" = "0" ] && invite_refused "$BODY"
+then pass "BETA_INVITES_ENABLED unset: signup without an invite is refused and no user is created"
+else fail "BETA_INVITES_ENABLED unset: reply $BODY, users $(users_with gateunset@test.local)"; fi
+BODY="$(gate_signup '' gateempty@test.local)"
+if [ "$(users_with gateempty@test.local)" = "0" ] && invite_refused "$BODY"
+then pass "BETA_INVITES_ENABLED empty (a missing GitHub secret): signup without an invite is refused"
+else fail "BETA_INVITES_ENABLED empty: reply $BODY, users $(users_with gateempty@test.local)"; fi
+BODY="$(gate_signup false gateoff@test.local)"
+if [ "$(users_with gateoff@test.local)" = "1" ]
+then pass "BETA_INVITES_ENABLED 'false': the gate opens only when switched off on purpose"
+else fail "BETA_INVITES_ENABLED 'false': reply $BODY, users $(users_with gateoff@test.local)"; fi
 
 # ==================================================================== summary
 echo

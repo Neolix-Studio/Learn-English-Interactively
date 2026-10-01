@@ -60,7 +60,7 @@ Now the four things that matter more than everything else combined:
 
 Two more that are cheap to fix and disproportionately visible:
 
-- **`BETA_INVITES_ENABLED` fails *open*.** `api.php:260-262` returns a pass when the flag is unset, and `write_db_config.js:4-6` turns any missing GitHub secret into `''`. One forgotten secret and public registration is wide open. The client-side gate (`AuthModal.tsx:40`) only hides a tab.
+- ~~**`BETA_INVITES_ENABLED` fails *open*.** `api.php:260-262` returns a pass when the flag is unset, and `write_db_config.js:4-6` turns any missing GitHub secret into `''`. One forgotten secret and public registration is wide open. The client-side gate (`AuthModal.tsx:40`) only hides a tab.~~ ✅ **Fixed (#387, 2026-10-01):** `betaInvitesRequired()` ([api.php:239](api.php:239)) opens signup only for an explicit `0`/`false`/`no`/`off`; unset or empty keeps the gate shut. The client-side gate (`AuthModal.tsx:54`) still only hides a tab.
 - ~~**`npm audit --omit=dev` reports 2 HIGH advisories** — `react-router` / `react-router-dom` 7.12.0–7.18.1 (GHSA-qwww-vcr4-c8h2). `package.json:36` pins `^7.18.1`.~~ ✅ **Fixed 2026-09-24:** Dependabot PRs #266 (react-router and react-router-dom → 7.18.4, `c4c6609`) and #258 (postcss → 8.5.28, `c8c9976`) were merged into `dev` and deployed. `npm audit --omit=dev` reports 0 vulnerabilities and no Dependabot alert is open (re-checked 2026-09-30). There is still no `dependabot.yml`; the PRs come from GitHub's security updates, and `dependabot-automerge.yml` merges the patch and minor ones ([§14](#14-build-deploy-ci-and-tests)).
 
 **Beta readiness in one sentence:** the target date in `docs/BETA_READINESS.md` is 2026-09-01, that is four days from this audit, the last commit was a month ago, and Gates 2 and 7 are self-reported as unaudited and not started. The date is not reachable; see [§20](#20-beta-readiness-honestly) for what a realistic version looks like.
@@ -222,7 +222,7 @@ npm run dev                              # terminal B — http://localhost:5173
 **Traps, all confirmed by reading the code:**
 
 - **On `localhost`, every auth guard is off.** `isLocalDevHost()` (`devEnvironment.ts:1-3`) checks only the hostname string, so guests reach every guarded route (`App.tsx:37`) and `Home.tsx:61` swaps the CTAs for a "Localhost teszt mód" panel. There is no `import.meta.env.DEV` reinforcement — a tunnel or hosts-file alias resolving to `localhost` would open staging the same way.
-- **`http://app.localhost:5173` keeps the guards on, but PHP rejects its POSTs.** That host is not in `$allowed_origins` (`api.php:7-18`) or `security_allowed_origins()` (`security.php:22-35`), so against a plain `php -S` every POST, login included, returns 403 "Invalid request origin." The local stack maps that one origin to `http://localhost:5173` inside its sandbox; production code is unchanged.
+- **`http://app.localhost:5173` keeps the guards on, but PHP rejects its POSTs.** That host is not in `security_allowed_origins()` (`security.php:25-44`, the only list since #387), so against a plain `php -S` every POST, login included, returns 403 "Invalid request origin." The local stack maps that one origin to `http://localhost:5173` inside its sandbox; production code is unchanged.
 - **`/report_problem.php` is not in the proxy list** but `ReportProblemModal.tsx:56` posts to it. Report-a-problem is broken under `npm run dev`. Same gap for `/audio/`. (`/submit_feedback.php` was listed too; it is no longer shipped, #382.)
 - **Curriculum JSON is not fetched at runtime.** `roadmapLoader.ts:25-26` and `storyLoader.ts:17` use `import.meta.glob(…, { eager: true })`. Editing `data/` needs a rebuild/HMR cycle, not a refresh.
 - The `db_config.php` currently on this machine defines only `DB_*` and `SMTP_*`. Every consumer guards with `defined()`, so the app boots — but TTS errors out and password reset throws (`api.php:237`).
@@ -608,7 +608,9 @@ Flat PHP on shared hosting. `api.php` is a single 2,026-line front controller wi
 
 Token in `$_SESSION`, compared with `hash_equals`. Enforced at `api.php:89` **only when a session user exists** and the action isn't exempt. A second layer, `security_validate_same_origin()`, runs on POST only — and **both an absent `Origin` and an absent `Sec-Fetch-Site` pass**.
 
-⚠️ **The CORS allowlist is duplicated in two files that must be edited together** — `api.php:7-26` (used by `api.php`) and `security.php:22-35` (used by `api/tts.php`). Both still include `https://neolix.studio` and four `localhost` origins **in production**, with `Access-Control-Allow-Credentials: true`. Since `csrf_token` is served over GET, script on any of those origins can fetch a token with credentials and drive every authenticated action.
+~~⚠️ **The CORS allowlist is duplicated in two files that must be edited together** — `api.php:7-26` (used by `api.php`) and `security.php:22-35` (used by `api/tts.php`). Both still include `https://neolix.studio` and four `localhost` origins **in production**, with `Access-Control-Allow-Credentials: true`. Since `csrf_token` is served over GET, script on any of those origins can fetch a token with credentials and drive every authenticated action.~~ ✅ **Fixed (#387, 2026-10-01, WP-E2).** There is one list, `security_allowed_origins()` ([security.php:25](security.php:25)): `https://dev.lexipaws.eu`, `https://lexipaws.eu`, `https://www.lexipaws.eu`, `https://lexipaws.hu`, `https://lexipaws.sk`, plus `http://localhost`, `:3000`, `:5173` and `:8080` **only when PHP runs under `php -S`** (`PHP_SAPI === 'cli-server'`: the local stack and the security suite; never the host). `api.php:7-8` sends the CORS headers through `security_send_cors_headers()` ([security.php:46](security.php:46), with `Vary: Origin`) and checks POSTs against the same list; `api/tts.php`, `upload_avatar.php` and `report_problem.php` use it too. `neolix.studio` is gone from every PHP file, including the `APP_BASE_URL` host lists (`api.php:33`, `mailer.php:13`). Group 11 of `save_progress_security_test.sh` checks it. Unchanged: `csrf_token` is still a GET, and an absent `Origin` or `Sec-Fetch-Site` still passes the POST check.
+
+**Signup invite gate.** `lockBetaInviteForSignup()` ([api.php:248](api.php:248)) requires a valid invite unless `betaInvitesRequired()` ([api.php:239](api.php:239)) says otherwise, and that is false only for an explicit `0`/`false`/`no`/`off` in `BETA_INVITES_ENABLED` (environment first, then the `db_config.php` constant). Unset or empty, which is what `write_db_config.js` writes for a missing GitHub secret, keeps the gate shut (#387; it failed open before).
 
 ### Rate limiting is not rate limiting
 
@@ -1088,7 +1090,7 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 | 3 | **Unbounded XP/bones minting** — no rate limit on `save_progress`/`update_progress`; uncapped `max()` merge at signup. ✅ **Part-fixed @ `92b6f18` (WP-B0, PR #263, merged 2026-08-31): `save_progress` is limited to 45 requests / 60 s, keyed on `user_id` ([api.php:1182](api.php:1182)).** Measured on a throwaway database: 60/60 requests accepted before the fix, 45 accepted and 15 throttled after it (re-run against `origin/dev` on 2026-09-24 and 2026-09-30). This slows minting; it does not cap it. **Still open (WP-B2):** `update_progress` has no limit, the signup merge is uncapped, and the counters live in `$_SESSION`. | `api.php:657-707`, [api.php:1182](api.php:1182), [api.php:1243](api.php:1243) |
 | 3b | **One request permanently disarms every anti-cheat clamp.** A `scores` value of `0` → `parseProgressData` stores `json_encode(0)` = the string `"0"` → on every later request `!empty($currentDbProgress['scores'])` is **false** (verified: `empty("0") === true` in PHP), so the entire bones / streak_shields / node_state clamp block is skipped from then on. Next payload writes raw. ⚠️ **Mechanism corrected 2026-08-29 by running the attack against a real database** — a lone `POST {"scores":0}` to `save_progress` is **not** sufficient. If the row already holds non-empty scores the clamp block runs, `json_decode("0", true)` is not an array, and `[]` is stored instead — truthy as `"[]"`, so nothing is disarmed. The poisoning needs the stored `scores` to be **empty at that moment**, which two paths reach: a **fresh account's first `save_progress`** (no `user_progress` row → `$currentDbProgress` is false → block skipped), and **signup**, where [api.php:557](api.php:557) passes `guest_migration.scores` to `json_encode` unguarded — so `{"guest_migration":{"scores":0}}` writes `"0"` in **one unauthenticated request**. The signup path is the cheaper one and was not previously recorded here. `mergeGuestProgressIntoUser` is already `is_array`-guarded at [api.php:607](api.php:607). ✅ **Fixed @ `92b6f18` (WP-B0, PR #263, merged 2026-08-31).** The clamps now run whenever a payload carries `scores`, against the decoded stored row (`clampProgressAgainstStored()`, [api.php:1077](api.php:1077)), so an already-poisoned `"0"` row is re-clamped on its next save. `encodeScores()` ([api.php:973](api.php:973)) turns any non-array `scores` into `{}` on both write paths — `save_progress` ([api.php:1011](api.php:1011)) and signup ([api.php:558](api.php:558)) — so the falsy value can no longer be stored. `tools/local/testing/save_progress_security_test.sh --ref origin/dev` passes all 8 checks (2026-09-24 and 2026-09-30). The description above is the bug as it was; its line numbers are from before the fix. | [api.php:1077](api.php:1077), [api.php:973](api.php:973), [api.php:558](api.php:558) |
 | 3c | ~~**`last_active_date` is never set to `CURDATE()` by anything.** The only writers are `cron_notifications.php:69` (sets it to *yesterday*) and `save_progress` (null). So any row that once matches `cron_notifications.php`'s at-risk query can never stop matching. Currently harmless only because every autosave nulls the column — meaning **the save_progress bug is suppressing a worse bug.** Fixing one without the other destroys legacy users' shields and streaks.~~ ✅ **Fixed (#358, 2026-09-30).** Every successful `save_progress` sets `last_active_date` to the learner's day ([api.php:1207](api.php:1207); `lexipaws_activity_date()`, [security.php:136](security.php:136), Europe/Budapest). The cron acts only on a row last active exactly two days ago, and never on a NULL date, an older date or a date before 2026-10-01. Details in [§10](#10-backend-api). ⚠️ **Corrected the same day: "currently harmless" was wrong.** It held only for rows the React app saves. The old app's rows kept a real `streak_count` and `last_active_date` (its client sent both on every save, `origin/main:js/dashboard.js:1180-1182`), no React autosave ever touched them, and the panel cron has run this file every night from the dev folder. The old query therefore matched those rows all along and could take their shields and then their streaks. What it actually did is recorded only in the database: `tools/local/maintenance/sql/358_what_the_old_streak_cron_did.sql` is a read-only query for the owner. | [cron_notifications.php:75-137](cron_notifications.php:75) |
-| 4 | **`BETA_INVITES_ENABLED` fails open** — one missing secret opens public registration | `api.php:260-262`, `write_db_config.js:4-6` |
+| 4 | ~~**`BETA_INVITES_ENABLED` fails open** — one missing secret opens public registration~~ ✅ **Fixed (#387, 2026-10-01):** only an explicit `0`/`false`/`no`/`off` opens signup; unset or empty keeps it invite-only. Group 11 of `save_progress_security_test.sh` | [api.php:239-250](api.php:239) |
 | 5 | **One unsolvable exercise blocks Module 2** (uncommitted working-tree edit) | `data/hu/A1/Module_2…/node3_family_ties.json` |
 | 6 | ~~**Friends is broken for anyone with a league friend** — wrong table for `monthly_xp`~~ ✅ **Fixed (#382, 2026-10-01):** the rank reads `user_leagues.monthly_xp`; group 10 of `save_progress_security_test.sh` | [api.php:2267](api.php:2267) |
 | 7 | ~~**`user_metadata` table does not exist** — the energy-refill-for-feedback loop always throws~~ ✅ **Fixed (#382, 2026-10-01):** `last_feedback_refill` moved to `user_progress` (`22_add_last_feedback_refill.sql`); one refill per hour, checked in group 10 of `save_progress_security_test.sh` | [api.php:1990](api.php:1990) |
@@ -1113,7 +1115,7 @@ Ranked by (user impact × likelihood a Beta tester hits it) ÷ fix cost.
 22. **34 image-choice exercises label their own answer.**
 23. **Weak-word rows are never cleared** — the practice loop has no exit condition.
 24. **`sync_sonar_issues.js` floods the issue tracker daily.**
-25. **CORS allowlist includes `neolix.studio` + four localhost origins in production**, with credentials.
+25. ~~**CORS allowlist includes `neolix.studio` + four localhost origins in production**, with credentials.~~ ✅ **Fixed (#387, 2026-10-01):** one list in `security.php`, the five Lexipaws origins, localhost only under `php -S` ([§10](#10-backend-api)).
 26. **Session-based "rate limiting"** is bypassed by dropping a cookie.
 27. **`beta_admin.php` has no brute-force protection** and is not in the `.htaccess` deny list.
 28. **No rollback, and a health check that cannot detect a dead database.**
@@ -1264,7 +1266,7 @@ Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a bl
 | **2. Core loop works** | not fully audited | ❌ **Now audited: it does not.** Progress persistence loses 11 columns per save; streak/energy/themes/quests are all broken by it. |
 | **3. Audio reliable** | partially hardened | ❌ 30 syntheses/IP/hour vs. aggressive preloading. 100% of phonics is TTS with `audioUrl: null` everywhere. No key is exposed to the frontend ✅, but the proxy has no session check. |
 | **4. Data & curriculum safe** | mostly in place | ⚠️ JSON validation is theatre (1 of 144 files). One unsolvable exercise. Slovak is untranslated. |
-| **5. Security baseline** | in progress | ❌ Rate limiting is session-backed and bypassable. Unbounded currency minting. Invite gate fails open. CORS allows localhost + `neolix.studio` in prod. ⏳ ~500 bot accounts with a public password: the script is defused, the purge waits for the owner's SQL run (§16 P0 #12b, #386). |
+| **5. Security baseline** | in progress | ❌ Rate limiting is session-backed and bypassable. Unbounded currency minting. ✅ Invite gate fails closed and CORS allows only the Lexipaws origins (#387, 2026-10-01). ⏳ ~500 bot accounts with a public password: the script is defused, the purge waits for the owner's SQL run (§16 P0 #12b, #386). |
 | **6. Feedback works** | needs QA | ~~The energy-refill loop throws (`user_metadata` missing).~~ ✅ Fixed (#382, 2026-10-01). ❌ Contact form discards silently. `report_problem.php` is unauthenticated. |
 | **7. Production release** | not started | ❌ No rollback, no approval gate, no version stamp, no known-limitations doc. |
 
@@ -1279,7 +1281,7 @@ Covered in [§15](#15-the-critical-trace-node-click--xp-in-mysql). Summary: a bl
 **In either case, three things should happen this week regardless:**
 
 1. **Verify `https://lexipaws.eu/` renders in a browser.** Highest value, five minutes, and staging cannot tell you.
-2. **Confirm `BETA_INVITES_ENABLED` is actually `true` in the production GitHub secret.** If it is not, registration is already open.
+2. **Confirm `BETA_INVITES_ENABLED` is actually `true` in the production GitHub secret.** If it is not, registration is already open. *(Since #387, 2026-10-01: an unset or empty secret keeps signup invite-only; only `false`, `0`, `no` or `off` opens it. Confirm it is not one of those.)*
 3. **Rotate `MIGRATION_TOKEN` and the SMTP password**, and delete `db_config_prod.php`.
 
 ### Full-release readiness (beyond Beta)
@@ -1409,8 +1411,9 @@ sed -n '366,372p' src/context/UserContext.tsx
 #    that column is overwritten with its new-row default on every save again. `last_active_date` must stay
 #    in the list: see check 2b. Second command: expect parseProgressData to read those five request keys
 #    and then `+ newProgressRowDefaults()`; an `$data['level']` or similar here reopens WP-B1b.
-sed -n '1213,1222p' api.php
-sed -n '1007,1015p' api.php
+#    (Lines re-checked 2026-10-01 for #387, which moved api.php up by 18 lines.)
+sed -n '1288,1297p' api.php
+sed -n '999,1007p' api.php
 
 # 2b. Does every save still set the activity day, and does the cron still leave stale rows alone?
 #    (expect: the function in security.php, one call in api.php, a comment and three calls in
@@ -1432,8 +1435,11 @@ node tools/local/ux-shots/sound-lesson.mjs --id cons_s_z --wrong 1,4
 grep -n 'gateway' .htaccess
 find . -name gateway.html -not -path './node_modules/*'
 
-# 5. Does the invite gate still fail open? (expect: `return ['id' => null, 'error' => null];`)
-sed -n '260,263p' api.php
+# 5. Does the invite gate still fail closed? (FIXED by #387, 2026-10-01: expect `function betaInvitesRequired()`,
+#    `return !in_array($value, ['0', 'false', 'no', 'off'], true);`, and `if (!betaInvitesRequired()) {`.
+#    An `in_array` without the `!`, or a list of '1'/'true'/'yes'/'on', means it fails open again.
+#    Group 11 of save_progress_security_test.sh proves it over HTTP.)
+grep -n 'betaInvitesRequired\|0., .false., .no., .off' api.php
 
 # 6. Dependency advisories (expect: "found 0 vulnerabilities" since #266 and #258 merged on 2026-09-24)
 npm audit --omit=dev
@@ -1507,6 +1513,6 @@ Several findings from the first pass were wrong or overstated and were corrected
 - `LessonPlayer` does **not** throw its computed accuracy away — `PostLesson` consumes it. It is discarded at the `completeLesson` boundary. *(No longer discarded since #371.)*
 - The reduced-motion block loses **only** its `animation-duration` declaration; the other five apply. The conclusion (animations run at full duration) still holds.
 - `PrivacyPolicy.tsx:101-106` **does** name the Slovak DPA. The real defect is the undisclosed processor list.
-- "A forgotten GitHub secret fails closed" is true for the cron/migrate token gate and **false** for `BETA_INVITES_ENABLED`, which fails open.
-- The CORS allowlist lives in **two** files (`api.php:7-26` and `security.php:22-35`) that must be edited together.
+- "A forgotten GitHub secret fails closed" is true for the cron/migrate token gate and **false** for `BETA_INVITES_ENABLED`, which fails open. *(Since #387, 2026-10-01, `BETA_INVITES_ENABLED` fails closed too.)*
+- The CORS allowlist lives in **two** files (`api.php:7-26` and `security.php:22-35`) that must be edited together. *(Since #387 it lives in `security.php` only.)*
 - CSS corpus is **9,297** lines across 13 files.

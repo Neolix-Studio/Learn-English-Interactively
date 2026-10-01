@@ -19,19 +19,41 @@ function security_start_session(): void {
     ]);
 }
 
+// The one origin allowlist, for api.php, api/tts.php, upload_avatar.php and
+// report_problem.php. Localhost origins count only when PHP itself runs under
+// `php -S` (the local stack and the security test), never on the host.
 function security_allowed_origins(): array {
-    return [
+    $origins = [
         'https://dev.lexipaws.eu',
         'https://lexipaws.eu',
         'https://www.lexipaws.eu',
         'https://lexipaws.hu',
-        'https://lexipaws.sk',
-        'https://neolix.studio',
-        'http://localhost',
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'http://localhost:8080'
+        'https://lexipaws.sk'
     ];
+
+    if (PHP_SAPI === 'cli-server') {
+        array_push($origins,
+            'http://localhost',
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'http://localhost:8080'
+        );
+    }
+
+    return $origins;
+}
+
+function security_send_cors_headers(): void {
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+    if ($origin === '' || !in_array($origin, security_allowed_origins(), true)) {
+        return;
+    }
+
+    header('Access-Control-Allow-Origin: ' . $origin);
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token');
+    header('Vary: Origin');
 }
 
 function security_get_csrf_token(): string {

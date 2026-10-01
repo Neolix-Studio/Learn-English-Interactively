@@ -4,28 +4,8 @@ ini_set('session.cookie_lifetime', 60 * 60 * 24 * 30);
 ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
 security_start_session();
 
-$allowed_origins = [
-    'https://dev.lexipaws.eu',
-    'https://lexipaws.eu',
-    'https://www.lexipaws.eu',
-    'https://lexipaws.hu',
-    'https://lexipaws.sk',
-    'https://neolix.studio',
-    'http://localhost',
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://localhost:8080'
-];
-
-$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
-if (in_array($origin, $allowed_origins)) {
-    header('Access-Control-Allow-Origin: ' . $origin);
-    header('Access-Control-Allow-Credentials: true');
-    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token');
-}
-
-security_validate_same_origin($allowed_origins);
+security_send_cors_headers();
+security_validate_same_origin(security_allowed_origins());
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -50,7 +30,7 @@ define('RATE_LIMIT_ERR_MSG', 'Túl sok kérés. Kérjük, próbáld újra késő
 define('PASSWORD_ERR_MSG', 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.');
 define('STREAK_SHIELD_CAP', 3);
 define('STREAK_SCORE_KEYS', ['streak_count', 'streak_shields', 'streak_date']);
-define('APP_ALLOWED_HOSTS',['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'neolix.studio', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
+define('APP_ALLOWED_HOSTS',['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
 
 try {
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
@@ -254,9 +234,11 @@ function hashPasswordResetToken(string $token): string {
     return hash('sha256', $token);
 }
 
-function isConfigEnabled(string $name): bool {
-    $value = strtolower(trim(getOptionalConfigValue($name)));
-    return in_array($value, ['1', 'true', 'yes', 'on'], true);
+// Fails closed: only an explicit "off" value opens registration, so an unset
+// or empty BETA_INVITES_ENABLED secret keeps the invite gate shut.
+function betaInvitesRequired(): bool {
+    $value = strtolower(trim(getOptionalConfigValue('BETA_INVITES_ENABLED')));
+    return !in_array($value, ['0', 'false', 'no', 'off'], true);
 }
 
 function normalizeBetaInviteCode(string $code): string {
@@ -264,7 +246,7 @@ function normalizeBetaInviteCode(string $code): string {
 }
 
 function lockBetaInviteForSignup(PDO $pdo, string $inviteCode, string $email): array {
-    if (!isConfigEnabled('BETA_INVITES_ENABLED')) {
+    if (!betaInvitesRequired()) {
         return ['id' => null, 'error' => null];
     }
 

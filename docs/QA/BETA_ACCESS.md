@@ -4,9 +4,9 @@ Beta invites are feature-flagged with `BETA_INVITES_ENABLED`.
 
 ## Default behavior
 
-If `BETA_INVITES_ENABLED` is empty, missing, or set to `false`, signup remains open.
+The gate fails closed (#387): signup requires a valid beta invite code unless `BETA_INVITES_ENABLED` is set to `false`, `0`, `no`, or `off`.
 
-If `BETA_INVITES_ENABLED` is set to `true`, `1`, `yes`, or `on`, signup requires a valid beta invite code.
+So an empty or missing value, `true`, or any other value keeps signup invite-only. Set it to `false` only to open public registration on purpose.
 
 ## Creating an invite
 
