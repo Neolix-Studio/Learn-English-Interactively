@@ -241,6 +241,7 @@
     "merge_lessons": "{{amount}} teljesített lecke",
     "merge_note": "Ahol a fiókodban már több van, az marad. Ezt később nem lehet visszavonni.",
     "merge_accept": "Igen, hozzáadom",
-    "merge_decline": "Nem, kihagyom"
+    "merge_decline": "Nem, kihagyom",
+    "password_rule": "A jelszó {{min}}–{{max}} karakter hosszú legyen."
   }
 }

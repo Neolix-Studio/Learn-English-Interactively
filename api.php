@@ -25,9 +25,11 @@ if (!file_exists(__DIR__ . '/db_config.php')) {
 require_once __DIR__ . '/db_config.php';
 require_once __DIR__ . '/mailer.php';
 
-define('PASSWORD_REGEX', '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/');
+// Length only, so passphrases and password-manager secrets pass (WP-E4). Keep in step with src/utils/passwordPolicy.ts.
+define('PASSWORD_MIN_LENGTH', 8);
+define('PASSWORD_MAX_LENGTH', 128);
 define('RATE_LIMIT_ERR_MSG', 'Túl sok kérés. Kérjük, próbáld újra később.');
-define('PASSWORD_ERR_MSG', 'A jelszónak 8-16 karakter hosszúnak kell lennie, és tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.');
+define('PASSWORD_ERR_MSG', 'A jelszó 8–128 karakter hosszú legyen.');
 define('STREAK_SHIELD_CAP', 3);
 define('STREAK_SCORE_KEYS', ['streak_count', 'streak_shields', 'streak_date']);
 define('APP_ALLOWED_HOSTS',['dev.lexipaws.eu', 'lexipaws.eu', 'www.lexipaws.eu', 'lexipaws.hu', 'lexipaws.sk', 'localhost', 'localhost:3000', 'localhost:5173', 'localhost:8080']);
@@ -473,6 +475,14 @@ function handleRequestBetaAccess(PDO $pdo, array $data): void {
     }
 }
 
+function isAcceptablePassword($password): bool {
+    if (!is_string($password)) {
+        return false;
+    }
+    $length = mb_strlen($password, 'UTF-8');
+    return $length >= PASSWORD_MIN_LENGTH && $length <= PASSWORD_MAX_LENGTH;
+}
+
 function validateSignupData(PDO $pdo, string $email, string $password, string $username) {
     if (empty($email) || empty($password) || empty($username)) {
         return 'Minden mező kitöltése kötelező (felhasználónév, e-mail, jelszó)!';
@@ -486,7 +496,7 @@ function validateSignupData(PDO $pdo, string $email, string $password, string $u
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return 'Érvénytelen e-mail cím formátum!';
     }
-    if (!preg_match(PASSWORD_REGEX, $password)) {
+    if (!isAcceptablePassword($password)) {
         return PASSWORD_ERR_MSG;
     }
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
@@ -1401,7 +1411,7 @@ function handleUpdatePassword(PDO $pdo, array $data) {
         return;
     }
 
-    if (!preg_match(PASSWORD_REGEX, $newPassword)) {
+    if (!isAcceptablePassword($newPassword)) {
         echo json_encode(['error' => PASSWORD_ERR_MSG]);
         return;
     }
@@ -1494,7 +1504,7 @@ function handleResetPassword(PDO $pdo, array $data) {
         return;
     }
 
-    if (empty($newPassword) || !preg_match(PASSWORD_REGEX, $newPassword)) {
+    if (!isAcceptablePassword($newPassword)) {
         echo json_encode(['error' => PASSWORD_ERR_MSG]);
         return;
     }

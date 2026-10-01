@@ -9,6 +9,11 @@
     "base": "http://app.localhost:5173",
     "path": "/?login=true"
   },
+  "register": {
+    "about": "The sign-up dialog an invite link opens, with the password rule under the password (#388).",
+    "base": "http://app.localhost:5173",
+    "path": "/?invite=LOCAL-STACK-INVITE"
+  },
   "welcome": {
     "about": "The first onboarding screen.",
     "preset": "new-guest",

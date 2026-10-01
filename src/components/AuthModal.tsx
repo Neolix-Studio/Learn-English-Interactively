@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../utils/api';
 import { clearGuestMigrationStorage, readGuestMigrationPayload, summarizeGuestProgress } from '../utils/guestProgress';
 import type { GuestProgressSummary } from '../utils/guestProgress';
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, isAcceptablePassword } from '../utils/passwordPolicy';
+import { safeRedirectPath } from '../utils/safeRedirect';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -77,12 +79,20 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
   const [guestSummary, setGuestSummary] = useState<GuestProgressSummary | null>(null);
   const [mergeGuest, setMergeGuest] = useState<boolean | null>(null);
 
+  const passwordRule = t('auth.password_rule', { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH });
+
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (tab === 'register' && !canRegister) {
       setError('A béta regisztráció meghívóhoz kötött. Kérjük, kérj béta hozzáférést a főoldalon.');
+      return;
+    }
+
+    // Login takes any password, so accounts made under the old rule still get in.
+    if (tab === 'register' && !isAcceptablePassword(password)) {
+      setError(passwordRule);
       return;
     }
 
@@ -152,8 +162,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                 clearGuestMigrationStorage();
             }
             const searchParams = new URLSearchParams(window.location.search);
-            const redirectUrl = searchParams.get('redirect') || '/dashboard';
-            window.location.href = redirectUrl;
+            window.location.href = safeRedirectPath(searchParams.get('redirect'));
         }
       } else {
         const data = await api.fetch('login', { email, password, ...migrationField });
@@ -171,8 +180,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                 clearGuestMigrationStorage();
             }
             const searchParams = new URLSearchParams(window.location.search);
-            const redirectUrl = searchParams.get('redirect') || '/dashboard';
-            window.location.href = redirectUrl;
+            window.location.href = safeRedirectPath(searchParams.get('redirect'));
         }
       }
     } catch (err) {
@@ -209,8 +217,8 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
       setError('A két jelszó nem egyezik meg.');
       return;
     }
-    if (newPassword.length < 8) {
-      setError('A jelszónak legalább 8 karakter hosszúnak kell lennie.');
+    if (!isAcceptablePassword(newPassword)) {
+      setError(passwordRule);
       return;
     }
     setLoading(true);
@@ -333,7 +341,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '2.5rem' }}>🔐</div>
             <h2 style={{ margin: '0.5rem 0 0.25rem', color: 'var(--color-text-main)' }}>Új jelszó megadása</h2>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>A jelszónak legalább 8 karakterből kell állnia.</p>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>{passwordRule}</p>
           </div>
           {error && (
             <div style={{ padding: '0.8rem', marginBottom: '1rem', background: 'oklch(0.65 0.2 25 / 0.1)', color: 'var(--color-error)', borderRadius: '8px', fontSize: '0.9rem', textAlign: 'center' }}>
@@ -462,6 +470,11 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
               )}
             </div>
             <input type="password" id="auth-password" placeholder="••••••••" required autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} style={inputStyle} />
+            {tab === 'register' && (
+              <p id="auth-password-rule" style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.78rem', lineHeight: 1.35 }}>
+                {passwordRule}
+              </p>
+            )}
           </div>
 
           <button type="submit" disabled={loading} className="btn btn-submit-auth" style={{ ...btnPrimaryStyle, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
