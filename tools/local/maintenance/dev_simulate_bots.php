@@ -7,6 +7,16 @@ set_time_limit(900);
 require_once $projectRoot . '/db_config.php';
 security_require_cli_or_token();
 
+// Bots belong on a local, throwaway database only (E0b, #386). The repo's own
+// db_config.php points at the live database, which dev and production share.
+// The local stack's DB_HOST is 'localhost;unix_socket=…', so compare the part
+// before the first ';'.
+$dbHost = strtolower(trim(explode(';', DB_HOST)[0]));
+if (!in_array($dbHost, ['localhost', '127.0.0.1', '::1'], true)) {
+    echo "Refusing to run: DB_HOST is not a local database.\n";
+    exit(1);
+}
+
 try {
     $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASS);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -32,7 +42,8 @@ try {
         $botsToGenerate = $botsToCreate - $existingBots;
         $output .= "<p>Generating $botsToGenerate new bots...</p>";
 
-        $passwordHash = password_hash("botpassword", PASSWORD_DEFAULT);
+        // A random password nobody knows: a bot is never meant to be logged into.
+        $passwordHash = password_hash(bin2hex(random_bytes(24)), PASSWORD_DEFAULT);
 
         $adjectives = ['Cool', 'Happy', 'Fast', 'Smart', 'Lucky', 'Brave', 'Clever', 'Super', 'Epic', 'Ninja', 'Pro', 'Sleepy', 'Fierce', 'Mighty', 'Swift', 'Wild'];
         $nouns = ['Panda', 'Tiger', 'Bear', 'Wolf', 'Fox', 'Eagle', 'Lion', 'Gamer', 'Student', 'Learner', 'Hero', 'Dragon', 'Shark', 'Hawk', 'Rhino'];

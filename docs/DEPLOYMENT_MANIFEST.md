@@ -58,7 +58,6 @@ These should never be uploaded to Websupport web roots.
 | `tools/local/maintenance/nuke_and_rebuild_db.php` | Destructive maintenance script. |
 | `tools/local/maintenance/fix_db.php` | Maintenance script. |
 | `tools/local/maintenance/dev_simulate_bots.php` | Local/dev script. |
-| `tools/local/maintenance/rename_bots.php` | Local/dev script. |
 | `tools/local/email/generate_preview.php`, `tools/local/email/generate_welcome_preview.php` | Local preview utilities. |
 | `email_preview.html`, `email_preview_welcome.html` | Generated preview output. |
 | `tools/local/assets/` | Local utility/test scripts. |
