@@ -442,7 +442,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Szia, almalé kávé nélkül, kérek.",
+                    "hu": "Szia, almalét kávé nélkül kérek.",
                     "correctAnswer": "Hello, apple juice without coffee, please.",
                     "scrambledWords": [
                         "Hello,",
@@ -469,7 +469,7 @@
                 },
                 {
                     "type": "fill_blanks",
-                    "hu": "Tejet és vizet, kérek.",
+                    "hu": "Tejet és vizet kérek.",
                     "sentence": "Milk and ____, please.",
                     "answer": "water",
                     "options": [
@@ -482,7 +482,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Szia, citromot és vizet, kérek.",
+                    "hu": "Szia, citromot és vizet kérek.",
                     "correctAnswer": "Hello, lemon and water, please.",
                     "scrambledWords": [
                         "Hello,",
@@ -518,7 +518,7 @@
             "items": [
                 {
                     "type": "word_order",
-                    "hu": "Kávét és tejet, kérek.",
+                    "hu": "Kávét és tejet kérek.",
                     "correctAnswer": "Coffee and milk, please.",
                     "scrambledWords": [
                         "Coffee",
@@ -573,7 +573,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Igen, narancslét és citromot, kérek.",
+                    "hu": "Igen, narancslét és citromot kérek.",
                     "correctAnswer": "Yes, orange juice and lemon please.",
                     "scrambledWords": [
                         "Yes,",
@@ -600,7 +600,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Szia, almalét és kávét, kérek.",
+                    "hu": "Szia, almalét és kávét kérek.",
                     "correctAnswer": "Hello, apple juice and coffee, please.",
                     "scrambledWords": [
                         "Hello,",
@@ -614,7 +614,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Narancslét és almalét kávéval, kérek, köszönöm.",
+                    "hu": "Narancslét és almalét kávéval kérek, köszönöm.",
                     "correctAnswer": "Orange juice and apple juice with coffee please, thanks.",
                     "scrambledWords": [
                         "Orange juice",
@@ -643,7 +643,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Citromot és vizet, kérek, köszönöm.",
+                    "hu": "Citromot és vizet kérek, köszönöm.",
                     "correctAnswer": "Lemon and water please, thanks.",
                     "scrambledWords": [
                         "Lemon",

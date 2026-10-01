@@ -332,7 +332,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Igen, vizet kérem.",
+                    "hu": "Igen, vizet kérek.",
                     "correctAnswer": "Yes, water please.",
                     "scrambledWords": [
                         "Yes,",
@@ -432,7 +432,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Szia, vizet és kávét, kérek.",
+                    "hu": "Szia, vizet és kávét kérek.",
                     "correctAnswer": "Hello, water and coffee, please.",
                     "scrambledWords": [
                         "Hello,",
@@ -457,7 +457,7 @@
                 },
                 {
                     "type": "fill_blanks",
-                    "hu": "Tejet és vizet, kérek.",
+                    "hu": "Tejet és vizet kérek.",
                     "sentence": "Milk and ____, please.",
                     "answer": "water",
                     "options": [
@@ -470,7 +470,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Szia, teát és tejet, kérek.",
+                    "hu": "Szia, teát és tejet kérek.",
                     "correctAnswer": "Hello, tea and milk, please.",
                     "scrambledWords": [
                         "Hello,",
@@ -504,7 +504,7 @@
             "items": [
                 {
                     "type": "word_order",
-                    "hu": "Kávét és tejet, kérek.",
+                    "hu": "Kávét és tejet kérek.",
                     "correctAnswer": "Coffee and milk, please.",
                     "scrambledWords": [
                         "Coffee",
@@ -530,7 +530,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Szia, tejet és vizet, kérek.",
+                    "hu": "Szia, tejet és vizet kérek.",
                     "correctAnswer": "Hello, milk and water, please.",
                     "scrambledWords": [
                         "Hello,",
@@ -557,7 +557,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Igen, teát és kávét, kérek.",
+                    "hu": "Igen, teát és kávét kérek.",
                     "correctAnswer": "Yes, tea and coffee please.",
                     "scrambledWords": [
                         "Yes,",
@@ -584,7 +584,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Szia, kávét és vizet, kérek.",
+                    "hu": "Szia, kávét és vizet kérek.",
                     "correctAnswer": "Hello, coffee and water, please.",
                     "scrambledWords": [
                         "Hello,",
@@ -624,7 +624,7 @@
                 },
                 {
                     "type": "word_order",
-                    "hu": "Kávét és teát és tejet és vizet, kérek!",
+                    "hu": "Kávét és teát és tejet és vizet kérek!",
                     "correctAnswer": "Coffee and tea and milk and water, please!",
                     "scrambledWords": [
                         "Coffee",

@@ -37,7 +37,7 @@ export function PrivacyPolicy() {
           <h2>2. A kezelt adatok köre, célja és jogalapja</h2>
 
           <h3>2.1. Vendég (Guest) munkamenet</h3>
-          <p>Amennyiben Ön regisztráció nélkül, vendégként használja az oldalt, nem gyűjtünk és nem tárolunk semmilyen közvetlen személyes adatot (például nevet vagy e-mail címet). A haladásának (XP, napi széria, teljesített leckék) mentéséhez és az isolated vendégélmény biztosításához a böngészője helyi tárhelyét (<strong>LocalStorage</strong>) használjuk.</p>
+          <p>Amennyiben Ön regisztráció nélkül, vendégként használja az oldalt, nem gyűjtünk és nem tárolunk semmilyen közvetlen személyes adatot (például nevet vagy e-mail címet). A haladásának (XP, napi széria, teljesített leckék) mentéséhez és az elkülönített vendégélmény biztosításához a böngészője helyi tárhelyét (<strong>LocalStorage</strong>) használjuk.</p>
           <ul>
             <li><strong>Kezelt adatok köre:</strong> Tanulási előrehaladási adatok, XP pontok, napi széria számláló, feloldott virtuális jutalmak, kiválasztott felületi téma.</li>
             <li><strong>Adatkezelés célja:</strong> A felhasználói élmény és tanulási folyamat folyamatosságának biztosítása regisztráció nélkül.</li>
