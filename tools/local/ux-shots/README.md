@@ -104,6 +104,7 @@ backend instead, in an ordinary browser, start `../testing/local_stack.sh up` (s
 |---|---|---|
 | `new-guest` | nothing stored | `/` ; `/dashboard` redirects to `/welcome/start` |
 | `returning-guest` | guest, 245 XP, streak 4, node 1 done, one lesson of node 2 done, energy 3 | `/dashboard`, lessons |
+| `stray-progress-guest` | `returning-guest` plus progress past the lock: 2 lessons of Module 2 node 1, all of Module 3 node 2 | `/dashboard`: one current node, the rest locked (#390) |
 | `signed-in` | KovacsAnna, 1,240 XP, streak 12, 180 bones, energy 4; leaderboard and friends filled | `/dashboard`, `/leaderboard`, `/friends`, `/profile` |
 | `zero-energy` | `signed-in` with energy 0 | `/dashboard`, then start a lesson: the refill survey opens |
 | `zero-energy-guest` | `returning-guest` with energy 0 | same; the survey's submit fails for a guest |
@@ -169,8 +170,8 @@ other path is the 404 page.
 
 **Starting a lesson** from `/dashboard`:
 
-1. `{"click":".roadmap-node.current"}` opens the node's tooltip.
-2. `{"click":".tooltip-start-btn"}` (INDÍTÁS) starts the lesson.
+1. `{"click":".roadmap-node.current"}` opens the node's sheet. Nodes are `.roadmap-node.locked`, `.current` or `.completed`; each one's sheet is `#node-tooltip-<node id>`, the next sibling of the node.
+2. `{"click":".tooltip-start-btn"}` (Kezdés, or Folytatás once a lesson of the node is done) starts the lesson. A locked node's sheet has no start button, only `.tooltip-goto-btn` (Ugrás oda), which scrolls to the current node.
 3. `{"click":".interactive-submit-btn"}` is the footer button: ELLENŐRZÉS, then TOVÁBB. Pressing it
    with nothing selected counts as a wrong answer, which is the quick way to the feedback banner.
 

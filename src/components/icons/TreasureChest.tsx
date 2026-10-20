@@ -9,7 +9,7 @@ interface TreasureChestProps {
 
 export const TreasureChest: React.FC<TreasureChestProps> = ({ isOpen, className, onClick, loading }) => {
   return (
-    <div
+    <span
       className={`treasure-chest-container ${isOpen ? 'open' : 'closed'} ${className || ''}`}
       onClick={onClick}
       style={{
@@ -27,7 +27,7 @@ export const TreasureChest: React.FC<TreasureChestProps> = ({ isOpen, className,
     >
       <img
         src="/chest.svg"
-        alt="Treasure Chest"
+        alt=""
         width={184}
         height={184}
         loading={loading}
@@ -41,6 +41,6 @@ export const TreasureChest: React.FC<TreasureChestProps> = ({ isOpen, className,
           objectFit: 'contain'
         }}
       />
-    </div>
+    </span>
   );
 };

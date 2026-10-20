@@ -150,6 +150,21 @@
     "nav_profile": "Profil",
     "nav_shop": "Bolt"
   },
+  "roadmap": {
+    "start": "Kezdés",
+    "continue": "Folytatás",
+    "practice_again": "Gyakorlás újra",
+    "energy_cost": "{{amount}} energia",
+    "lesson_progress": "{{current}}/{{total}}. lecke",
+    "completed": "Teljesítve",
+    "locked": "Zárolva",
+    "finish_first": "Előbb fejezd be ezt a témát:",
+    "open_chest_first": "Előbb nyisd ki a jutalomládát.",
+    "go_there": "Ugrás oda",
+    "chest": "Jutalomláda",
+    "open_chest": "Nyisd ki!",
+    "chest_opened": "Kinyitva"
+  },
   "leaderboard": {
     "title": "Ranglista",
     "subtitle": "Versenyezz másokkal és juss feljebb a ligákban!",

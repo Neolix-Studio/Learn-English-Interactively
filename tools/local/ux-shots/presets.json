@@ -8,6 +8,11 @@
     "base": "http://localhost:5173",
     "ls": "seeds/returning.json"
   },
+  "stray-progress-guest": {
+    "about": "The returning guest plus stray progress further on: 2 lessons of Module 2 node 1, all of Module 3 node 2. Exactly one node may be current (#390).",
+    "base": "http://localhost:5173",
+    "ls": "seeds/stray-progress-guest.json"
+  },
   "zero-energy-guest": {
     "about": "The returning guest with energy 0.",
     "base": "http://localhost:5173",

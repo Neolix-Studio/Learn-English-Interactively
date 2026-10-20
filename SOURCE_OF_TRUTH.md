@@ -468,7 +468,9 @@ lessons[].{ id: lesson_1..4, title: "Part n/4", introducedWords[], items[8|10|11
 
 `getCurriculum(lang='hu')` builds modules → nodes → sorts → splices a virtual `chest_<moduleId>` node at `floor(nodes.length/2)` (`roadmapLoader.ts:98-107`), titled the hardcoded Hungarian *"Jutalom Láda"*.
 
-**Both callers omit the language argument** (`Roadmap.tsx:20`, `FTUELesson.tsx:15`), so the roadmap is always Hungarian.
+**Both callers omit the language argument** (`Roadmap.tsx:25` *(was `:20`; corrected 2026-10-20)*, `FTUELesson.tsx:15`), so the roadmap is always Hungarian.
+
+**Node status (#390, 2026-10-20).** `Roadmap.tsx:97-110` walks the path in order: a finished node is *completed*, the first unfinished node (a chest included) is the only *current* one, and every unfinished node after it is *locked*, whatever progress it holds (owner, Q12: locks stay hard). Until #390 any node with progress, and any node after a finished one, was current, so a lesson started on a locked node made a second current node. A tap on a node opens its sheet: a locked node's sheet says 'Zárolva' ("Locked"), names the current node and offers 'Ugrás oda' ("Go there"), which scrolls to the current node, focuses it and opens its sheet (`:121-129`); it has no start button, and `startNode` refuses a locked node before anything is spent (`:131-136`). The current node's sheet says 'Kezdés' ("Start") or, once a lesson of it is done, 'Folytatás' ("Continue"); a completed node's says 'Gyakorlás újra' ("Practise again") with its cost of 1 energy (hidden for premium). The strings are the `roadmap` namespace in `hu.json`. The ring is drawn on the node in CSS (`roadmap.css:65-94`): green around the current node with the lessons done in gold, all gold around a completed node, which also carries a check badge. The old SVG rings were stretched by `preserveAspectRatio="none"` into ellipses on phones and are gone.
 
 ### Other content shapes
 
@@ -521,7 +523,7 @@ Almost all of it traces back to finding #1:
 - ✅ **Fixed (#381, 2026-10-01): one store, used, capped at 3.** The column is the store; `claim_reward` and the new `buy_shield` endpoint (100 Lexi-falat priced on the server, POST only, refused at 3 before anything is taken) settle missed days first and stop at 3; the shop button is disabled at 3 with 'Legfeljebb 3 pajzsod lehet.'. The intro lesson's shield is granted by the server once (`lesson_completed: 'tutorial'` while the stored scores lack `tutorial_done`). **Still not built:** the shield after registering (owner, #359). *The text below is the bug as it was.* — **Streak shields are stored twice and never used.** `claim_reward` writes the `user_progress.streak_shields` **column**; the client reads `scores.streak_shields` (**JSON**). ~~The column is zeroed by the next save.~~ *(Fixed by #359, 2026-09-30: a save keeps the column.)* Leaderboard shield rewards are kept now, but still invisible: the client shows only the JSON copy. Nothing anywhere decrements a shield against a missed day. *(Corrected 2026-09-30: `cron_notifications.php` does, on the **column**, which the client never reads. See [§10](#10-backend-api), "`cron_notifications.php` and the panel cron jobs".)* **Owner decision, 2026-09-30 (#359):** a new account starts with **0** shields. The learner gets 1 after the intro lesson and 1 more after registering; after that shields come from the shop and, later, from random quizzes (not built). Only the 0 exists in code (`newProgressRowDefaults()`, `api.php:989`; signup inserted 2 until #359, and the column's schema default is still 2, `01_add_gamification_columns.sql:7`, which no insert relies on). The two grants are not built; they belong with the one-store decision in WP-B3. **Owner decision 2026-09-30 (UX Q10, #365): a shield is used automatically, one per missed day, and a learner holds at most 3.** No cap exists in code today: the shop adds 1 per purchase with no limit (`ShopModal.tsx:26`), `claim_reward` adds to the column with no limit (`api.php:1586`), and the only bound is the +3-per-save clamp on the JSON copy (`api.php:1068-1071`). B3b (#381).
 - **The sidebar leaderboard always shows Bronze** — `SidebarRight.tsx:27` calls `get_leaderboard` with no `league_id` and `api.php:1430` defaults to league 1. The locale string even hardcodes *"Heti Ranglista (Bronz Liga)"*.
 - **"Personal Level" is permanently 1** — `scores.level` is declared and rendered but never written anywhere in `src/`.
-- **Most chests give nothing.** `Roadmap.tsx:61-64` grants bones and energy only when a module has ≥6 nodes; with the injected chest only Module_4 qualifies. The other six fire full confetti for 50 XP.
+- **Most chests give nothing.** `Roadmap.tsx:67-70` *(was `:61-64`; corrected 2026-10-20)* grants bones and energy only when a module has ≥6 nodes; with the injected chest only Module_4 qualifies. The other six fire full confetti for 50 XP.
 - **Leagues never demote.** `league_id` is recomputed from *lifetime* points on every save. Early adopters permanently occupy Diamond and its 3.0× reward multiplier.
 - **`cron_reset_leaderboards.php` is not idempotent** — no "already ran this period" guard. Two `?type=weekly` invocations double every prize.
 - **The economy is unbalanced ~100×** — a lesson pays 1 bone, the cheapest item costs 100. Excluding the 100-bone guest grant and the +20 feedback widget, the Halloween theme is ~500 lessons away.
@@ -746,7 +748,7 @@ Proven on the local stack, against a database seeded with orphan rows and from z
 | Outfit + Inter "loaded globally" | **`index.html:33` loads only Nunito.** No `@font-face` anywhere. Both tokens silently fall back to generic `sans-serif`, while `dashboard.css:2849` sets `* { font-family: 'Nunito' }` and `landing.css:218` forces it with `!important`. |
 | Shop themes: Cyberpunk + Nature | Shop sells **fall** and **halloween**. Cyberpunk and Nature are unreachable dead CSS — `UserContext.tsx:269-282` only ever sets `dark`/`light`/`fall`/`halloween`. |
 | `.proto-card` glassmorphism | `.proto-card` exists at `dashboard.css:2322` and is **never rendered** |
-| Locked nodes `pointer-events: none` | `roadmap.css:92` uses `cursor: not-allowed` only — locked nodes stay clickable |
+| Locked nodes `pointer-events: none` | `roadmap.css:142` uses `cursor: not-allowed` only — locked nodes stay clickable. Since #390 (2026-10-20) a tap opens only the locked sheet, never a lesson (§7, "Node status") |
 | Single column below 1024px | Real threshold is **992px** |
 | 44px minimum touch targets | Violated by `.btn-secondary` 30px, `.btn-primary` 36px, `.btn-close-icon` 36px, `.info-tooltip` 16px, `.interactive-submit-btn` 40px |
 | The reduced-motion block | Present **verbatim, including its bug** (below) |
@@ -1169,12 +1171,12 @@ Roughly **1,100+ lines of dead application code** plus ~47% of the CSS will ship
 
 ### Accessibility
 
-Measured across all 68 `.tsx` files: **26 `aria-*` attributes in 10 files** (the other 58 have none), **3 `role=`, 2 `tabIndex`, 1 `onKeyDown`, 0 `aria-live`, 0 `.focus()`, 0 Escape handling.** *(Recounted 2026-09-30 after #360, which added the lesson banner's `role="status"` and three `aria-hidden` icons; before it: 23 in 9 files, 2 `role=`.)*
+Measured across all 69 `.tsx` files: **50 `aria-*` attributes in 17 files** (the other 52 have none), **6 `role=`, 1 `tabIndex`, 3 `onKeyDown`, 0 `aria-live`, 2 `.focus()`, 1 Escape handler** (the path's). *(Recounted 2026-10-20 after #390, which made the path nodes and the chest buttons with names and `aria-expanded`, and dropped their `role="button"` and `tabIndex`; just before it: 40 in 16 files, 7 `role=`, 2 `tabIndex`, 1 `onKeyDown`, 0 `.focus()`, 0 Escape. Recounted 2026-09-30 after #360, which added the lesson banner's `role="status"` and three `aria-hidden` icons: 26 in 10 of 68 files, 3 `role=`; before it: 23 in 9 files, 2 `role=`.)*
 
 - **None of the six modals** traps focus, restores focus on close, or closes on ESC. The lesson player is `position: fixed; inset: 0` over a live DOM with no `aria-modal` and no inert background.
 - ~~**Every answer submission and feedback banner is a silent DOM swap with no `aria-live`** — a screen-reader user gets no announcement of right or wrong.~~ ✅ Fixed for the lesson feedback banner (#360, 2026-09-30): it renders inside a permanent `role="status"` region (`LessonPlayer.tsx:528`), which is an implicit polite live region, so the title and the correct answer are announced. **Still silent:** toasts, reward popups and the PostLesson screens (C24).
 - **`index.html:2` hardcodes `lang="hu"` on all three domains**, so Slovak text is announced with Hungarian phonetics — and the aria-labels that do exist are themselves hardcoded Hungarian.
-- The treasure chest is a bare `<div onClick>` (`Roadmap.tsx:241-243`) — the only div-with-onClick in the codebase, and it gates a reward.
+- ~~The treasure chest is a bare `<div onClick>` (`Roadmap.tsx:241-243`) — the only div-with-onClick in the codebase, and it gates a reward.~~ ✅ Fixed (#390, 2026-10-20): the chest (`Roadmap.tsx:284-297`) and every path node (`:330-340`) are `<button>`s with a Hungarian `aria-label` and a 3 px `:focus-visible` ring in the text colour (`roadmap.css:96-100`). Enter or Space opens a node's sheet, Escape closes it and keeps focus on the node, and Tab skips the buttons of a closed sheet.
 - `prefers-reduced-motion` is non-functional (§12) while the app runs infinite background loops.
 - `MOBILE_UI_AUDIT.md:143-152` already lists 200% zoom and screen-reader focus order as untested; nothing has closed that.
 
@@ -1390,7 +1392,7 @@ The UI/UX review keeps its own owner questions (`Q1`–`Q15`, `UX_REVIEW.md` §7
 - ~~**UX Q12 — Can learners skip ahead on the path?**~~ **ANSWERED 2026-09-30 (#369).**
   - **No, not in the Beta: locks stay hard.** Nodes open in order; a locked node never starts a lesson or spends energy. As recommended.
   - **Later:** skipping ahead will mean passing the WP-F4 module exam (`UX_REVIEW.md` C-14), not a second, separate gate.
-  - **What it changes, and where:** nothing in the code yet. UX0d-2 (#390) stops locked nodes from starting lessons (C68).
+  - **What it changes, and where:** ✅ implemented by UX0d-2 (#390, 2026-10-20): a locked node opens the locked sheet ('Zárolva', the reason, 'Ugrás oda' to the current node) and never starts a lesson or spends energy; exactly one node is current (§7, "Node status"; C68).
 ---
 
 ## 22. Keeping this file honest

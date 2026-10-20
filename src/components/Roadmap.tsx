@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import confetti from 'canvas-confetti';
 import { useUser } from '../context/UserContext';
-import { getCurriculum } from '../utils/roadmapLoader';
+import { getCurriculum, type CurriculumNode } from '../utils/roadmapLoader';
 import { ModuleBanner } from './ModuleBanner';
 import { GrammarModal } from './modals/GrammarModal';
 import { TreasureChest } from './icons/TreasureChest';
@@ -11,11 +12,15 @@ interface RoadmapProps {
   onNodeClick?: (nodeData: any) => void;
 }
 
+type NodeStatus = 'locked' | 'current' | 'completed';
+
 export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
   const { activeLevel, data: userProgress, updateProgress } = useUser();
+  const { t } = useTranslation();
   const [activeTooltipId, setActiveTooltipId] = useState<string | null>(null);
   const [activeGrammarModule, setActiveGrammarModule] = useState<string | null>(null);
   const [openingChestId, setOpeningChestId] = useState<string | null>(null);
+  const nodeRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const curriculum = useMemo(() => getCurriculum(), []);
 
@@ -40,6 +45,7 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
   const stepY = nodeHeight + gap;
   const initialY = nodeHeight / 2;
   const centerX = 200;
+  const isPremium = userProgress.subscription_tier === 'premium' || userProgress.subscription_tier === 'lifetime';
 
   const handleChestClick = (node: any, status: string, totalNodes: number) => {
     if (status !== 'current' || openingChestId === node.id) return;
@@ -84,6 +90,103 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
     if (userProgress.completed?.[activeLevel]?.includes(nodeId)) return true;
     const count = userProgress.scores?.node_state?.[nodeId]?.completedLessons?.length || 0;
     return count > 0 && count >= totalLessons;
+  };
+
+  const getCompletedCount = (nodeId: string): number => userProgress.scores?.node_state?.[nodeId]?.completedLessons?.length || 0;
+
+  // Locks are hard (Q12, #369): in path order every finished node is completed, the first unfinished
+  // node is the only current one, and every unfinished node after it is locked, whatever progress it has.
+  const statusById: Record<string, NodeStatus> = {};
+  let currentNode: CurriculumNode | null = null;
+  for (const mod of modules) {
+    for (const node of mod.nodes) {
+      if (isNodeFinished(node.id, node.totalLessons || 1)) statusById[node.id] = 'completed';
+      else if (!currentNode) {
+        statusById[node.id] = 'current';
+        currentNode = node;
+      } else statusById[node.id] = 'locked';
+    }
+  }
+
+  const toggleTooltip = (nodeId: string) => {
+    setActiveTooltipId(activeTooltipId === nodeId ? null : nodeId);
+  };
+
+  const closeTooltipOnEscape = (event: React.KeyboardEvent, nodeId: string) => {
+    if (event.key !== 'Escape' || activeTooltipId !== nodeId) return;
+    setActiveTooltipId(null);
+    nodeRefs.current[nodeId]?.focus();
+  };
+
+  const goToCurrentNode = () => {
+    if (!currentNode) return;
+    const target = nodeRefs.current[currentNode.id];
+    if (!target) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    target.focus({ preventScroll: true });
+    setActiveTooltipId(currentNode.type === 'chest' ? null : currentNode.id);
+  };
+
+  const startNode = (node: CurriculumNode) => {
+    // A locked node never starts a lesson or spends energy.
+    if (statusById[node.id] === 'locked' || !onNodeClick) return;
+    setActiveTooltipId(null);
+    onNodeClick(node.originalData);
+  };
+
+  const renderTooltip = (node: CurriculumNode, status: NodeStatus, title: string, placeBelow: boolean) => {
+    const completedCount = getCompletedCount(node.id);
+    const totalLessons = node.totalLessons || 0;
+    const startLabel = completedCount > 0 ? t('roadmap.continue') : t('roadmap.start');
+    const costLabel = t('roadmap.energy_cost', { amount: 1 });
+
+    let subtitle: React.ReactNode = null;
+    if (status === 'locked') subtitle = t('roadmap.locked');
+    else if (status === 'completed') subtitle = t('roadmap.completed');
+    else if (totalLessons > 0) subtitle = t('roadmap.lesson_progress', { current: Math.min(completedCount + 1, totalLessons), total: totalLessons });
+
+    return (
+      <div id={`node-tooltip-${node.id}`} className={`node-tooltip tooltip-${status} ${placeBelow ? 'tooltip-bottom' : ''}`}>
+        <div className="tooltip-header">
+          <div className="tooltip-title">{title}</div>
+          {subtitle && <div className="tooltip-subtitle">{subtitle}</div>}
+        </div>
+        {status === 'locked' && (
+          <>
+            <p className="tooltip-reason">
+              {currentNode?.type === 'chest'
+                ? t('roadmap.open_chest_first')
+                : <>{t('roadmap.finish_first')} <strong>{currentNode?.title}</strong></>}
+            </p>
+            <button type="button" className="tooltip-goto-btn" onClick={goToCurrentNode}>
+              {t('roadmap.go_there')}
+            </button>
+          </>
+        )}
+        {status === 'current' && (
+          <button type="button" className="tooltip-start-btn" onClick={() => startNode(node)}>
+            {startLabel}
+          </button>
+        )}
+        {status === 'completed' && (
+          <button
+            type="button"
+            className="tooltip-start-btn"
+            aria-label={isPremium ? undefined : `${t('roadmap.practice_again')}, ${costLabel}`}
+            onClick={() => startNode(node)}
+          >
+            <span>{t('roadmap.practice_again')}</span>
+            {!isPremium && (
+              <span className="tooltip-cost" aria-hidden="true">
+                <img src="/assets/images/energy.svg" alt="" width={18} height={18} />
+                1
+              </span>
+            )}
+          </button>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -143,36 +246,6 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
 
               <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: '400px', height: `${totalHeight}px`, zIndex: 1, pointerEvents: 'none' }}>
                 <svg viewBox={`0 0 400 ${totalHeight}`} width="100%" height="100%" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
-
-                  {moduleNodes.map((node, index) => {
-                    const cycle = index % 4;
-                    let offsetX = 0;
-                    if (cycle === 1) offsetX = 40;
-                    if (cycle === 3) offsetX = -40;
-                    const cx = centerX + offsetX;
-                    const cy = initialY + (index * stepY);
-
-                    const completedCount = userProgress.scores?.node_state?.[node.id]?.completedLessons?.length || 0;
-                    const totalLessons = node.totalLessons || 1;
-                    let progressFraction = Math.min(completedCount / totalLessons, 1);
-                    if (userProgress.scores?.node_state?.[node.id] && completedCount > 0 && completedCount >= totalLessons) {
-                      progressFraction = 1;
-                    }
-
-                    return (
-                      <g key={`ring-${node.id}`}>
-                        <circle
-                          cx={cx} cy={cy} r="44"
-                          stroke="#F59E0B" strokeWidth="8" fill="none"
-                          strokeDasharray="276.46"
-                          strokeDashoffset={276.46 - (276.46 * progressFraction)}
-                          strokeLinecap="round"
-                          style={{ transition: 'stroke-dashoffset 0.5s', transform: 'rotate(-90deg)', transformOrigin: `${cx}px ${cy}px` }}
-                        />
-                      </g>
-                    );
-                  })}
-
                   {pathSegments.map((seg, i) => (
                     <path key={i} d={seg.d} stroke={seg.isCompleted ? "#F59E0B" : "#E5E7EB"} strokeWidth="16" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                   ))}
@@ -185,39 +258,56 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                 if (cycle === 1) offsetClass = 'node-right';
                 if (cycle === 3) offsetClass = 'node-left';
 
-                const completedCount = userProgress.scores?.node_state?.[node.id]?.completedLessons?.length || 0;
+                const status = statusById[node.id];
+                const isTooltipOpen = activeTooltipId === node.id;
+                const completedCount = getCompletedCount(node.id);
                 const totalLessons = node.totalLessons || 1;
-                let progressFraction = Math.min(completedCount / totalLessons, 1);
-
-                let isNodeCompleted = isNodeFinished(node.id, totalLessons);
-
-                let status = 'locked';
-                if (isNodeCompleted) {
-                  status = 'completed';
-                  progressFraction = 1;
-                } else if (completedCount > 0) {
-                  status = 'current';
-                } else if (moduleIndex === 0 && index === 0) {
-                  status = 'current';
-                }
-
-                if (status === 'locked') {
-                  if (index > 0) {
-                    const prevNode = moduleNodes[index - 1];
-                    if (isNodeFinished(prevNode.id, prevNode.totalLessons || 1)) status = 'current';
-                  } else if (moduleIndex > 0) {
-                    const prevModule = modules[moduleIndex - 1];
-                    const prevNode = prevModule.nodes[prevModule.nodes.length - 1];
-                    if (isNodeFinished(prevNode.id, prevNode.totalLessons || 1)) status = 'current';
-                  }
-                }
+                const progressFraction = status === 'completed' ? 1 : Math.min(completedCount / totalLessons, 1);
 
                 const isBelowFold = moduleIndex > 0 || index >= 3;
 
-                let defaultIcon: React.ReactNode = <img src="/single-star.svg" alt="Star" width={56} height={56} loading={isBelowFold ? "lazy" : undefined} style={{ width: '70%', height: '70%', objectFit: 'contain', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />;
+                if (node.type === 'chest') {
+                  const isOpening = openingChestId === node.id;
+                  const wrapperClass = status === 'current' && !isOpening ? 'ready-to-open' : (isOpening ? 'opening' : '');
+                  const chestLabel = status === 'locked' ? t('roadmap.locked') : status === 'completed' ? t('roadmap.chest_opened') : t('roadmap.open_chest');
+
+                  return (
+                    <div
+                      key={node.id}
+                      className={`roadmap-node-container ${offsetClass}`}
+                      style={{ position: 'relative', zIndex: isTooltipOpen ? 50 : 2 }}
+                      onKeyDown={(event) => closeTooltipOnEscape(event, node.id)}
+                    >
+                      {status === 'current' && !isOpening && activeTooltipId === null && (
+                        <div className="node-chat-bubble" style={{ zIndex: 10 }}>{t('roadmap.open_chest')}</div>
+                      )}
+                      <button
+                        type="button"
+                        ref={(element) => { nodeRefs.current[node.id] = element; }}
+                        className={`treasure-chest-wrapper ${wrapperClass} ${isTooltipOpen ? 'active-tooltip' : ''}`}
+                        aria-label={`${t('roadmap.chest')} – ${chestLabel}`}
+                        aria-disabled={status === 'completed' || undefined}
+                        aria-expanded={status === 'locked' ? isTooltipOpen : undefined}
+                        aria-controls={status === 'locked' ? `node-tooltip-${node.id}` : undefined}
+                        onClick={() => {
+                          if (status === 'locked') toggleTooltip(node.id);
+                          else handleChestClick(node, status, moduleNodes.length);
+                        }}
+                        style={{ background: 'none', boxShadow: 'none' }}
+                      >
+                        <span style={{ display: 'block', filter: status === 'locked' ? 'grayscale(100%)' : 'none', width: '100%', height: '100%', position: 'relative', zIndex: 1 }}>
+                          <TreasureChest isOpen={status === 'completed' || isOpening} loading={isBelowFold ? "lazy" : undefined} />
+                        </span>
+                      </button>
+                      {status === 'locked' && renderTooltip(node, status, t('roadmap.chest'), index === 0)}
+                    </div>
+                  );
+                }
+
+                let defaultIcon: React.ReactNode = <img src="/single-star.svg" alt="" width={56} height={56} loading={isBelowFold ? "lazy" : undefined} style={{ width: '70%', height: '70%', objectFit: 'contain', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }} />;
                 if (userProgress?.scores?.active_theme === 'halloween') {
                     defaultIcon = (
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="currentColor" aria-hidden="true">
                            <path d="M12 2c-1.5 0-3 1-3 2s1 2 1 2c-2.5.5-5 2.5-5 6s2 8 7 8 7-4 7-8-2.5-5.5-5-6c0 0 1-1 1-2s-1.5-2-3-2zm-3 9l2 2-2 2v-4zm6 0v4l-2-2 2-2zm-3 3l2 2h-4l2-2z" />
                         </svg>
                     );
@@ -226,71 +316,39 @@ export const Roadmap: React.FC<RoadmapProps> = ({ onNodeClick }) => {
                 let icon: React.ReactNode = defaultIcon;
                 if (node.type === 'reward') icon = '🎁';
                 else if (node.id === 'Boss' || node.title.includes('Boss')) icon = '👹';
-                else if (status === 'completed') icon = defaultIcon;
 
-                if (node.type === 'chest') {
-                  const isOpening = openingChestId === node.id;
-                  const wrapperClass = status === 'current' && !isOpening ? 'ready-to-open' : (isOpening ? 'opening' : '');
-
-                  return (
-                    <div key={node.id} className={`roadmap-node-container ${offsetClass}`} style={{ position: 'relative', zIndex: 2 }}>
-                      {status === 'current' && !isOpening && (
-                        <div className="node-chat-bubble" style={{ zIndex: 10 }}>Nyisd ki!</div>
-                      )}
-                      <div
-                        className={`treasure-chest-wrapper ${wrapperClass}`}
-                        onClick={() => handleChestClick(node, status, moduleNodes.length)}
-                        style={{ background: 'none', boxShadow: 'none' }}
-                      >
-                        <div style={{ filter: status === 'locked' ? 'grayscale(100%)' : 'none', width: '100%', height: '100%', position: 'relative', zIndex: 1 }}>
-                          <TreasureChest isOpen={status === 'completed' || isOpening} loading={isBelowFold ? "lazy" : undefined} />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
+                const bubbleLabel = completedCount > 0 ? t('roadmap.continue') : t('roadmap.start');
+                const statusLabel = status === 'locked' ? t('roadmap.locked') : status === 'completed' ? t('roadmap.completed') : bubbleLabel;
 
                 return (
-                  <div key={node.id} className={`roadmap-node-container ${offsetClass}`} style={{ position: 'relative', zIndex: activeTooltipId === node.id ? 50 : 2 }}>
-                    <div
-                      className={`roadmap-node ${status} ${activeTooltipId === node.id ? 'active-tooltip' : ''}`}
+                  <div
+                    key={node.id}
+                    className={`roadmap-node-container ${offsetClass}`}
+                    style={{ position: 'relative', zIndex: isTooltipOpen ? 50 : 2 }}
+                    onKeyDown={(event) => closeTooltipOnEscape(event, node.id)}
+                  >
+                    <button
+                      type="button"
+                      ref={(element) => { nodeRefs.current[node.id] = element; }}
+                      className={`roadmap-node ${status} ${isTooltipOpen ? 'active-tooltip' : ''}`}
+                      style={{ '--node-progress': progressFraction } as React.CSSProperties}
                       title={node.title}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => {
-                        if (activeTooltipId === node.id) setActiveTooltipId(null);
-                        else setActiveTooltipId(node.id);
-                      }}
+                      aria-label={`${node.title} – ${statusLabel}`}
+                      aria-expanded={isTooltipOpen}
+                      aria-controls={`node-tooltip-${node.id}`}
+                      onClick={() => toggleTooltip(node.id)}
                     >
-                      {status === 'current' && activeTooltipId !== node.id && (
-                        <div className="node-chat-bubble" style={{ zIndex: 10 }}>Kezdés</div>
+                      {status === 'current' && activeTooltipId === null && (
+                        <span className="node-chat-bubble">{bubbleLabel}</span>
                       )}
 
-                      <div className="node-icon-wrapper" style={{ position: 'relative', zIndex: 2, background: 'none', boxShadow: 'none' }}>
-                        <img src="/new-icon.svg" alt="Platform" width={80} height={80} loading={isBelowFold ? "lazy" : undefined} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80px', height: '80px', zIndex: -1, filter: status === 'locked' ? 'grayscale(100%) opacity(0.5)' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }} />
+                      <span className="node-icon-wrapper" style={{ position: 'relative', zIndex: 2, background: 'none', boxShadow: 'none' }}>
+                        <img src="/new-icon.svg" alt="" width={80} height={80} loading={isBelowFold ? "lazy" : undefined} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80px', height: '80px', zIndex: -1, filter: status === 'locked' ? 'grayscale(100%) opacity(0.5)' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }} />
                         <span className="node-icon" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>{icon}</span>
-                      </div>
+                      </span>
+                    </button>
 
-                      <div className={`node-tooltip ${index === 0 ? 'tooltip-bottom' : ''}`}>
-                        <div className="tooltip-header">
-                          <div className="tooltip-title">{node.title}</div>
-                          {(node.totalLessons || 0) > 0 && (
-                            <div className="tooltip-subtitle">
-                              {Math.min((userProgress.scores?.node_state?.[node.id]?.completedLessons?.length || 0) + 1, node.totalLessons || 0)}/{node.totalLessons}. lecke
-                            </div>
-                          )}
-                        </div>
-                        <button
-                          className="tooltip-start-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (onNodeClick) onNodeClick(node.originalData);
-                          }}
-                        >
-                          INDÍTÁS
-                        </button>
-                      </div>
-                    </div>
+                    {renderTooltip(node, status, node.title, index === 0)}
                   </div>
                 );
               })}

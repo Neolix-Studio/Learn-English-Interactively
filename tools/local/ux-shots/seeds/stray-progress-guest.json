@@ -1,0 +1,13 @@
+{
+  "__extends": "returning.json",
+  "neolix_guest_progress": {
+    "scores": {
+      "node_state": {
+        "node1_ordering_a_drink": { "completedLessons": ["lesson_1", "lesson_2", "lesson_3", "lesson_4"] },
+        "node2_beverages": { "completedLessons": ["lesson_1"] },
+        "node1_questions": { "completedLessons": ["lesson_1", "lesson_2"] },
+        "node2_i_have_it": { "completedLessons": ["lesson_1", "lesson_2", "lesson_3", "lesson_4"] }
+      }
+    }
+  }
+}
