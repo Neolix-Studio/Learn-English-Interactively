@@ -19,6 +19,9 @@
     --transition-base: 0.3s ease;
     --transition-theme: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     --color-border: #E5E7EB;
+    /* Text fields: the border reaches 3:1 against the field and the card around it (#392). */
+    --color-input-bg: #FFFFFF;
+    --color-input-border: #6B7280;
     --glass-border: 1px solid var(--color-border);
     --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     --bg-gradient: radial-gradient(circle at top right, #e0e7ff 0%, transparent 40%),
@@ -33,6 +36,8 @@
     --color-text-main: #F9FAFB;
     --color-text-muted: #9CA3AF;
     --color-border: rgba(255, 255, 255, 0.1);
+    --color-input-bg: #111827;
+    --color-input-border: #6B7280;
     --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
                    radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
@@ -47,6 +52,8 @@
         --color-text-main: #F9FAFB;
         --color-text-muted: #9CA3AF;
         --color-border: rgba(255, 255, 255, 0.1);
+        --color-input-bg: #111827;
+        --color-input-border: #6B7280;
         --glass-border: 1px solid var(--color-border);
         --bg-gradient: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
                        radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
@@ -1066,6 +1073,8 @@ a {
     --color-accent-on: oklch(0.75 0.18 55);
     --color-accent-at: oklch(0.8 0.15 70);
     --color-border: rgba(245, 158, 11, 0.2);
+    --color-input-bg: oklch(0.2 0.05 45);
+    --color-input-border: #FBBF24;
     --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top left, oklch(0.3 0.15 45 / 0.5), transparent 60%),
                    radial-gradient(circle at bottom right, oklch(0.25 0.1 30 / 0.4), transparent 60%),
@@ -1081,6 +1090,8 @@ a {
     --color-accent-on: oklch(0.65 0.2 45);
     --color-accent-at: oklch(0.7 0.2 300);
     --color-border: rgba(168, 85, 247, 0.2);
+    --color-input-bg: oklch(0.12 0.05 300);
+    --color-input-border: #A855F7;
     --glass-border: 1px solid var(--color-border);
     --bg-gradient: radial-gradient(circle at top left, oklch(0.25 0.15 300 / 0.5), transparent 60%),
                    radial-gradient(circle at bottom right, oklch(0.2 0.1 140 / 0.3), transparent 60%),

@@ -121,5 +121,19 @@
       { "click": ".lexi-feedback-widget > button[aria-expanded]", "after": 500 },
       { "contrast": "panel" }
     ]
+  },
+  "contact": {
+    "about": "Contact: the e-mail and copy buttons at the top, then the form after an empty send and after a send that opens the mail app (#392).",
+    "base": "http://app.localhost:5173",
+    "path": "/contact",
+    "steps": [
+      { "contrast": "top" },
+      { "scrollTo": ".contact-form", "after": 300 },
+      { "click": ".contact-form .btn-submit", "after": 400 },
+      { "contrast": "error" },
+      { "click": "#contactMessage" }, { "type": "Nem tudok belépni." },
+      { "click": ".contact-form .btn-submit", "after": 400 },
+      { "contrast": "info" }
+    ]
   }
 }

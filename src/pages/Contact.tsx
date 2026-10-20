@@ -6,14 +6,20 @@ import { AuthModal } from '../components/AuthModal';
 import { SEO } from '../components/SEO';
 import '../assets/css/legal.css';
 
+// The site has no endpoint that sends mail, so both ways to write to us open the visitor's own mail app (#392).
+const CONTACT_EMAIL = 'info@neolix.studio';
+
+const mailtoHref = (subject: string, body: string) =>
+  `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.replace(/\r?\n/g, '\r\n'))}`;
+
 export function Contact() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [statusText, setStatusText] = useState('');
-  const [statusType, setStatusType] = useState<'success' | 'error' | ''>('');
+  const [statusType, setStatusType] = useState<'info' | 'error' | ''>('');
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
-    navigator.clipboard.writeText('info@neolix.studio').then(() => {
+    navigator.clipboard.writeText(CONTACT_EMAIL).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -22,23 +28,16 @@ export function Contact() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const name = formData.get('contactName') as string;
-    const email = formData.get('contactEmail') as string;
-    const message = formData.get('contactMessage') as string;
+    const name = (formData.get('contactName') as string).trim();
+    const message = (formData.get('contactMessage') as string).trim();
 
-    if (!name) return showStatus('Kérjük, adja meg a nevét!', 'error');
-    if (!email) return showStatus('Kérjük, adja meg az e-mail címét!', 'error');
+    if (!message) return showStatus('Írd be az üzenetedet!', 'error');
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) return showStatus('Kérjük, valós e-mail címet adjon meg!', 'error');
-    if (!message) return showStatus('Az üzenet mező nem lehet üres!', 'error');
-
-    console.log('Kapcsolat űrlap küldés:', { name, email, message });
-    showStatus('Köszönjük! Az üzenetét sikeresen rögzítettük, hamarosan felvesszük Önnel a kapcsolatot.', 'success');
-    e.currentTarget.reset();
+    window.location.href = mailtoHref('Lexipaws – üzenet', name ? `${message}\n\n${name}` : message);
+    showStatus(`A levelezőprogramodban megnyílik a levél az üzeneteddel: onnan küldd el. Ha nem nyílt meg, másold ki az üzenetedet, és küldd el az ${CONTACT_EMAIL} címre.`, 'info');
   };
 
-  const showStatus = (text: string, type: 'success' | 'error') => {
+  const showStatus = (text: string, type: 'info' | 'error') => {
     setStatusText(text);
     setStatusType(type);
   };
@@ -65,11 +64,14 @@ export function Contact() {
               </p>
               <p>
                 <strong>Ügyfélszolgálat / Support E-mail:</strong> <br />
-                <span style={{ fontFamily: 'monospace', fontSize: '1.1rem', color: 'var(--color-text-main)' }}>info@neolix.studio</span>
-                <button className="copy-btn" onClick={copyEmail}>
+                <span style={{ fontFamily: 'monospace', fontSize: '1.1rem', color: 'var(--color-text-main)' }}>{CONTACT_EMAIL}</span>
+              </p>
+              <div className="contact-actions">
+                <a className="btn-submit btn-mailto" href={`mailto:${CONTACT_EMAIL}`}>E-mail írása</a>
+                <button type="button" className="copy-btn" onClick={copyEmail}>
                   {copied ? <span>✅ Másolva!</span> : <span>📋 Másolás</span>}
                 </button>
-              </p>
+              </div>
 
               <h2>2. Hivatalos Cégadatok (Szolgáltató)</h2>
               <p>A platformot egyéni vállalkozóként üzemeltetem az EU-s irányelvek és a helyi jogszabályoknak megfelelően:</p>
@@ -96,27 +98,23 @@ export function Contact() {
             </div>
 
             <div>
-              <h2>Írjon nekünk üzenetet</h2>
-              <p>Használhatja az alábbi űrlapot is az azonnali üzenetküldéshez:</p>
+              <h2>Írj nekünk</h2>
+              <p>Írd meg ide az üzenetedet: a gomb megnyitja a levelezőprogramodat a kész levéllel, és onnan tudod elküldeni.</p>
 
               <form className="contact-form" noValidate onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="contactName">Név</label>
-                  <input type="text" id="contactName" name="contactName" className="form-control" placeholder="Az Ön neve" required />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="contactEmail">E-mail cím</label>
-                  <input type="email" id="contactEmail" name="contactEmail" className="form-control" placeholder="pelda@domain.com" required />
+                  <label htmlFor="contactName">Név (nem kötelező)</label>
+                  <input type="text" id="contactName" name="contactName" className="form-control" placeholder="A neved" autoComplete="name" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="contactMessage">Üzenet</label>
                   <textarea id="contactMessage" name="contactMessage" className="form-control" placeholder="Miben segíthetünk?" required></textarea>
                 </div>
-                <button type="submit" className="btn-submit">Küldés</button>
+                <button type="submit" className="btn-submit">Megnyitás a levelezőben</button>
               </form>
 
               {statusText && (
-                <div className={`status-message status-${statusType}`} style={{ display: 'block' }}>
+                <div className={`status-message status-${statusType}`} role={statusType === 'error' ? 'alert' : 'status'}>
                   {statusText}
                 </div>
               )}

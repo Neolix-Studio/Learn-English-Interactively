@@ -269,13 +269,14 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** WP-A4 (cutover); C34 (frozen legacy level), N4; decision Q4.
 
 ### C42 · Contact form fakes success; legal pages disagree on who runs the service — **major**
+- ✅ **Partly fixed (#392, 2026-10-20):** the form no longer claims anything. There is no endpoint that sends mail, so 'E-mail írása' ("Write an e-mail"), a `mailto:info@neolix.studio` button beside 'Másolás' ("Copy"), and the form's 'Megnyitás a levelezőben' ("Open in your e-mail app") both open the visitor's own mail app; the form puts the message (and the optional name) in the body, and the line under it says to send it from there and where to write if nothing opened. The e-mail field is gone (the mail app supplies the sender), the new copy uses 'te' (Q6: Contact is not a legal page), and the fields and copy button use the new `--color-input-*` tokens: borders 4.83:1 in light (they were white on white, 1:1, on a #818284 fill) and 3.04:1 in dark, both buttons 44 px tall. **Still open:** the operator identity, the '[Feltöltés alatt]' fields and the tutoring offer (UX10-5, #407); the rest of the page's formal 'Ön' copy and the '(Contact)' / 'Support E-mail' glosses (UX0c-2b, #599, filed 2026-10-20); Terms for Slovak learners (D3n, #498).
 - **What happens:** the contact form validates, `console.log`s and shows 'Köszönjük! Az üzenetét sikeresen rögzítettük…' ("Thank you! Your message was recorded…"); no request is sent. In light mode the inputs are mid-grey boxes and the success line is 1.91:1. Impressum, Privacy and Terms show '[N/A]' registry fields and a bracketed '[Neolix Studio]' / '[Ladislav Szép]', while Contact describes a sole trader with '[Feltöltés alatt]' ("being uploaded"). Terms define the audience as Hungarian-only, the copy uses formal Ön, and a tutoring price ad (15 €/50 perc) sits inside the Impressum.
 - **Learner impact:** messages are lost; a parent checking who runs the service finds placeholders.
 - **Fix:** a mailto button plus the existing copy button until an endpoint exists; light-theme input tokens; one operator identity without brackets (owner/legal); tutoring out of the Impressum; Terms widened to HU+SK.
 - **Effort:** S
-- **Where:** `pages/Contact.tsx:22-38,70-90`, `assets/css/legal.css:95-112,143-152`, `pages/Impressum.tsx:28-49`, `pages/PrivacyPolicy.tsx:28-34`, `pages/Terms.tsx:28-39`
+- **Where:** `pages/Contact.tsx:28-38,66-121` (was `:22-38,70-90` before #392), `assets/css/legal.css:100-121,146-196` (was `:95-112,143-152`), `pages/Impressum.tsx:28-49`, `pages/PrivacyPolicy.tsx:28-34`, `pages/Terms.tsx:28-39`
 - **Related:** SOT §16 P0 #12, §21 Q24–25; decision Q3.
-- **Q3 answered (#367, 2026-09-30):** tutoring is mentioned nowhere on the site for now. The fix changes from "tutoring out of the Impressum" to removing the offer from both `Impressum.tsx:47-48` and `Contact.tsx:86-88`.
+- **Q3 answered (#367, 2026-09-30):** tutoring is mentioned nowhere on the site for now. The fix changes from "tutoring out of the Impressum" to removing the offer from both `Impressum.tsx:47-48` and `Contact.tsx:87-92` (`:86-88` before #392).
 
 ### C43 · Analytics and third-party widgets load before any consent — **major**
 - **What happens:** GA4 fires inline before React mounts; Headway and Google Fonts load for every visitor. There is no consent UI anywhere, and the privacy policy says consent is given 'by starting the guest session', which production visitors cannot do.
@@ -872,7 +873,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Learner impact:** modest on its own — the tiny targets sit in infrequent modals — but it is the cause behind C48 and C49.
 - **Fix:** first an `IconButton` with a 44×44 hit area and a full-width lesson CTA of at least 48 px; then the §5b component set; stylelint bans on hex, raw z-index and `!important`.
 - **Effort:** S (first step) / L (full)
-- **Where:** `components/LessonPlayer/LessonPlayer.tsx:526-548`, `assets/css/legal.css:50-60,118-128`, `assets/css/dashboard.css:1852-1868`
+- **Where:** `components/LessonPlayer/LessonPlayer.tsx:526-548`, `assets/css/legal.css:51-62,122-136` (re-pointed 2026-10-20, #392), `assets/css/dashboard.css:1852-1868`
 - **Related:** WP-C1 (z-index scale), WP-C3 (sub-44 px targets); C24, C37, C48.
 
 ### C53 · Motion has no system — **minor**

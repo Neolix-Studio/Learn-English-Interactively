@@ -98,14 +98,17 @@
     color: var(--color-text-main);
 }
 .form-control {
-    background: oklch(0.12 0.01 260 / 0.5);
-    border: 1px solid oklch(1 0 0 / 0.15);
+    background: var(--color-input-bg);
+    border: 1px solid var(--color-input-border);
     border-radius: 8px;
     padding: 0.75rem 1rem;
     color: var(--color-text-main);
     font-family: var(--font-body);
     font-size: 1rem;
     transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.form-control::placeholder {
+    color: var(--color-text-muted);
 }
 .form-control:focus {
     outline: none;
@@ -120,6 +123,7 @@ textarea.form-control {
     align-self: flex-start;
     font-family: var(--font-heading);
     font-weight: 600;
+    font-size: 1rem;
     color: #000;
     background: var(--color-accent-in);
     padding: 0.75rem 2rem;
@@ -145,34 +149,47 @@ textarea.form-control {
     margin-top: 1rem;
     line-height: 1.5;
     font-size: 0.95rem;
+    color: var(--color-text-main);
+    border: 1px solid var(--color-input-border);
+    border-left-width: 4px;
 }
-.status-success {
-    background: oklch(0.75 0.2 150 / 0.1);
-    border: 1px solid var(--color-success);
-    color: var(--color-success);
+.status-info {
+    border-left-color: var(--color-accent-in);
 }
 .status-error {
-    background: oklch(0.65 0.2 25 / 0.1);
-    border: 1px solid var(--color-error);
-    color: var(--color-error);
+    border-left-color: var(--color-error);
+}
+
+/* The mailto button and the copy button sit side by side and wrap on a narrow phone. */
+.contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.2rem;
+}
+.btn-mailto {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
 }
 
 .copy-btn {
-    background: oklch(1 0 0 / 0.08);
-    border: 1px solid oklch(1 0 0 / 0.15);
-    color: var(--color-text-muted);
-    padding: 0.2rem 0.5rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    background: transparent;
+    border: 1px solid var(--color-input-border);
+    color: var(--color-text-main);
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    min-height: 44px;
     cursor: pointer;
-    margin-left: 0.5rem;
     transition: all var(--transition-base);
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
 }
 .copy-btn:hover {
-    background: oklch(1 0 0 / 0.15);
     color: var(--color-accent-in);
     border-color: var(--color-accent-in);
 }
