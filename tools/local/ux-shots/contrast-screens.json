@@ -14,6 +14,32 @@
     "base": "http://app.localhost:5173",
     "path": "/?invite=LOCAL-STACK-INVITE"
   },
+  "forgot": {
+    "about": "The forgot-password view of the sign-in dialog, with its 44 px back link (#391).",
+    "base": "http://app.localhost:5173",
+    "path": "/?login=true",
+    "steps": [
+      { "clickText": "Elfelejtetted?", "tag": "a", "after": 500 },
+      { "contrast": "forgot" }
+    ]
+  },
+  "reset": {
+    "about": "The new-password view a reset link opens, with its Mégse (Cancel) button (#391).",
+    "base": "http://app.localhost:5173",
+    "path": "/?action=reset_password&token=contrast-check"
+  },
+  "guest-merge": {
+    "about": "The returning guest signs in and is asked whether to add the guest progress, with the back link (#363, #391).",
+    "preset": "returning-guest",
+    "base": "http://app.localhost:5173",
+    "path": "/?login=true",
+    "steps": [
+      { "click": "#auth-email" }, { "type": "anna@example.hu" },
+      { "click": "#auth-password" }, { "type": "jelszo1234" },
+      { "key": "Enter", "after": 600 },
+      { "contrast": "merge" }
+    ]
+  },
   "welcome": {
     "about": "The first onboarding screen.",
     "preset": "new-guest",
@@ -84,6 +110,16 @@
     "steps": [
       { "clickText": "Bolt", "after": 900 },
       { "contrast": "shop" }
+    ]
+  },
+  "feedback-widget": {
+    "about": "The floating feedback button's panel on the path of a signed-in learner (#391).",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "wait": 2500,
+    "steps": [
+      { "click": ".lexi-feedback-widget > button[aria-expanded]", "after": 500 },
+      { "contrast": "panel" }
     ]
   }
 }

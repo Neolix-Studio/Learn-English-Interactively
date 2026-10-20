@@ -329,7 +329,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
         />
 
         {displayedLevelModalOpen && (
-          <div style={{
+          <div data-overlay style={{
             position: 'fixed',
             top: 0,
             left: 0,

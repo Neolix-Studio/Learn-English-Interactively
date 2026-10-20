@@ -19,6 +19,29 @@ body.has-mobile-drawer-open {
     overscroll-behavior: contain;
 }
 
+/* The floating feedback button (LexiFeedbackWidget). */
+.lexi-feedback-widget {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: var(--layer-raised);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+/* It steps aside while a drawer, a dialog, a lesson or the tour covers the path (C37, #391). The drawers
+   sit inside .dashboard-container's stacking context, so no z-index can put the button under them. Each
+   dialog that can open here marks its root with data-overlay, until the Dialog primitive (UX2-1, #396). */
+body.has-mobile-drawer-open .lexi-feedback-widget {
+    display: none;
+}
+
+body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-feedback-widget {
+    display: none;
+}
+
 .dashboard-left-sidebar {
     position: fixed;
     top: 0;

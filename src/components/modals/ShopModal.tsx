@@ -52,6 +52,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
   return (
     <div
       className="modal-overlay is-active"
+      data-overlay
       style={{ position: 'fixed', inset: 0, width: '100%', height: '100dvh', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
     >
       <button

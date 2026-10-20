@@ -77,7 +77,7 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
   };
 
   return (
-    <div style={{
+    <div data-overlay style={{
       position: 'fixed',
       top: 0,
       left: 0,

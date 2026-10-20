@@ -228,7 +228,8 @@
     "loading": "Betöltés...",
     "error": "Hiba történt",
     "save": "Mentés",
-    "cancel": "Mégse"
+    "cancel": "Mégse",
+    "close": "Bezárás"
   },
   "errors": {
     "offline": "Nincs internetkapcsolat, vagy a szerver nem válaszol.",
@@ -257,6 +258,19 @@
     "merge_note": "Ahol a fiókodban már több van, az marad. Ezt később nem lehet visszavonni.",
     "merge_accept": "Igen, hozzáadom",
     "merge_decline": "Nem, kihagyom",
+    "merge_back": "Vissza",
     "password_rule": "A jelszó {{min}}–{{max}} karakter hosszú legyen."
+  },
+  "feedback_widget": {
+    "open_label": "Visszajelzés küldése",
+    "title": "Mondd el a véleményed! 🦴",
+    "intro": "Meséld el, milyen eddig a Lexipaws, és kapsz 20 Lexi-falatot!",
+    "start": "Elmondom",
+    "form_title": "A véleményed",
+    "placeholder": "Mi működik jól? Mi nem működik?",
+    "sending": "Küldés...",
+    "send": "Küldés (+20 🦴)",
+    "thanks_title": "Köszönjük!",
+    "thanks_body": "Kaptál 20 Lexi-falatot!"
   }
 }

@@ -74,7 +74,7 @@ const RewardPopup: React.FC = () => {
   const isWeekly = reward.reward_type === 'weekly_leaderboard';
 
   return (
-    <div className="reward-popup-overlay">
+    <div className="reward-popup-overlay" data-overlay>
       <div className="reward-popup-content">
         <div className="reward-glow-bg"></div>
 

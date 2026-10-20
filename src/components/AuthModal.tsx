@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../utils/api';
 import { clearGuestMigrationStorage, readGuestMigrationPayload, summarizeGuestProgress } from '../utils/guestProgress';
@@ -52,13 +52,26 @@ const btnSecondaryStyle: React.CSSProperties = {
   color: 'var(--color-text-main)'
 };
 
+const backButtonStyle: React.CSSProperties = {
+  background: 'none',
+  border: 'none',
+  color: 'var(--color-text-muted)',
+  cursor: 'pointer',
+  fontSize: '0.85rem',
+  minHeight: '44px',
+  marginBottom: '0.25rem',
+  padding: 0,
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.3rem'
+};
+
 export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '', inviteCode = '', initialEmail = '' }: AuthModalProps) {
   const canRegister = inviteCode.trim() !== '';
   const [tab, setTab] = useState<'login' | 'register'>(initialView === 'register' && canRegister ? 'register' : 'login');
   const { t } = useTranslation();
-  const [view, setView] = useState<'auth' | 'merge' | 'forgot' | 'forgot_sent' | 'reset' | 'reset_done'>(
-    initialView === 'forgot' ? 'forgot' : initialView === 'reset' ? 'reset' : 'auth'
-  );
+  const startView = initialView === 'forgot' ? 'forgot' : initialView === 'reset' ? 'reset' : 'auth';
+  const [view, setView] = useState<'auth' | 'merge' | 'forgot' | 'forgot_sent' | 'reset' | 'reset_done'>(startView);
 
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
@@ -80,6 +93,34 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
   const [mergeGuest, setMergeGuest] = useState<boolean | null>(null);
 
   const passwordRule = t('auth.password_rule', { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH });
+
+  // Every view closes on Escape and on a tap on the scrim (C37, #391), and the next opening starts
+  // from the first view again. A stopgap until the Dialog primitive (UX2-1, #396).
+  const close = useCallback(() => {
+    setView(startView);
+    setError('');
+    onClose();
+  }, [startView, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [isOpen, close]);
+
+  // The press has to start on the scrim too, so selecting text in a field and letting go outside the panel keeps it open.
+  const pressStartedOnScrim = useRef(false);
+  const overlayProps = {
+    id: 'login-modal',
+    className: 'modal-overlay is-active',
+    'aria-hidden': false,
+    'data-overlay': true,
+    onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => { pressStartedOnScrim.current = event.target === event.currentTarget; },
+    onClick: (event: React.MouseEvent<HTMLDivElement>) => { if (pressStartedOnScrim.current && event.target === event.currentTarget) close(); }
+  };
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
@@ -249,8 +290,11 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     ].filter(Boolean) as string[];
 
     return (
-      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
+      <div {...overlayProps}>
         <div className="modal-content glass-panel" role="dialog" aria-modal="true" aria-labelledby="guest-merge-title">
+          <button type="button" id="guest-merge-back" disabled={loading} onClick={() => setView('auth')} style={backButtonStyle}>
+            ← {t('auth.merge_back')}
+          </button>
           <h2 id="guest-merge-title" style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.3rem' }}>{t('auth.merge_title')}</h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', margin: '0 0 1rem 0' }}>
             {t('auth.merge_intro')}
@@ -280,9 +324,9 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
   if (view === 'forgot') {
     return (
-      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
+      <div {...overlayProps}>
         <div className="modal-content glass-panel">
-          <button type="button" onClick={() => { setView('auth'); setError(''); }} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: '0.85rem', marginBottom: '1rem', padding: 0, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+          <button type="button" onClick={() => { setView('auth'); setError(''); }} style={backButtonStyle}>
             ← Vissza a bejelentkezéshez
           </button>
           <h2 style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.3rem' }}>Elfelejtett jelszó</h2>
@@ -319,7 +363,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
   if (view === 'forgot_sent') {
     return (
-      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
+      <div {...overlayProps}>
         <div className="modal-content glass-panel" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📧</div>
           <h2 style={{ margin: '0 0 0.75rem 0', color: 'var(--color-text-main)' }}>E-mail elküldve!</h2>
@@ -336,7 +380,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
   if (view === 'reset') {
     return (
-      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
+      <div {...overlayProps}>
         <div className="modal-content glass-panel">
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '2.5rem' }}>🔐</div>
@@ -360,6 +404,9 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             <button type="submit" disabled={loading} style={{ ...btnPrimaryStyle, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
               {loading ? 'Mentés...' : 'Jelszó mentése'}
             </button>
+            <button type="button" id="reset-cancel" onClick={close} style={{ ...btnSecondaryStyle, cursor: 'pointer' }}>
+              {t('common.cancel')}
+            </button>
           </form>
         </div>
       </div>
@@ -368,7 +415,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
   if (view === 'reset_done') {
     return (
-      <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
+      <div {...overlayProps}>
         <div className="modal-content glass-panel" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
           <h2 style={{ margin: '0 0 0.75rem 0', color: 'var(--color-text-main)' }}>Jelszó sikeresen megváltozott!</h2>
@@ -384,7 +431,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
   }
 
   return (
-    <div id="login-modal" className="modal-overlay is-active" aria-hidden="false">
+    <div {...overlayProps}>
       <div className="modal-content glass-panel">
         <div className="auth-tabs" style={{ display: 'flex', gap: '1rem', borderBottom: 'var(--glass-border)', marginBottom: '1.5rem' }}>
           <button
@@ -482,7 +529,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
           </button>
         </form>
 
-        <button className="btn-close-modal" onClick={onClose} style={{ marginTop: '1rem', width: '100%' }}>Bezárás</button>
+        <button className="btn-close-modal" onClick={close} style={{ marginTop: '1rem', width: '100%' }}>Bezárás</button>
       </div>
     </div>
   );
