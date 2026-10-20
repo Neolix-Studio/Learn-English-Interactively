@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../utils/api';
+import { Dialog } from './Dialog';
 import { clearGuestMigrationStorage, readGuestMigrationPayload, summarizeGuestProgress } from '../utils/guestProgress';
 import type { GuestProgressSummary } from '../utils/guestProgress';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, isAcceptablePassword } from '../utils/passwordPolicy';
@@ -94,33 +95,13 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
   const passwordRule = t('auth.password_rule', { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH });
 
-  // Every view closes on Escape and on a tap on the scrim (C37, #391), and the next opening starts
-  // from the first view again. A stopgap until the Dialog primitive (UX2-1, #396).
+  // Every view closes on Escape, on a tap on the scrim and on Back (the Dialog primitive, UX2-1 #396),
+  // and the next opening starts from the first view again (C37, #391).
   const close = useCallback(() => {
     setView(startView);
     setError('');
     onClose();
   }, [startView, onClose]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') close();
-    };
-    document.addEventListener('keydown', closeOnEscape);
-    return () => document.removeEventListener('keydown', closeOnEscape);
-  }, [isOpen, close]);
-
-  // The press has to start on the scrim too, so selecting text in a field and letting go outside the panel keeps it open.
-  const pressStartedOnScrim = useRef(false);
-  const overlayProps = {
-    id: 'login-modal',
-    className: 'modal-overlay is-active',
-    'aria-hidden': false,
-    'data-overlay': true,
-    onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => { pressStartedOnScrim.current = event.target === event.currentTarget; },
-    onClick: (event: React.MouseEvent<HTMLDivElement>) => { if (pressStartedOnScrim.current && event.target === event.currentTarget) close(); }
-  };
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,7 +184,8 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                 clearGuestMigrationStorage();
             }
             const searchParams = new URLSearchParams(window.location.search);
-            window.location.href = safeRedirectPath(searchParams.get('redirect'));
+            // replace: the dialog's own history entry is the current one, so Back from the next page skips it.
+            window.location.replace(safeRedirectPath(searchParams.get('redirect')));
         }
       } else {
         const data = await api.fetch('login', { email, password, ...migrationField });
@@ -221,7 +203,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                 clearGuestMigrationStorage();
             }
             const searchParams = new URLSearchParams(window.location.search);
-            window.location.href = safeRedirectPath(searchParams.get('redirect'));
+            window.location.replace(safeRedirectPath(searchParams.get('redirect')));
         }
       }
     } catch (err) {
@@ -269,7 +251,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
         setError(data.error);
       } else {
         setView('reset_done');
-        window.history.replaceState({}, document.title, window.location.pathname);
       }
     } catch (err) {
       setError('Hálózati hiba. Kérjük próbáld újra.');
@@ -278,7 +259,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     }
   };
 
-  if (!isOpen) return null;
+  const dialogProps = { open: isOpen, onClose: close, id: 'login-modal' };
 
   if (view === 'merge' && guestSummary) {
     const amount = (value: number) => value.toLocaleString('hu-HU');
@@ -290,8 +271,8 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     ].filter(Boolean) as string[];
 
     return (
-      <div {...overlayProps}>
-        <div className="modal-content glass-panel" role="dialog" aria-modal="true" aria-labelledby="guest-merge-title">
+      <Dialog {...dialogProps} labelledBy="guest-merge-title">
+        <div className="modal-content glass-panel">
           <button type="button" id="guest-merge-back" disabled={loading} onClick={() => setView('auth')} style={backButtonStyle}>
             ← {t('auth.merge_back')}
           </button>
@@ -318,18 +299,18 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             </button>
           </div>
         </div>
-      </div>
+      </Dialog>
     );
   }
 
   if (view === 'forgot') {
     return (
-      <div {...overlayProps}>
+      <Dialog {...dialogProps} labelledBy="auth-forgot-title">
         <div className="modal-content glass-panel">
           <button type="button" onClick={() => { setView('auth'); setError(''); }} style={backButtonStyle}>
             ← Vissza a bejelentkezéshez
           </button>
-          <h2 style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.3rem' }}>Elfelejtett jelszó</h2>
+          <h2 id="auth-forgot-title" style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.3rem' }}>Elfelejtett jelszó</h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
             Add meg a regisztrált e-mail címedet, és küldünk egy visszaállítási linket.
           </p>
@@ -357,16 +338,16 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             </button>
           </form>
         </div>
-      </div>
+      </Dialog>
     );
   }
 
   if (view === 'forgot_sent') {
     return (
-      <div {...overlayProps}>
+      <Dialog {...dialogProps} labelledBy="auth-forgot-sent-title">
         <div className="modal-content glass-panel" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📧</div>
-          <h2 style={{ margin: '0 0 0.75rem 0', color: 'var(--color-text-main)' }}>E-mail elküldve!</h2>
+          <h2 id="auth-forgot-sent-title" style={{ margin: '0 0 0.75rem 0', color: 'var(--color-text-main)' }}>E-mail elküldve!</h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
             Ha a <strong>{forgotEmail}</strong> cím regisztrálva van nálunk, hamarosan megkapod a visszaállítási linket. (Ellenőrizd a spam mappát is!)
           </p>
@@ -374,17 +355,17 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             Vissza a bejelentkezéshez
           </button>
         </div>
-      </div>
+      </Dialog>
     );
   }
 
   if (view === 'reset') {
     return (
-      <div {...overlayProps}>
+      <Dialog {...dialogProps} labelledBy="auth-reset-title">
         <div className="modal-content glass-panel">
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '2.5rem' }}>🔐</div>
-            <h2 style={{ margin: '0.5rem 0 0.25rem', color: 'var(--color-text-main)' }}>Új jelszó megadása</h2>
+            <h2 id="auth-reset-title" style={{ margin: '0.5rem 0 0.25rem', color: 'var(--color-text-main)' }}>Új jelszó megadása</h2>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>{passwordRule}</p>
           </div>
           {error && (
@@ -409,16 +390,16 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             </button>
           </form>
         </div>
-      </div>
+      </Dialog>
     );
   }
 
   if (view === 'reset_done') {
     return (
-      <div {...overlayProps}>
+      <Dialog {...dialogProps} labelledBy="auth-reset-done-title">
         <div className="modal-content glass-panel" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
-          <h2 style={{ margin: '0 0 0.75rem 0', color: 'var(--color-text-main)' }}>Jelszó sikeresen megváltozott!</h2>
+          <h2 id="auth-reset-done-title" style={{ margin: '0 0 0.75rem 0', color: 'var(--color-text-main)' }}>Jelszó sikeresen megváltozott!</h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
             Mostantól az új jelszavaddal tudsz bejelentkezni.
           </p>
@@ -426,12 +407,12 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
             Bejelentkezés
           </button>
         </div>
-      </div>
+      </Dialog>
     );
   }
 
   return (
-    <div {...overlayProps}>
+    <Dialog {...dialogProps} label={tab === 'login' ? 'Bejelentkezés' : 'Regisztráció'}>
       <div className="modal-content glass-panel">
         <div className="auth-tabs" style={{ display: 'flex', gap: '1rem', borderBottom: 'var(--glass-border)', marginBottom: '1.5rem' }}>
           <button
@@ -531,6 +512,6 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
 
         <button className="btn-close-modal" onClick={close} style={{ marginTop: '1rem', width: '100%' }}>Bezárás</button>
       </div>
-    </div>
+    </Dialog>
   );
 }

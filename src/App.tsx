@@ -47,14 +47,19 @@ function RequireAuthenticated({ children }: { children: ReactElement }) {
   return children;
 }
 
+// A password-reset link is read once, at load, and its token leaves the address bar at once, so neither
+// the page's history entry nor the one the reset dialog adds (UX2-1, #396) keeps it.
+const resetLinkToken = (() => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const token = searchParams.get('action') === 'reset_password' ? searchParams.get('token') || '' : '';
+  if (token) window.history.replaceState(window.history.state, '', window.location.pathname);
+  return token;
+})();
+
 function App() {
   const isGatewayDomain = window.location.hostname === 'lexipaws.eu' || window.location.hostname === 'www.lexipaws.eu';
 
-  const searchParams = new URLSearchParams(window.location.search);
-  const urlAction = searchParams.get('action');
-  const urlToken = searchParams.get('token') || '';
-  const isResetLink = urlAction === 'reset_password' && urlToken.length > 0;
-
+  const isResetLink = resetLinkToken.length > 0;
   const [resetModalOpen, setResetModalOpen] = useState(isResetLink);
 
   return (
@@ -99,7 +104,7 @@ function App() {
             isOpen={resetModalOpen}
             onClose={() => setResetModalOpen(false)}
             initialView="reset"
-            resetToken={urlToken}
+            resetToken={resetLinkToken}
           />
         )}
         </ShopProvider>

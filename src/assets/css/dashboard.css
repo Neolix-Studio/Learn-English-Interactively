@@ -32,13 +32,14 @@ body.has-mobile-drawer-open {
 }
 
 /* It steps aside while a drawer, a dialog, a lesson or the tour covers the path (C37, #391). The drawers
-   sit inside .dashboard-container's stacking context, so no z-index can put the button under them. Each
-   dialog that can open here marks its root with data-overlay, until the Dialog primitive (UX2-1, #396). */
+   sit inside .dashboard-container's stacking context, so no z-index can put the button under them. A
+   dialog on the Dialog primitive (UX2-1, #396) is an open .lexi-dialog; one not moved onto it yet marks
+   its root with data-overlay. */
 body.has-mobile-drawer-open .lexi-feedback-widget {
     display: none;
 }
 
-body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-feedback-widget {
+body:has(.lexi-dialog[open], [data-overlay], .interactive-active, .react-joyride__overlay) .lexi-feedback-widget {
     display: none;
 }
 

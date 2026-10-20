@@ -8,6 +8,7 @@ import { api } from '../utils/api';
 import { clearPersonalStorage } from '../utils/guestProgress';
 import { isLeaderboardUnlocked, LEADERBOARD_UNLOCK_XP } from '../utils/featureUnlocks';
 import { ReportProblemModal } from './modals/ReportProblemModal';
+import { Dialog } from './Dialog';
 
 interface SidebarLeftProps {
   onOpenProfile?: () => void;
@@ -328,39 +329,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
             contextData={{ username: data?.username, activeLevel }}
         />
 
-        {displayedLevelModalOpen && (
-          <div data-overlay style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: '100%',
-            height: '100dvh',
-            backgroundColor: 'rgba(15, 23, 42, 0.6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 'var(--layer-dialog)',
-            backdropFilter: 'blur(8px)',
-            padding: '1.5rem',
-            boxSizing: 'border-box'
-          }}>
-            <button
-              type="button"
-              aria-label="Szintválasztó bezárása"
-              onClick={closeLevelModal}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                border: 'none',
-                background: 'transparent',
-                padding: 0,
-                cursor: 'default'
-              }}
-            />
+        <Dialog open={displayedLevelModalOpen} onClose={closeLevelModal} labelledBy="level-picker-title">
             <div style={{
               background: 'var(--color-bg-surface)',
               padding: '2rem',
@@ -371,27 +340,32 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
               overflowY: 'auto',
               boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              position: 'relative',
-              zIndex: 1
+              position: 'relative'
             }} className="level-selector-modal">
               <button
                 type="button"
+                aria-label={t('common.close')}
                 onClick={closeLevelModal}
                 style={{
                   position: 'absolute',
-                  top: '1.5rem',
-                  right: '1.5rem',
+                  top: '1rem',
+                  right: '1rem',
+                  width: '44px',
+                  height: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   background: 'none',
                   border: 'none',
                   fontSize: '1.5rem',
                   cursor: 'pointer',
                   color: 'var(--color-text-muted)',
-                  padding: '5px'
+                  padding: 0
                 }}
               >
                 ✕
               </button>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--color-text-main)' }}>
+              <h2 id="level-picker-title" style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--color-text-main)' }}>
                 {t('sidebar.select_level', 'Szintválasztó')}
               </h2>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
@@ -412,7 +386,8 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
                       onClick={() => {
                         setActiveLevel(lvl.id);
                         closeLevelModal();
-                        navigate('/dashboard');
+                        // replace: the picker's own history entry is the current one, so Back does not land on it.
+                        navigate('/dashboard', { replace: true });
                         if (onClose) onClose();
                       }}
                       style={{
@@ -456,8 +431,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({ onOpenProfile, isOpen,
                 })}
               </div>
             </div>
-          </div>
-        )}
+        </Dialog>
     </aside>
   );
 };

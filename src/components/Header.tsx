@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 
@@ -8,6 +8,7 @@ interface HeaderProps {
 
 export function Header({ onLoginClick }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const { data, isGuest, isLoading } = useUser();
   const isAuthenticated = !isLoading && !isGuest;
 
@@ -21,6 +22,7 @@ export function Header({ onLoginClick }: HeaderProps) {
         </Link>
 
         <button
+          ref={menuToggleRef}
           className={`mobile-menu-toggle ${isMobileMenuOpen ? 'is-active' : ''}`}
           id="mobile-menu-toggle"
           aria-label="Menü megnyitása"
@@ -69,6 +71,9 @@ export function Header({ onLoginClick }: HeaderProps) {
                 id="nav-auth-btn"
                 disabled={isLoading}
                 onClick={() => {
+                  // On phones this button is in the menu, which closes now. The menu button takes focus, so
+                  // the sign-in dialog hands focus back to it when it closes (UX2-1, #396).
+                  if (isMobileMenuOpen) menuToggleRef.current?.focus();
                   closeMobileMenu();
                   onLoginClick();
                 }}

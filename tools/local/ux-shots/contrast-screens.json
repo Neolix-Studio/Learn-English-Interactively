@@ -151,6 +151,17 @@
       { "contrast": "shop" }
     ]
   },
+  "level-picker": {
+    "about": "The level picker of a signed-in learner, opened from the levels tab's drawer; the first screen on the Dialog primitive (#396).",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "wait": 2500,
+    "steps": [
+      { "clickText": "Szintek", "after": 700 },
+      { "click": "#level-selector-btn", "after": 900 },
+      { "contrast": "level-picker" }
+    ]
+  },
   "grammar": {
     "about": "The first module's grammar guide opened from its banner, with the banner title above it (#395).",
     "preset": "signed-in",
