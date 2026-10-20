@@ -15,6 +15,7 @@ import { MobileBottomBar } from '../components/MobileBottomBar';
 import { LexiFeedbackWidget } from '../components/LexiFeedbackWidget';
 import { ProductTour } from '../components/ProductTour';
 import '../assets/css/dashboard.css';
+import '../assets/css/prototype.css';
 import '../assets/css/interactive.css';
 
 export const Dashboard: React.FC = () => {
@@ -153,7 +154,7 @@ export const Dashboard: React.FC = () => {
           <div id="app">
             
             {/* Roadmap Screen (Native React) */}
-            <div id="roadmap-screen" className="screen active">
+            <div id="roadmap-screen">
               <Roadmap onNodeClick={handleNodeClick} />
             </div>
 

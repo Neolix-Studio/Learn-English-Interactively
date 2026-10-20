@@ -151,6 +151,43 @@
       { "contrast": "shop" }
     ]
   },
+  "grammar": {
+    "about": "The first module's grammar guide opened from its banner, with the banner title above it (#395).",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "wait": 2500,
+    "steps": [
+      { "click": ".module-banner-grammar-btn", "after": 900 },
+      { "contrast": "guide" }
+    ]
+  },
+  "reward": {
+    "about": "The weekly league reward popup and its 'Gratulálunk!' heading, which was purple gradient text (#395).",
+    "preset": "league-reward",
+    "path": "/dashboard",
+    "wait": 3000
+  },
+  "friends": {
+    "about": "Friends of a signed-in learner: the section headings and the send-request button (#395).",
+    "preset": "signed-in",
+    "path": "/friends",
+    "wait": 2500
+  },
+  "legal": {
+    "about": "The privacy policy: the legal card's title and section headings, which were gradient text (#395).",
+    "base": "http://app.localhost:5173",
+    "path": "/privacy-policy",
+    "steps": [
+      { "contrast": "top" },
+      { "scroll": 400, "after": 300 },
+      { "contrast": "sections" }
+    ]
+  },
+  "notfound": {
+    "about": "The 404 page and its heading, which was gradient text (#395).",
+    "base": "http://app.localhost:5173",
+    "path": "/nincs-ilyen"
+  },
   "feedback-widget": {
     "about": "The floating feedback button's panel on the path of a signed-in learner (#391).",
     "preset": "signed-in",

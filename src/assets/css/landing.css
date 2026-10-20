@@ -22,9 +22,6 @@
     font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
     line-height: 1.1;
     letter-spacing: -1px;
-    background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-text-muted));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .hero-subtitle {
@@ -301,8 +298,6 @@ body {
     font-size: clamp(2.5rem, 5vw, 4rem) !important;
     line-height: 1.1 !important;
     color: var(--color-text-main) !important;
-    background: none !important;
-    -webkit-text-fill-color: initial !important;
     letter-spacing: -1px;
 }
 

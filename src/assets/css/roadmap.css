@@ -54,14 +54,6 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* dashboard.css's prototype block styles any .current or .completed (indigo fill, white border, pulse); a path node draws its state with the ring below instead. */
-.roadmap-node.current,
-.roadmap-node.completed {
-    background: transparent;
-    border: none;
-    animation: none;
-}
-
 /* The status ring (#390): green around the one current node with the lessons done in gold, all gold around a completed node. Drawn on the node, so it stays round at every width. */
 .roadmap-node.current::before,
 .roadmap-node.completed::before {
@@ -139,8 +131,11 @@
     box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.3), 0 4px 10px rgba(245, 158, 11, 0.4);
 }
 
+/* The solid disc under the node picture and the greyscale came from the pasted prototype's .locked (#395). */
 .roadmap-node.locked {
     cursor: not-allowed;
+    background: #D1D5DB;
+    filter: grayscale(100%);
 }
 
 .roadmap-node.locked .node-icon-wrapper {
@@ -365,15 +360,11 @@
     max-width: 65%;
 }
 
-/* Solid white on the 700-shade banner: without the last two lines the prototype's global h2
-   gradient (dashboard.css, C49) paints it purple. */
 .module-banner-title {
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 0.25rem;
     color: white !important;
-    background: none;
-    -webkit-text-fill-color: currentColor;
 }
 
 .module-banner-desc {
@@ -417,7 +408,6 @@
 @media (max-width: 768px) {
     .roadmap-container {
         padding: 1rem 0 4rem 0;
-        margin-top: 0;
         overflow-x: clip;
     }
 

@@ -16,9 +16,7 @@
 .legal-card h1 {
     font-size: 2.2rem;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-accent-in));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-text-main);
     line-height: 1.2;
 }
 .legal-card h2 {

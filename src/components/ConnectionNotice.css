@@ -14,13 +14,10 @@
     color: var(--color-text-main);
 }
 
-/* Plain text: the global h1 rules paint headings with a gradient (C49). */
 .connection-error__title {
     margin: 0;
     font-size: 1.5rem;
     font-family: inherit;
-    background: none;
-    -webkit-text-fill-color: currentColor;
     color: var(--color-text-main);
 }
 

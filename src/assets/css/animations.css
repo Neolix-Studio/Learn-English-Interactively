@@ -20,3 +20,12 @@
     animation: float 4s ease-in-out infinite;
     animation-delay: 2s;
 }
+
+/* The SVG Lexi's blink and ear flicks (LexiMascot, LexiAnimation, Gateway, PostLesson), from the
+   prototype once pasted into dashboard.css (#395). */
+.eye { transform-origin: center; animation: blink 4s infinite; }
+.ear-left { transform-origin: top right; animation: flick-left 5s infinite; }
+.ear-right { transform-origin: top left; animation: flick-right 7s infinite; }
+@keyframes blink { 0%, 96%, 98%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+@keyframes flick-left { 0%, 95%, 100% { transform: rotate(0deg); } 97% { transform: rotate(-6deg); } }
+@keyframes flick-right { 0%, 93%, 100% { transform: rotate(0deg); } 96% { transform: rotate(6deg); } }

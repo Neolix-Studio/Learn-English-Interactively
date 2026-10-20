@@ -71,13 +71,13 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
   }, [lessonNode]);
 
   if (isLoading) {
-    return <div className="screen active" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#1a1a2e' }}>
+    return <div className="lesson-screen" style={{ justifyContent: 'center', alignItems: 'center', background: '#1a1a2e' }}>
       <div className="spinner" style={{ width: '50px', height: '50px', border: '5px solid #eee', borderTopColor: '#ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
     </div>;
   }
 
   if (questions.length === 0) {
-    return <div className="screen active" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', background: '#1a1a2e', color: 'white' }}>
+    return <div className="lesson-screen" style={{ justifyContent: 'center', alignItems: 'center', background: '#1a1a2e', color: 'white' }}>
       <h2>Failed to load boss data</h2>
       <button className="btn" onClick={onExit} style={{ background: '#ef4444' }}>Vissza (Back)</button>
     </div>;
@@ -164,7 +164,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
     const { scoreData, pointsBefore } = result;
 
     return (
-      <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
+      <div className="lesson-screen interactive-active">
         <PostLesson
           baseXp={scoreData.xpEarned}
           accuracy={scoreData.accuracy}
@@ -177,7 +177,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
 
   if (isDefeated) {
     return (
-      <div className="screen active interactive-active" style={{ background: '#1a1a2e', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
+      <div className="lesson-screen interactive-active" style={{ background: '#1a1a2e', color: 'white', alignItems: 'center', justifyContent: 'center' }}>
         <h1 style={{ color: '#ef4444', fontSize: '3rem', marginBottom: '1rem' }}>A Főnök Legyőzött!</h1>
         <p style={{ fontSize: '1.2rem', opacity: 0.8, marginBottom: '3rem' }}>Nincs több életed. Próbáld újra!</p>
         <button className="btn btn-primary" onClick={onExit} style={{ background: '#ef4444', borderColor: '#b91c1c', padding: '1rem 3rem', fontSize: '1.2rem', borderRadius: '16px' }}>Vissza a Térképre</button>
@@ -186,7 +186,7 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
   }
 
   return (
-    <div className="screen active interactive-active" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
+    <div className="lesson-screen interactive-active" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}>
 
       <style>{`
         .boss-idle { animation: float 3s ease-in-out infinite; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }

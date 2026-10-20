@@ -22,7 +22,7 @@ export function NotFoundPage() {
         color: 'var(--color-text-main)'
       }}>
         <div style={{ fontSize: '6rem', marginBottom: '1rem' }}>🐕</div>
-        <h1 style={{ fontSize: '3rem', marginBottom: '1rem', background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>
           404 - Az oldal nem található
         </h1>
         <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', marginBottom: '2rem', maxWidth: '500px', lineHeight: 1.6 }}>

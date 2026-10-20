@@ -241,13 +241,13 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   }, [lessonNode]);
 
   if (isLoading) {
-    return <div className="screen active" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    return <div className="lesson-screen" style={{ justifyContent: 'center', alignItems: 'center' }}>
       <div className="spinner" style={{ width: '50px', height: '50px', border: '5px solid #eee', borderTopColor: 'var(--color-accent-in)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
     </div>;
   }
 
   if (questions.length === 0) {
-    return <div className="screen active" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+    return <div className="lesson-screen" style={{ justifyContent: 'center', alignItems: 'center' }}>
       <h2>Failed to load lesson</h2>
       {errorMsg && <p style={{ color: 'red', marginTop: '1rem' }}>{errorMsg}</p>}
       <button onClick={onExit} style={{ padding: '1rem 2rem', marginTop: '1rem', background: '#e5e5e5', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
@@ -410,7 +410,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
 
   if (isReadingStory && lessonNode.story) {
     return (
-      <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)', overflowY: 'auto' }}>
+      <div className="lesson-screen interactive-active" style={{ overflowY: 'auto' }}>
         <header style={{ display: 'flex', alignItems: 'center', padding: '1rem 2rem', gap: '2rem', background: 'var(--color-bg-surface)', borderBottom: 'var(--glass-border)' }}>
           <button className="interactive-close-btn" onClick={onExit} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>
           <div style={{ flex: 1, textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}>📖 {lessonNode.title || t('lesson.story_title')}</div>
@@ -446,7 +446,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     const { scoreData, pointsBefore } = result;
 
     return (
-      <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
+      <div className="lesson-screen interactive-active">
         <PostLesson
           baseXp={scoreData.xpEarned}
           accuracy={scoreData.accuracy}
@@ -460,7 +460,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   }
 
   return (
-    <div className="screen active interactive-active" style={{ background: 'var(--color-bg-base)', display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', position: 'fixed', inset: 0, zIndex: 'var(--layer-screen)' }}>
+    <div className="lesson-screen interactive-active">
 
       <header className="interactive-header" style={{ display: 'flex', alignItems: 'center', padding: '1rem 2rem', gap: '2rem', background: 'var(--color-bg-surface)', borderBottom: 'var(--glass-border)' }}>
         <button className="interactive-close-btn" onClick={onExit} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>

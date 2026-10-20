@@ -217,6 +217,27 @@ h1, h2, h3, h4, .logo-text {
     font-weight: 700;
 }
 
+/* The defaults for a heading or paragraph that sets nothing itself. They came from the prototype
+   pasted into dashboard.css (#395), without its purple gradient text; heading sizes are the type scale's. */
+h1, h2 {
+    font-weight: 800;
+    margin-bottom: var(--space-4);
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+}
+
+p {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-8);
+    color: var(--color-text-muted);
+}
+
 /* Controls take the browser's own font unless told otherwise, and an SVG's font-family
    attribute (the lesson pictures say Arial) beats inheritance but not a rule. */
 button, input, select, textarea, svg text {
@@ -1259,9 +1280,7 @@ a {
 .legal-card h1 {
     font-size: 2.2rem;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-accent-in));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-text-main);
     line-height: 1.2;
 }
 .legal-card h2 {

@@ -63,7 +63,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
       />
       <div
         className="modal-content"
-        style={{ background: 'var(--color-bg-surface)', borderRadius: '24px', padding: '0', width: '100%', maxWidth: '480px', boxShadow: '0 25px 60px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1, overflow: 'hidden', border: 'var(--glass-border)' }}
+        style={{ background: 'var(--color-bg-surface)', borderRadius: '24px', padding: '0', width: '100%', maxWidth: '480px', textAlign: 'center', boxShadow: '0 25px 60px rgba(0,0,0,0.3)', position: 'relative', zIndex: 1, overflow: 'hidden', border: 'var(--glass-border)' }}
       >
         <div style={{ background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', padding: '1.5rem 2rem', position: 'relative' }}>
           <button
@@ -71,7 +71,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
             style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-on-accent)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1 }}
           >✕</button>
           <div style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>🛒</div>
-          <h2 style={{ margin: '0 0 0.25rem 0', color: 'var(--color-on-accent)', background: 'none', WebkitTextFillColor: 'currentColor', fontSize: '1.6rem', fontWeight: 900 }}>Bolt</h2>
+          <h2 style={{ margin: '0 0 0.25rem 0', color: 'var(--color-on-accent)', fontSize: '1.6rem', fontWeight: 900 }}>Bolt</h2>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--color-accent-at)', borderRadius: '20px', padding: '0.3rem 0.9rem' }}>
             <span style={{ fontSize: '1rem' }}>🦴</span>
             <span style={{ color: 'var(--color-on-accent)', fontWeight: 700, fontSize: '0.95rem' }}>{bones.toLocaleString()} Csont</span>

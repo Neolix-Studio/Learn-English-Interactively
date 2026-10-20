@@ -72,12 +72,9 @@
     align-items: center;
 }
 
-/* The header's label colour: the prototype's global h2 gradient (dashboard.css, C49) would paint it purple. */
 .grammar-modal-header h2 {
     margin: 0;
     font-size: 1.5rem;
-    background: none;
-    -webkit-text-fill-color: currentColor;
 }
 
 .grammar-modal-close {

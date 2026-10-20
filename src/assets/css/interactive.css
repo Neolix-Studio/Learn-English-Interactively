@@ -7,6 +7,19 @@
     overflow: hidden;
 }
 
+/* The lesson player's root (LessonPlayer, BossEncounter): a full-screen takeover, edge to edge.
+   Until #395 it borrowed the pasted prototype's .screen, which padded it 16/24 px and rounded it 30 px. */
+.lesson-screen {
+    position: fixed;
+    inset: 0;
+    z-index: var(--layer-screen);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100dvh;
+    background: var(--color-bg-base);
+}
+
 .interactive-active {
     overflow: hidden;
 }
