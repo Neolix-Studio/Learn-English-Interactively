@@ -49,7 +49,7 @@ export const PhonicsListenChoose: React.FC<PhonicsListenChooseProps> = ({ questi
           justifyContent: 'center',
           cursor: 'pointer',
           marginBottom: '4rem',
-          boxShadow: '0 8px 0 var(--color-accent-on)',
+          boxShadow: '0 8px 0 var(--color-accent-pressed)',
           transition: 'transform 0.1s, box-shadow 0.1s'
         }}
         onMouseDown={(e) => {
@@ -58,11 +58,11 @@ export const PhonicsListenChoose: React.FC<PhonicsListenChooseProps> = ({ questi
         }}
         onMouseUp={(e) => {
           e.currentTarget.style.transform = 'none';
-          e.currentTarget.style.boxShadow = '0 8px 0 var(--color-accent-on)';
+          e.currentTarget.style.boxShadow = '0 8px 0 var(--color-accent-pressed)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'none';
-          e.currentTarget.style.boxShadow = '0 8px 0 var(--color-accent-on)';
+          e.currentTarget.style.boxShadow = '0 8px 0 var(--color-accent-pressed)';
         }}
       >
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-bg-base)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

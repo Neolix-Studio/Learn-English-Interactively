@@ -158,6 +158,15 @@ function selectLessonItems(data: any, lessonNode: any, userData: any, isGuest: b
   return { rawItems: Array.isArray(data) ? data : [], isLastSubLesson: true };
 }
 
+// The footer button's colours (main.css): the accent before CHECK, then the result's state.
+// The lip is the fill a quarter darker.
+const SUBMIT_COLOURS = {
+  accent: { fill: 'var(--color-accent-in)', lip: 'var(--color-accent-pressed)', label: 'var(--color-on-accent)' },
+  success: { fill: 'var(--color-success-fill)', lip: 'color-mix(in srgb, var(--color-success-fill) 75%, black)', label: 'var(--color-on-success)' },
+  danger: { fill: 'var(--color-danger-fill)', lip: 'color-mix(in srgb, var(--color-danger-fill) 75%, black)', label: 'var(--color-on-danger)' },
+  warning: { fill: 'var(--color-warning-fill)', lip: 'color-mix(in srgb, var(--color-warning-fill) 75%, black)', label: 'var(--color-on-warning)' },
+};
+
 export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, onCommit, onComplete, isTutorial = false }) => {
   const { isGuest, data: userData, activeLevel, syncLearnedWords } = useUser();
   const { t } = useTranslation();
@@ -328,6 +337,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
   // Nothing to grade: the two interstitial cards, and an item whose type has no exercise.
   const isInterstitial = exercise === null || currentQuestion?.type === 'morale_boost' || currentQuestion?.type === 'harder_encouragement';
   const canSubmit = isInterstitial || isAnswered || answer.hasAnswer;
+  const submitColours = SUBMIT_COLOURS[(feedback === 'correct' || isInterstitial) ? 'success' : feedback === 'incorrect' ? 'danger' : feedback === 'skipped' ? 'warning' : 'accent'];
 
   const goToNextQuestion = () => {
     setAnswer(NO_ANSWER);
@@ -418,11 +428,11 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
               onClick={() => setIsReadingStory(false)}
               style={{
                 width: '100%', marginTop: '3rem', padding: '1.5rem', fontSize: '1.5rem', fontWeight: 800,
-                background: 'var(--color-accent-in)', color: 'white', border: 'none', borderRadius: '16px',
-                cursor: 'pointer', boxShadow: '0 4px 0 var(--color-accent-on)', transition: 'transform 0.1s'
+                background: 'var(--color-accent-in)', color: 'var(--color-on-accent)', border: 'none', borderRadius: '16px',
+                cursor: 'pointer', boxShadow: '0 4px 0 var(--color-accent-pressed)', transition: 'transform 0.1s'
               }}
               onMouseDown={e => { e.currentTarget.style.transform = 'translateY(4px)'; e.currentTarget.style.boxShadow = 'none'; }}
-              onMouseUp={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 0 var(--color-accent-on)'; }}
+              onMouseUp={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 0 var(--color-accent-pressed)'; }}
             >
               {t('lesson.continue_to_questions')}
             </button>
@@ -485,7 +495,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             onClick={() => setIsStoryPeekVisible(!isStoryPeekVisible)}
             style={{
               padding: '0.5rem 1rem', background: isStoryPeekVisible ? 'var(--color-accent-in)' : 'var(--color-bg-base)',
-              color: isStoryPeekVisible ? 'white' : 'var(--color-text-main)', border: 'none', borderRadius: '12px',
+              color: isStoryPeekVisible ? 'var(--color-on-accent)' : 'var(--color-text-main)', border: 'none', borderRadius: '12px',
               cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem', transition: 'all 0.2s', whiteSpace: 'nowrap'
             }}
           >
@@ -585,8 +595,8 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           onClick={handleCheck}
           aria-disabled={!canSubmit}
           style={{
-            background: !canSubmit ? 'var(--submit-disabled-bg)' : (feedback === 'correct' || isInterstitial) ? '#10B981' : feedback === 'incorrect' ? '#EF4444' : feedback === 'skipped' ? '#F59E0B' : 'var(--color-accent-in)',
-            borderBottom: `4px solid ${!canSubmit ? 'var(--submit-disabled-lip)' : (feedback === 'correct' || isInterstitial) ? '#059669' : feedback === 'incorrect' ? '#B91C1C' : feedback === 'skipped' ? '#D97706' : 'var(--color-accent-on)'}`,
+            background: !canSubmit ? 'var(--submit-disabled-bg)' : submitColours.fill,
+            borderBottom: `4px solid ${!canSubmit ? 'var(--submit-disabled-lip)' : submitColours.lip}`,
             borderTop: 'none',
             borderLeft: 'none',
             borderRight: 'none',
@@ -594,7 +604,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             padding: '1rem 3rem',
             fontSize: '1.2rem',
             fontWeight: 'bold',
-            color: canSubmit ? 'white' : 'var(--submit-disabled-fg)',
+            color: !canSubmit ? 'var(--submit-disabled-fg)' : submitColours.label,
             textTransform: 'uppercase',
             letterSpacing: '1px',
             cursor: canSubmit ? 'pointer' : 'default',

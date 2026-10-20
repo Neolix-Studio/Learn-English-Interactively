@@ -4,14 +4,75 @@
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
 
+    color-scheme: light;
+
     --color-bg-base: #F9FAFB;
     --color-bg-surface: #FFFFFF;
-    --color-text-main: #111827;
+    --color-text-main: #1F2937;
     --color-text-muted: #6B7280;
 
-    --color-accent-in: #3b82f6;
-    --color-accent-on: #60a5fa;
-    --color-accent-at: #2563eb;
+    /* The accent ramp (C1b, #393). Each of in (base), on (hover) and at (active, gradient end) is
+       at least 4.5:1 as text on the page and on a card. A label on an accent fill is --color-on-accent;
+       --color-accent-pressed is the 3-D lip under an accent button. */
+    --color-accent-in: #047857;
+    --color-accent-on: #065F46;
+    --color-accent-at: #064E3B;
+    --color-on-accent: #FFFFFF;
+    --color-accent-pressed: #065F46;
+
+    /* Blue is the secondary: the landing headline, the header's nav hover and its sign-in and
+       logout button. It is the info fill, so its label is --color-on-info. */
+    --color-primary: var(--color-info-fill);
+
+    /* State colours: -fg is text on the page, -bg a tinted panel, -fill a solid fill whose label
+       is --color-on-*. The lesson feedback banner (UX0a-1, #360) reads these. */
+    --color-success-fg: #047857;
+    --color-success-bg: #ECFDF5;
+    --color-success-fill: #047857;
+    --color-on-success: #FFFFFF;
+    --color-danger-fg: #B91C1C;
+    --color-danger-bg: #FEF2F2;
+    --color-danger-fill: #B91C1C;
+    --color-on-danger: #FFFFFF;
+    --color-warning-fg: #B45309;
+    --color-warning-bg: #FFFBEB;
+    --color-warning-fill: #B45309;
+    --color-on-warning: #FFFFFF;
+    --color-info-fg: #1D4ED8;
+    --color-info-bg: #EFF6FF;
+    --color-info-fill: #2563EB;
+    --color-on-info: #FFFFFF;
+
+    /* Game colours, as text: XP and the streak. */
+    --color-xp: #B45309;
+    --color-streak: #C2410C;
+
+    /* Module banners and landing level cards: 700 shades under white text in both themes
+       (5.0–7.1:1). The module_meta.json files name these by var(). */
+    --color-module-blue: #1D4ED8;
+    --color-module-violet: #6D28D9;
+    --color-module-cyan: #0E7490;
+    --color-module-pink: #BE185D;
+    --color-module-amber: #B45309;
+    --color-module-red: #B91C1C;
+    --color-module-green: #047857;
+    --level-a1: var(--color-module-green);
+    --level-a2: var(--color-module-blue);
+    --level-b1: var(--color-module-amber);
+    --level-b2: var(--color-module-violet);
+
+    /* Moved from the bare :root that landing.css used to carry. --color-bg and --color-surface
+       are kept at the values that rendered; nothing outside landing.css reads them. */
+    --color-bg: #F3F4F6;
+    --color-surface: #FFFFFF;
+
+    /* Answer options and the lesson's footer button (UX0a-1, #360). */
+    --option-selected-fg: #1D4ED8;
+    --option-selected-bg: #EFF6FF;
+    --option-selected-border: #2563EB;
+    --submit-disabled-fg: #4B5563;
+    --submit-disabled-bg: #E5E7EB;
+    --submit-disabled-lip: #D1D5DB;
 
     --color-success: oklch(0.75 0.2 150);
     --color-error: oklch(0.65 0.2 25);
@@ -29,12 +90,20 @@
                    var(--color-bg-base);
 }
 
+/* Dark: in dark mode a lighter green reads stronger, so on and at step lighter, and a label on a
+   green fill is near-black (white on #10B981 is 2.54:1). */
 :root[data-theme="dark"],
 :root[data-theme="dark"] body {
+    color-scheme: dark;
     --color-bg-base: #111827;
     --color-bg-surface: #1F2937;
     --color-text-main: #F9FAFB;
     --color-text-muted: #9CA3AF;
+    --color-accent-in: #10B981;
+    --color-accent-on: #34D399;
+    --color-accent-at: #6EE7B7;
+    --color-on-accent: #0F1524;
+    --color-accent-pressed: #059669;
     --color-border: rgba(255, 255, 255, 0.1);
     --color-input-bg: #111827;
     --color-input-border: #6B7280;
@@ -47,10 +116,16 @@
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]),
     :root:not([data-theme="light"]) body {
+        color-scheme: dark;
         --color-bg-base: #111827;
         --color-bg-surface: #1F2937;
         --color-text-main: #F9FAFB;
         --color-text-muted: #9CA3AF;
+        --color-accent-in: #10B981;
+        --color-accent-on: #34D399;
+        --color-accent-at: #6EE7B7;
+        --color-on-accent: #0F1524;
+        --color-accent-pressed: #059669;
         --color-border: rgba(255, 255, 255, 0.1);
         --color-input-bg: #111827;
         --color-input-border: #6B7280;
@@ -58,6 +133,65 @@
         --bg-gradient: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
                        radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
                        var(--color-bg-base);
+    }
+}
+
+/* State colours on dark grounds. The fall and halloween themes are dark surfaces too. */
+:root[data-theme="dark"],
+:root[data-theme="fall"],
+:root[data-theme="halloween"] {
+    --color-success-fg: #34D399;
+    --color-success-bg: #112B32;
+    --color-success-fill: #10B981;
+    --color-on-success: #0F1524;
+    --color-danger-fg: #FCA5A5;
+    --color-danger-bg: #2C1D2A;
+    --color-danger-fill: #F87171;
+    --color-on-danger: #0F1524;
+    --color-warning-fg: #FBBF24;
+    --color-warning-bg: #2C2824;
+    --color-warning-fill: #FBBF24;
+    --color-on-warning: #0F1524;
+    --color-info-fg: #93C5FD;
+    --color-info-bg: #1E3A5F;
+    --color-info-fill: #60A5FA;
+    --color-on-info: #0F1524;
+    --color-xp: #FBBF24;
+    --color-streak: #FB923C;
+    --option-selected-fg: #BFDBFE;
+    --option-selected-bg: #1E3A5F;
+    --option-selected-border: #60A5FA;
+    --submit-disabled-fg: #D1D5DB;
+    --submit-disabled-bg: #374151;
+    --submit-disabled-lip: #4B5563;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --color-success-fg: #34D399;
+        --color-success-bg: #112B32;
+        --color-success-fill: #10B981;
+        --color-on-success: #0F1524;
+        --color-danger-fg: #FCA5A5;
+        --color-danger-bg: #2C1D2A;
+        --color-danger-fill: #F87171;
+        --color-on-danger: #0F1524;
+        --color-warning-fg: #FBBF24;
+        --color-warning-bg: #2C2824;
+        --color-warning-fill: #FBBF24;
+        --color-on-warning: #0F1524;
+        --color-info-fg: #93C5FD;
+        --color-info-bg: #1E3A5F;
+        --color-info-fill: #60A5FA;
+        --color-on-info: #0F1524;
+        --color-xp: #FBBF24;
+        --color-streak: #FB923C;
+        --option-selected-fg: #BFDBFE;
+        --option-selected-bg: #1E3A5F;
+        --option-selected-border: #60A5FA;
+        --submit-disabled-fg: #D1D5DB;
+        --submit-disabled-bg: #374151;
+        --submit-disabled-lip: #4B5563;
     }
 }
 
@@ -275,7 +409,7 @@ a {
 
 .btn-dashboard-return {
     background: var(--color-accent-in);
-    color: white;
+    color: var(--color-on-accent);
     border: 1px solid var(--color-accent-in);
     border-radius: 6px;
     font-size: 1rem;
@@ -287,8 +421,8 @@ a {
 }
 
 .btn-dashboard-return:hover {
-    background: #059669;
-    border-color: #059669;
+    background: var(--color-accent-on);
+    border-color: var(--color-accent-on);
     box-shadow: 0 0 12px oklch(0.72 0.17 160 / 0.35);
 }
 
@@ -1064,7 +1198,9 @@ a {
                    var(--color-bg-base);
 }
 
+/* The bought themes keep their own accents, with the white labels and lips they always had. */
 :root[data-theme="fall"], :root[data-theme="fall"] body {
+    color-scheme: dark;
     --color-bg-base: oklch(0.2 0.05 45);
     --color-bg-surface: oklch(0.25 0.08 45 / 0.8);
     --color-text-main: #FEF3C7;
@@ -1072,6 +1208,8 @@ a {
     --color-accent-in: oklch(0.65 0.2 45);
     --color-accent-on: oklch(0.75 0.18 55);
     --color-accent-at: oklch(0.8 0.15 70);
+    --color-on-accent: #FFFFFF;
+    --color-accent-pressed: var(--color-accent-on);
     --color-border: rgba(245, 158, 11, 0.2);
     --color-input-bg: oklch(0.2 0.05 45);
     --color-input-border: #FBBF24;
@@ -1082,6 +1220,7 @@ a {
 }
 
 :root[data-theme="halloween"], :root[data-theme="halloween"] body {
+    color-scheme: dark;
     --color-bg-base: oklch(0.12 0.05 300);
     --color-bg-surface: oklch(0.18 0.08 300 / 0.7);
     --color-text-main: #F3E8FF;
@@ -1089,6 +1228,8 @@ a {
     --color-accent-in: oklch(0.6 0.25 140);
     --color-accent-on: oklch(0.65 0.2 45);
     --color-accent-at: oklch(0.7 0.2 300);
+    --color-on-accent: #FFFFFF;
+    --color-accent-pressed: var(--color-accent-on);
     --color-border: rgba(168, 85, 247, 0.2);
     --color-input-bg: oklch(0.12 0.05 300);
     --color-input-border: #A855F7;
@@ -1152,7 +1293,7 @@ a {
     display: inline-block;
     font-family: var(--font-heading);
     font-weight: 600;
-    color: var(--color-text-main);
+    color: var(--color-on-accent);
     background: var(--color-accent-in);
     padding: 0.75rem 2rem;
     border-radius: 50px;

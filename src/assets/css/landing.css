@@ -79,7 +79,7 @@
     font-size: 1.1rem;
     padding: 0.3rem 0.8rem;
     border-radius: 8px;
-    color: var(--color-text-main);
+    color: #FFFFFF;
 }
 
 .level-card h3 {
@@ -99,17 +99,18 @@
     width: 100%;
 }
 
-.badge-a1 { background: var(--color-accent-in); }
-.border-a1:hover { box-shadow: 0 0 25px oklch(0.75 0.15 250 / 0.25); border-color: var(--color-accent-in); }
+/* Each badge takes its card's level colour (main.css), under a white label. */
+.badge-a1 { background: var(--level-a1); }
+.border-a1:hover { box-shadow: 0 0 25px oklch(0.75 0.15 250 / 0.25); border-color: var(--level-a1); }
 
-.badge-a2 { background: var(--color-accent-on); }
-.border-a2:hover { box-shadow: 0 0 25px oklch(0.75 0.18 310 / 0.25); border-color: var(--color-accent-on); }
+.badge-a2 { background: var(--level-a2); }
+.border-a2:hover { box-shadow: 0 0 25px oklch(0.75 0.18 310 / 0.25); border-color: var(--level-a2); }
 
-.badge-b1 { background: var(--color-accent-at); }
-.border-b1:hover { box-shadow: 0 0 25px oklch(0.8 0.18 150 / 0.25); border-color: var(--color-accent-at); }
+.badge-b1 { background: var(--level-b1); }
+.border-b1:hover { box-shadow: 0 0 25px oklch(0.8 0.18 150 / 0.25); border-color: var(--level-b1); }
 
-.badge-b2 { background: var(--color-success); }
-.border-b2:hover { box-shadow: 0 0 25px oklch(0.75 0.2 150 / 0.25); border-color: var(--color-success); }
+.badge-b2 { background: var(--level-b2); }
+.border-b2:hover { box-shadow: 0 0 25px oklch(0.75 0.2 150 / 0.25); border-color: var(--level-b2); }
 
 .btn-card {
     display: block;
@@ -154,7 +155,7 @@
 
 .btn-close-modal {
     background: var(--color-accent-on);
-    color: var(--color-text-main);
+    color: var(--color-on-accent);
     font-family: var(--font-heading);
     font-size: 1rem;
     font-weight: 700;
@@ -199,21 +200,6 @@
     color: var(--color-text-main) !important;
 }
 
-:root {
-
-    --color-bg: #F3F4F6;
-    --color-surface: #FFFFFF;
-    --color-accent-in: #10B981;
-    --color-primary: #3B82F6;
-    --color-text-main: #1F2937;
-    --color-text-muted: #6B7280;
-
-    --level-a1: #10B981;
-    --level-a2: #3B82F6;
-    --level-b1: #F59E0B;
-    --level-b2: #8B5CF6;
-}
-
 body {
     font-family: 'Nunito', sans-serif !important;
     background: var(--color-bg) !important;
@@ -248,31 +234,31 @@ body {
 
 .btn-start {
     background: var(--color-accent-in) !important;
-    color: white !important;
-    box-shadow: 0 6px 0 #059669 !important;
+    color: var(--color-on-accent) !important;
+    box-shadow: 0 6px 0 var(--color-accent-pressed) !important;
     padding: 1.2rem 2.5rem !important;
     font-size: 1.2rem !important;
 }
 
 .btn-start:hover {
     transform: translateY(2px);
-    box-shadow: 0 4px 0 #059669 !important;
+    box-shadow: 0 4px 0 var(--color-accent-pressed) !important;
 }
 
 .btn-start:active {
     transform: translateY(6px);
-    box-shadow: 0 0 0 #059669 !important;
+    box-shadow: 0 0 0 var(--color-accent-pressed) !important;
 }
 
 .btn-logout {
     background: var(--color-primary) !important;
-    color: white !important;
-    box-shadow: 0 4px 0 #2563EB !important;
+    color: var(--color-on-info) !important;
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--color-primary) 75%, black) !important;
 }
 
 .btn-logout:active {
     transform: translateY(4px);
-    box-shadow: 0 0 0 #2563EB !important;
+    box-shadow: 0 0 0 color-mix(in srgb, var(--color-primary) 75%, black) !important;
 }
 
 .hero-section {
@@ -394,18 +380,18 @@ body {
 .level-card.border-b1:hover { box-shadow: 0 6px 0 var(--level-b1) !important; }
 .level-card.border-b2:hover { box-shadow: 0 6px 0 var(--level-b2) !important; }
 
-.level-card.border-a1 .btn-card { background: var(--level-a1) !important; color: white !important; box-shadow: 0 4px 0 #059669 !important; }
-.level-card.border-a2 .btn-card { background: var(--level-a2) !important; color: white !important; box-shadow: 0 4px 0 #2563EB !important; }
-.level-card.border-b1 .btn-card { background: var(--level-b1) !important; color: white !important; box-shadow: 0 4px 0 #D97706 !important; }
-.level-card.border-b2 .btn-card { background: var(--level-b2) !important; color: white !important; box-shadow: 0 4px 0 #6D28D9 !important; }
+.level-card.border-a1 .btn-card { background: var(--level-a1) !important; color: white !important; box-shadow: 0 4px 0 color-mix(in srgb, var(--level-a1) 75%, black) !important; }
+.level-card.border-a2 .btn-card { background: var(--level-a2) !important; color: white !important; box-shadow: 0 4px 0 color-mix(in srgb, var(--level-a2) 75%, black) !important; }
+.level-card.border-b1 .btn-card { background: var(--level-b1) !important; color: white !important; box-shadow: 0 4px 0 color-mix(in srgb, var(--level-b1) 75%, black) !important; }
+.level-card.border-b2 .btn-card { background: var(--level-b2) !important; color: white !important; box-shadow: 0 4px 0 color-mix(in srgb, var(--level-b2) 75%, black) !important; }
 
 .btn-card:active {
     transform: translateY(4px);
 }
-.level-card.border-a1 .btn-card:active { box-shadow: 0 0 0 #059669 !important; }
-.level-card.border-a2 .btn-card:active { box-shadow: 0 0 0 #2563EB !important; }
-.level-card.border-b1 .btn-card:active { box-shadow: 0 0 0 #D97706 !important; }
-.level-card.border-b2 .btn-card:active { box-shadow: 0 0 0 #6D28D9 !important; }
+.level-card.border-a1 .btn-card:active { box-shadow: 0 0 0 color-mix(in srgb, var(--level-a1) 75%, black) !important; }
+.level-card.border-a2 .btn-card:active { box-shadow: 0 0 0 color-mix(in srgb, var(--level-a2) 75%, black) !important; }
+.level-card.border-b1 .btn-card:active { box-shadow: 0 0 0 color-mix(in srgb, var(--level-b1) 75%, black) !important; }
+.level-card.border-b2 .btn-card:active { box-shadow: 0 0 0 color-mix(in srgb, var(--level-b2) 75%, black) !important; }
 
 .how-it-works-section {
     background: var(--color-bg-base) !important;

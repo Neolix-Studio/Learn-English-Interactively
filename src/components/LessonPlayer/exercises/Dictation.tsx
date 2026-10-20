@@ -54,7 +54,7 @@ export const Dictation: React.FC<DictationProps> = ({ question, onAnswer, isAnsw
           height: '80px',
           borderRadius: '50%',
           background: 'var(--color-accent-in)',
-          color: 'white',
+          color: 'var(--color-on-accent)',
           fontSize: '2rem',
           border: 'none',
           cursor: 'pointer',

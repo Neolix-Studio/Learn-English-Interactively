@@ -4,6 +4,15 @@
     "base": "http://app.localhost:5173",
     "path": "/"
   },
+  "home-levels": {
+    "about": "Home scrolled to the four level cards: their badges and buttons in the level colours (#393).",
+    "base": "http://app.localhost:5173",
+    "path": "/",
+    "steps": [
+      { "scrollTo": "#levels", "after": 500 },
+      { "contrast": "levels" }
+    ]
+  },
   "login": {
     "about": "The sign-in dialog over Home.",
     "base": "http://app.localhost:5173",
@@ -52,17 +61,47 @@
     "wait": 2500
   },
   "lesson": {
-    "about": "A lesson item with an answer picked and ELLENŐRZÉS (Check) lit, then the feedback banner with TOVÁBB (Continue).",
+    "about": "The current node's sheet with Kezdés (Start), a lesson item with an answer picked and ELLENŐRZÉS (Check) lit, then the feedback banner with TOVÁBB (Continue).",
     "preset": "returning-guest",
     "path": "/dashboard",
     "wait": 2500,
     "steps": [
       { "click": ".roadmap-node.current", "after": 800 },
+      { "contrast": "sheet" },
       { "click": ".tooltip-start-btn", "after": 1500 },
       { "click": ".image-choice-btn, .lesson-option-btn", "after": 500 },
       { "contrast": "item" },
       { "click": ".interactive-submit-btn", "after": 900 },
       { "contrast": "feedback" }
+    ]
+  },
+  "lesson-wrong": {
+    "about": "A one-item mistakes lesson answered wrongly: the danger banner and its TOVÁBB (#393).",
+    "preset": "weak-words",
+    "path": "/practice",
+    "mock": "mocks/one-item-practice.json",
+    "wait": 2500,
+    "steps": [
+      { "clickText": "Hibák", "tag": "h3" },
+      { "clickText": "Kezdés", "tag": "button", "after": 1500 },
+      { "clickText": "Hamis", "tag": "button" },
+      { "click": ".interactive-submit-btn", "after": 800 },
+      { "contrast": "feedback" }
+    ]
+  },
+  "postlesson": {
+    "about": "The same lesson answered rightly, then the result screen: XP, accuracy and TOVÁBB (#393).",
+    "preset": "weak-words",
+    "path": "/practice",
+    "mock": "mocks/one-item-practice.json",
+    "wait": 2500,
+    "steps": [
+      { "clickText": "Hibák", "tag": "h3" },
+      { "clickText": "Kezdés", "tag": "button", "after": 1500 },
+      { "clickText": "Igaz", "tag": "button" },
+      { "click": ".interactive-submit-btn", "after": 800 },
+      { "click": ".interactive-submit-btn", "after": 2500 },
+      { "contrast": "result" }
     ]
   },
   "leaderboard": {
@@ -134,6 +173,23 @@
       { "click": "#contactMessage" }, { "type": "Nem tudok belépni." },
       { "click": ".contact-form .btn-submit", "after": 400 },
       { "contrast": "info" }
+    ]
+  },
+  "tokens": {
+    "about": "Every pair in token-pairs.json as the system's theme resolves it: the accent ramp as text (4.5:1) and non-text (3:1), labels on fills, the state, game, module and level colours (#393).",
+    "base": "http://app.localhost:5173",
+    "path": "/",
+    "steps": [
+      { "tokens": "ramp", "pairs": "token-pairs.json" }
+    ]
+  },
+  "tokens-forced": {
+    "about": "The same pairs with the theme picked by hand against the system: data-theme=dark under a light system, data-theme=light under a dark one (#393).",
+    "base": "http://app.localhost:5173",
+    "path": "/",
+    "steps": [
+      { "eval": "document.documentElement.setAttribute('data-theme', matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'), getComputedStyle(document.documentElement).colorScheme", "after": 600 },
+      { "tokens": "ramp", "pairs": "token-pairs.json" }
     ]
   }
 }

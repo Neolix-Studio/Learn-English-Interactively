@@ -36,7 +36,7 @@ const btnPrimaryStyle: React.CSSProperties = {
   fontWeight: 800,
   border: 'none',
   background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))',
-  color: 'white',
+  color: 'var(--color-on-accent)',
   boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)'
 };
 

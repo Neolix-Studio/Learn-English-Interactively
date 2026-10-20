@@ -91,7 +91,7 @@ export const FillBlanks: React.FC<FillBlanksProps> = ({ question, onAnswer, isAn
                 borderRadius: '20px',
                 borderTopRightRadius: '4px',
                 fontSize: '1.3rem',
-                color: 'white',
+                color: 'var(--color-on-accent)',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                 position: 'relative',
                 marginTop: '0.5rem',

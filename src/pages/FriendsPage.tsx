@@ -136,7 +136,7 @@ export const FriendsPage: React.FC = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{ flex: 1, padding: '12px', borderRadius: '10px', border: 'var(--glass-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '1rem' }}
           />
-          <button type="submit" className="primary-btn" style={{ padding: '10px 20px', borderRadius: '10px', backgroundColor: 'var(--color-accent-in)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
+          <button type="submit" className="primary-btn" style={{ padding: '10px 20px', borderRadius: '10px', backgroundColor: 'var(--color-accent-in)', color: 'var(--color-on-accent)', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
             Send Request
           </button>
         </form>

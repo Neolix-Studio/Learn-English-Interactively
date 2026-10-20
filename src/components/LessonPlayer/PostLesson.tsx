@@ -25,7 +25,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, points
   // Success green is for a result that is one. Below 60% the card is neutral.
   const accuracyTone = accuracy < 60
     ? { background: 'var(--color-bg-surface)', border: 'var(--color-border)', label: 'var(--color-text-muted)', value: 'var(--color-text-main)' }
-    : { background: 'rgba(16,185,129,0.1)', border: 'var(--color-success)', label: 'var(--color-success)', value: 'var(--color-success)' };
+    : { background: 'var(--color-success-bg)', border: 'var(--color-success-fill)', label: 'var(--color-success-fg)', value: 'var(--color-success-fg)' };
 
   useEffect(() => {
     if (currentScreen === 1) {
@@ -276,9 +276,9 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, points
           </div>
 
           <div className="post-lesson-metric-grid" style={{ display: 'flex', gap: '2rem', marginBottom: '2rem', width: '100%' }}>
-            <div className="post-lesson-metric-card" style={{ background: 'rgba(245,158,11,0.1)', border: '2px solid #F59E0B', borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
-              <div style={{ color: '#F59E0B', fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.earned_xp')}</div>
-              <div className="post-lesson-metric-value" style={{ fontSize: '2.5rem', color: '#F59E0B', fontWeight: 800 }}>+{displayedXp}</div>
+            <div className="post-lesson-metric-card" style={{ background: 'var(--color-warning-bg)', border: '2px solid var(--color-xp)', borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
+              <div style={{ color: 'var(--color-xp)', fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.earned_xp')}</div>
+              <div className="post-lesson-metric-value" style={{ fontSize: '2.5rem', color: 'var(--color-xp)', fontWeight: 800 }}>+{displayedXp}</div>
             </div>
             <div className="post-lesson-metric-card" data-tone={accuracy < 60 ? 'neutral' : 'success'} style={{ background: accuracyTone.background, border: `2px solid ${accuracyTone.border}`, borderRadius: '1rem', padding: '1.5rem', textAlign: 'center', flex: 1 }}>
               <div style={{ color: accuracyTone.label, fontWeight: 'bold', textTransform: 'uppercase' }}>{t('post_lesson.accuracy')}</div>
@@ -301,7 +301,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, points
               <path d="M 50 10 C 30 40 10 60 20 80 C 25 90 35 95 50 95 C 65 95 75 90 80 80 C 90 60 70 40 50 10 Z" fill="url(#fireGrad2)"/>
               <path d="M 50 40 C 40 60 30 75 35 85 C 40 90 45 92 50 92 C 55 92 60 90 65 85 C 70 75 60 60 50 40 Z" fill="#FFFBEB"/>
           </svg>
-          <h2 style={{ color: '#F59E0B', fontSize: '3.5rem', margin: '0.5rem 0' }}>1</h2>
+          <h2 style={{ color: 'var(--color-streak)', fontSize: '3.5rem', margin: '0.5rem 0' }}>1</h2>
           <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-text-main)', textTransform: 'uppercase' }}>{t('post_lesson.streak_days')}</div>
 
           <div style={{ display: 'flex', gap: '0.8rem', marginTop: '2rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -312,7 +312,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, points
 
               return (
                 <div key={day} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                  <div style={{ fontSize: '0.9rem', color: isToday ? '#F59E0B' : 'var(--color-text-muted)', fontWeight: isToday ? 'bold' : 'normal' }}>
+                  <div style={{ fontSize: '0.9rem', color: isToday ? 'var(--color-streak)' : 'var(--color-text-muted)', fontWeight: isToday ? 'bold' : 'normal' }}>
                     {day}
                   </div>
                   <div style={{
@@ -323,7 +323,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, points
                     justifyContent: 'center',
                     alignItems: 'center',
                     background: isToday ? 'transparent' : (isPast ? 'var(--color-bg-surface)' : 'transparent'),
-                    border: isToday ? '3px solid #F59E0B' : '2px dashed var(--color-border)',
+                    border: isToday ? '3px solid var(--color-streak)' : '2px dashed var(--color-border)',
                     boxShadow: isToday ? '0 0 15px rgba(245, 158, 11, 0.4)' : 'none'
                   }}>
                     {isToday && (
@@ -435,7 +435,7 @@ export const PostLesson: React.FC<PostLessonProps> = ({ baseXp, accuracy, points
       <div className="post-lesson-next-wrap" style={{ width: '100%', maxWidth: '600px', marginTop: 'auto', paddingTop: '2rem' }}>
         <button
           className="btn btn-primary"
-          style={{ width: '100%', padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)' }}
+          style={{ width: '100%', padding: '1rem', fontSize: '1.2rem', borderRadius: '16px', boxShadow: '0 4px 15px color-mix(in srgb, var(--color-accent-in) 40%, transparent)' }}
           onClick={handleNext}
         >
           {t('post_lesson.continue_btn')}

@@ -65,22 +65,25 @@
 
 .grammar-modal-header {
     background: var(--color-accent-in);
-    color: white;
+    color: var(--color-on-accent);
     padding: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+/* The header's label colour: the prototype's global h2 gradient (dashboard.css, C49) would paint it purple. */
 .grammar-modal-header h2 {
     margin: 0;
     font-size: 1.5rem;
+    background: none;
+    -webkit-text-fill-color: currentColor;
 }
 
 .grammar-modal-close {
     background: none;
     border: none;
-    color: white;
+    color: var(--color-on-accent);
     font-size: 2rem;
     cursor: pointer;
     line-height: 1;

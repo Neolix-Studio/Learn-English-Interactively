@@ -51,7 +51,7 @@ export const LexiFeedbackWidget: React.FC = () => {
             <div style={{ marginTop: '5px' }}>
               <h4 style={{ margin: '0 36px 8px 0', color: 'var(--color-text-main)' }}>{t('feedback_widget.title')}</h4>
               <p style={{ margin: '0 0 12px 0', fontSize: '0.85rem', color: 'var(--color-text-muted)', lineHeight: '1.4' }}>{t('feedback_widget.intro')}</p>
-              <button onClick={() => setStep(2)} style={{ width: '100%', padding: '8px', borderRadius: '8px', background: 'var(--color-accent-in)', color: 'white', border: 'none', fontWeight: 'bold', cursor: 'pointer' }}>{t('feedback_widget.start')}</button>
+              <button onClick={() => setStep(2)} style={{ width: '100%', padding: '8px', borderRadius: '8px', background: 'var(--color-accent-in)', color: 'var(--color-on-accent)', border: 'none', fontWeight: 'bold', cursor: 'pointer' }}>{t('feedback_widget.start')}</button>
             </div>
           )}
 

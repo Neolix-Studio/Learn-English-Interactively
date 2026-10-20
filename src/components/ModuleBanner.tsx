@@ -12,7 +12,7 @@ export const ModuleBanner: React.FC<ModuleBannerProps> = ({ module, onOpenGramma
     <div
       className="module-banner-container"
       style={{
-        '--banner-color': module.themeColor || '#58CC02'
+        '--banner-color': module.themeColor || 'var(--color-module-blue)'
       } as React.CSSProperties}
     >
       <div className="module-banner-content">

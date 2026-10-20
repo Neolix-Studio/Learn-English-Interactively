@@ -1,0 +1,19 @@
+{
+  "__extends": "weak-words.json",
+  "get_weak_words": {
+    "status": "success",
+    "data": [
+      {
+        "exercise_id": "item_tf1",
+        "question_data": {
+          "type": "true_false",
+          "statement": "The cat is black.",
+          "hu": "A macska fekete.",
+          "correctAnswer": true,
+          "id": "item_tf1"
+        },
+        "fail_count": 2
+      }
+    ]
+  }
+}

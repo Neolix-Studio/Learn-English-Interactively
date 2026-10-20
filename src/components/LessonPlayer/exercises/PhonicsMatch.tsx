@@ -109,7 +109,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
     } else if (isSelected) {
       background = 'var(--color-accent-in)';
       border = '2px solid var(--color-accent-on)';
-      color = 'var(--color-bg-base)';
+      color = 'var(--color-on-accent)';
     }
 
     return {
@@ -120,7 +120,7 @@ export const PhonicsMatch: React.FC<PhonicsMatchProps> = ({ question, onAnswer }
       padding: '1.2rem',
       cursor: isMatched ? 'default' : 'pointer',
       transition: 'all 0.2s',
-      boxShadow: isSelected && !isMatched ? '0 2px 0 var(--color-accent-on)' : (!isMatched ? '0 4px 0 rgba(0,0,0,0.2)' : 'none'),
+      boxShadow: isSelected && !isMatched ? '0 2px 0 var(--color-accent-pressed)' : (!isMatched ? '0 4px 0 rgba(0,0,0,0.2)' : 'none'),
       transform: isSelected && !isMatched ? 'translateY(2px)' : 'none',
       display: 'flex',
       alignItems: 'center',

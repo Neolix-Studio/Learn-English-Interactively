@@ -194,7 +194,7 @@
     background: var(--color-accent-in);
     padding: 16px;
     border-radius: 16px;
-    color: white;
+    color: var(--color-on-accent);
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -305,9 +305,10 @@
     opacity: 0.9;
 }
 
+/* The sheet's colours swapped: green on white in light, green on near-black in dark. */
 .tooltip-start-btn {
-    background: white;
-    color: var(--color-accent-at);
+    background: var(--color-on-accent);
+    color: var(--color-accent-in);
     border: none;
     border-radius: 12px;
     padding: 14px;
@@ -353,7 +354,7 @@
     box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
     z-index: 10;
     color: white;
-    background-color: var(--banner-color, #58CC02);
+    background-color: var(--banner-color);
 }
 
 .module-banner-content {
@@ -364,15 +365,19 @@
     max-width: 65%;
 }
 
+/* Solid white on the 700-shade banner: without the last two lines the prototype's global h2
+   gradient (dashboard.css, C49) paints it purple. */
 .module-banner-title {
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 0.25rem;
     color: white !important;
+    background: none;
+    -webkit-text-fill-color: currentColor;
 }
 
 .module-banner-desc {
-    color: rgba(255, 255, 255, 0.9);
+    color: #FFFFFF;
     font-size: 1rem;
     margin-bottom: 0;
     line-height: 1.3;
@@ -380,7 +385,7 @@
 }
 
 .module-banner-grammar-btn {
-    background-color: var(--banner-color, #58CC02);
+    background-color: var(--banner-color);
     color: white;
 
     border: 4px solid color-mix(in srgb, var(--banner-color) 60%, black);

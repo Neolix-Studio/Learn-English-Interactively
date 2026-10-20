@@ -110,7 +110,7 @@ export const FeedbackRefillModal: React.FC<FeedbackRefillModalProps> = ({ isOpen
             />
             <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={() => setStep(1)} style={{ padding: '12px 20px', borderRadius: '12px', background: 'transparent', border: '1px solid var(--color-text-muted)', color: 'var(--color-text-main)', cursor: 'pointer', fontWeight: 'bold' }}>Back</button>
-              <button onClick={() => setStep(3)} style={{ flex: 1, padding: '12px 20px', borderRadius: '12px', background: 'var(--color-accent-in)', border: 'none', color: 'white', cursor: 'pointer', fontWeight: 'bold', display: 'flex', justifyContent: 'center' }}>Next</button>
+              <button onClick={() => setStep(3)} style={{ flex: 1, padding: '12px 20px', borderRadius: '12px', background: 'var(--color-accent-in)', border: 'none', color: 'var(--color-on-accent)', cursor: 'pointer', fontWeight: 'bold', display: 'flex', justifyContent: 'center' }}>Next</button>
             </div>
           </div>
         )}

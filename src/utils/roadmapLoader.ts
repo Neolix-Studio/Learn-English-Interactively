@@ -45,7 +45,7 @@ export const getCurriculum = (lang: string = 'hu'): Record<string, CurriculumLev
         id: meta.id || folderName,
         title: meta.title || folderName,
         description: meta.description || '',
-        themeColor: meta.themeColor || '#3b82f6',
+        themeColor: meta.themeColor || 'var(--color-module-blue)',
         folderName: folderName,
         nodes: []
       });
@@ -81,7 +81,7 @@ export const getCurriculum = (lang: string = 'hu'): Record<string, CurriculumLev
              id: folderName,
              title: folderName,
              description: '',
-             themeColor: '#3b82f6',
+             themeColor: 'var(--color-module-blue)',
              folderName: folderName,
              nodes: [node]
            });

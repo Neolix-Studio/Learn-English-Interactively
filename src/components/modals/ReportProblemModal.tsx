@@ -230,16 +230,16 @@ export const ReportProblemModal: React.FC<ReportProblemModalProps> = ({ isOpen, 
                 fontSize: '1.2rem',
                 fontWeight: 800,
                 background: 'var(--color-accent-in)',
-                color: 'white',
+                color: 'var(--color-on-accent)',
                 border: 'none',
                 borderRadius: '16px',
                 cursor: status === 'submitting' ? 'not-allowed' : 'pointer',
-                boxShadow: '0 4px 0 var(--color-accent-on)',
+                boxShadow: '0 4px 0 var(--color-accent-pressed)',
                 transition: 'transform 0.1s',
                 opacity: status === 'submitting' ? 0.7 : 1
               }}
               onMouseDown={e => { if (status !== 'submitting') { e.currentTarget.style.transform = 'translateY(4px)'; e.currentTarget.style.boxShadow = 'none'; } }}
-              onMouseUp={e => { if (status !== 'submitting') { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 0 var(--color-accent-on)'; } }}
+              onMouseUp={e => { if (status !== 'submitting') { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 0 var(--color-accent-pressed)'; } }}
             >
               {status === 'submitting' ? 'Küldés...' : 'Küldés'}
             </button>

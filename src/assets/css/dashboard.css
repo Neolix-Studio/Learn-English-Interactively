@@ -619,7 +619,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
 
 .word-chip:hover:not(:disabled) {
     background: var(--color-accent-in);
-    color: var(--color-text-main);
+    color: var(--color-on-accent);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px oklch(0.75 0.15 250 / 0.3);
 }
@@ -1236,7 +1236,7 @@ body.is-lesson-active .mobile-bottom-bar {
 
 .step-tab.active .step-tab-number {
     background: var(--color-accent-in);
-    color: var(--color-text-main);
+    color: var(--color-on-accent);
 }
 
 .step-panels {
@@ -1854,7 +1854,7 @@ body.is-lesson-active .mobile-bottom-bar {
 
 .btn-close-modal {
     background: var(--color-accent-on);
-    color: var(--color-text-main);
+    color: var(--color-on-accent);
     font-family: var(--font-heading);
     font-size: 1rem;
     font-weight: 700;
@@ -2547,13 +2547,13 @@ input:checked + .slider:before {
 
 .btn-secondary:hover:not(:disabled) {
     background: var(--color-accent-in);
-    color: white;
+    color: var(--color-on-accent);
 }
 
 .btn-primary {
     background: var(--color-accent-in);
     border: 1px solid var(--color-accent-in);
-    color: white;
+    color: var(--color-on-accent);
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -3644,8 +3644,10 @@ p {
     top: 0;
 }
 
+/* On the card colour, not the page: the landing gradient's #E0E7FF stop leaves the green
+   label at 4.45:1. */
 .btn-secondary {
-    background-color: transparent !important;
+    background-color: var(--color-bg-surface) !important;
     border: 2px solid var(--color-accent-in) !important;
     color: var(--color-accent-in) !important;
     box-shadow: 0 5px 0 var(--color-accent-in) !important;

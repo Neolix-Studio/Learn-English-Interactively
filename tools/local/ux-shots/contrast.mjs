@@ -15,7 +15,8 @@
 //   --json FILE         also write every measurement to FILE
 //
 // Prints each failing text with its ratio, the colours it was measured with, its size and its element,
-// grouped by screen and theme. Exits 1 when any text fails, when a screen cannot be measured, or when a
+// grouped by screen and theme. A {"tokens":…} step measures colour-token pairs instead (shot.mjs
+// tokenProbe), which is how non-text contrast is checked. Exits 1 when any text fails, when a screen cannot be measured, or when a
 // scripted click matched nothing (so a broken flow cannot pass by measuring the wrong screen).
 // Needs `npm run dev`, like shot.mjs. Screenshots of each measured screen go to out/contrast/.
 
@@ -88,7 +89,7 @@ function measure(run) {
       const lines = out.split('\n');
       const measurements = lines.filter((l) => l.startsWith('CONTRAST ')).map((l) => JSON.parse(l.slice(9)));
       const problems = lines.filter((l) => /NOT FOUND|^STEP \d+ ERROR|^FATAL |^TIMEOUT/.test(l));
-      const wanted = s.steps ? s.steps.filter((st) => st.contrast).length : 1;
+      const wanted = s.steps ? s.steps.filter((st) => st.contrast || st.tokens).length : 1;
       if (code !== 0) problems.push(`shot.mjs exited ${code}`);
       if (measurements.length !== wanted) problems.push(`expected ${wanted} measurement(s), got ${measurements.length}`);
       done({ ...run, measurements, problems });
@@ -111,12 +112,14 @@ for (const r of results) {
     checked += m.checked;
     const where = `${r.name}${m.label === 'page' ? '' : ':' + m.label} ${W}x${H} ${r.scheme}`;
     const skipped = m.skippedImage + m.skippedGradientText + m.skippedDisabled;
-    const note = `${m.checked} texts checked` + (skipped ? `, not measured: ${m.skippedImage} on an image, ${m.skippedGradientText} gradient text, ${m.skippedDisabled} disabled` : '');
+    const unit = r.screen.steps?.some((st) => st.tokens === m.label) ? 'colour pairs' : 'texts';
+    const note = `${m.checked} ${unit} checked` + (skipped ? `, not measured: ${m.skippedImage} on an image, ${m.skippedGradientText} gradient text, ${m.skippedDisabled} disabled` : '');
     if (!m.failures.length) { console.log(`ok    ${where} (${note})`); continue; }
     failing += m.failures.length;
     console.log(`FAIL  ${where}: ${m.failures.length} below AA (${note})`);
     for (const f of m.failures) {
-      console.log(`      ${f.ratio}:1 < ${f.need}:1  ${f.fg} on ${f.bg}  ${f.px}px/${f.weight}  "${f.text}"  ${f.el}${f.count > 1 ? `  ×${f.count}` : ''}`);
+      const size = f.px === null ? '' : `  ${f.px}px/${f.weight}`;
+      console.log(`      ${f.ratio}:1 < ${f.need}:1  ${f.fg} on ${f.bg}${size}  "${f.text}"  ${f.el}${f.count > 1 ? `  ×${f.count}` : ''}`);
     }
   }
   if (r.problems.length) {

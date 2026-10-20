@@ -290,8 +290,8 @@ export const BossEncounter: React.FC<BossEncounterProps> = ({ lessonNode, onExit
           onClick={handleCheck}
           style={{
             background: feedback === 'correct' ? 'white' : feedback === 'incorrect' ? 'white' : 'var(--color-accent-in)',
-            color: feedback === 'correct' ? '#059669' : feedback === 'incorrect' ? '#B91C1C' : 'white',
-            borderBottom: `4px solid ${feedback === 'correct' ? '#D1FAE5' : feedback === 'incorrect' ? '#FEE2E2' : 'var(--color-accent-on)'}`,
+            color: feedback === 'correct' ? '#059669' : feedback === 'incorrect' ? '#B91C1C' : 'var(--color-on-accent)',
+            borderBottom: `4px solid ${feedback === 'correct' ? '#D1FAE5' : feedback === 'incorrect' ? '#FEE2E2' : 'var(--color-accent-pressed)'}`,
             borderTop: 'none',
             borderLeft: 'none',
             borderRight: 'none',

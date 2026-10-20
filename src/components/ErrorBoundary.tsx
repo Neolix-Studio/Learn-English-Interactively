@@ -47,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button
               onClick={() => window.location.reload()}
-              style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '16px', border: 'none', background: 'var(--color-accent-in)', color: 'white', fontWeight: 800, cursor: 'pointer' }}
+              style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '16px', border: 'none', background: 'var(--color-accent-in)', color: 'var(--color-on-accent)', fontWeight: 800, cursor: 'pointer' }}
             >
               Oldal frissítése
             </button>

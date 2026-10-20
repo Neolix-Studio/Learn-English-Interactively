@@ -230,9 +230,11 @@ already done opens at the next level.
 ## Contrast check
 
 `contrast.mjs` is the contrast gate (UX_REVIEW C48). It opens each screen in `contrast-screens.json`
-(Home, the sign-in dialog, the first welcome screen, the path, a lesson item with ELLENŐRZÉS lit and its
-feedback banner with TOVÁBB, the leaderboard, the profile and practice) at 360×800, in light and in
-dark, and measures every text on screen against what is behind it.
+(Home and its level cards, the sign-in dialogs, the first welcome screen, the path, the node sheet, a
+lesson item with ELLENŐRZÉS lit and its feedback banner with TOVÁBB, a wrong answer's banner, the result
+screen, the leaderboard, the profile, practice, the shop, the contact page…) at 360×800, in light and in
+dark, and measures every text on screen against what is behind it. Two screens, `tokens` and
+`tokens-forced`, measure the colour tokens instead (below).
 
 ```bash
 node tools/local/ux-shots/contrast.mjs                        # every screen, light and dark
@@ -251,7 +253,8 @@ AA**, when a screen could not be measured, or when a scripted click matched noth
 cannot pass by measuring the wrong screen); it exits 0 only when every screen passes. A screenshot of
 each measured screen goes to `out/contrast/`; `--json FILE` writes every measurement; `--w`/`--h`,
 `--schemes` and `--jobs` work as on the matrix. On `dev` today it fails: that is the C48 backlog, which
-WP-C1 (UX-1) is meant to bring to zero.
+WP-C1 (UX-1) is meant to bring to zero. Since C1b (#393) it is 13 texts at 360×800, none of them a
+button or the accent: they are listed under C48 in `UX_REVIEW.md` with the issues that fix them.
 
 How it measures:
 
@@ -269,6 +272,21 @@ How it measures:
 
 A single capture can measure too: `shot.mjs --contrast` after the screenshot, or a `{"contrast":"label"}`
 step anywhere in `--steps`, prints one `CONTRAST {…}` line of JSON.
+
+**Colour tokens (#393).** The text probe cannot see non-text contrast (a button's fill or a border
+against the page, 3:1) or a colour no screen happens to show. A `{"tokens":"label","pairs":"token-pairs.json"}`
+step measures pairs as the page resolves them instead: each pair in
+[`token-pairs.json`](token-pairs.json) is `[foreground, background, minimum, kind]`, where a name
+starting with `--` is a custom property and anything else a CSS colour. The file holds the accent ramp
+as text (4.5:1) and non-text (3:1) on the page and on a card, every label on its fill, and the state,
+game, module and level colours: 60 pairs. The screen `tokens` measures them in the system's theme,
+`tokens-forced` with the other theme picked by hand (`data-theme`), so both scopes of every token are
+checked. A token that does not resolve to one opaque colour fails as `unresolved`. Add a pair there
+whenever a new colour token is added.
+
+```bash
+node tools/local/ux-shots/contrast.mjs --screens tokens,tokens-forced
+```
 
 ## Steps
 
@@ -288,6 +306,7 @@ step anywhere in `--steps`, prints one `CONTRAST {…}` line of JSON.
 | `{"text":true}` | print the visible text |
 | `{"measureTargets":true}` | print every visible control smaller than 44×44 px |
 | `{"contrast":"label"}` | print a `CONTRAST` line: every on-screen text below WCAG AA |
+| `{"tokens":"label","pairs":FILE}` | print a `CONTRAST` line for colour-token pairs (`token-pairs.json`) |
 
 Other useful flags: `--text` (print the page text), `--console` (print console errors and warnings),
 `--reduced` (reduced motion), `--full` (whole page), `--dpr 2` (sharper images).

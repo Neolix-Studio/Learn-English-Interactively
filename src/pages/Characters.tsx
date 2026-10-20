@@ -180,7 +180,7 @@ export const CharactersPage: React.FC = () => {
               onClick={handleStartLesson}
               style={{
                 background: 'var(--color-accent-in)',
-                color: 'white',
+                color: 'var(--color-on-accent)',
                 border: 'none',
                 padding: '1.1rem 3rem',
                 borderRadius: '16px',
@@ -189,7 +189,7 @@ export const CharactersPage: React.FC = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
                 cursor: 'pointer',
-                boxShadow: '0 4px 0 var(--color-accent-on)',
+                boxShadow: '0 4px 0 var(--color-accent-pressed)',
                 transition: 'all 0.1s'
               }}
               onMouseDown={(e) => {
@@ -198,7 +198,7 @@ export const CharactersPage: React.FC = () => {
               }}
               onMouseUp={(e) => {
                 e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = '0 4px 0 var(--color-accent-on)';
+                e.currentTarget.style.boxShadow = '0 4px 0 var(--color-accent-pressed)';
               }}
             >
               Kezdés: +10 Pont

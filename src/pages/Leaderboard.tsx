@@ -172,7 +172,7 @@ export const LeaderboardPage: React.FC = () => {
         }
         .segment-btn.active {
             background: var(--color-accent-in);
-            color: white;
+            color: var(--color-on-accent);
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
 
@@ -319,7 +319,7 @@ export const LeaderboardPage: React.FC = () => {
                   }}
               />
               <button className="leaderboard-search-button" type="submit" style={{
-                  padding: '0.8rem 1.5rem', borderRadius: '8px', background: 'var(--color-accent-in)', color: 'white', fontWeight: 'bold', border: 'none', cursor: 'pointer', transition: 'background 0.2s'
+                  padding: '0.8rem 1.5rem', borderRadius: '8px', background: 'var(--color-accent-in)', color: 'var(--color-on-accent)', fontWeight: 'bold', border: 'none', cursor: 'pointer', transition: 'background 0.2s'
               }}>Keresés</button>
           </form>
 
@@ -361,7 +361,7 @@ export const LeaderboardPage: React.FC = () => {
                                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                           <div style={{ fontWeight: '700', fontSize: '1.1rem', color: isCurrentUser ? 'var(--color-text-main)' : 'var(--color-text-main)' }}>
                                               {user.username}
-                                              {isCurrentUser && <span style={{ marginLeft: '10px', fontSize: '0.8rem', background: 'var(--color-accent-in)', color: 'white', padding: '2px 8px', borderRadius: '10px' }}>Te</span>}
+                                              {isCurrentUser && <span style={{ marginLeft: '10px', fontSize: '0.8rem', background: 'var(--color-accent-in)', color: 'var(--color-on-accent)', padding: '2px 8px', borderRadius: '10px' }}>Te</span>}
                                           </div>
                                           {user.active_title && (
                                             <div style={{ fontSize: '0.85rem', color: '#F59E0B', fontWeight: 'bold', marginTop: '2px' }}>
@@ -399,7 +399,7 @@ export const LeaderboardPage: React.FC = () => {
 
                                   <div style={{ flex: 1, fontWeight: '700', fontSize: '1.1rem', color: 'var(--color-text-main)' }}>
                                       {currentUsername}
-                                      <span style={{ marginLeft: '10px', fontSize: '0.8rem', background: 'var(--color-accent-in)', color: 'white', padding: '2px 8px', borderRadius: '10px' }}>Te</span>
+                                      <span style={{ marginLeft: '10px', fontSize: '0.8rem', background: 'var(--color-accent-in)', color: 'var(--color-on-accent)', padding: '2px 8px', borderRadius: '10px' }}>Te</span>
                                   </div>
                                   
                                   <div style={{ fontWeight: '800', color: 'var(--color-accent-in)', fontSize: '1.2rem' }}>

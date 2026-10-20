@@ -29,7 +29,7 @@ export function NotFoundPage() {
           Hoppá! Úgy tűnik, Lexi, a kutyánk elásott valahol ezt az oldalt.
           A keresett link nem létezik, vagy már el lett távolítva.
         </p>
-        <Link to="/" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem', borderRadius: '16px', textDecoration: 'none', background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', color: 'white', fontWeight: 800 }}>
+        <Link to="/" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem', borderRadius: '16px', textDecoration: 'none', background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', color: 'var(--color-on-accent)', fontWeight: 800 }}>
           Vissza a főoldalra
         </Link>
       </main>

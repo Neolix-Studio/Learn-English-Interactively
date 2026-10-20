@@ -45,6 +45,7 @@
 // Steps: {"shot":"name"[,"full":true]} {"click":"css"[,"nth":0]} (first VISIBLE match) {"clickText":"Text"[,"tag":"button"]}
 //        {"tap":[x,y]} {"type":"text"} {"key":"Enter"} {"wait":ms} {"scroll":px} {"scrollTo":"css"} {"eval":"js"}
 //        {"navigate":"/path"} {"viewport":[w,h]} {"scheme":"dark"} {"text":true} {"measureTargets":true} {"contrast":"label"}
+//        {"tokens":"label","pairs":FILE|[...]} (a CONTRAST line for colour-token pairs, see tokenProbe)
 //        Each step waits 250 ms after, or "after": ms.
 //
 // Native alert()/confirm() dialogs are logged as `DIALOG …` and accepted, so they cannot hang a run.
@@ -412,6 +413,43 @@ function contrastProbe() {
   return { checked, skippedImage, skippedGradientText, skippedDisabled, failures: [...failures.values()].sort((a, b) => a.ratio - b.ratio) };
 }
 
+// WCAG contrast of colour pairs as the page resolves them, for what the text probe cannot see:
+// non-text contrast (a fill or border against the page, 3:1) and every value a token takes, used or
+// not. Each pair is [foreground, background, minimum, kind]; a name starting with -- is a custom
+// property as it resolves inside <body>, anything else a CSS colour. Runs inside the page.
+function tokenProbe(pairs) {
+  const probe = document.createElement('div');
+  probe.style.display = 'none';
+  document.body.appendChild(probe);
+  const resolveColour = (c) => {
+    probe.style.color = '';
+    probe.style.color = c.startsWith('--') ? `var(${c})` : c;
+    const m = getComputedStyle(probe).color.match(/rgba?\(([^)]+)\)/);
+    if (!m) return null;
+    const p = m[1].split(/[\s,/]+/).filter(Boolean).map(parseFloat);
+    return p.length > 3 && p[3] < 1 ? null : { r: p[0], g: p[1], b: p[2] };
+  };
+  const lum = (c) => {
+    const ch = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * ch(c.r) + 0.7152 * ch(c.g) + 0.0722 * ch(c.b);
+  };
+  const hex = (c) => '#' + [c.r, c.g, c.b].map((v) => Math.round(v).toString(16).padStart(2, '0')).join('').toUpperCase();
+  const failures = [];
+  for (const [fgName, bgName, need, kind] of pairs) {
+    const fg = resolveColour(fgName), bg = resolveColour(bgName);
+    const text = `${fgName} on ${bgName}${kind ? ` (${kind})` : ''}`;
+    // A token that does not resolve to one opaque colour cannot be judged, so it fails.
+    if (!fg || !bg) { failures.push({ text, ratio: '0.00', need, fg: fg ? hex(fg) : 'unresolved', bg: bg ? hex(bg) : 'unresolved', px: null, weight: null, el: 'token', count: 1 }); continue; }
+    const x = lum(fg), y = lum(bg);
+    const ratio = (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+    if (ratio + 1e-9 >= need) continue;
+    const ratioText = (Math.min(Math.round(ratio * 100), need * 100 - 1) / 100).toFixed(2);
+    failures.push({ text, ratio: ratioText, need, fg: hex(fg), bg: hex(bg), px: null, weight: null, el: 'token', count: 1 });
+  }
+  probe.remove();
+  return { checked: pairs.length, skippedImage: 0, skippedGradientText: 0, skippedDisabled: 0, failures };
+}
+
 const textDump = `(() => document.body.innerText.replace(/\\n{3,}/g, '\\n\\n').slice(0, 6000))()`;
 const measureTargets = `(() => { const sel = 'a, button, input, select, textarea, [role=button], [onclick], label[for]'; const out = []; document.querySelectorAll(sel).forEach((e) => { const r = e.getBoundingClientRect(); const s = getComputedStyle(e); if (r.width === 0 || r.height === 0 || s.visibility === 'hidden' || s.display === 'none') return; if (r.bottom < 0 || r.top > innerHeight) return; if (r.width < 44 || r.height < 44) { out.push({ tag: e.tagName.toLowerCase(), cls: (e.className && e.className.baseVal === undefined ? e.className : '').toString().slice(0, 60), text: (e.innerText || e.getAttribute('aria-label') || e.value || '').trim().slice(0, 40), w: Math.round(r.width), h: Math.round(r.height) }); } }); return out; })()`;
 
@@ -419,6 +457,13 @@ const measureTargets = `(() => { const sel = 'a, button, input, select, textarea
 async function printContrast(label) {
   const res = await evaluate(`(${contrastProbe})()`);
   console.log('CONTRAST ' + JSON.stringify({ label: label === true ? 'page' : String(label), w: W, h: H, scheme: SCHEME, ...res }));
+}
+
+async function printTokens(label, pairs) {
+  const list = typeof pairs === 'string' ? readJsonArg(pairs, 'tokens') : pairs;
+  if (!Array.isArray(list) || !list.length) throw new Error('tokens: "pairs" must be a JSON file or a non-empty array');
+  const res = await evaluate(`(${tokenProbe})(${JSON.stringify(list)})`);
+  console.log('CONTRAST ' + JSON.stringify({ label: String(label), w: W, h: H, scheme: SCHEME, ...res }));
 }
 
 async function run() {
@@ -461,6 +506,7 @@ async function run() {
       else if (s.text) console.log(`TEXT ${i}>>>\n` + (await evaluate(textDump)) + '\n<<<TEXT');
       else if (s.measureTargets) console.log(`TARGETS<44 ${i} ` + JSON.stringify(await evaluate(measureTargets)));
       else if (s.contrast) await printContrast(s.contrast);
+      else if (s.tokens) await printTokens(s.tokens, s.pairs);
       await sleep(s.after || 250);
     } catch (e) {
       console.log(`STEP ${i} ERROR ${e.message}`);

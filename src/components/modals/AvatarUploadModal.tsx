@@ -116,7 +116,7 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({ isOpen, on
           <button
             disabled={!file || loading}
             onClick={handleUpload}
-            style={{ width: '100%', padding: '15px', borderRadius: '12px', background: file ? 'var(--color-accent-in)' : 'var(--color-bg-base)', color: file ? 'white' : 'var(--color-text-muted)', border: 'none', fontWeight: 'bold', fontSize: '1.1rem', cursor: file ? 'pointer' : 'not-allowed', opacity: loading ? 0.7 : 1 }}
+            style={{ width: '100%', padding: '15px', borderRadius: '12px', background: file ? 'var(--color-accent-in)' : 'var(--color-bg-base)', color: file ? 'var(--color-on-accent)' : 'var(--color-text-muted)', border: 'none', fontWeight: 'bold', fontSize: '1.1rem', cursor: file ? 'pointer' : 'not-allowed', opacity: loading ? 0.7 : 1 }}
           >
             {loading ? 'Uploading...' : 'Save Avatar'}
           </button>

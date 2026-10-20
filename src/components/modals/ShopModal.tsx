@@ -68,13 +68,13 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
         <div style={{ background: 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))', padding: '1.5rem 2rem', position: 'relative' }}>
           <button
             onClick={onClose}
-            style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', cursor: 'pointer', fontSize: '1rem', lineHeight: 1 }}
+            style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-on-accent)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1 }}
           >✕</button>
           <div style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>🛒</div>
-          <h2 style={{ margin: '0 0 0.25rem 0', color: 'white', fontSize: '1.6rem', fontWeight: 900 }}>Bolt</h2>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(255,255,255,0.2)', borderRadius: '20px', padding: '0.3rem 0.9rem' }}>
+          <h2 style={{ margin: '0 0 0.25rem 0', color: 'var(--color-on-accent)', background: 'none', WebkitTextFillColor: 'currentColor', fontSize: '1.6rem', fontWeight: 900 }}>Bolt</h2>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--color-accent-at)', borderRadius: '20px', padding: '0.3rem 0.9rem' }}>
             <span style={{ fontSize: '1rem' }}>🦴</span>
-            <span style={{ color: 'white', fontWeight: 700, fontSize: '0.95rem' }}>{bones.toLocaleString()} Csont</span>
+            <span style={{ color: 'var(--color-on-accent)', fontWeight: 700, fontSize: '0.95rem' }}>{bones.toLocaleString()} Csont</span>
           </div>
         </div>
 
@@ -130,7 +130,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
                   disabled={!canBuyShield}
                   style={{
                     flexShrink: 0, background: canBuyShield ? 'linear-gradient(135deg, var(--color-accent-in), var(--color-accent-at))' : 'var(--color-bg-surface)',
-                    color: canBuyShield ? 'white' : 'var(--color-text-muted)',
+                    color: canBuyShield ? 'var(--color-on-accent)' : 'var(--color-text-muted)',
                     border: 'none', padding: '0.5rem 1rem', borderRadius: '10px', fontWeight: 700, cursor: canBuyShield ? 'pointer' : 'not-allowed',
                     fontSize: '0.85rem', whiteSpace: 'nowrap', boxShadow: canBuyShield ? '0 4px 12px rgba(79,70,229,0.3)' : 'none',
                     transition: 'all 0.2s',
