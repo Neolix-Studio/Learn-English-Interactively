@@ -55,4 +55,28 @@
     --duration-state: 200ms;
     --duration-sheet: 320ms;
     --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    /*
+     * Type (C1c, #394). Nunito is the only face. index.html loads 400, 600, 700, 800 and 900:
+     * there is no 500, so use 400 or 600 for running text.
+     * Sizes are rem, so the phone's text-size setting scales them. Nothing goes below 12 px.
+     */
+    --font-heading: 'Nunito', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+
+    --font-size-display: 2.5rem;    /* 40 px  reward numbers, w800–900 */
+    --font-size-h1: 1.75rem;        /* 28 px  w800 */
+    --font-size-h2: 1.375rem;       /* 22 px  w800 */
+    --font-size-prompt: 1.25rem;    /* 20 px  the lesson prompt, w700 */
+    --font-size-body: 1.0625rem;    /* 17 px  w400 or w600 */
+    --font-size-button: 1rem;       /* 16 px  w800 */
+    --font-size-stat: 0.875rem;     /* 14 px  streak, energy, treats */
+    --font-size-caption: 0.8125rem; /* 13 px  w700 */
+    --font-size-tab: 0.75rem;       /* 12 px  the floor: bottom-bar labels only */
+
+    --line-height-display: 1.1;
+    --line-height-h1: 1.2;
+    --line-height-h2: 1.25;
+    --line-height-prompt: 1.35;
+    --line-height-body: 1.5;
 }

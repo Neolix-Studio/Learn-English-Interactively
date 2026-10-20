@@ -28,7 +28,7 @@ export function PlacementScreen() {
           </div>
           <div className="welcome-placement-copy">
             <span>Kezdés az alapoktól</span>
-            <span style={{ fontSize: '0.85rem', color: '#9ca3af', fontWeight: 500 }}>Végezd el az angol kurzus legkönnyebb leckéjét</span>
+            <span style={{ fontSize: '0.85rem', color: '#9ca3af', fontWeight: 400 }}>Végezd el az angol kurzus legkönnyebb leckéjét</span>
           </div>
         </button>
 
@@ -50,7 +50,7 @@ export function PlacementScreen() {
           </div>
           <div className="welcome-placement-copy">
             <span>Szintfelmérő teszt</span>
-            <span style={{ fontSize: '0.85rem', color: '#9ca3af', fontWeight: 500 }}>Tudd meg, hol tartasz! (Hamarosan)</span>
+            <span style={{ fontSize: '0.85rem', color: '#9ca3af', fontWeight: 400 }}>Tudd meg, hol tartasz! (Hamarosan)</span>
           </div>
         </button>
       </div>

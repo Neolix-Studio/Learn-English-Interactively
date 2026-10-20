@@ -34,7 +34,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ activeTab, onT
         onClick={() => handleTabClick('levels')}
       >
         <span className="bottom-nav-icon">☰</span>
-        <span>{t('dashboard.nav_levels')}</span>
+        <span className="bottom-nav-label">{t('dashboard.nav_levels')}</span>
       </button>
 
       <button
@@ -43,7 +43,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ activeTab, onT
         onClick={() => handleTabClick('curriculum')}
       >
         <span className="bottom-nav-icon">🏠</span>
-        <span>{t('dashboard.nav_curriculum')}</span>
+        <span className="bottom-nav-label">{t('dashboard.nav_curriculum')}</span>
       </button>
 
       <button
@@ -54,7 +54,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ activeTab, onT
         aria-label={t('dashboard.nav_shop')}
       >
         <span className="bottom-nav-icon">🛒</span>
-        <span>{t('dashboard.nav_shop')}</span>
+        <span className="bottom-nav-label">{t('dashboard.nav_shop')}</span>
       </button>
 
       <button
@@ -63,7 +63,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ activeTab, onT
         onClick={() => handleTabClick('stats')}
       >
         <span className="bottom-nav-icon">🎯</span>
-        <span>{t('dashboard.nav_stats')}</span>
+        <span className="bottom-nav-label">{t('dashboard.nav_stats')}</span>
       </button>
 
       <button
@@ -72,7 +72,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ activeTab, onT
         onClick={() => handleTabClick('profile')}
       >
         <span className="bottom-nav-icon">👤</span>
-        <span>{t('dashboard.nav_profile')}</span>
+        <span className="bottom-nav-label">{t('dashboard.nav_profile')}</span>
       </button>
     </nav>
   );

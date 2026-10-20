@@ -83,13 +83,13 @@ const getSharedJoyrideStyles = () => ({
     fontWeight: 700,
     color: '#0F172A',
     marginBottom: '8px',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
+    fontFamily: 'var(--font-heading)',
   },
   tooltipContent: {
     fontSize: '0.95rem',
     color: '#475569',
     lineHeight: '1.5',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
+    fontFamily: 'var(--font-body)',
   },
   tooltipFooter: {
     alignItems: 'center',
@@ -116,7 +116,7 @@ const getSharedJoyrideStyles = () => ({
   buttonSkip: {
     color: '#94A3B8',
     fontSize: '0.875rem',
-    fontWeight: 500,
+    fontWeight: 400,
   },
 });
 

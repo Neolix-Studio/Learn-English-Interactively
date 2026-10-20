@@ -820,6 +820,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** SOT §12, WP-C2 (split the prototype out first); C48, C50, C56.
 
 ### C50 · Headings never reach Nunito, there is no type scale, and key text drops to 9–11 px — **major**
+✅ Fixed (#394, 2026-10-20): `--font-heading` and `--font-body` say Nunito (`tokens.css`); the `*` rule in `dashboard.css` and six `font-family: 'Nunito' … !important` lines are gone, and no element computes Outfit or Inter on any key screen. The §5b type scale is defined as `--font-size-*` and `--line-height-*` (SOT §12, Type). On `/dashboard` the smallest text is 12 px at 320 and 360 in every state, drawers and dialogs included: the bottom-bar labels are 12 px at every width and fit five across at 320 with no shorter labels and no icon-only tabs, the stats are 14 px and the energy refill time 13 px. The 500 weights say 400. A lesson item and its feedback banner measure 12 px or more; 'Kezdés' and the active tab label pass contrast since #390 and #393. **Still open:** headings keep their sizes until WP-C2/C3 put each rule on the scale; `/profile`'s 'EDIT' and title cards are 11.2–11.5 px (C1f, #601); Nunito still comes from Google Fonts (UX10-6, #453).
 - **What happens:** the `main.css:75-78` h1–h4 rule uses `var(--font-heading)` = 'Outfit', which is never loaded, and it out-specifies `dashboard.css:2849`'s `* { Nunito }`, so every heading renders in an Arial/Helvetica fallback beside Nunito body text. There is no type scale (15 sizes on the 360 dashboard, 9.28 → 40 px), and the smallest text sits where it matters: bottom-nav labels 9.28 px at ≤380 px (`0.58rem !important`), the correct answer 10.9 px, the energy countdown 10.4 px. 'Kezdés' is 2.54:1 on white; the active tab label about 2.2:1. Nunito 900 is loaded (F22); weight 500 is not.
 - **Learner impact:** 9 px primary navigation on the primary device, for an all-ages audience.
 - **Fix:** repoint `--font-heading`/`--font-body` at Nunito and delete the two compensating hacks (WP-C1); the §5b type scale with a 12 px floor for tab labels and 14 px for stats — five tabs at 360 need shorter labels, or icon-only below 340 px; self-host Nunito including 900.
@@ -984,7 +985,7 @@ A returning learner on a 360 px Android phone, in the wrapped app. The audio ste
 
 ### 5b. Design-system foundation
 
-> **Adopted in C1a (#364, 2026-09-30):** the breakpoints, spacing, radius, elevation, layer and motion rows of the scale table below, with one addition: a `screen` layer (250) between nav and sheet for the full-screen lesson, which must cover the navigation and stay under dialogs. The token names and the rules are in SOT §12 (Breakpoints, Tokens). The type rows are still a proposal (C1c #394).
+> **Adopted in C1a (#364, 2026-09-30):** the breakpoints, spacing, radius, elevation, layer and motion rows of the scale table below, with one addition: a `screen` layer (250) between nav and sheet for the full-screen lesson, which must cover the navigation and stay under dialogs. The token names and the rules are in SOT §12 (Breakpoints, Tokens). The type row was adopted in C1c (#394, 2026-10-20) as `--font-size-*` and `--line-height-*`, plus a 14 px `--font-size-stat`; the names and what uses them are in SOT §12, Type.
 >
 > **Colour adopted in C1b (#393, 2026-10-20)** under the app's existing names, not the ones below: `--accent` is `--color-accent-in`, `--on-accent` `--color-on-accent`, `--accent-pressed` `--color-accent-pressed`, the states are `--color-{success,danger,warning,info}-{fg,bg,fill}` with `--color-on-*`, the game colours `--color-xp` and `--color-streak`, the module fills `--color-module-*`. Two differences: `--accent-fg` is not a separate token (the accent itself passes as text, 5.25:1 light, 6.99:1 dark), and the surface, ink and border rows were not repainted (the app keeps its `#F9FAFB` / `#111827` grounds). Warning is `#B45309` under white in light, as UX0a-1 shipped it, not `#F59E0B` under ink. Values and measurements: SOT §12, Colour tokens.
 
@@ -1201,7 +1202,7 @@ The critic's constraint audit, kept where it changes a decision.
 - **C-8 · Audio depends on the pipeline.** Per-sentence audio, slow replay, the sound of the day and story read-aloud all need pre-generated audio first; the TTS proxy allows 30 calls an hour (SOT §20 gate 3).
 - **C-9 · C08's severity** was set on desktop-first reasoning; the bug hits everything above 600 px, tablets included (N1), so it is major.
 - **C-10 · The icon set is still an open question** (SOT Q14), not a settled decision.
-- **C-11 · Nunito 500 isn't loaded.** Use 400/600 for body text, or add 500 when self-hosting.
+- **C-11 · Nunito 500 isn't loaded.** Use 400/600 for body text, or add 500 when self-hosting. ✅ (#394, 2026-10-20): the 18 places that asked for 500 say 400, which is what rendered.
 - **C-12 · A paid proofreading pass** is a budget item with no budget; a volunteer native speaker or a Beta tester is the realistic route.
 - **C-13 · Dog-bowl and treat copy** may read as childish to 35–55-year-olds.
 - **C-14 · Test-outs** should reuse the WP-F4 module exam, not add a second gate.

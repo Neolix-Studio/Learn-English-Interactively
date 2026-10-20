@@ -87,7 +87,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               style={{
-                flex: 1, padding: '0.85rem', border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: activeTab === tab.id ? 700 : 500, fontSize: '0.9rem',
+                flex: 1, padding: '0.85rem', border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: activeTab === tab.id ? 700 : 400, fontSize: '0.9rem',
                 color: activeTab === tab.id ? 'var(--color-accent-in)' : 'var(--color-text-muted)',
                 borderBottom: activeTab === tab.id ? '2px solid var(--color-accent-in)' : '2px solid transparent',
                 transition: 'all 0.2s',
@@ -116,7 +116,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
                     <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--color-text-main)', fontWeight: 700 }}>Streak Shield</h3>
-                    <span style={{ background: 'color-mix(in srgb, #10B981 15%, transparent)', color: '#10B981', fontSize: '0.7rem', fontWeight: 700, padding: '0.1rem 0.5rem', borderRadius: '10px' }}>
+                    <span style={{ background: 'color-mix(in srgb, #10B981 15%, transparent)', color: '#10B981', fontSize: 'var(--font-size-caption)', fontWeight: 700, padding: '0.1rem 0.5rem', borderRadius: '10px' }}>
                       Tulajdonodban: {shields}
                     </span>
                   </div>
@@ -233,7 +233,7 @@ export const ShopModal: React.FC<ShopModalProps> = ({ onClose }) => {
                         <div style={{ fontWeight: 600, color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>{item.name}</div>
                         <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', opacity: 0.7 }}>{item.cost}</div>
                       </div>
-                      <span style={{ fontSize: '0.7rem', fontWeight: 700, background: 'var(--color-bg-surface)', color: 'var(--color-text-muted)', padding: '0.2rem 0.6rem', borderRadius: '8px', border: '1px solid var(--color-text-muted)', opacity: 0.6 }}>
+                      <span style={{ fontSize: 'var(--font-size-caption)', fontWeight: 700, background: 'var(--color-bg-surface)', color: 'var(--color-text-muted)', padding: '0.2rem 0.6rem', borderRadius: '8px', border: '1px solid var(--color-text-muted)', opacity: 0.6 }}>
                         🔒 Hamarosan
                       </span>
                     </div>

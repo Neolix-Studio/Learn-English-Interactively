@@ -800,7 +800,7 @@ button[data-option-state="answer"] {
         color: var(--color-text-main);
         font-family: inherit;
         font-size: clamp(1.55rem, 7vw, 2.2rem);
-        font-weight: 500;
+        font-weight: 400;
     }
 
     .fill-blank-prompt-button svg {
@@ -858,7 +858,7 @@ button[data-option-state="answer"] {
         min-height: 58px !important;
         border-radius: 999px !important;
         font-size: clamp(1.35rem, 6vw, 1.9rem) !important;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
     }
 
     .fill-blank-options .lesson-option-btn:last-child:nth-child(odd) {

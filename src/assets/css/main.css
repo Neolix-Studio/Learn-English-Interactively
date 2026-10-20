@@ -1,9 +1,5 @@
 
 :root {
-
-    --font-heading: 'Outfit', sans-serif;
-    --font-body: 'Inter', sans-serif;
-
     color-scheme: light;
 
     --color-bg-base: #F9FAFB;
@@ -221,6 +217,12 @@ h1, h2, h3, h4, .logo-text {
     font-weight: 700;
 }
 
+/* Controls take the browser's own font unless told otherwise, and an SVG's font-family
+   attribute (the lesson pictures say Arial) beats inheritance but not a rule. */
+button, input, select, textarea, svg text {
+    font-family: inherit;
+}
+
 a {
     color: inherit;
     text-decoration: none;
@@ -338,7 +340,7 @@ a {
 }
 
 .nav-link {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 1.2rem;
     color: var(--color-text-muted);
     padding: 0.5rem 0;
@@ -1633,7 +1635,7 @@ body.reduced-motion .lesson-node.completed {
 }
 
 .rpg-title-badge .title-text {
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.5px;

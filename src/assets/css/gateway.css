@@ -41,7 +41,7 @@
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-body);
     background-color: var(--bg-color);
     background-image: radial-gradient(circle at top right, #e0e7ff 0%, transparent 40%),
                       radial-gradient(circle at bottom left, #dbeafe 0%, transparent 40%);

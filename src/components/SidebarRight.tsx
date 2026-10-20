@@ -94,7 +94,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({ onOpenShop, isOpen, 
             <img src="/assets/images/energy.svg" alt="Energy" width="24" height="24" style={{ filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.1))' }} />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span>{isPremium ? '∞' : `${energy}/5`}</span>
-              {nextEnergyIn && <span style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', marginTop: '-2px', fontWeight: 'bold' }}>{nextEnergyIn}</span>}
+              {nextEnergyIn && <span className="stat-caption" style={{ color: 'var(--color-text-muted)', marginTop: '-2px', fontWeight: 'bold' }}>{nextEnergyIn}</span>}
             </div>
           </div>
           <div className="stat-icon-group" title={t('sidebar_right.dog_treats_title')} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800, color: '#8D6E63' }}>

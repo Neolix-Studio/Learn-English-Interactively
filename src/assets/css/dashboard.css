@@ -125,7 +125,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
     background: var(--color-bg-surface);
     border-left: 3px solid var(--color-accent-on);
     color: var(--color-text-main);
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .status-icon {
@@ -272,7 +272,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
 .subsection-link.active {
     background: var(--color-bg-surface);
     color: var(--color-text-main);
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .subsection-link.active::before {
@@ -594,7 +594,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
 
 .word-order-instruction {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .word-chips-source {
@@ -695,7 +695,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
 
 .quiz-question {
     font-size: 1.05rem;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.5;
 }
 
@@ -754,7 +754,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
 
 .quiz-feedback {
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 400;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     display: none;
@@ -815,7 +815,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
 
 .exam-question {
     font-size: 1.05rem;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.6;
 }
 
@@ -918,7 +918,7 @@ body:has([data-overlay], .interactive-active, .react-joyride__overlay) .lexi-fee
     color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 400;
     padding: 0.5rem 1.3rem;
     border-radius: 8px;
     cursor: pointer;
@@ -1342,7 +1342,7 @@ body.is-lesson-active .mobile-bottom-bar {
 .flip-card .contraction {
     font-size: 0.85rem;
     color: var(--color-accent-in);
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .flip-card .example-sentence {
@@ -1897,7 +1897,7 @@ body.is-lesson-active .mobile-bottom-bar {
     align-items: center;
     justify-content: center;
     color: var(--color-text-muted);
-    font-size: 0.72rem;
+    font-size: var(--font-size-tab);
     gap: 0.25rem;
     text-decoration: none;
     transition: color var(--transition-base);
@@ -1925,6 +1925,14 @@ body.is-lesson-active .mobile-bottom-bar {
 .bottom-nav-icon {
     font-size: 1.35rem;
     line-height: 1;
+}
+
+/* At 12 px the longest label, 'Statisztika', fills a fifth of 320 px. A larger text setting
+   on the phone shortens it rather than spilling into the next tab. */
+.bottom-nav-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .resume-cta-card {
@@ -2240,7 +2248,7 @@ body.is-lesson-active .mobile-bottom-bar {
 .quiz-question-box {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .quiz-answers-grid {
@@ -2867,13 +2875,6 @@ input:checked + .slider:before {
     --text: #1F2937;
     --border: rgba(255, 255, 255, 0.5);
     --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Nunito', sans-serif;
 }
 
 body {
@@ -3635,7 +3636,6 @@ p {
 
 .btn, .btn-secondary, .btn-logout, #btn-paywall-register, #btn-guest-register, #btn-clear-guest-data {
     border-radius: 16px !important;
-    font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 1px !important;
@@ -3674,7 +3674,6 @@ p {
 .current-topic-title {
     font-weight: 800 !important;
     letter-spacing: -0.5px !important;
-    font-family: 'Nunito', sans-serif !important;
 }
 
 .dashboard-left-sidebar {
@@ -3842,6 +3841,13 @@ body {
 .dashboard-right-sidebar span {
     font-size: 0.8rem !important;
 }
+/* The stat numbers are 14 px, the energy refill time under them 13 px (C1c). */
+.dashboard-right-sidebar .top-stats-bar span {
+    font-size: var(--font-size-stat) !important;
+}
+.dashboard-right-sidebar .top-stats-bar .stat-caption {
+    font-size: var(--font-size-caption) !important;
+}
 .dashboard-right-sidebar .shop-item span {
     font-size: 0.7rem !important;
 }
@@ -3962,8 +3968,7 @@ body {
     .bottom-nav-item {
         flex: 1 1 0 !important;
         min-width: 0 !important;
-        padding: 0.45rem 0.2rem !important;
-        font-size: clamp(0.62rem, 2.5vw, 0.72rem) !important;
+        padding: 0.45rem 0.125rem !important;
     }
 
     .bottom-nav-icon {
@@ -4001,7 +4006,6 @@ body {
 
 @media (max-width: 380px) {
     .bottom-nav-item {
-        font-size: 0.58rem !important;
         gap: 0.18rem !important;
     }
 
@@ -4375,7 +4379,7 @@ a.logo {
 }
 
 .sidebar-settings-label {
-    font-weight: 500 !important;
+    font-weight: 400 !important;
     cursor: pointer !important;
     color: var(--color-text-main) !important;
 }

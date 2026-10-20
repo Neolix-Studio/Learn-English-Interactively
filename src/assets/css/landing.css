@@ -201,7 +201,6 @@
 }
 
 body {
-    font-family: 'Nunito', sans-serif !important;
     background: var(--color-bg) !important;
     color: var(--color-text-main) !important;
 }
@@ -214,7 +213,6 @@ body {
 }
 
 .nav-link {
-    font-family: 'Nunito', sans-serif !important;
     font-weight: 700 !important;
     color: var(--color-text-muted) !important;
 }
@@ -224,7 +222,6 @@ body {
 }
 
 .btn-start, .btn-card, .btn-logout, .btn-primary {
-    font-family: 'Nunito', sans-serif !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
     border-radius: 16px !important;
@@ -300,7 +297,6 @@ body {
 }
 
 .hero-title {
-    font-family: 'Nunito', sans-serif !important;
     font-weight: 900 !important;
     font-size: clamp(2.5rem, 5vw, 4rem) !important;
     line-height: 1.1 !important;
