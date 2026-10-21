@@ -5,18 +5,78 @@ function security_is_https(): bool {
         || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
 }
 
+// A learner stays signed in for 30 days after their last visit, not after their
+// last login (UX3-1a): an authenticated request re-issues the cookie with a fresh
+// 30-day expiry, at most once a day.
+const SESSION_LIFETIME_SECONDS = 60 * 60 * 24 * 30;
+const SESSION_RENEW_AFTER_SECONDS = 60 * 60 * 24;
+
 function security_start_session(): void {
     if (session_status() === PHP_SESSION_ACTIVE) {
         return;
     }
 
     session_start([
-        'cookie_lifetime' => 60 * 60 * 24 * 30,
+        'cookie_lifetime' => SESSION_LIFETIME_SECONDS,
+        // Every entry point has to set this: a garbage collection started from a
+        // script on PHP's default (24 minutes) deletes every session file idle
+        // for longer. PHP touches the file on each request, so an active
+        // learner's file never gets that old.
+        'gc_maxlifetime' => SESSION_LIFETIME_SECONDS,
         'cookie_path' => '/',
         'cookie_secure' => security_is_https(),
         'cookie_httponly' => true,
         'cookie_samesite' => 'Lax'
     ]);
+
+    security_slide_session();
+}
+
+function security_slide_session(): void {
+    if (!isset($_SESSION['user_id'])) {
+        return;
+    }
+
+    $issuedAt = $_SESSION['cookie_issued_at'] ?? null;
+    $age = is_int($issuedAt) ? time() - $issuedAt : null;
+
+    // The last cookie this session was given has run out, so whoever still
+    // sends it is signed out, as a browser would be.
+    if ($age !== null && $age >= SESSION_LIFETIME_SECONDS) {
+        $_SESSION = [];
+        session_regenerate_id(true);
+        return;
+    }
+
+    // A session from before UX3-1a has no stamp and is renewed now.
+    if ($age === null || $age >= SESSION_RENEW_AFTER_SECONDS) {
+        security_renew_session_cookie();
+    }
+}
+
+// Sends the session cookie again with a fresh expiry and the flags
+// session_start() gave it.
+function security_renew_session_cookie(): void {
+    if (headers_sent()) {
+        return;
+    }
+
+    $params = session_get_cookie_params();
+    setcookie(session_name(), session_id(), [
+        'expires' => time() + SESSION_LIFETIME_SECONDS,
+        'path' => $params['path'],
+        'domain' => $params['domain'],
+        'secure' => $params['secure'],
+        'httponly' => $params['httponly'],
+        'samesite' => $params['samesite']
+    ]);
+    security_mark_session_cookie_issued();
+}
+
+// session_regenerate_id() at login and signup sends a fresh 30-day cookie of
+// its own; stamping it stops the next request from sending a second one.
+function security_mark_session_cookie_issued(): void {
+    $_SESSION['cookie_issued_at'] = time();
 }
 
 // The one origin allowlist, for api.php, api/tts.php, upload_avatar.php and

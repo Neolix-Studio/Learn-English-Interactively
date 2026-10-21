@@ -87,6 +87,7 @@ share one database, so there is no safe remote target for write tests.
 | 7 | The cron leaves legacy, never-stamped and saved-today rows alone, takes one shield per missed day, and keys the inactivity e-mail on activity, not on the last login (#358). |
 | 8 | A `last_active_date` from before the cut-off day is never acted on (#358). |
 | 10 | `get_friends` lists every friend when one is in a league, and the energy refill for feedback works once an hour (#382). |
+| 12 | On pre-seeded session files, a signed-in request gets a fresh 30-day cookie at most once a day with the same flags, a session whose last cookie ran out is signed out, a guest's cookie is not renewed, and a garbage collection on PHP's defaults keeps a session idle for 2 hours (#398). |
 
 No SMTP password is configured, so the cron cannot send anything: a mail that
 is due shows up as a `Could not send ... email to ...` line in its output.
@@ -102,7 +103,8 @@ need to be running. `--ref` is how you show a check detects the bug it claims
 to: run it against `dev` before WP-B0 (`--ref 450b9dd`) and checks 1-3 fail
 while 4-5 pass; against the commit before #358 (`--ref 2408107`) groups 1-5
 pass and 6-8 fail; against the commit before #359 (`--ref e6d7345`) 21 checks
-fail, 19 of them in group 4. With `--ref` the PHP files and `templates/` come from that
+fail, 19 of them in group 4; against the commit before #398 (`--ref 7b38808`) 5 of group 12's 9
+checks fail. With `--ref` the PHP files and `templates/` come from that
 ref; the migrations always come from the working tree.
 
 **In CI.** The verify job of `verify-deploy.yml` runs the suite on every push,

@@ -227,11 +227,12 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 
 ### N3 · Session expiry is guaranteed on day 30 and fails silently — **major**
 - ✅ **Partly fixed (#383, 2026-10-01):** it no longer fails silently. `save_progress` with no session answers 401, and the app shows 'Lejárt a bejelentkezésed, ezért a haladásodat nem tudtuk menteni. Jelentkezz be újra.' ("Your sign-in has expired, so we couldn't save your progress. Sign in again.") with a 'Bejelentkezés' ("Sign in") button. **Still open:** the sliding session (UX3-1a, #398), a local outbox that keeps the unsaved progress across the re-login, and a prefilled re-login sheet.
+- ✅ **Partly fixed again (#398, 2026-10-21): the session slides.** A signed-in request re-issues the cookie with a fresh 30-day expiry, at most once a day, with the same Secure, HttpOnly and SameSite=Lax flags, so a learner who visits at least once a month stays signed in; one who stays away for 30 days is still signed out. The session file now lives 30 days in every PHP entry point, not only in `api.php` (a clean-up started from the audio or avatar script used to delete every session idle for 24 minutes). SOT §10 has the detail. **Still open:** the local outbox and the prefilled re-login sheet (UX3-1b, #399), and an in-app login screen that states the reason.
 - **What happens:** the 30-day cookie is never re-issued and `session_regenerate_id` runs only at signup and login, so every session ends 30 days after login however active the learner is. `save_progress` then returns 'Munkamenet lejárt! Kérjük, jelentkezz be újra.' ("Session expired! Please log in again."), but the client only handles success: achievement toasts still show and the path advances. Relaunching opens the marketing page under an empty login modal with no reason; an offline launch takes the same path.
 - **Learner impact:** every Beta tester silently loses the lessons done after day 30 until they notice they are logged out.
 - **Fix:** a sliding session (re-issue the cookie on activity); a local outbox of unsaved progress; a re-login sheet with the e-mail prefilled that flushes the outbox; an in-app login screen that states the reason.
 - **Effort:** M
-- **Where:** `security.php:13-19`, `api.php:575,729,1155-1158`, `context/UserContext.tsx:366-376`
+- **Where:** `security.php:13-19`, `api.php:575,729,1155-1158`, `context/UserContext.tsx:366-376` *(re-checked 2026-10-21: since #398 the session is started and slid at `security.php:14-81`, login and signup regenerate at `api.php:574,731`, and `save_progress` answers 401 at `api.php:1253`)*
 - **Related:** WP-B4 (invisible failures, stale CSRF), WP-E4; N9, C46.
 
 ### N6 · Logging in silently merges another person's guest progress into the account — **major**

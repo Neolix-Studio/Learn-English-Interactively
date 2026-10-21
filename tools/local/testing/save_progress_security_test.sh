@@ -59,6 +59,12 @@
 # and signup without an invite is refused when BETA_INVITES_ENABLED is unset.
 # Against the commit before #387 (--ref 034ee26) five of its seven checks fail;
 # Origin https://lexipaws.hu and the gate switched off pass on both.
+#
+# Group 12 holds the UX3-1a checks (#398): on pre-seeded session files, a
+# signed-in request gets a fresh 30-day cookie at most once a day, with the
+# same flags; a session whose last cookie ran out is signed out; a guest's
+# cookie is not renewed; and a garbage collection started on PHP's defaults
+# no longer deletes a session idle for 24 minutes.
 
 set -uo pipefail
 
@@ -882,6 +888,97 @@ BODY="$(gate_signup false gateoff@test.local)"
 if [ "$(users_with gateoff@test.local)" = "1" ]
 then pass "BETA_INVITES_ENABLED 'false': the gate opens only when switched off on purpose"
 else fail "BETA_INVITES_ENABLED 'false': reply $BODY, users $(users_with gateoff@test.local)"; fi
+
+# ======================================= 12. the session cookie slides (UX3-1a)
+echo
+echo "12. a signed-in session gets a fresh 30-day cookie at most once a day; an idle one still expires"
+# seed() writes session files with no cookie_issued_at, as every session made
+# before UX3-1a has.
+seed
+sess() {  # $1=session id  $2=seconds since its cookie was issued -> a session file for user 4
+  printf 'user_id|i:4;username|s:7:"tester4";cookie_issued_at|i:%s;' "$(( $(date +%s) - $2 ))" \
+    > "$SANDBOX/sessions/sess_$1"
+}
+cookie_of() {  # $1=session id, then extra curl arguments -> the PHPSESSID Set-Cookie of get_session, or <none>
+  local id="$1"; shift
+  curl -s -D - -o /dev/null -b "PHPSESSID=$id" "$@" "$BASE?action=get_session" \
+    | tr -d '\r' | sed -n 's/^[Ss]et-[Cc]ookie: \(PHPSESSID=.*\)/\1/p' | grep . || echo "<none>"
+}
+renews() {  # $1=Set-Cookie  $2=session id -> 0 when it sends that id for 30 days, HttpOnly, SameSite=Lax
+  case "$1" in "PHPSESSID=$2;"*) ;; *) return 1 ;; esac
+  printf '%s' "$1" | grep -q 'Max-Age=2592000;' && printf '%s' "$1" | grep -q '; HttpOnly' \
+    && printf '%s' "$1" | grep -q '; SameSite=Lax'
+}
+DAY=86400
+
+GOT="$(cookie_of sptestuser4)"
+if renews "$GOT" sptestuser4 && ! printf '%s' "$GOT" | grep -qi '; secure'
+then pass "a session from before the change gets a fresh 30-day cookie, HttpOnly and SameSite=Lax (no Secure over http)"
+else fail "first request of an unstamped session: Set-Cookie [$GOT]"; fi
+GOT="$(cookie_of sptestuser4)"
+if [ "$GOT" = "<none>" ]; then pass "the next request the same day gets no Set-Cookie"
+else fail "a second request the same day got Set-Cookie [$GOT]"; fi
+
+sess sptestslide $(( DAY - 3600 ))
+GOT="$(cookie_of sptestslide)"
+if [ "$GOT" = "<none>" ]; then pass "a cookie issued 23 hours ago is not renewed"
+else fail "a cookie issued 23 hours ago got Set-Cookie [$GOT]"; fi
+sess sptestslide $(( DAY + 3600 ))
+GOT="$(cookie_of sptestslide)"
+AGAIN="$(cookie_of sptestslide)"
+if renews "$GOT" sptestslide && [ "$AGAIN" = "<none>" ]
+then pass "a cookie issued 25 hours ago is renewed for 30 days, once"
+else fail "a cookie issued 25 hours ago: Set-Cookie [$GOT], then [$AGAIN]"; fi
+
+sess sptestslide $(( DAY + 3600 ))
+GOT="$(cookie_of sptestslide -H 'X-Forwarded-Proto: https')"
+if renews "$GOT" sptestslide && printf '%s' "$GOT" | grep -q '; secure'
+then pass "over HTTPS the renewed cookie keeps Secure"
+else fail "renewal over HTTPS: Set-Cookie [$GOT]"; fi
+
+sess sptestidle $(( 30 * DAY + 60 ))
+REPLY="$(curl -s -D "$SANDBOX/idle-headers.txt" -b "PHPSESSID=sptestidle" "$BASE?action=get_session")"
+NEWID="$(tr -d '\r' < "$SANDBOX/idle-headers.txt" | sed -n 's/^[Ss]et-[Cc]ookie: PHPSESSID=\([^;]*\);.*/\1/p')"
+OLDFILE="$([ -e "$SANDBOX/sessions/sess_sptestidle" ] && echo kept || echo deleted)"
+# Sending the old id again opens an empty session under it (strict mode is off).
+AFTER="$(curl -s -b "PHPSESSID=sptestidle" "$BASE?action=get_session")"
+if [ "$REPLY" = '{"session":null}' ] && [ -n "$NEWID" ] && [ "$NEWID" != "sptestidle" ] \
+   && [ "$OLDFILE" = "deleted" ] && [ "$AFTER" = '{"session":null}' ]
+then pass "a session idle for 30 days is signed out, its file deleted and a new id issued"
+else fail "idle session: reply ${REPLY:0:60}, new id [$NEWID], old file $OLDFILE, then ${AFTER:0:60}"; fi
+
+printf 'csrf_token|s:4:"test";' > "$SANDBOX/sessions/sess_sptestguest"
+GOT="$(cookie_of sptestguest)"
+if [ "$GOT" = "<none>" ]; then pass "a guest session's cookie is not renewed"
+else fail "a guest session got Set-Cookie [$GOT]"; fi
+
+HASH="$(php -r 'echo password_hash("Slide-test1", PASSWORD_DEFAULT);')"
+"${DB[@]}" -e "INSERT INTO users (id, email, password_hash, username) VALUES (5, 'slide@test.local', '$HASH', 'slidetester');
+               INSERT INTO user_progress (user_id, points, scores) VALUES (5, 0, '{}')"
+JAR="$SANDBOX/slide-jar.txt"
+LOGIN="$(curl -s -D - -c "$JAR" -H "Content-Type: application/json" \
+  -d '{"email":"slide@test.local","password":"Slide-test1"}' "$BASE?action=login" | tr -d '\r')"
+NEXT="$(curl -s -D - -b "$JAR" "$BASE?action=get_session" | tr -d '\r')"
+if printf '%s' "$LOGIN" | grep -q '^[Ss]et-[Cc]ookie: PHPSESSID=.*Max-Age=2592000;' \
+   && printf '%s' "$NEXT" | grep -q '"email":"slide@test.local"' \
+   && ! printf '%s' "$NEXT" | grep -qi '^set-cookie: PHPSESSID='
+then pass "login sends one 30-day cookie, and the next request sends none"
+else fail "login then get_session: login headers [$(printf '%s' "$LOGIN" | grep -i '^set-cookie' | tr '\n' ' ')], next [$(printf '%s' "$NEXT" | grep -i '^set-cookie' | tr '\n' ' ')]"; fi
+
+# A garbage collection started from any entry point (api/tts.php,
+# upload_avatar.php, ...) on PHP's defaults, which give 24 minutes, must keep a
+# file idle for two hours and still delete one idle for 31 days.
+touch "$SANDBOX/sessions/sess_sptestgcrecent" "$SANDBOX/sessions/sess_sptestgcold"
+python3 -c 'import os, sys, time
+for path, age in ((sys.argv[1], 7200), (sys.argv[2], 31 * 86400)):
+    os.utime(path, (time.time() - age, time.time() - age))' \
+  "$SANDBOX/sessions/sess_sptestgcrecent" "$SANDBOX/sessions/sess_sptestgcold"
+( cd "$SANDBOX/app" && php -d session.save_path="$SANDBOX/sessions" -d session.gc_maxlifetime=1440 \
+    -d session.gc_probability=1 -d session.gc_divisor=1 \
+    -r 'require "security.php"; session_id("sptestgcprobe"); security_start_session();' ) >/dev/null 2>&1
+if [ -e "$SANDBOX/sessions/sess_sptestgcrecent" ] && [ ! -e "$SANDBOX/sessions/sess_sptestgcold" ]
+then pass "a garbage collection on PHP's defaults keeps a session idle for 2 hours and deletes one idle for 31 days"
+else fail "after a garbage collection: 2-hour file $([ -e "$SANDBOX/sessions/sess_sptestgcrecent" ] && echo kept || echo deleted), 31-day file $([ -e "$SANDBOX/sessions/sess_sptestgcold" ] && echo kept || echo deleted)"; fi
 
 # ==================================================================== summary
 echo

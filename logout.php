@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-session_start();
+require_once __DIR__ . '/security.php';
+security_start_session();
 
 // Destroy session
 $_SESSION = array();

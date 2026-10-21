@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . '/security.php';
-ini_set('session.cookie_lifetime', 60 * 60 * 24 * 30);
-ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
 security_start_session();
 
 security_send_cors_headers();
@@ -574,6 +572,7 @@ function handleSignup(PDO $pdo, array $data) {
         ]);
 
         session_regenerate_id(true);
+        security_mark_session_cookie_issued();
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $username;
         $_SESSION['email'] = $email;
@@ -730,6 +729,7 @@ function handleLogin(PDO $pdo, array $data) {
         }
 
         session_regenerate_id(true);
+        security_mark_session_cookie_issued();
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];

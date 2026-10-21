@@ -214,7 +214,7 @@ cd "/Users/ladislav/Documents/Documents - Ladislav’s MacBook Pro/Neolix Studio
 npm ci
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS neolix_db CHARACTER SET utf8mb4;"
 cp db_config.example.php db_config.php   # the example has MORE keys than the current local file
-php migrate.php                          # CLI bypasses the token gate (security.php:80-82)
+php migrate.php                          # CLI bypasses the token gate (security.php:162-164)
 php -S 127.0.0.1:8000                    # terminal A — document root MUST be the repo root
 npm run dev                              # terminal B — http://localhost:5173
 ```
@@ -222,7 +222,7 @@ npm run dev                              # terminal B — http://localhost:5173
 **Traps, all confirmed by reading the code:**
 
 - **On `localhost`, every auth guard is off.** `isLocalDevHost()` (`devEnvironment.ts:1-3`) checks only the hostname string, so guests reach every guarded route (`App.tsx:37`) and `Home.tsx:61` swaps the CTAs for a "Localhost teszt mód" panel. There is no `import.meta.env.DEV` reinforcement — a tunnel or hosts-file alias resolving to `localhost` would open staging the same way.
-- **`http://app.localhost:5173` keeps the guards on, but PHP rejects its POSTs.** That host is not in `security_allowed_origins()` (`security.php:25-44`, the only list since #387), so against a plain `php -S` every POST, login included, returns 403 "Invalid request origin." The local stack maps that one origin to `http://localhost:5173` inside its sandbox; production code is unchanged.
+- **`http://app.localhost:5173` keeps the guards on, but PHP rejects its POSTs.** That host is not in `security_allowed_origins()` (`security.php:85-104`, the only list since #387), so against a plain `php -S` every POST, login included, returns 403 "Invalid request origin." The local stack maps that one origin to `http://localhost:5173` inside its sandbox; production code is unchanged.
 - **`/report_problem.php` is not in the proxy list** but `ReportProblemModal.tsx:56` posts to it. Report-a-problem is broken under `npm run dev`. Same gap for `/audio/`. (`/submit_feedback.php` was listed too; it is no longer shipped, #382.)
 - **Curriculum JSON is not fetched at runtime.** `roadmapLoader.ts:25-26` and `storyLoader.ts:17` use `import.meta.glob(…, { eager: true })`. Editing `data/` needs a rebuild/HMR cycle, not a refresh.
 - The `db_config.php` currently on this machine defines only `DB_*` and `SMTP_*`. Every consumer guards with `defined()`, so the app boots — but TTS errors out and password reset throws (`api.php:237`).
@@ -304,7 +304,7 @@ Fields the client **never sends back**: `energy`, `last_energy_refill`, `daily_q
 
 `src/services/api.ts` is **dead** — zero importers, and it builds a broken URL (`/api.phpget_session`). Its semantics are the *opposite* of the live client (it throws on `!response.ok`, sends no CSRF header), so any future "reuse" of it inherits inverted failure behaviour. Delete it.
 
-**CSRF:** cached in a module variable (`utils/api.ts:1`), filled once (`:23`), attached to every POST. **Never invalidated.** Sessions last 30 days (`security.php:14`); once the PHP session lapses, every POST 403s, the resolved `{error}` is discarded by `updateProgress`, and saves silently stop forever until a full page reload.
+**CSRF:** cached in a module variable (`utils/api.ts:1`), filled once (`:23`), attached to every POST. **Never invalidated.** Sessions last 30 days, since #398 counted from the last visit (`security.php:11`); once the PHP session lapses, every POST 403s, the resolved `{error}` is discarded by `updateProgress`, and saves silently stop forever until a full page reload.
 
 ### Guest mode
 
@@ -600,7 +600,8 @@ Flat PHP on shared hosting. `api.php` is a single 2,026-line front controller wi
 
 ### Session & auth
 
-- 30-day cookie, `httponly`, `samesite=Lax`, `secure` only when HTTPS is detected (`security.php:8-20`).
+- 30-day cookie, `httponly`, `samesite=Lax`, `secure` only when HTTPS is detected (`security_start_session()`, [security.php:14](security.php:14)).
+  ✅ **The cookie slides (#398, 2026-10-21, UX3-1a).** A signed-in request whose cookie was issued 24 hours ago or more gets it again, same id, with a fresh 30-day expiry and the flags `session_start()` gave it (`security_slide_session()`, [security.php:35](security.php:35); `security_renew_session_cookie()`, [:59](security.php:59)). The time is kept in `$_SESSION['cookie_issued_at']`; login and signup stamp it after `session_regenerate_id()` ([api.php:575](api.php:575), [:732](api.php:732)), so they send one cookie, not two. A learner is signed out 30 to 31 days after their last visit instead of 30 days after their last login. A session from before #398 has no stamp and is renewed on its first request. A session whose last cookie is 30 days old is emptied and given a new id, so a client that still sends the old cookie is a guest, as a browser would be. A guest's cookie is not renewed. **The session file lives as long:** `gc_maxlifetime` (30 days) is now set in `security_start_session()`, so every entry point agrees. It was set only in `api.php`, so a garbage collection started from `api/tts.php`, `upload_avatar.php`, `report_problem.php`, `beta_admin.php` or `logout.php` (which now calls `security_start_session()` too) ran on PHP's default of 24 minutes and deleted every session file idle for longer, signed-in learners' included. PHP touches the file on every request, so an active learner's file never ages. Group 12 of `save_progress_security_test.sh` checks all of this on pre-seeded session files; against the commit before #398, 5 of its 9 checks fail. Still open: the outbox and the re-login sheet (UX3-1b, #399). Since the cookie slides, a captured session lasts as long as it is used, which makes revoking sessions on a password change (E4b, #517) matter more.
   **Owner decision, 2026-08-28: the HTTPS redirect has been enabled at the host** — this **supersedes** the WP-A1 side finding that it was off for `lexipaws.eu`, which should no longer be cited as a live defect.
   ✅ **Redirect verified 2026-08-28 on all four hostnames.** `http://` returns **301** to the matching `https://` origin for `lexipaws.eu`, `lexipaws.hu`, `lexipaws.sk` **and** `dev.lexipaws.eu` — so this is not scoped to the apex, and `.hu`/`.sk` logins are not left on plain HTTP.
   ✅ **`Secure` session cookie verified on `dev`.** `GET https://dev.lexipaws.eu/api.php?action=csrf_token` returns `Set-Cookie: PHPSESSID=…; Max-Age=2592000; path=/; secure; HttpOnly; SameSite=Lax` — every flag §10 claims, confirmed live.
@@ -620,7 +621,7 @@ Token in `$_SESSION`, compared with `hash_equals`. Enforced at `api.php:89` **on
 
 ### Rate limiting is not rate limiting
 
-`security_rate_limit()` (`security.php:105-121`) stores counters in **`$_SESSION`**. The bucket keys embed `REMOTE_ADDR`, which makes them *look* IP-scoped, but the storage is per-session. **Dropping the cookie resets every limit** — login brute force, signup flooding, password-reset flooding, beta-request spam, and the TTS quota, all simultaneously.
+`security_rate_limit()` (`security.php:190-206`, re-checked 2026-10-21) stores counters in **`$_SESSION`**. The bucket keys embed `REMOTE_ADDR`, which makes them *look* IP-scoped, but the storage is per-session. **Dropping the cookie resets every limit** — login brute force, signup flooding, password-reset flooding, beta-request spam, and the TTS quota, all simultaneously.
 
 The one durable limiter is `betaRequestDatabaseRateLimitError()` (`api.php:338-362`), which counts rows by SHA-256 IP hash (10/hour, 30/day). ✅
 
@@ -632,7 +633,7 @@ The TTS limit is the one with a direct cash cost: `api/tts.php` has **no session
 |---|---|---|
 | `beta_admin.php` | `MAINTENANCE_TOKEN` only | **No rate limit, no lockout, and not in the `.htaccess` deny list.** A compromise mints unlimited invites and exposes every applicant's email, name and message. |
 | `migrate.php` | `MIGRATION_TOKEN` | Reachable over HTTPS in production after deploy. Grants schema execution. |
-| `cron_*.php` | `CRON_SECRET` | `security.php:92` accepts the secret from **`?secret=`**, so it lands in access logs, proxy logs and Referer headers. |
+| `cron_*.php` | `CRON_SECRET` | `security.php:175` accepts the secret from **`?secret=`**, so it lands in access logs, proxy logs and Referer headers. |
 | `report_problem.php` | **none** — no session, no CSRF | Sends via bare PHP `mail()` into a Jira intake, with the reporter's unverified email in `Reply-To`. Expect spam on day one. |
 
 ### Other backend notes
@@ -660,7 +661,7 @@ The notifications job is a command, not a URL visit. It passes `security_require
 
 **What the notifications cron does since #358 (2026-09-30).**
 
-- **The learner's day** is `lexipaws_activity_date()` ([security.php:136](security.php:136)): the calendar day in Europe/Budapest, which is the same zone as Europe/Bratislava, computed in PHP. `save_progress` writes it to `user_progress.last_active_date` on every successful save ([api.php:1207](api.php:1207)) and ignores a value sent by the client. The cron reads the clock once per run and compares against the same function. `CURDATE()` is not used, so neither PHP's `date.timezone` nor the database server's zone decides when a day ends. "Active" means a successful `save_progress`; the client sends one 1.5 s after any progress change (`UserContext.tsx:363-374`).
+- **The learner's day** is `lexipaws_activity_date()` ([security.php:218](security.php:218)): the calendar day in Europe/Budapest, which is the same zone as Europe/Bratislava, computed in PHP. `save_progress` writes it to `user_progress.last_active_date` on every successful save ([api.php:1207](api.php:1207)) and ignores a value sent by the client. The cron reads the clock once per run and compares against the same function. `CURDATE()` is not used, so neither PHP's `date.timezone` nor the database server's zone decides when a day ends. "Active" means a successful `save_progress`; the client sends one 1.5 s after any progress change (`UserContext.tsx:363-374`).
 - **The cut-off.** A `last_active_date` before 2026-10-01, the first full day after the writer shipped, is never acted on ([cron_notifications.php:29](cron_notifications.php:29)). Until #358 the column was written by the old app's client and by this cron, never by the server on a save, so older dates say nothing reliable about activity. The constant `ACTIVITY_DATES_TRUSTED_FROM` overrides the day; only the configs generated by `local_stack.sh` and the test suite define it.
 - **Inactivity mail** goes to a learner whose `last_active_date` is 2 to 13 days ago ([cron_notifications.php:34-42](cron_notifications.php:34)). `last_login_at` is no longer read, and a NULL date gets no mail. The cadence is unchanged: the first two at least 48 hours apart, then weekly. `inactivity_email_count` is still reset only by a password login (`api.php:740`).
 - **Streak shields: mail only, no writes (#381, 2026-10-01).** The cron no longer writes `streak_count` or `streak_shields` ([cron_notifications.php:72-109](cron_notifications.php:72)). The server settles missed days itself at the learner's next save (§8). The cron only sends `streak_protected` to a row with `streak_count > 0`, `streak_shields > 0` and `streak_date` exactly two days ago, at most once in 24 hours. `streak_date` is written only by the server's own count, so legacy rows (NULL) are never matched; the cut-off above now gates the inactivity mail only.
