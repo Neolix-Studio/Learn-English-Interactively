@@ -65,6 +65,12 @@
 # same flags; a session whose last cookie ran out is signed out; a guest's
 # cookie is not renewed; and a garbage collection started on PHP's defaults
 # no longer deletes a session idle for 24 minutes.
+#
+# Group 13 holds the UX3-3a checks (#401): a save merges completed and
+# node_state into the row it has locked, so two sessions saving disjoint
+# lessons both keep them; a save built before a buy_cosmetic or buy_shield it
+# had not seen does not bring the bones back, also when both run at once; and
+# a user with no user_progress row still inserts.
 
 set -uo pipefail
 
@@ -979,6 +985,83 @@ for path, age in ((sys.argv[1], 7200), (sys.argv[2], 31 * 86400)):
 if [ -e "$SANDBOX/sessions/sess_sptestgcrecent" ] && [ ! -e "$SANDBOX/sessions/sess_sptestgcold" ]
 then pass "a garbage collection on PHP's defaults keeps a session idle for 2 hours and deletes one idle for 31 days"
 else fail "after a garbage collection: 2-hour file $([ -e "$SANDBOX/sessions/sess_sptestgcrecent" ] && echo kept || echo deleted), 31-day file $([ -e "$SANDBOX/sessions/sess_sptestgcold" ] && echo kept || echo deleted)"; fi
+
+# ================================= 13. saves merge into the locked row (UX3-3a)
+echo
+echo "13. two devices both keep their lessons, and an older copy brings back no spent bones"
+seed
+printf 'user_id|i:4;username|s:7:"tester4";' > "$SANDBOX/sessions/sess_sptestuser4b"
+call() {  # $1=user  $2=action  $3=json  -> echoes the response body
+  curl -s -b "PHPSESSID=sptestuser$1" -H "Content-Type: application/json" \
+       -H "X-CSRF-Token: $(tok "$1")" -d "$3" "$BASE?action=$2"
+}
+# Prints "ok" when the stored completed and node_state hold everything named in $2 (JSON).
+holds() {
+  python3 -c '
+import sys, json
+completed, nodes = json.loads(sys.argv[2]), json.loads(sys.argv[3]).get("node_state", {})
+want = json.loads(sys.argv[1])
+ok = all(n in completed.get(level, []) for level, ns in want["completed"].items() for n in ns) and \
+     all(l in nodes.get(node, {}).get("completedLessons", []) for node, ls in want["lessons"].items() for l in ls) and \
+     all(nodes.get(node, {}).get("current_level", 0) == lvl for node, lvl in want.get("levels", {}).items())
+print("ok" if ok else f"completed={completed} node_state={nodes}")' "$2" "$(col "$1" completed)" "$(col "$1" scores)"
+}
+bones_of() { col "$1" "JSON_EXTRACT(scores,'\$.bones')"; }
+
+"${DB[@]}" -e "UPDATE user_progress SET completed='{\"A1\":[\"n1\"]}',
+  scores='{\"bones\":50,\"node_state\":{\"n1\":{\"current_level\":3,\"completedLessons\":[\"l1\"]}}}' WHERE user_id=4"
+# The laptop finishes n2; the phone, still holding the copy from before, finishes n3.
+post 4 '{"points":1010,"completed":{"A1":["n1","n2"]},"scores":{"bones":51,"node_state":{"n1":{"current_level":3,"completedLessons":["l1"]},"n2":{"completedLessons":["l1","l2"]}}},"bones_spent_seen":0}' >/dev/null
+post 4b '{"points":1010,"completed":{"A1":["n1","n3"]},"scores":{"bones":51,"node_state":{"n1":{"current_level":2,"completedLessons":[]},"n3":{"completedLessons":["l1"]}}},"bones_spent_seen":0}' >/dev/null
+GOT="$(holds 4 '{"completed":{"A1":["n1","n2","n3"]},"lessons":{"n1":["l1"],"n2":["l1","l2"],"n3":["l1"]},"levels":{"n1":3}}')"
+if [ "$GOT" = "ok" ]; then pass "two sessions saving disjoint completed sets both survive, and n1 keeps level 3 and its lesson"
+else fail "after saves from two sessions: $GOT"; fi
+
+# A purchase the saving copy had not seen: the phone saves its old 600 + 1 after the laptop bought Halloween (500).
+"${DB[@]}" -e "DELETE FROM user_inventory WHERE user_id=4; UPDATE user_progress SET scores='{\"bones\":600}' WHERE user_id=4"
+BUY="$(call 4 buy_cosmetic '{"item_type":"theme","item_id":"halloween"}')"
+post 4b '{"points":1010,"completed":{"A1":["n1"]},"scores":{"bones":601},"bones_spent_seen":0}' >/dev/null
+if printf '%s' "$BUY" | grep -q '"bones_spent":500' && [ "$(bones_of 4)" = "101" ]
+then pass "a save from before a purchase does not restore the spent bones (600 - 500 + 1 = 101)"
+else fail "after buy_cosmetic then an older save: bones $(bones_of 4), purchase said $BUY"; fi
+
+# The buying device adopts the reply (100, 500 spent) and earns one more bone: not charged twice.
+post 4 '{"points":1010,"completed":{"A1":["n1"]},"scores":{"bones":101,"bones_spent":0},"bones_spent_seen":500}' >/dev/null
+if [ "$(bones_of 4)" = "101" ] && [ "$(col 4 "JSON_EXTRACT(scores,'\$.bones_spent')")" = "500" ]
+then pass "the buying device's next save is not charged again, and a client cannot lower bones_spent"
+else fail "the buying device's save left bones $(bones_of 4), bones_spent $(col 4 "JSON_EXTRACT(scores,'\$.bones_spent')")"; fi
+
+# The same with a shield (100), from an older copy holding 101.
+BUY="$(call 4 buy_shield '{}')"
+post 4b '{"points":1010,"completed":{"A1":["n1"]},"scores":{"bones":101},"bones_spent_seen":500}' >/dev/null
+if printf '%s' "$BUY" | grep -q '"bones_spent":600' && [ "$(bones_of 4)" = "1" ]
+then pass "a save from before buy_shield does not restore its 100 bones"
+else fail "after buy_shield then an older save: bones $(bones_of 4), purchase said $BUY"; fi
+
+# Both at once, five times: whichever runs first, the row lock leaves 600 - 500 + 1.
+RACE_OK=0
+for i in 1 2 3 4 5; do
+  "${DB[@]}" -e "DELETE FROM user_inventory WHERE user_id=4; UPDATE user_progress SET scores='{\"bones\":600}' WHERE user_id=4"
+  T4="$(tok 4)"; T4B="$(tok 4b)"
+  curl -s -o /dev/null -b "PHPSESSID=sptestuser4" -H "Content-Type: application/json" -H "X-CSRF-Token: $T4" \
+       -d '{"item_type":"theme","item_id":"halloween"}' "$BASE?action=buy_cosmetic" &
+  BUY_PID=$!
+  curl -s -o /dev/null -b "PHPSESSID=sptestuser4b" -H "Content-Type: application/json" -H "X-CSRF-Token: $T4B" \
+       -d '{"points":1010,"completed":{"A1":["n1"]},"scores":{"bones":601},"bones_spent_seen":0}' "$BASE?action=save_progress" &
+  SAVE_PID=$!
+  # Only these two: a bare wait would also wait for the throwaway MariaDB.
+  wait "$BUY_PID" "$SAVE_PID"
+  [ "$(bones_of 4)" = "101" ] && [ "$("${DB[@]}" -e "SELECT COUNT(*) FROM user_inventory WHERE user_id=4 AND item_id='halloween'")" = "1" ] \
+    && RACE_OK=$((RACE_OK+1))
+done
+if [ "$RACE_OK" -eq 5 ]; then pass "a save racing buy_cosmetic: 5 of 5 runs end at 101 bones with the theme owned"
+else fail "a save racing buy_cosmetic: only $RACE_OK of 5 runs ended at 101 bones with the theme owned"; fi
+"${DB[@]}" -e "DELETE FROM user_inventory WHERE user_id=4"
+
+CODE="$(post 3 '{"points":10,"completed":{"A1":["n1"]},"scores":{"bones":5,"node_state":{"n1":{"completedLessons":["l1"]}}},"bones_spent_seen":0}')"
+GOT="$(holds 3 '{"completed":{"A1":["n1"]},"lessons":{"n1":["l1"]}}')"
+if [ "$CODE" = "200" ] && [ "$GOT" = "ok" ]; then pass "a user without a user_progress row still inserts, with what was sent"
+else fail "first save of a user with no row: HTTP $CODE, $GOT"; fi
 
 # ==================================================================== summary
 echo

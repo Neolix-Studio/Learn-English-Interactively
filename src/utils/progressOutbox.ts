@@ -133,9 +133,15 @@ export function applyOutbox(server: UserProgressData, outbox: ProgressOutbox, qu
     completed: mergeProgressValue(server.completed || {}, progress.completed || {}),
     scores: mergeProgressValue(server.scores || {}, progress.scores || {})
   };
+  // Purchases made since the outbox was written come off its bones, so the larger count is not one
+  // with spent bones still in it (UX3-3a, #401). The counter itself is the server's.
+  const serverSpent = server.scores?.bones_spent || 0;
+  const outboxBones = (progress.scores?.bones || 0) - Math.max(0, serverSpent - (progress.scores?.bones_spent || 0));
   // The streak is the server's to count (B3b, #381); the outbox's copy is out of date.
   merged.scores = {
     ...merged.scores,
+    bones: Math.max(server.scores?.bones || 0, outboxBones),
+    bones_spent: serverSpent,
     streak_count: server.scores?.streak_count,
     streak_shields: server.scores?.streak_shields,
     streak_date: server.scores?.streak_date

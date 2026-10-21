@@ -1119,7 +1119,7 @@ function clampNodeState(array $incomingScores, array $currentScores, $userId): a
  * !empty() here let a single {"scores":0} payload disarm every clamp below
  * for good.
  */
-function clampScores(string $incomingScoresJson, $currentDbProgress, $userId): string {
+function clampScores(string $incomingScoresJson, $currentDbProgress, $userId, ?int $bonesSpentSeen = null): string {
     $currentScores = [];
     if ($currentDbProgress && isset($currentDbProgress['scores'])) {
         $decodedCurrentScores = json_decode((string)$currentDbProgress['scores'], true);
@@ -1133,21 +1133,68 @@ function clampScores(string $incomingScoresJson, $currentDbProgress, $userId): s
 
     $currentBones = intval($currentScores['bones'] ?? 0);
     $incomingBones = intval($incomingScores['bones'] ?? $currentBones);
-    if ($incomingBones < $currentBones) {
-        $incomingScores['bones'] = $incomingBones;
-    } elseif ($incomingBones > $currentBones + 100) {
+    // A purchase the client had not heard of when it built this save is taken
+    // off its count, so an older copy cannot bring spent bones back (UX3-3a, #401).
+    $storedSpent = storedBonesSpent($currentScores);
+    if ($bonesSpentSeen !== null && $storedSpent > $bonesSpentSeen) {
+        $incomingBones = max(0, $incomingBones - ($storedSpent - $bonesSpentSeen));
+    }
+    if ($incomingBones > $currentBones + 100) {
         error_log("Security: User $userId attempted excessive bones increase. Capped.");
-        $incomingScores['bones'] = $currentBones + 100;
+        $incomingBones = $currentBones + 100;
+    }
+    if (array_key_exists('bones', $incomingScores)) {
+        $incomingScores['bones'] = $incomingBones;
+    }
+
+    // The counter is the server's: the stored one is kept, a client's is dropped.
+    unset($incomingScores['bones_spent']);
+    if ($storedSpent > 0) {
+        $incomingScores['bones_spent'] = $storedSpent;
     }
 
     // The streak and the shields are the server's columns: a client's copy in
     // the JSON is dropped (B3b, #381).
     $incomingScores = stripStreakKeys($incomingScores);
 
-    return encodeScores(clampNodeState($incomingScores, $currentScores, $userId));
+    $incomingScores = clampNodeState($incomingScores, $currentScores, $userId);
+
+    // A lesson finished on another device stays: node_state merges into the
+    // stored one, lists joined and levels at the higher value (UX3-3a, #401).
+    if (isset($currentScores['node_state']) && is_array($currentScores['node_state'])) {
+        $incomingNodes = isset($incomingScores['node_state']) && is_array($incomingScores['node_state']) ? $incomingScores['node_state'] : [];
+        $incomingScores['node_state'] = mergeProgressValue($currentScores['node_state'], $incomingNodes);
+    }
+
+    return encodeScores($incomingScores);
 }
 
-function clampProgressAgainstStored(array $parsed, $currentDbProgress, $userId): array {
+/**
+ * All the bones the server has taken for purchases (buy_cosmetic, buy_shield),
+ * kept in scores.bones_spent. Only the server raises it. A client sends back
+ * the number it last saw as bones_spent_seen, which tells save_progress which
+ * purchases its bone count does not know about (UX3-3a, #401).
+ */
+function storedBonesSpent(array $scores): int {
+    return max(0, intval($scores['bones_spent'] ?? 0));
+}
+
+/**
+ * The completed lessons of a save joined with the stored ones, so a device
+ * holding an older copy cannot erase a lesson finished on another (UX3-3a,
+ * #401; N9). The caller holds the row lock.
+ */
+function mergeCompleted(string $incomingCompletedJson, $currentDbProgress): string {
+    if (!$currentDbProgress) {
+        return $incomingCompletedJson;
+    }
+
+    $incoming = json_decode($incomingCompletedJson, true);
+    $merged = mergeProgressValue(decodeProgressJson($currentDbProgress['completed'] ?? ''), is_array($incoming) ? $incoming : []);
+    return $merged === [] ? json_encode(new stdClass()) : json_encode($merged);
+}
+
+function clampProgressAgainstStored(array $parsed, $currentDbProgress, $userId, ?int $bonesSpentSeen = null): array {
     if ($currentDbProgress && isset($currentDbProgress['points'])) {
         $currentPoints = intval($currentDbProgress['points']);
         if ($parsed['points'] < $currentPoints) {
@@ -1159,7 +1206,8 @@ function clampProgressAgainstStored(array $parsed, $currentDbProgress, $userId):
         }
     }
 
-    $parsed['scores'] = clampScores($parsed['scores'], $currentDbProgress, $userId);
+    $parsed['scores'] = clampScores($parsed['scores'], $currentDbProgress, $userId, $bonesSpentSeen);
+    $parsed['completed'] = mergeCompleted($parsed['completed'], $currentDbProgress);
 
     return $parsed;
 }
@@ -1269,13 +1317,18 @@ function handleSaveProgress(PDO $pdo, array $data) {
     // 'tutorial' for the intro lesson. It is the only way the streak rises.
     $lesson = $data['lesson_completed'] ?? null;
     $lessonCompleted = $lesson === true || $lesson === 'tutorial';
+    // Sent by clients since #401; an older client sends none and its bones are
+    // clamped as before.
+    $seen = $data['bones_spent_seen'] ?? null;
+    $bonesSpentSeen = is_int($seen) || (is_string($seen) && ctype_digit($seen)) ? max(0, intval($seen)) : null;
 
     try {
         // The row stays locked until the streak below is written, so a
-        // claim_reward or buy_shield in between cannot be overwritten.
+        // claim_reward or buy_shield in between cannot be overwritten, and the
+        // save is merged into what is stored now, not into an older read.
         $pdo->beginTransaction();
         $stmtCheck = $pdo->prepare("
-            SELECT up.scores, up.points, up.streak_count, up.streak_shields, up.streak_date, u.email, u.username, u.marketing_data, u.notification_preferences, u.base_language
+            SELECT up.scores, up.points, up.completed, up.streak_count, up.streak_shields, up.streak_date, u.email, u.username, u.marketing_data, u.notification_preferences, u.base_language
             FROM user_progress up
             JOIN users u ON u.id = up.user_id
             WHERE up.user_id = ?
@@ -1284,7 +1337,7 @@ function handleSaveProgress(PDO $pdo, array $data) {
         $stmtCheck->execute([$userId]);
         $currentDbProgress = $stmtCheck->fetch();
 
-        $parsed = clampProgressAgainstStored($parsed, $currentDbProgress, $userId);
+        $parsed = clampProgressAgainstStored($parsed, $currentDbProgress, $userId, $bonesSpentSeen);
 
         // Every successful save counts as activity today. The server sets the
         // day and ignores a client-sent one: cron_notifications.php trusts this
@@ -1815,6 +1868,7 @@ function handleBuyCosmetic(PDO $pdo, array $data) {
         }
 
         $scores['bones'] = $bones - $cost;
+        $scores['bones_spent'] = storedBonesSpent($scores) + $cost;
         $updateProgress = $pdo->prepare("UPDATE user_progress SET scores = ? WHERE user_id = ?");
         $updateProgress->execute([json_encode($scores), $userId]);
 
@@ -1828,6 +1882,7 @@ function handleBuyCosmetic(PDO $pdo, array $data) {
         echo json_encode([
             'status' => 'success',
             'new_bones' => $scores['bones'],
+            'bones_spent' => $scores['bones_spent'],
             'unlocked_themes' => $unlockedThemes,
             'message' => 'Sikeres vásárlás!'
         ]);
@@ -1891,6 +1946,7 @@ function handleBuyShield(PDO $pdo) {
         }
 
         $scores['bones'] = $bones - $cost;
+        $scores['bones_spent'] = storedBonesSpent($scores) + $cost;
         $streak['streak_shields'] += 1;
 
         $updateProgress = $pdo->prepare("UPDATE user_progress SET scores = ? WHERE user_id = ?");
@@ -1902,6 +1958,7 @@ function handleBuyShield(PDO $pdo) {
         echo json_encode([
             'status' => 'success',
             'new_bones' => $scores['bones'],
+            'bones_spent' => $scores['bones_spent'],
             'streak_count' => $streak['streak_count'],
             'streak_shields' => $streak['streak_shields'],
             'streak_date' => $streak['streak_date']

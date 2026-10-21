@@ -64,7 +64,7 @@ function normalizeScores(value: unknown, fallback: UserProgressData['scores']): 
     else scores[key] = result;
   };
 
-  for (const key of ['level', 'streak_count', 'streak_shields', 'bones']) {
+  for (const key of ['level', 'streak_count', 'streak_shields', 'bones', 'bones_spent']) {
     if (key in source) setOrDrop(key, asCount(source[key], (fallback as Record<string, any>)[key]));
   }
   if ('streak_date' in source) scores.streak_date = asText(source.streak_date, null);

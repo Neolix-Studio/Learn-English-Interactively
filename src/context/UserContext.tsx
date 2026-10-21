@@ -22,6 +22,8 @@ export interface UserProgressData {
         streak_shields?: number;
         streak_date?: string | null;
         bones?: number;
+        // Bones the server has taken for purchases; only the server raises it (UX3-3a, #401).
+        bones_spent?: number;
         earned_xp_per_node?: Record<string, number>;
         active_theme?: string;
         active_nameplate?: string;
@@ -400,7 +402,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     unlocked_themes: res.unlocked_themes,
                     scores: {
                         ...prev.scores,
-                        bones: res.new_bones
+                        bones: res.new_bones,
+                        bones_spent: res.bones_spent
                     }
                 }));
                 return { success: true, message: res.message };
@@ -430,6 +433,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     scores: {
                         ...prev.scores,
                         bones: res.new_bones,
+                        bones_spent: res.bones_spent,
                         streak_count: res.streak_count,
                         streak_shields: res.streak_shields,
                         streak_date: res.streak_date ?? null
@@ -487,6 +491,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             points: progress.points,
             completed: progress.completed,
             scores: progress.scores,
+            // The purchases this snapshot's bones already include; the server takes off any it does not (UX3-3a, #401).
+            bones_spent_seen: progress.scores?.bones_spent || 0,
             quest_progress: progress.quest_progress,
             completed_quests_today: progress.completed_quests_today
         }, { keepalive: true }).then((res) => {
