@@ -1,0 +1,15 @@
+{
+  "neolix_guest_progress": {
+    "username": "Vendég",
+    "points": 860,
+    "completed": { "A1_1_1": true, "A1_1_2": true },
+    "scores": { "streak_count": 6 },
+    "role": "user",
+    "subscription_tier": "free",
+    "daily_quests_date": null,
+    "active_quests": [],
+    "quest_progress": {},
+    "completed_quests_today": []
+  },
+  "selectedLevel": "C2"
+}

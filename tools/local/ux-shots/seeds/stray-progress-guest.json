@@ -1,6 +1,6 @@
 {
   "__extends": "returning.json",
-  "neolix_guest_progress": {
+  "lexipaws_guest_progress_v2": {
     "scores": {
       "node_state": {
         "node1_ordering_a_drink": { "completedLessons": ["lesson_1", "lesson_2", "lesson_3", "lesson_4"] },

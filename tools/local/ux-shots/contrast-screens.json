@@ -129,6 +129,31 @@
     "mock": { "__extends": "mocks/loggedin.json", "get_session": { "__status": 500, "__body": { "error": "Database error" } } },
     "wait": 7000
   },
+  "recovery": {
+    "about": "A render error in /practice (a malformed weak word): the route's recovery screen over the bottom bar (#400).",
+    "preset": "signed-in",
+    "path": "/practice",
+    "mock": "mocks/crash-practice.json",
+    "wait": 2500,
+    "steps": [
+      { "clickText": "Hibák", "tag": "button", "after": 400 },
+      { "clickText": "Kezdés", "tag": "button", "after": 1500 },
+      { "contrast": "recovery" }
+    ]
+  },
+  "recovery-reset": {
+    "about": "The recovery screen's 'Helyi adatok törlése' (Delete local data) confirm sheet (#400).",
+    "preset": "signed-in",
+    "path": "/practice",
+    "mock": "mocks/crash-practice.json",
+    "wait": 2500,
+    "steps": [
+      { "clickText": "Hibák", "tag": "button", "after": 400 },
+      { "clickText": "Kezdés", "tag": "button", "after": 1500 },
+      { "clickText": "Helyi adatok törlése", "tag": "button", "after": 600 },
+      { "contrast": "sheet" }
+    ]
+  },
   "save-error": {
     "about": "save_progress answers 500 after a lesson starts: the save-failed notice over the lesson (#383).",
     "preset": "signed-in",

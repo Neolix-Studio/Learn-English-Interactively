@@ -1,4 +1,5 @@
 import { ACCOUNT_KEY, OUTBOX_KEY } from './progressOutbox';
+import { GUEST_PROGRESS_KEY, LEVEL_KEY, asObject, readGuestProgress } from './storedState';
 
 export interface GuestMigrationPayload {
   points: number;
@@ -7,7 +8,7 @@ export interface GuestMigrationPayload {
 }
 
 export function readGuestMigrationPayload(): GuestMigrationPayload {
-  const guestDataRaw = localStorage.getItem('neolix_guest_progress');
+  const guestData = readGuestProgress();
   const legacyGuestDataRaw = localStorage.getItem('user_local_progress');
   const payload: GuestMigrationPayload = {
     points: 0,
@@ -15,15 +16,10 @@ export function readGuestMigrationPayload(): GuestMigrationPayload {
     scores: {}
   };
 
-  if (guestDataRaw) {
-    try {
-      const guestData = JSON.parse(guestDataRaw);
-      payload.points = Number(guestData.points) || 0;
-      payload.completed = guestData.completed || {};
-      payload.scores = guestData.scores || {};
-    } catch (err) {
-      console.warn('Hiba a vendég adatok beolvasásakor', err);
-    }
+  if (guestData) {
+    payload.points = Math.max(0, Number(guestData.points) || 0);
+    payload.completed = asObject(guestData.completed);
+    payload.scores = asObject(guestData.scores);
     return payload;
   }
 
@@ -83,19 +79,19 @@ export function summarizeGuestProgress(payload: GuestMigrationPayload): GuestPro
 
 export function clearGuestMigrationStorage() {
   localStorage.removeItem('user_local_progress');
-  localStorage.removeItem('neolix_guest_progress');
+  localStorage.removeItem(GUEST_PROGRESS_KEY);
   localStorage.removeItem('ftue_marketing_data');
 }
 
 // Every key that belongs to the person rather than to the device (SOT §5). Volume, reduced motion
 // and the interface language stay: they describe the device.
 export const PERSONAL_STORAGE_KEYS = [
-  'neolix_guest_progress',
+  GUEST_PROGRESS_KEY,
   'user_local_progress',
   'ftue_marketing_data',
   'guest_character_progress',
   'neolix_active_lesson',
-  'selectedLevel',
+  LEVEL_KEY,
   'lexipaws_tour_completed',
   'hasSeenWordTooltipGuide',
   'last_feedback_refill',

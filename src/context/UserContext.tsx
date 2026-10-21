@@ -5,6 +5,7 @@ import { api, ApiError, csrfHeader, isApiFailure } from '../utils/api';
 import { countLessonDay, settleStreak, streakToday, STREAK_SHIELD_CAP } from '../utils/streak';
 import { applyOutbox, clearOutbox, readAccount, readOutbox, writeAccount, writeOutbox } from '../utils/progressOutbox';
 import type { SignedInAccount } from '../utils/progressOutbox';
+import { GUEST_PROGRESS_KEY, asObject, normalizeProgress, readGuestProgress, readLevel, writeGuestProgress } from '../utils/storedState';
 import { ConnectionError, SaveErrorNotice } from '../components/ConnectionNotice';
 import type { SaveError } from '../components/ConnectionNotice';
 import { AuthModal } from '../components/AuthModal';
@@ -113,9 +114,7 @@ const defaultUserData: UserProgressData = {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [activeLevel, setActiveLevelState] = useState<string>(() => {
-        return localStorage.getItem("selectedLevel") || "A1";
-    });
+    const [activeLevel, setActiveLevelState] = useState<string>(readLevel);
 
     const [isGuest, setIsGuest] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -203,6 +202,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     try { questProgress = typeof progressData.quest_progress === 'string' ? JSON.parse(progressData.quest_progress) : progressData.quest_progress; } catch(e){ logParseError('quest_progress')(e); }
                     try { activeQuests = typeof progressData.active_quests === 'string' ? JSON.parse(progressData.active_quests) : progressData.activeQuests; } catch(e){ logParseError('active_quests')(e); }
                     try { completedQuestsToday = typeof progressData.completed_quests_today === 'string' ? JSON.parse(progressData.completed_quests_today) : progressData.completed_quests_today; } catch(e){ logParseError('completed_quests_today')(e); }
+                    scores = asObject(scores);
                     if (progressData.active_theme) {
                         scores.active_theme = progressData.active_theme === 'default' ? 'system' : progressData.active_theme;
                     }
@@ -233,10 +233,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         notification_preferences: userMetadata.notification_preferences || defaultUserData.notification_preferences
                     };
 
+                    // One shape check for the server's progress too (UX3-2, #400): a column of the wrong type
+                    // falls back to its default instead of reaching the routes.
+                    initialData = normalizeProgress(initialData, defaultUserData);
+
                     // Progress a failed save left on this device for this account goes on top and is sent below.
                     const outbox = readOutbox();
                     if (outbox && outbox.owner === signedIn.id) {
-                        initialData = applyOutbox(initialData, outbox, today);
+                        initialData = normalizeProgress(applyOutbox(initialData, outbox, today), defaultUserData);
                         outboxLesson = { lesson: outbox.day === streakToday() ? outbox.lesson : undefined };
                     }
 
@@ -250,14 +254,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     accountRef.current = null;
                     setAccount(null);
                     setExpiredAccount(readAccount());
-                    const savedData = localStorage.getItem("neolix_guest_progress");
-                    if (savedData) {
-                        try {
-                            initialData = { ...initialData, ...JSON.parse(savedData) };
-                        } catch (e) {
-                            console.error("Failed to parse guest data", e);
-                        }
-                    }
+                    // Stored values of the wrong type take their defaults (UX3-2, #400; N4).
+                    initialData = normalizeProgress(readGuestProgress() ?? defaultUserData, defaultUserData);
 
                     if (initialData.scores.bones === undefined) {
                         initialData.scores.bones = 100;
@@ -651,7 +649,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             const updated = { ...prev, ...newData };
 
             if (isGuest) {
-                localStorage.setItem("neolix_guest_progress", JSON.stringify(updated));
+                writeGuestProgress(updated);
             } else if (!saveNow) {
                 if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
                 pendingDataRef.current = updated;
@@ -668,7 +666,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const clearGuestData = () => {
         if (isGuest) {
-            localStorage.removeItem("neolix_guest_progress");
+            localStorage.removeItem(GUEST_PROGRESS_KEY);
             setData(defaultUserData);
             window.location.reload();
         }

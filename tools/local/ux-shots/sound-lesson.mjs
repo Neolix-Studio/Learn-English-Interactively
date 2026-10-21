@@ -180,7 +180,7 @@ steps.push({ click: '.post-lesson-next-wrap .btn', after: 600 });
 if (GUEST) {
   const flawless = mistakes === 0;
   const expected = `points ${START_POINTS + xp}, flawless ${flawless}, q_acc_100 ${flawless ? 1 : 0}, q_acc_90 ${accuracy >= 90 ? 1 : 0}`;
-  steps.push({ eval: `(() => { const p = JSON.parse(localStorage.getItem('neolix_guest_progress')); const seen = 'points ' + p.points + ', flawless ' + (p.scores.achievements || []).includes('flawless') + ', q_acc_100 ' + p.quest_progress.q_acc_100 + ', q_acc_90 ' + p.quest_progress.q_acc_90; return ${check(`seen === '${expected}'`, `'saved for the guest: ' + seen`)}; })()` });
+  steps.push({ eval: `(() => { const p = JSON.parse(localStorage.getItem('lexipaws_guest_progress_v2')); const seen = 'points ' + p.points + ', flawless ' + (p.scores.achievements || []).includes('flawless') + ', q_acc_100 ' + p.quest_progress.q_acc_100 + ', q_acc_90 ' + p.quest_progress.q_acc_90; return ${check(`seen === '${expected}'`, `'saved for the guest: ' + seen`)}; })()` });
   asserts++;
 } else {
   // shot.mjs prints the save as a MOCK POST save_progress line.
@@ -192,7 +192,7 @@ const done = levels.slice(0, LEVEL - 1).map((l) => l.id);
 const nodeId = lesson.id || `char_lesson_${args.id}`;
 const mock = { __extends: 'mocks/loggedin.json', get_session: { session: { progress: { scores: { node_state: { [nodeId]: { completedLessons: done } } } } } } };
 // Today's quests are seeded so the app does not draw three at random: the two accuracy quests and a neutral one.
-const guestSeed = { __extends: 'seeds/returning.json', neolix_guest_progress: {
+const guestSeed = { __extends: 'seeds/returning.json', lexipaws_guest_progress_v2: {
   daily_quests_date: '__TODAY__',
   active_quests: [
     { id: 'q_acc_100', description: 'Érj el 100% pontosságot', target: 1, reward: 2 },

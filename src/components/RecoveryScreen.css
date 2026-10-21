@@ -1,0 +1,38 @@
+/* RecoveryScreen (UX3-2, #400), on ConnectionNotice.css's layout. Phone first; min-width queries only. */
+
+.recovery-screen__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 20rem;
+}
+
+/* The bottom bar is fixed over the last 70 px (and the home indicator); keep the buttons above it. */
+.recovery-screen.has-bottom-bar {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px) + var(--space-8));
+}
+
+.recovery-screen__reset {
+    border-color: var(--color-error);
+    color: var(--color-error);
+}
+
+.recovery-screen__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+/* dashboard.css hides the bottom bar from 992 px. */
+.recovery-screen__wide-only {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .recovery-screen__wide-only {
+        display: block;
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "__extends": "returning.json",
+  "lexipaws_guest_progress_v2": {
+    "username": "Teszt Elek",
+    "points": "245",
+    "completed": "node1_ordering_a_drink",
+    "scores": null,
+    "energy": 3,
+    "learnedWords": ["coffee", null, "tea"]
+  }
+}

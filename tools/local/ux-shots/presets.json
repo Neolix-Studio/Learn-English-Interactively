@@ -13,6 +13,16 @@
     "base": "http://localhost:5173",
     "ls": "seeds/stray-progress-guest.json"
   },
+  "corrupt-guest": {
+    "about": "The returning guest with malformed stored progress: scores null, completed a string, points \"245\" (#400). Must render, not the recovery screen.",
+    "base": "http://localhost:5173",
+    "ls": "seeds/corrupt-guest.json"
+  },
+  "legacy-guest": {
+    "about": "Only the old app's guest data under neolix_guest_progress, level C2 (#400): not imported, the app starts as a new guest on A1.",
+    "base": "http://localhost:5173",
+    "ls": "seeds/legacy-guest.json"
+  },
   "zero-energy-guest": {
     "about": "The returning guest with energy 0.",
     "base": "http://localhost:5173",

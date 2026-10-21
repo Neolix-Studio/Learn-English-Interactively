@@ -2,66 +2,38 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 interface Props {
   children?: ReactNode;
+  // What to show instead of the children; `retry` renders them again.
+  fallback: (error: Error, retry: () => void) => ReactNode;
+  // A new value clears the error, so moving to another route leaves the fallback (RouteBoundary).
+  resetKey?: unknown;
 }
 
 interface State {
-  hasError: boolean;
-  error?: Error;
+  error: Error | null;
+  resetKey?: unknown;
 }
 
+// Catches a render error below it. main.tsx has one around the whole app, RouteBoundary one around the
+// routes (UX3-2, #400; N4).
 export class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false
-  };
+  public state: State = { error: null, resetKey: this.props.resetKey };
 
   public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+    return { error };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught error:', error, errorInfo);
   }
 
-  public render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2rem',
-          textAlign: 'center',
-          background: 'var(--color-bg-base)',
-          color: 'var(--color-text-main)',
-          fontFamily: 'var(--font-body)'
-        }}>
-          <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>🛠️</div>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'var(--color-error)' }}>
-            Hoppá, valami elromlott!
-          </h1>
-          <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', marginBottom: '2rem', maxWidth: '500px', lineHeight: 1.6 }}>
-            Elnézést kérünk, váratlan hiba történt a rendszerben. Kérjük, frissítsd az oldalt, vagy térj vissza a főoldalra.
-          </p>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <button
-              onClick={() => window.location.reload()}
-              style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '16px', border: 'none', background: 'var(--color-accent-in)', color: 'var(--color-on-accent)', fontWeight: 800, cursor: 'pointer' }}
-            >
-              Oldal frissítése
-            </button>
-            <button
-              onClick={() => window.location.href = '/'}
-              style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '16px', border: 'var(--glass-border)', background: 'var(--color-bg-surface)', color: 'var(--color-text-main)', fontWeight: 800, cursor: 'pointer' }}
-            >
-              Vissza a főoldalra
-            </button>
-          </div>
-        </div>
-      );
-    }
+  public static getDerivedStateFromProps(props: Props, state: State): Partial<State> | null {
+    return props.resetKey !== state.resetKey ? { error: null, resetKey: props.resetKey } : null;
+  }
 
+  private retry = () => this.setState({ error: null });
+
+  public render() {
+    if (this.state.error) return this.props.fallback(this.state.error, this.retry);
     return this.props.children;
   }
 }

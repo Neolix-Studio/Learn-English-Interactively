@@ -263,11 +263,12 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** after WP-B1 (its locking warning applies), SOT §21 Q15; C27, N3.
 
 ### N5 · Existing learners arrive after the cutover with their XP but an empty path — **major**
+- ✅ **Part-fixed (#400, 2026-10-21):** local keys are namespaced by schema version: guest progress moved to `lexipaws_guest_progress_v2`, so the old app's `neolix_guest_progress` is no longer imported as it is (it is left on the device, not deleted). **Still open:** what old-app learners get, a mapping or an 'Új Lexipaws' sheet (Q4, #374), for accounts and for the old guest data.
 - **What happens:** the old app on `main` stores progress as `completed["A1_<section>_<sub>"]`, and the database is shared with production. A mocked legacy account shows 860 XP, Level 2 and streak 6 — and Module 1 node 1, with no explanation. The old guest data uses the same `neolix_guest_progress` key on the same origin, so it will be imported as-is.
 - **Learner impact:** returning learners keep their points but none of their progress, and no one tells them why.
 - **Fix:** map old sections to new nodes, or a one-time 'Új Lexipaws' ("New Lexipaws") sheet explaining the fresh start; namespace local keys by schema version. The owner should count affected accounts first.
 - **Effort:** S–M
-- **Where:** `main:js/dashboard.js:1212-1230`, `utils/guestProgress.ts:7-45`
+- **Where:** `main:js/dashboard.js:1212-1230`, `utils/guestProgress.ts:10-43` (was `:7-45`), `utils/storedState.ts:16-18`
 - **Related:** WP-A4 (cutover); C34 (frozen legacy level), N4; decision Q4.
 
 ### C42 · Contact form fakes success; legal pages disagree on who runs the service — **major**
@@ -665,6 +666,7 @@ The full catalogue: all 71 clusters and critic findings N2–N12, each in exactl
 - **Related:** SOT §9, §13, WP-C3, WP-G1; C49, C60, N7.
 
 ### N4 · One malformed stored value bricks the whole app on that device — **major**
+- ✅ **Fixed (#400, 2026-10-21):** one shape check, `normalizeProgress()` (`utils/storedState.ts`), runs over guest progress, the server's progress and the outbox merge, so `scores: null`, a string `completed` or unreadable JSON fall back to the defaults and `/` and `/dashboard` render. Guest progress lives under a versioned key (`lexipaws_guest_progress_v2`). A render error in one route shows a recovery screen in its place ('Ez a képernyő nem töltődött be', "This screen didn't load") with 'Újrapróbálom' ("Try again"), 'Hiba jelentése' ("Report the error") and 'Helyi adatok törlése' ("Delete local data", behind a confirm sheet, app keys only); the bottom bar stays on the tab routes, and the root boundary shows the same screen in the UI language. **Still open:** an automatic error reporter (B4c, #415).
 - **What happens:** with `scores: null` in stored guest progress, every route crashes, including `/`, and both buttons on the Hungarian-only crash screen (purple heading) lead back into the crash. Stored data is spread without validation, and the single app-wide `ErrorBoundary` offers only reload or home.
 - **Learner impact:** in the wrapper the only way out is clearing app data, which deletes the learner's progress.
 - **Fix:** one normaliser with a schema version for all stored and server state; route-level boundaries with 'Reset local data' and Report.

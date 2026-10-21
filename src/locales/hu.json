@@ -251,7 +251,18 @@
     "friends_failed": "Nem sikerült betölteni a barátaidat.",
     "expired_title": "Lejárt a bejelentkezésed",
     "expired_body": "Jelentkezz be újra, és ott folytathatod, ahol abbahagytad.",
-    "progress_kept": "A még nem mentett haladásodat megőriztük ezen az eszközön, és elmentjük, amint lehet."
+    "progress_kept": "A még nem mentett haladásodat megőriztük ezen az eszközön, és elmentjük, amint lehet.",
+    "recovery_title": "Ez a képernyő nem töltődött be",
+    "recovery_body": "Valami elromlott. Próbáld újra, vagy válassz másik menüpontot. Ha a hiba nem múlik el, töröld a helyi adatokat.",
+    "recovery_report": "Hiba jelentése",
+    "recovery_reset": "Helyi adatok törlése",
+    "recovery_home": "Vissza a főoldalra",
+    "recovery_path": "Vissza a tanulási útra",
+    "recovery_profile": "Ugrás a profilodra",
+    "reset_title": "Törlöd a helyi adatokat?",
+    "reset_body": "Töröljük, amit a Lexipaws ezen az eszközön tárol: a vendégként szerzett haladást és a beállításokat. A fiókodba mentett haladás megmarad.",
+    "reset_cancel": "Mégse",
+    "reset_confirm": "Törlés"
   },
   "shop": {
     "shield_cap": "Legfeljebb {{max}} pajzsod lehet."

@@ -1,0 +1,12 @@
+{
+  "neolix_guest_progress": {
+    "username": "Teszt Elek",
+    "points": 245,
+    "completed": { "node1_ordering_a_drink": true },
+    "scores": { "bones": 140, "streak_count": 4, "node_state": { "node1_ordering_a_drink": { "completedLessons": ["lesson_1", "lesson_2", "lesson_3", "lesson_4"] }, "node2_beverages": null } },
+    "energy": 3,
+    "learnedWords": ["coffee", "tea"]
+  },
+  "lexipaws_tour_completed": "true",
+  "hasSeenWordTooltipGuide": "true"
+}

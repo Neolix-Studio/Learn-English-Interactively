@@ -1,0 +1,13 @@
+{
+  "__extends": "loggedin.json",
+  "get_weak_words": {
+    "status": "success",
+    "data": [
+      {
+        "exercise_id": "item_broken",
+        "question_data": { "type": "image_choice", "word": "kávé", "correctAnswer": "coffee", "options": null, "id": "item_broken" },
+        "fail_count": 1
+      }
+    ]
+  }
+}

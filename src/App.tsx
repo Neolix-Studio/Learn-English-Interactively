@@ -32,6 +32,7 @@ import { UserProvider } from './context/UserContext';
 import { useUser } from './context/UserContext';
 import { ShopProvider } from './context/ShopContext';
 import { isLocalDevHost } from './utils/devEnvironment';
+import { RouteBoundary } from './components/RouteBoundary';
 
 function RequireAuthenticated({ children }: { children: ReactElement }) {
   const { isGuest, isLoading, sessionExpired, progressKept, openRelogin } = useUser();
@@ -73,6 +74,7 @@ function App() {
       <UserProvider>
         <ShopProvider>
         <Router>
+          <RouteBoundary>
           <Routes>
             <Route path="/" element={isGatewayDomain ? <Gateway /> : <Home />} />
 
@@ -102,6 +104,7 @@ function App() {
 
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
+          </RouteBoundary>
           <AchievementPopup />
         </Router>
 
