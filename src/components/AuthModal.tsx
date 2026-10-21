@@ -14,6 +14,10 @@ interface AuthModalProps {
   resetToken?: string;
   inviteCode?: string;
   initialEmail?: string;
+  /** Signing in again after the session ran out (UX3-1b, #399): the sheet says why and keeps the page. */
+  relogin?: { progressKept: boolean };
+  /** Called after a login instead of reloading the page. */
+  onSignedIn?: (user: { id?: unknown } | undefined) => void;
 }
 
 const inputStyle: React.CSSProperties = {
@@ -67,7 +71,13 @@ const backButtonStyle: React.CSSProperties = {
   gap: '0.3rem'
 };
 
-export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '', inviteCode = '', initialEmail = '' }: AuthModalProps) {
+// The e-mail is filled in, so the password field takes the focus when the sheet opens. React's autoFocus
+// renders no attribute, and showModal() looks for one.
+const focusWhenOpened = (input: HTMLInputElement | null) => {
+  input?.setAttribute('autofocus', '');
+};
+
+export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken = '', inviteCode = '', initialEmail = '', relogin, onSignedIn }: AuthModalProps) {
   const canRegister = inviteCode.trim() !== '';
   const [tab, setTab] = useState<'login' | 'register'>(initialView === 'register' && canRegister ? 'register' : 'login');
   const { t } = useTranslation();
@@ -198,6 +208,11 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
         }
 
         if (data.success) {
+            if (onSignedIn) {
+                if (!guestProgressLeftAlone) clearGuestMigrationStorage();
+                onSignedIn(data.user);
+                return;
+            }
             localStorage.setItem("selectedLevel", "A1");
             if (!guestProgressLeftAlone) {
                 clearGuestMigrationStorage();
@@ -411,29 +426,42 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
     );
   }
 
+  const dialogName = relogin
+    ? { labelledBy: 'relogin-title', describedBy: 'relogin-reason' }
+    : { label: tab === 'login' ? 'Bejelentkezés' : 'Regisztráció' };
+
   return (
-    <Dialog {...dialogProps} label={tab === 'login' ? 'Bejelentkezés' : 'Regisztráció'}>
+    <Dialog {...dialogProps} {...dialogName}>
       <div className="modal-content glass-panel">
-        <div className="auth-tabs" style={{ display: 'flex', gap: '1rem', borderBottom: 'var(--glass-border)', marginBottom: '1.5rem' }}>
-          <button
-            type="button"
-            className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
-            onClick={() => { setTab('login'); setError(''); }}
-            style={{ background: 'none', border: 'none', color: tab === 'login' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
-          >
-            Bejelentkezés
-          </button>
-          {canRegister && (
+        {relogin ? (
+          <div style={{ marginBottom: '1.25rem' }}>
+            <h2 id="relogin-title" style={{ margin: '0 0 0.5rem 0', color: 'var(--color-text-main)', fontSize: '1.3rem' }}>{t('auth.relogin_title')}</h2>
+            <p id="relogin-reason" style={{ margin: 0, color: 'var(--color-text-main)', fontSize: '0.95rem', lineHeight: 1.45 }}>
+              {t('auth.relogin_reason')}{relogin.progressKept ? ` ${t('auth.relogin_kept')}` : ''}
+            </p>
+          </div>
+        ) : (
+          <div className="auth-tabs" style={{ display: 'flex', gap: '1rem', borderBottom: 'var(--glass-border)', marginBottom: '1.5rem' }}>
             <button
               type="button"
-              className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
-              onClick={() => { setTab('register'); setError(''); }}
-              style={{ background: 'none', border: 'none', color: tab === 'register' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
+              className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
+              onClick={() => { setTab('login'); setError(''); }}
+              style={{ background: 'none', border: 'none', color: tab === 'login' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
             >
-              Regisztráció
+              Bejelentkezés
             </button>
-          )}
-        </div>
+            {canRegister && (
+              <button
+                type="button"
+                className={`auth-tab ${tab === 'register' ? 'active' : ''}`}
+                onClick={() => { setTab('register'); setError(''); }}
+                style={{ background: 'none', border: 'none', color: tab === 'register' ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', paddingBottom: '0.25rem' }}
+              >
+                Regisztráció
+              </button>
+            )}
+          </div>
+        )}
 
         {error && (
           <div style={{ padding: '0.8rem', marginBottom: '1rem', background: 'oklch(0.65 0.2 25 / 0.1)', color: 'var(--color-error)', borderRadius: '8px', fontSize: '0.9rem', textAlign: 'center' }}>
@@ -497,7 +525,7 @@ export function AuthModal({ isOpen, onClose, initialView = 'login', resetToken =
                 </a>
               )}
             </div>
-            <input type="password" id="auth-password" placeholder="••••••••" required autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} style={inputStyle} />
+            <input type="password" id="auth-password" ref={relogin ? focusWhenOpened : undefined} placeholder="••••••••" required autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} style={inputStyle} />
             {tab === 'register' && (
               <p id="auth-password-rule" style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.78rem', lineHeight: 1.35 }}>
                 {passwordRule}

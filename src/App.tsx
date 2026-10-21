@@ -26,6 +26,7 @@ import { LeaderboardPage } from './pages/Leaderboard';
 import { PracticePage } from './pages/PracticePage';
 import { AchievementPopup } from './components/AchievementPopup';
 import { AuthModal } from './components/AuthModal';
+import { SessionExpired } from './components/ConnectionNotice';
 
 import { UserProvider } from './context/UserContext';
 import { useUser } from './context/UserContext';
@@ -33,11 +34,16 @@ import { ShopProvider } from './context/ShopContext';
 import { isLocalDevHost } from './utils/devEnvironment';
 
 function RequireAuthenticated({ children }: { children: ReactElement }) {
-  const { isGuest, isLoading } = useUser();
+  const { isGuest, isLoading, sessionExpired, progressKept, openRelogin } = useUser();
   const allowLocalGuestAccess = isLocalDevHost();
 
   if (isLoading) {
     return null;
+  }
+
+  // This device was signed in and nobody logged out: say the session ran out, here (UX3-1b, #399).
+  if (isGuest && sessionExpired && !allowLocalGuestAccess) {
+    return <SessionExpired kept={progressKept} openSignIn={openRelogin} />;
   }
 
   if (isGuest && !allowLocalGuestAccess) {

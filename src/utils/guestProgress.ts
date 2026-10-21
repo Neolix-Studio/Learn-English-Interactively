@@ -1,3 +1,5 @@
+import { ACCOUNT_KEY, OUTBOX_KEY } from './progressOutbox';
+
 export interface GuestMigrationPayload {
   points: number;
   completed: Record<string, any>;
@@ -96,7 +98,10 @@ export const PERSONAL_STORAGE_KEYS = [
   'selectedLevel',
   'lexipaws_tour_completed',
   'hasSeenWordTooltipGuide',
-  'last_feedback_refill'
+  'last_feedback_refill',
+  // UX3-1b, #399: a logout forgets the account and drops what it left unsaved, as the learner chose to.
+  OUTBOX_KEY,
+  ACCOUNT_KEY
 ];
 
 export function clearPersonalStorage() {

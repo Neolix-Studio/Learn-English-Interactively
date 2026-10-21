@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Checks that progress survives leaving the page, and that a refused save is retried (B4b, #384).
+// Checks that progress survives leaving the page, and that a refused save is retried (B4b, #384),
+// and that an expired session loses nothing (UX3-1b, #399).
 // Unlike the other tools here it talks to the REAL PHP backend: run it against the local stack only.
 //
 //   ./tools/local/testing/local_stack.sh up && npm run dev
@@ -7,20 +8,33 @@
 //
 // Flags:
 //   --base URL       default http://app.localhost:5173 (the local stack's UI; never point it at a live site)
-//   --only LIST      run some of the scenarios: close-lesson,close-wait,logout,throttle (default all)
+//   --only LIST      run some of the scenarios: close-lesson,close-wait,logout,expired,expired-reload,
+//                    other-account,offline,throttle (default all)
 //   --email E        default anna@lexipaws.test, the local stack's returning learner
+//   --other-email E  default uj@lexipaws.test, the local stack's new learner (same password)
 //   --password P     default Teszt-1234
+//   --sessions DIR   the stack's PHP session files (default $LEXIPAWS_STACK_DIR/sessions, else /tmp/lexipaws-local-stack/sessions)
 //
 // Scenarios, each in a fresh tab of one signed-in Chrome; exits 1 when one fails:
 //   close-lesson  play a sound lesson, close the tab 300 ms after the last CHECK; reopened, the lesson is saved
 //   close-wait    change the theme (saved after a 1.5 s wait), close the tab 200 ms later; reopened, it is saved
 //   logout        play a lesson, leave the result screen, change the theme and log out 100 ms later;
 //                 signed in again, both the lesson and the theme are saved
+//   expired       delete the session file before a lesson's last answer: finishing opens the sign-in sheet over
+//                 the result screen with the e-mail filled in and the password focused, the progress waits in the
+//                 outbox, and signing in there saves the lesson without a reload
+//   expired-reload the same, then reload before signing in: the page says the session ran out (not the marketing
+//                 page), the sheet opens again, Escape and its button work, and signing in saves the lesson
+//   other-account the same, then sign in on the sheet as the other learner: the page reloads as them, nothing of
+//                 the first learner's lesson reaches their account, and the outbox waits until the first signs in
+//   offline       a change saved while signed out is in the outbox; a launch with every api.php request failing
+//                 shows "can't reach the server" and that the progress is kept, then signing in saves it
 //   throttle      use up save_progress's 45 requests a minute, then change the theme: the 429 shows the
-//                 Hungarian "not saved" notice (no alert()), and the automatic retry saves it and hides the notice
+//                 Hungarian "not saved" notice (no alert()), keeps the change in the outbox, and the automatic
+//                 retry saves it, hides the notice and empties the outbox
 
 import { spawn } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, unlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -41,10 +55,15 @@ if (!/^http:\/\/(app\.)?localhost(:\d+)?$/.test(BASE)) {
   process.exit(1);
 }
 const EMAIL = args.email || 'anna@lexipaws.test';
+const OTHER_EMAIL = args['other-email'] || 'uj@lexipaws.test';
 const PASSWORD = args.password || 'Teszt-1234';
+const SESSIONS = args.sessions || join(process.env.LEXIPAWS_STACK_DIR || '/tmp/lexipaws-local-stack', 'sessions');
 const ONLY = typeof args.only === 'string' ? new Set(args.only.split(',')) : null;
 const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const SAVE_FAILED_TEXT = JSON.parse(readFileSync(join(HERE, '../../../src/locales/hu.json'), 'utf8')).errors.save_failed;
+const HU = JSON.parse(readFileSync(join(HERE, '../../../src/locales/hu.json'), 'utf8'));
+const SAVE_FAILED_TEXT = HU.errors.save_failed;
+const OUTBOX_KEY = 'lexipaws_progress_outbox';
+const ACCOUNT_KEY = 'lexipaws_account';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const results = [];
@@ -57,7 +76,7 @@ const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=0', `--
 { stdio: ['ignore', 'ignore', 'pipe'] });
 const cleanup = () => { try { chrome.kill('SIGKILL'); } catch {} try { rmSync(profile, { recursive: true, force: true }); } catch {} };
 process.on('exit', cleanup);
-setTimeout(() => { console.error('TIMEOUT: run exceeded 420 s'); process.exit(2); }, 420000).unref();
+setTimeout(() => { console.error('TIMEOUT: run exceeded 720 s'); process.exit(2); }, 720000).unref();
 
 const wsUrl = await new Promise((resolve, reject) => {
   let buf = '';
@@ -87,7 +106,7 @@ const saves = new Map();
 const dialogs = [];
 listeners.push((m) => {
   if (m.method === 'Network.requestWillBeSent' && m.params.request.url.includes('action=save_progress')) {
-    saves.set(m.params.requestId, { at: Date.now(), status: null });
+    saves.set(m.params.requestId, { at: Date.now(), status: null, body: m.params.request.postData || '' });
   }
   if (m.method === 'Network.responseReceived' && saves.has(m.params.requestId)) saves.get(m.params.requestId).status = m.params.response.status;
   if (m.method === 'Page.javascriptDialogOpening') {
@@ -121,6 +140,16 @@ async function evalIn(tab, expression) {
 }
 const closeTab = (tab) => cdp('Target.closeTarget', { targetId: tab.targetId });
 
+// Ends the session on the server the way an expiry does: its file is gone, the browser still sends the cookie.
+async function killSession(tab) {
+  const { cookies } = await cdp('Network.getCookies', { urls: [BASE] }, tab.sessionId);
+  const id = cookies.find((c) => c.name === 'PHPSESSID')?.value;
+  const file = join(SESSIONS, `sess_${id}`);
+  if (!id || !existsSync(file)) return false;
+  unlinkSync(file);
+  return true;
+}
+
 // ------------------------------------------------------------------ backend helpers (run inside a tab)
 const LOGIN = `(async () => {
   const t = await (await fetch('/api.php?action=csrf_token', { credentials: 'same-origin' })).json();
@@ -134,7 +163,35 @@ const SESSION = `(async () => {
   if (!s) return null;
   const p = s.progress || {};
   const parse = (v) => typeof v === 'string' ? JSON.parse(v) : (v || {});
-  return { points: p.points, scores: parse(p.scores), completed: parse(p.completed), quest_progress: parse(p.quest_progress), completed_quests_today: parse(p.completed_quests_today) };
+  return { email: s.user.email, points: p.points, scores: parse(p.scores), completed: parse(p.completed), quest_progress: parse(p.quest_progress), completed_quests_today: parse(p.completed_quests_today) };
+})()`;
+const LOCAL = (key) => `JSON.parse(localStorage.getItem('${key}') || 'null')`;
+
+// What the expired-session UI shows: the sign-in sheet, the page under it, and the save notice.
+const RELOGIN_STATE = `(() => {
+  const sheet = document.querySelector('dialog[open]');
+  return {
+    sheet: !!sheet?.querySelector('#relogin-title'),
+    sheetName: sheet ? document.getElementById(sheet.getAttribute('aria-labelledby'))?.innerText : null,
+    reason: document.querySelector('#relogin-reason')?.innerText || '',
+    email: sheet?.querySelector('#auth-email')?.value ?? null,
+    focused: document.activeElement?.id || document.activeElement?.tagName,
+    screen: document.querySelector('main.connection-error')?.innerText || '',
+    notice: !!document.querySelector('.save-error-notice'),
+    marketing: !!document.querySelector('#levels'),
+    path: location.pathname,
+    marker: window.__lxMarker || null
+  };
+})()`;
+// Types into the sheet's controlled inputs the way React expects, then submits.
+const SIGN_IN_ON_SHEET = (email) => `(() => {
+  const set = (el, v) => { Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(el, v); el.dispatchEvent(new Event('input', { bubbles: true })); };
+  const sheet = document.querySelector('dialog[open]');
+  if (!sheet) return 'no sheet';
+  ${email ? `set(sheet.querySelector('#auth-email'), ${JSON.stringify(email)});` : ''}
+  set(sheet.querySelector('#auth-password'), ${JSON.stringify(PASSWORD)});
+  sheet.querySelector('.btn-submit-auth').click();
+  return 'submitted';
 })()`;
 
 // Sets the sidebar's theme select the way a learner does: updateProgress without saveNow, so it waits 1.5 s.
@@ -149,9 +206,10 @@ const SET_THEME = (theme) => `(() => {
   }, 300));
 })()`;
 
-// Plays one level of a sound lesson by its data file, answering every item correctly. With stopAfterLastCheck
-// it returns right after the last CHECK, which is when the lesson is saved (#372).
-function playLevel(id) {
+// Plays one level of a sound lesson by its data file, answering every item correctly, and returns right after
+// the last CHECK, which is when the lesson is saved (#372). With `from` and `to` it plays items [from, to) and
+// stops on the next one, so something can happen before the last answer.
+function playLevel(id, { from = 0, to } = {}) {
   const lesson = JSON.parse(readFileSync(join(HERE, '../../../data/hu/characters', id + '.json'), 'utf8'));
   const level = lesson.lessons[0];
   const items = level.items.map((it) => ({ type: it.type,
@@ -161,7 +219,7 @@ function playLevel(id) {
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const items = ${JSON.stringify(items)};
     const submit = () => document.querySelector('.interactive-submit-btn').click();
-    for (let n = 0; n < items.length; n++) {
+    for (let n = ${from}; n < ${to ?? items.length}; n++) {
       const it = items[n];
       for (let w = 0; w < 25 && !document.querySelector('.interactive-submit-btn'); w++) await sleep(200);
       if (!document.querySelector('.interactive-submit-btn')) return 'item ' + (n + 1) + ': no lesson on ' + location.pathname + ': ' + document.body.innerText.slice(0, 200).replace(/\\n+/g, ' | ');
@@ -199,8 +257,9 @@ function playLevel(id) {
       submit();
       await sleep(600);
     }
+    return 'paused before item ' + (${to ?? items.length} + 1);
   })()`;
-  return { script, nodeId, levelId: level.id };
+  return { script, nodeId, levelId: level.id, count: items.length };
 }
 const lessonSaved = (s, nodeId, levelId) => !!s && (s.scores.node_state?.[nodeId]?.completedLessons || []).includes(levelId);
 
@@ -259,17 +318,170 @@ if (run('logout')) {
   await evalIn(tab, `document.querySelector('.post-lesson-next-wrap .btn')?.click()`);
   await sleep(1500);
   if (!(await evalIn(tab, `!!document.querySelector('#logout-btn')`))) await go(tab, '/dashboard');
+  const remembered = await evalIn(tab, LOCAL(ACCOUNT_KEY));
   console.log('     ' + await evalIn(tab, SET_THEME(theme)));
   await sleep(100);
   await evalIn(tab, `document.querySelector('#logout-btn').click()`);
   await sleep(3000);
   const out = await evalIn(tab, SESSION);
   check(out === null, `logged out: get_session ${out === null ? 'has no session' : 'still has a session'}`);
+  const left = await evalIn(tab, `[${LOCAL(ACCOUNT_KEY)}, ${LOCAL(OUTBOX_KEY)}]`);
+  check(remembered?.email === EMAIL && left[0] === null && left[1] === null,
+    `the device remembered ${remembered?.email} while signed in; after the logout: account ${JSON.stringify(left[0])}, outbox ${JSON.stringify(left[1])}`);
   await evalIn(tab, LOGIN);
   const after = await evalIn(tab, SESSION);
   check(lessonSaved(after, nodeId, levelId) && after.points > before.points,
     `signed in again: ${levelId} saved ${lessonSaved(after, nodeId, levelId)}, points ${before.points} -> ${after?.points}`);
   check(after?.scores.active_theme === theme, `signed in again: scores.active_theme ${after?.scores.active_theme} (wanted ${theme})`);
+  await closeTab(tab);
+}
+
+// Plays a level up to its last item, ends the session, then answers the last item: the save of the finished
+// lesson meets an expired session (UX3-1b, #399).
+async function finishLessonAfterExpiry(tab, id) {
+  const level = playLevel(id);
+  await go(tab, `/lesson/characters/${id}`);
+  const played = await evalIn(tab, playLevel(id, { to: level.count - 1 }).script);
+  const killed = await killSession(tab);
+  const finished = await evalIn(tab, playLevel(id, { from: level.count - 1 }).script);
+  check(played.startsWith('paused') && killed && finished.startsWith('answered'),
+    `${id}: ${played}; session file deleted: ${killed}; then ${finished}`);
+  await sleep(2000);
+  return level;
+}
+const savesSince = (start) => [...saves.values()].filter((s) => s.at >= start);
+const sentLesson = (list) => list.some((s) => s.status === 200 && s.body.includes('"lesson_completed":true'));
+const outboxHolds = (outbox, nodeId, levelId) => (outbox?.progress?.scores?.node_state?.[nodeId]?.completedLessons || []).includes(levelId);
+const pressEscape = async (tab) => {
+  for (const type of ['keyDown', 'keyUp']) await cdp('Input.dispatchKeyEvent', { type, key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 }, tab.sessionId);
+};
+
+if (run('expired')) {
+  console.log("\n# expired: the session ends before a lesson's last answer");
+  const tab = await openTab('/dashboard');
+  const before = await evalIn(tab, SESSION);
+  const account = await evalIn(tab, LOCAL(ACCOUNT_KEY));
+  check(account?.email === EMAIL && !!account?.id, `signed in: the device remembers ${account?.email} (id ${account?.id})`);
+  const { nodeId, levelId } = await finishLessonAfterExpiry(tab, 'cons_t_d');
+  const state = await evalIn(tab, RELOGIN_STATE);
+  check(state.sheet && state.sheetName === HU.auth.relogin_title && state.path === '/lesson/characters/cons_t_d',
+    `the sheet is open over ${state.path}: "${state.sheetName}"`);
+  check(state.email === EMAIL && state.focused === 'auth-password', `e-mail filled in: ${state.email}; focus on #${state.focused}`);
+  check(state.reason.includes(HU.auth.relogin_reason) && state.reason.includes(HU.auth.relogin_kept), `reason: ${JSON.stringify(state.reason)}`);
+  check(!state.notice, `the save notice waits behind the sheet: ${state.notice ? 'shown' : 'not shown'}`);
+  const outbox = await evalIn(tab, LOCAL(OUTBOX_KEY));
+  check(outbox?.owner === account?.id && outbox?.lesson === true && outboxHolds(outbox, nodeId, levelId),
+    `outbox: owner ${outbox?.owner}, lesson ${outbox?.lesson}, holds ${levelId}: ${outboxHolds(outbox, nodeId, levelId)}`);
+  await evalIn(tab, `window.__lxMarker = 'same page'`);
+  const start = Date.now();
+  console.log('     ' + await evalIn(tab, SIGN_IN_ON_SHEET()));
+  await sleep(4000);
+  const signedIn = await evalIn(tab, RELOGIN_STATE);
+  check(!signedIn.sheet && signedIn.marker === 'same page' && signedIn.path === '/lesson/characters/cons_t_d' && !signedIn.notice,
+    `signed in on the sheet: sheet ${signedIn.sheet ? 'still open' : 'closed'}, ${signedIn.marker ? 'no reload' : 'the page reloaded'}, still on ${signedIn.path}, notice ${signedIn.notice}`);
+  const flush = savesSince(start);
+  check(sentLesson(flush), `the outbox was sent: save_progress ${flush.map((s) => s.status).join(',')}, with lesson_completed: ${sentLesson(flush)}`);
+  const after = await evalIn(tab, SESSION);
+  check(lessonSaved(after, nodeId, levelId) && after.points > before.points,
+    `get_session: ${levelId} saved ${lessonSaved(after, nodeId, levelId)}, points ${before.points} -> ${after?.points}`);
+  check((await evalIn(tab, LOCAL(OUTBOX_KEY))) === null, 'the outbox is empty');
+  await closeTab(tab);
+}
+
+if (run('expired-reload')) {
+  console.log("\n# expired-reload: the session ends before a lesson's last answer, and the page reloads before signing in");
+  const tab = await openTab('/dashboard');
+  const before = await evalIn(tab, SESSION);
+  const { nodeId, levelId } = await finishLessonAfterExpiry(tab, 'cons_k_g');
+  check((await evalIn(tab, RELOGIN_STATE)).sheet, 'the sheet opened over the result screen');
+  await go(tab, '/dashboard');
+  const state = await evalIn(tab, RELOGIN_STATE);
+  check(state.path === '/dashboard' && !state.marketing && state.screen.includes(HU.errors.expired_title) && state.screen.includes(HU.errors.progress_kept),
+    `reloaded: on ${state.path}, marketing page ${state.marketing}, the page says ${JSON.stringify(state.screen.replace(/\n+/g, ' | '))}`);
+  check(state.sheet && state.email === EMAIL && state.focused === 'auth-password', `the sheet opened again: e-mail ${state.email}, focus on #${state.focused}`);
+  check(outboxHolds(await evalIn(tab, LOCAL(OUTBOX_KEY)), nodeId, levelId), `the outbox kept ${levelId} across the reload`);
+  await pressEscape(tab);
+  await sleep(600);
+  const closed = await evalIn(tab, RELOGIN_STATE);
+  await evalIn(tab, `document.querySelector('main.connection-error button').click()`);
+  await sleep(600);
+  const reopened = await evalIn(tab, RELOGIN_STATE);
+  check(!closed.sheet && closed.screen.includes(HU.errors.expired_title) && reopened.sheet,
+    `Escape closed the sheet (${!closed.sheet}) and left the reason on screen; its ${HU.errors.sign_in} button opened it again (${reopened.sheet})`);
+  const start = Date.now();
+  console.log('     ' + await evalIn(tab, SIGN_IN_ON_SHEET()));
+  await sleep(4500);
+  const signedIn = await evalIn(tab, `({ path: location.pathname, nodes: document.querySelectorAll('.roadmap-node').length, sheet: !!document.querySelector('dialog[open]') })`);
+  check(signedIn.nodes > 0 && !signedIn.sheet, `signed in: the path shows ${signedIn.nodes} nodes on ${signedIn.path}`);
+  const flush = savesSince(start);
+  check(sentLesson(flush), `the outbox was sent: save_progress ${flush.map((s) => s.status).join(',')}, with lesson_completed: ${sentLesson(flush)}`);
+  const after = await evalIn(tab, SESSION);
+  check(lessonSaved(after, nodeId, levelId) && after.points > before.points,
+    `get_session: ${levelId} saved ${lessonSaved(after, nodeId, levelId)}, points ${before.points} -> ${after?.points}`);
+  check((await evalIn(tab, LOCAL(OUTBOX_KEY))) === null, 'the outbox is empty');
+  await closeTab(tab);
+}
+
+if (run('other-account')) {
+  console.log('\n# other-account: someone else signs in on the sheet');
+  const tab = await openTab('/dashboard');
+  const before = await evalIn(tab, SESSION);
+  const owner = (await evalIn(tab, LOCAL(ACCOUNT_KEY)))?.id;
+  const { nodeId, levelId } = await finishLessonAfterExpiry(tab, 'cons_l_r');
+  await evalIn(tab, `window.__lxMarker = 'same page'`);
+  console.log('     ' + await evalIn(tab, SIGN_IN_ON_SHEET(OTHER_EMAIL)));
+  await sleep(5000);
+  const marker = await evalIn(tab, `window.__lxMarker || null`);
+  const other = await evalIn(tab, SESSION);
+  check(other?.email === OTHER_EMAIL && marker === null, `signed in as ${other?.email}; the page ${marker ? 'did not reload' : 'reloaded'}`);
+  check(!lessonSaved(other, nodeId, levelId) && !JSON.stringify(other?.completed || {}).includes(nodeId),
+    `${OTHER_EMAIL} got nothing of it: ${levelId} ${lessonSaved(other, nodeId, levelId) ? 'saved' : 'not saved'}, points ${other?.points}`);
+  const kept = await evalIn(tab, LOCAL(OUTBOX_KEY));
+  check(kept?.owner === owner && outboxHolds(kept, nodeId, levelId), `the outbox waits for its owner: owner ${kept?.owner} (wanted ${owner})`);
+  await evalIn(tab, LOGIN);
+  const start = Date.now();
+  await go(tab, '/dashboard');
+  const after = await evalIn(tab, SESSION);
+  check(after?.email === EMAIL && lessonSaved(after, nodeId, levelId) && after.points > before.points && sentLesson(savesSince(start)),
+    `${after?.email} signed in again: ${levelId} saved ${lessonSaved(after, nodeId, levelId)}, points ${before.points} -> ${after?.points}`);
+  check((await evalIn(tab, LOCAL(OUTBOX_KEY))) === null, 'the outbox is empty');
+  await closeTab(tab);
+}
+
+if (run('offline')) {
+  console.log('\n# offline: a launch with no connection says so, and the unsaved change waits');
+  const tab = await openTab('/dashboard');
+  const before = await evalIn(tab, SESSION);
+  const theme = before.scores.active_theme === 'dark' ? 'light' : 'dark';
+  check(await killSession(tab), 'session file deleted');
+  console.log('     ' + await evalIn(tab, SET_THEME(theme)));
+  await sleep(3000);
+  const outbox = await evalIn(tab, LOCAL(OUTBOX_KEY));
+  check(outbox?.progress?.scores?.active_theme === theme, `the change is in the outbox: theme ${outbox?.progress?.scores?.active_theme}`);
+  // Every api.php request fails the way it does with no network.
+  const failer = (m) => {
+    if (m.method === 'Fetch.requestPaused' && m.sessionId === tab.sessionId) {
+      cdp('Fetch.failRequest', { requestId: m.params.requestId, errorReason: 'InternetDisconnected' }, tab.sessionId).catch(() => {});
+    }
+  };
+  listeners.push(failer);
+  await cdp('Fetch.enable', { patterns: [{ urlPattern: '*api.php*', requestStage: 'Request' }] }, tab.sessionId);
+  await go(tab, '/dashboard');
+  await sleep(6000);
+  const state = await evalIn(tab, RELOGIN_STATE);
+  check(state.path === '/dashboard' && !state.marketing && state.screen.includes(HU.errors.connection_title) && state.screen.includes(HU.errors.progress_kept),
+    `offline launch: on ${state.path}, marketing page ${state.marketing}, the page says ${JSON.stringify(state.screen.replace(/\n+/g, ' | '))}`);
+  await cdp('Fetch.disable', {}, tab.sessionId);
+  listeners.splice(listeners.indexOf(failer), 1);
+  await evalIn(tab, `document.querySelector('main.connection-error button').click()`);
+  await sleep(3000);
+  const online = await evalIn(tab, RELOGIN_STATE);
+  check(online.screen.includes(HU.errors.expired_title) && online.sheet, `back online the session has run out: ${JSON.stringify(online.screen.split('\n')[0])}, sheet ${online.sheet}`);
+  console.log('     ' + await evalIn(tab, SIGN_IN_ON_SHEET()));
+  await sleep(4500);
+  const after = await evalIn(tab, SESSION);
+  const left = await evalIn(tab, LOCAL(OUTBOX_KEY));
+  check(after?.scores.active_theme === theme && left === null, `signed in: stored theme ${after?.scores.active_theme} (wanted ${theme}), outbox ${left === null ? 'empty' : 'still there'}`);
   await closeTab(tab);
 }
 
@@ -297,6 +509,8 @@ if (run('throttle')) {
   await sleep(3000);
   const notice = await evalIn(tab, `document.querySelector('.save-error-notice')?.innerText || ''`);
   check(notice.includes(SAVE_FAILED_TEXT), `notice after the 429: ${JSON.stringify(notice.split('\n')[0])}`);
+  const waiting = await evalIn(tab, LOCAL(OUTBOX_KEY));
+  check(waiting?.progress?.scores?.active_theme === theme, `the refused change is in the outbox: theme ${waiting?.progress?.scores?.active_theme}`);
   const statuses = () => [...saves.values()].filter((s) => s.at >= start).map((s) => s.status);
   let gone = false;
   while (Date.now() - start < 150000) {
@@ -307,6 +521,7 @@ if (run('throttle')) {
   check(gone && after?.scores.active_theme === theme,
     `retried on its own: notice ${gone ? 'gone' : 'still up'} after ${Math.round((Date.now() - start) / 1000)} s, save_progress answers ${statuses().join(',')}, stored theme ${after?.scores.active_theme}`);
   check(dialogs.length === dialogsBefore, `no alert() or confirm(): ${dialogs.length - dialogsBefore} dialog(s)`);
+  check((await evalIn(tab, LOCAL(OUTBOX_KEY))) === null, 'the outbox is empty once the retry landed');
   await closeTab(tab);
 }
 

@@ -1,10 +1,13 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useCallback, useContext, useState, useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api, ApiError, csrfHeader, isApiFailure } from '../utils/api';
-import { countLessonDay, settleStreak, STREAK_SHIELD_CAP } from '../utils/streak';
+import { countLessonDay, settleStreak, streakToday, STREAK_SHIELD_CAP } from '../utils/streak';
+import { applyOutbox, clearOutbox, readAccount, readOutbox, writeAccount, writeOutbox } from '../utils/progressOutbox';
+import type { SignedInAccount } from '../utils/progressOutbox';
 import { ConnectionError, SaveErrorNotice } from '../components/ConnectionNotice';
 import type { SaveError } from '../components/ConnectionNotice';
+import { AuthModal } from '../components/AuthModal';
 
 export interface UserProgressData {
     username: string;
@@ -62,6 +65,12 @@ export interface UserContextType {
     // Sends unsaved progress now and resolves when the server has it (true) or the save failed (false).
     flushProgress: () => Promise<boolean>;
     isLoading: boolean;
+    // No session, but this device was signed in and nobody logged out: the session ran out (UX3-1b, #399).
+    sessionExpired: boolean;
+    // Progress the server does not have yet is kept on this device for the account that has to sign in again.
+    progressKept: boolean;
+    // Opens the sign-in sheet for that account, with its e-mail filled in.
+    openRelogin: () => void;
 }
 
 const hostname = window.location.hostname;
@@ -128,6 +137,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const retryCountRef = useRef(0);
 
+    // The signed-in account, and the remembered one whose session ran out before this launch (UX3-1b, #399).
+    const [account, setAccount] = useState<SignedInAccount | null>(null);
+    const accountRef = useRef<SignedInAccount | null>(null);
+    accountRef.current = account;
+    const [expiredAccount, setExpiredAccount] = useState<SignedInAccount | null>(null);
+    const [reloginOpen, setReloginOpen] = useState(false);
+    const outboxSentForRef = useRef<unknown>(null);
+    const sendingStoppedRef = useRef(false);
+
     // A reply without a `session` key (a 500, a timeout, a database error) is not "signed out":
     // the query fails and the app waits on ConnectionError instead of falling back to guest.
     const { data: sessionData, isLoading: isSessionLoading, isError: isSessionError, isFetching: isSessionFetching, refetch: refetchSession } = useQuery({
@@ -154,12 +172,19 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (isSessionLoading || isSessionError) return;
         const res = sessionData;
                 let initialData = defaultUserData;
+                const today = new Date().toISOString().split('T')[0];
+                let outboxLesson: { lesson?: true | 'tutorial' } | null = null;
 
                 if (res && res.session) {
                     setIsGuest(false);
                     // Cache the token now: a save sent from pagehide cannot wait for one.
                     csrfHeader();
                     const serverData = res.session;
+                    const signedIn: SignedInAccount = { id: String(serverData.user?.id ?? ''), email: serverData.user?.email || '' };
+                    accountRef.current = signedIn;
+                    setAccount(signedIn);
+                    setExpiredAccount(null);
+                    writeAccount(signedIn);
 
                     let completed = {};
                     let scores: Record<string, any> = {};
@@ -208,6 +233,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         notification_preferences: userMetadata.notification_preferences || defaultUserData.notification_preferences
                     };
 
+                    // Progress a failed save left on this device for this account goes on top and is sent below.
+                    const outbox = readOutbox();
+                    if (outbox && outbox.owner === signedIn.id) {
+                        initialData = applyOutbox(initialData, outbox, today);
+                        outboxLesson = { lesson: outbox.day === streakToday() ? outbox.lesson : undefined };
+                    }
+
                     api.fetch('get_vocabulary').then(vocabRes => {
                         if (vocabRes && vocabRes.success && vocabRes.vocabulary) {
                             setData(prev => ({...prev, learnedWords: vocabRes.vocabulary}));
@@ -215,6 +247,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     });
                 } else {
                     setIsGuest(true);
+                    accountRef.current = null;
+                    setAccount(null);
+                    setExpiredAccount(readAccount());
                     const savedData = localStorage.getItem("neolix_guest_progress");
                     if (savedData) {
                         try {
@@ -241,7 +276,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     initialData.scores = { ...initialData.scores, tutorial_done: true };
                 }
 
-                const today = new Date().toISOString().split('T')[0];
                 let questsUpdated = false;
                 if (initialData.daily_quests_date !== today) {
                     initialData.daily_quests_date = today;
@@ -283,6 +317,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                         daily_quests_date: initialData.daily_quests_date,
                         scores: initialData.scores
                     }).catch(console.error);
+                }
+
+                // Once per session reply: StrictMode runs this effect twice in development.
+                if (outboxLesson && outboxSentForRef.current !== res) {
+                    outboxSentForRef.current = res;
+                    changeSeqRef.current += 1;
+                    saveRef.current(initialData, outboxLesson.lesson);
                 }
 
                 setIsLoading(false);
@@ -440,6 +481,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Every save is keepalive, so closing the tab or leaving through window.location.href
     // does not cancel one already on its way. A save is the whole snapshot, so the newest one wins.
     const saveProgress = (progress: UserProgressData, lessonFlag?: true | 'tutorial'): Promise<boolean> => {
+        if (sendingStoppedRef.current) return Promise.resolve(false);
         const lessonCompleted = lessonFlag ?? pendingLessonRef.current;
         const seq = changeSeqRef.current;
         const promise = api.fetch('save_progress', {
@@ -458,8 +500,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 // A newer save already got through: this older snapshot does not matter.
                 if (savedSeqRef.current >= seq) return true;
                 failedSeqRef.current = Math.max(failedSeqRef.current, seq);
+                // Kept on the device until a save gets through, also across a reload (UX3-1b, #399).
+                // With no change since it was sent, this snapshot is the newest; otherwise the rendered state is.
+                if (accountRef.current) {
+                    writeOutbox(accountRef.current.id, changeSeqRef.current === seq ? progress : latestDataRef.current, lessonCompleted);
+                }
                 if (isApiFailure(res) && res.httpStatus === 401) {
                     setSaveError('signed_out');
+                    if (accountRef.current) setReloginOpen(true);
                 } else {
                     setSaveError(isApiFailure(res) && res.offline ? 'offline' : 'failed');
                     scheduleRetry();
@@ -469,6 +517,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             savedSeqRef.current = Math.max(savedSeqRef.current, seq);
             pendingLessonRef.current = undefined;
             if (seq >= failedSeqRef.current) {
+                if (accountRef.current) clearOutbox(accountRef.current.id);
                 setSaveError(null);
                 retryCountRef.current = 0;
                 if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
@@ -491,6 +540,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         inflightRef.current = { seq, promise };
         return promise;
     };
+    const saveRef = useRef(saveProgress);
+    saveRef.current = saveProgress;
 
     // Sends what the server does not have yet: the debounced change at once, or the snapshot whose save failed.
     const flushProgress = (): Promise<boolean> => {
@@ -532,6 +583,37 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         retryCountRef.current = 0;
         savedSeqRef.current = Math.max(savedSeqRef.current, changeSeqRef.current);
         setSaveError(null);
+    };
+
+    // Signing in again happens in a sheet over whatever is on screen (UX3-1b, #399). The same account
+    // carries on in place: the session is fetched again, which merges the outbox and sends it. Anyone
+    // else starts over as themselves, and the outbox waits for its owner.
+    const reloginAccount = account ?? expiredAccount;
+    const progressKept = !!reloginAccount && readOutbox()?.owner === reloginAccount.id;
+    // Stable, so SessionExpired opens the sheet once on mount and not again after it is closed.
+    const openRelogin = useCallback(() => setReloginOpen(true), []);
+
+    const handleSignedIn = (user: { id?: unknown } | undefined) => {
+        if (!reloginAccount) return;
+        // What changed after the last failed save goes into the outbox too.
+        if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+        saveTimeoutRef.current = null;
+        pendingDataRef.current = null;
+        if (changeSeqRef.current > savedSeqRef.current) {
+            writeOutbox(reloginAccount.id, latestDataRef.current, pendingLessonRef.current);
+        }
+        if (String(user?.id ?? '') === reloginAccount.id) {
+            setReloginOpen(false);
+            setSaveError(null);
+            refetchSession();
+            return;
+        }
+        // Someone else signed in. Nothing of this account may go out with their session, not even from the
+        // pagehide flush of the reload below; the outbox keeps it for its owner.
+        sendingStoppedRef.current = true;
+        if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+        localStorage.setItem('selectedLevel', 'A1');
+        window.location.replace(window.location.pathname + window.location.search);
     };
 
     useEffect(() => {
@@ -742,17 +824,29 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             updatePreferences,
             updateLanguage,
             flushProgress,
-            isLoading
+            isLoading,
+            sessionExpired: expiredAccount !== null,
+            progressKept,
+            openRelogin
         }}>
             {sessionFailed ? (
-                <ConnectionError retrying={isSessionFetching} onRetry={() => { refetchSession(); }} />
+                <ConnectionError retrying={isSessionFetching} onRetry={() => { refetchSession(); }} kept={readOutbox() !== null} />
             ) : children}
-            {saveError && !isGuest && (
+            {saveError && !isGuest && !(saveError === 'signed_out' && reloginOpen) && (
                 <SaveErrorNotice
                     kind={saveError}
                     onRetry={retrySave}
-                    onSignIn={() => { window.location.href = `/?login=true&redirect=${encodeURIComponent(window.location.pathname)}`; }}
+                    onSignIn={reloginAccount ? openRelogin : () => { window.location.href = `/?login=true&redirect=${encodeURIComponent(window.location.pathname)}`; }}
                     onDismiss={dismissSaveError}
+                />
+            )}
+            {reloginOpen && reloginAccount && (
+                <AuthModal
+                    isOpen
+                    onClose={() => setReloginOpen(false)}
+                    initialEmail={reloginAccount.email}
+                    relogin={{ progressKept }}
+                    onSignedIn={handleSignedIn}
                 />
             )}
         </UserContext.Provider>

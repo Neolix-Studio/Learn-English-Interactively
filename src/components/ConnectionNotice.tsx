@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './ConnectionNotice.css';
 
@@ -6,14 +6,35 @@ export type SaveError = 'signed_out' | 'offline' | 'failed';
 
 // Shown instead of the app when get_session fails: the learner may be signed in, so
 // falling back to guest would hide their account and start writing guest progress (B4a, #383).
-export const ConnectionError: React.FC<{ retrying: boolean; onRetry: () => void }> = ({ retrying, onRetry }) => {
+// `kept`: progress the server does not have yet waits on this device (UX3-1b, #399).
+export const ConnectionError: React.FC<{ retrying: boolean; onRetry: () => void; kept?: boolean }> = ({ retrying, onRetry, kept }) => {
   const { t } = useTranslation();
   return (
     <main className="connection-error" role="alert">
       <h1 className="connection-error__title">{t('errors.connection_title')}</h1>
       <p className="connection-error__body">{t('errors.connection_body')}</p>
+      {kept && <p className="connection-error__body">{t('errors.progress_kept')}</p>}
       <button type="button" className="connection-notice__btn connection-notice__btn--solid" onClick={onRetry} disabled={retrying}>
         {retrying ? t('errors.retrying') : t('errors.retry')}
+      </button>
+    </main>
+  );
+};
+
+// A signed-in page opened after the session ran out (UX3-1b, #399; N3): the reason, in the app, with the
+// sign-in sheet opened on top, instead of the marketing page under an empty sign-in dialog.
+export const SessionExpired: React.FC<{ kept: boolean; openSignIn: () => void }> = ({ kept, openSignIn }) => {
+  const { t } = useTranslation();
+  useEffect(() => {
+    openSignIn();
+  }, [openSignIn]);
+  return (
+    <main className="connection-error">
+      <h1 className="connection-error__title">{t('errors.expired_title')}</h1>
+      <p className="connection-error__body">{t('errors.expired_body')}</p>
+      {kept && <p className="connection-error__body">{t('errors.progress_kept')}</p>}
+      <button type="button" className="connection-notice__btn connection-notice__btn--solid" onClick={openSignIn}>
+        {t('errors.sign_in')}
       </button>
     </main>
   );

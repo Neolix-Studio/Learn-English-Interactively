@@ -9,7 +9,8 @@ five viewports, light and dark, Hungarian (and Slovak when asked).
 - `sound-lesson.mjs` plays a whole sound lesson and checks the grades and the result screen.
 - `contrast.mjs` measures the text contrast of the key screens in light and dark and fails below WCAG AA.
 - `unload-save.mjs` is the exception to the rule below: it runs against the **local stack's real PHP** and
-  checks that closing the tab, logging out and a refused save lose no progress (see the section of that name).
+  checks that closing the tab, logging out, a refused save and an expired session lose no progress (see the
+  section of that name).
 - `presets.json`, `seeds/`, `mocks/` are the app states: a new guest, a signed-in learner, zero energy…
 
 ## What it touches, and what it never touches
@@ -210,22 +211,30 @@ too many or too few. `--help` lists the flags.
 
 ## Leaving the page without losing progress (real PHP)
 
-`unload-save.mjs` (#384) is the one script here that is **not** mocked: every request goes through Vite to
-the local stack, so start that first. It refuses a `--base` that is not on `localhost`.
+`unload-save.mjs` (#384, #399) is the one script here that is **not** mocked: every request goes through Vite to
+the local stack, so start that first. It refuses a `--base` that is not on `localhost`. It ends sessions by
+deleting their files from the stack's session folder (`--sessions`, default `/tmp/lexipaws-local-stack/sessions`).
 
 ```bash
-./tools/local/testing/local_stack.sh up      # a fresh database: the scenarios play cons_s_z and cons_p_b level 1
+./tools/local/testing/local_stack.sh up      # a fresh database: the scenarios play level 1 of cons_s_z, cons_p_b, cons_t_d, cons_k_g and cons_l_r
 npm run dev
-node tools/local/ux-shots/unload-save.mjs                   # all four scenarios, about 2.5 minutes
-node tools/local/ux-shots/unload-save.mjs --only close-wait # one of close-lesson, close-wait, logout, throttle
+node tools/local/ux-shots/unload-save.mjs                   # all eight scenarios, about 5 minutes
+node tools/local/ux-shots/unload-save.mjs --only expired    # close-lesson, close-wait, logout, expired, expired-reload, other-account, offline, throttle
 ```
 
 It signs in as the stack's returning learner and checks: the tab closed 300 ms after a lesson's last
 answer keeps the lesson; the tab closed 200 ms after a theme change (which waits 1.5 s to save) keeps the
-theme; a logout 100 ms after a lesson and a change keeps both; and after 46 direct saves use up the
-throttle, the next save's 429 shows the Hungarian notice, is retried on its own until it lands, and opens
-no `alert()`. Exits 1 when a check fails. Run it on a fresh stack (`down`, then `up`): a lesson level
-already done opens at the next level.
+theme; a logout 100 ms after a lesson and a change keeps both, and leaves neither the remembered account
+nor the outbox on the device; and after 46 direct saves use up the throttle, the next save's 429 shows the
+Hungarian notice, keeps the change in the outbox, is retried on its own until it lands, and opens no
+`alert()`. The expired-session scenarios (#399) delete the session file before a lesson's last answer:
+`expired` checks that finishing opens the sign-in sheet over the result screen with the e-mail filled in,
+that the lesson waits in the outbox, and that signing in there saves it without a reload; `expired-reload`
+reloads first and checks the "Lejárt a bejelentkezésed" screen instead of the marketing page;
+`other-account` signs in on the sheet as the stack's new learner and checks that nothing of the lesson
+reaches that account; `offline` fails every `api.php` request on a launch and checks the "Nem érjük el a
+szervert" screen with its "kept" line. Exits 1 when a check fails. Run it on a fresh stack (`down`, then
+`up`): a lesson level already done opens at the next level.
 
 ## Contrast check
 

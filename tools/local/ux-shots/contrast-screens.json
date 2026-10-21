@@ -174,6 +174,33 @@
       { "contrast": "quit-sheet" }
     ]
   },
+  "relogin": {
+    "about": "save_progress answers 401 after a lesson starts: the sign-in sheet over the lesson with the e-mail filled in, then the signed-out notice once it is closed (#399).",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "mock": { "__extends": "mocks/loggedin.json", "save_progress": { "__status": 401, "__body": { "error": "Munkamenet lejárt! Kérjük, jelentkezz be újra." } } },
+    "wait": 2500,
+    "steps": [
+      { "click": ".roadmap-node.current", "after": 800 },
+      { "click": ".tooltip-start-btn", "after": 3500 },
+      { "contrast": "sheet" },
+      { "key": "Escape", "after": 700 },
+      { "contrast": "notice" }
+    ]
+  },
+  "session-expired": {
+    "about": "A launch with no session on a device that was signed in and kept unsaved progress: the 'Lejárt a bejelentkezésed' screen with the sign-in sheet on top, then the screen alone (#399).",
+    "base": "http://app.localhost:5173",
+    "path": "/",
+    "mock": { "__extends": "mocks/loggedin.json", "get_session": { "session": null } },
+    "steps": [
+      { "eval": "localStorage.setItem('lexipaws_account', JSON.stringify({ id: '7', email: 'anna@example.com' })); localStorage.setItem('lexipaws_progress_outbox', JSON.stringify({ owner: '7', day: '2026-10-21', progress: { points: 1255, completed: {}, scores: {} } }))" },
+      { "navigate": "/dashboard", "after": 2500 },
+      { "contrast": "sheet" },
+      { "key": "Escape", "after": 700 },
+      { "contrast": "screen" }
+    ]
+  },
   "grammar": {
     "about": "The first module's grammar guide opened from its banner, with the banner title above it (#395).",
     "preset": "signed-in",
