@@ -23,6 +23,8 @@ import { useUser } from '../../context/UserContext';
 import { PostLesson } from './PostLesson';
 import globalVocabulary from '../../../data/hu/vocabulary.json';
 import { ReportProblemModal } from '../modals/ReportProblemModal';
+import { ConfirmSheet } from '../ConfirmSheet';
+import { useLessonExit, type LessonExit } from './useLessonExit';
 import { useTranslation } from 'react-i18next';
 
 interface LessonPlayerProps {
@@ -240,6 +242,28 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     fetchQuestions();
   }, [lessonNode]);
 
+  // ✖ and the system Back (UX0b-3, #397). A saved lesson loses nothing, so they leave it the way its last
+  // 'Tovább' does, and a lesson that did not load leaves at once; otherwise the quit sheet asks first.
+  const requestQuit = (exit: LessonExit) => {
+    if (result) exit.leave(() => onComplete(result.scoreData));
+    else if (questions.length === 0) exit.leave(onExit);
+    else exit.ask();
+  };
+  const exit = useLessonExit(requestQuit);
+
+  const quitSheet = (
+    <ConfirmSheet
+      open={exit.isAsking}
+      title={t('lesson.quit_title')}
+      body={t('lesson.quit_body')}
+      cancelLabel={t('lesson.quit_stay')}
+      confirmLabel={t('lesson.quit_leave')}
+      onCancel={exit.stay}
+      onConfirm={() => exit.leave(onExit)}
+      destructive
+    />
+  );
+
   if (isLoading) {
     return <div className="lesson-screen" style={{ justifyContent: 'center', alignItems: 'center' }}>
       <div className="spinner" style={{ width: '50px', height: '50px', border: '5px solid #eee', borderTopColor: 'var(--color-accent-in)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
@@ -250,7 +274,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     return <div className="lesson-screen" style={{ justifyContent: 'center', alignItems: 'center' }}>
       <h2>Failed to load lesson</h2>
       {errorMsg && <p style={{ color: 'red', marginTop: '1rem' }}>{errorMsg}</p>}
-      <button onClick={onExit} style={{ padding: '1rem 2rem', marginTop: '1rem', background: '#e5e5e5', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+      <button onClick={() => exit.leave(onExit)} style={{ padding: '1rem 2rem', marginTop: '1rem', background: '#e5e5e5', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
         {t('lesson.back_btn')}
       </button>
     </div>;
@@ -412,7 +436,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     return (
       <div className="lesson-screen interactive-active" style={{ overflowY: 'auto' }}>
         <header style={{ display: 'flex', alignItems: 'center', padding: '1rem 2rem', gap: '2rem', background: 'var(--color-bg-surface)', borderBottom: 'var(--glass-border)' }}>
-          <button className="interactive-close-btn" onClick={onExit} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>
+          <button className="interactive-close-btn" onClick={() => requestQuit(exit)} aria-label={t('lesson.quit_label')} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>
           <div style={{ flex: 1, textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}>📖 {lessonNode.title || t('lesson.story_title')}</div>
         </header>
 
@@ -438,6 +462,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
             </button>
           </div>
         </div>
+        {quitSheet}
       </div>
     );
   }
@@ -453,7 +478,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           pointsBefore={pointsBefore}
           isTutorial={scoreData.isTutorial}
           isCharacterLesson={lessonNode.id.startsWith('char_lesson_')}
-          onComplete={() => onComplete(scoreData)}
+          onComplete={() => exit.leave(() => onComplete(scoreData))}
         />
       </div>
     );
@@ -463,7 +488,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
     <div className="lesson-screen interactive-active">
 
       <header className="interactive-header" style={{ display: 'flex', alignItems: 'center', padding: '1rem 2rem', gap: '2rem', background: 'var(--color-bg-surface)', borderBottom: 'var(--glass-border)' }}>
-        <button className="interactive-close-btn" onClick={onExit} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>
+        <button className="interactive-close-btn" onClick={() => requestQuit(exit)} aria-label={t('lesson.quit_label')} style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--color-text-muted)' }}>✖</button>
         <div className="interactive-progress-bar" style={{
           flex: 1,
           height: '16px',
@@ -627,6 +652,7 @@ export const LessonPlayer: React.FC<LessonPlayerProps> = ({ lessonNode, onExit, 
           username: userData?.username
         }}
       />
+      {quitSheet}
     </div>
   );
 };

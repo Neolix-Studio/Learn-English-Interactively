@@ -15,6 +15,12 @@ interface DialogProps {
   /** The id of the dialog's visible title. Without one, give `label`. */
   labelledBy?: string;
   label?: string;
+  /** The id of the text that says what the dialog is about, read out after the title. */
+  describedBy?: string;
+  /** `alertdialog` for a question that interrupts, such as ConfirmSheet's. */
+  role?: 'alertdialog';
+  /** Added to `lexi-dialog`, for a layout of its own (ConfirmSheet's bottom sheet). */
+  className?: string;
   id?: string;
   children: ReactNode;
 }
@@ -68,7 +74,7 @@ function releaseLayer(token: string) {
 
 const TABBABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function Dialog({ open, onClose, labelledBy, label, id, children }: DialogProps) {
+export function Dialog({ open, onClose, labelledBy, label, describedBy, role, className, id, children }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
@@ -159,9 +165,11 @@ export function Dialog({ open, onClose, labelledBy, label, id, children }: Dialo
     <dialog
       ref={dialogRef}
       id={id}
-      className="lexi-dialog"
+      className={className ? `lexi-dialog ${className}` : 'lexi-dialog'}
+      role={role}
       aria-labelledby={labelledBy}
       aria-label={labelledBy ? undefined : label}
+      aria-describedby={describedBy}
       onPointerDown={event => { pressStartedOnScrim.current = event.target === event.currentTarget; }}
       onClick={event => { if (pressStartedOnScrim.current && event.target === event.currentTarget) onCloseRef.current(); }}
     >

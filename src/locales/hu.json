@@ -101,7 +101,12 @@
     "skipped_title": "Kihagyva",
     "skipped_desc": "Ezt a feladatot most átugrottuk.",
     "continue_btn": "Tovább",
-    "check_btn": "Ellenőrzés"
+    "check_btn": "Ellenőrzés",
+    "quit_label": "Kilépés a leckéből",
+    "quit_title": "Biztosan kilépsz?",
+    "quit_body": "Ha most kilépsz, az eddigi válaszaid elvesznek.",
+    "quit_stay": "Folytatom",
+    "quit_leave": "Kilépek"
   },
   "post_lesson": {
     "streak_warning": "Kérlek válassz egy célt a folytatáshoz!",

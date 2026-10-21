@@ -162,6 +162,18 @@
       { "contrast": "level-picker" }
     ]
   },
+  "quit-sheet": {
+    "about": "A lesson's quit sheet, opened with ✖: 'Biztosan kilépsz?' with Folytatom and Kilépek, the first ConfirmSheet (#397).",
+    "preset": "signed-in",
+    "path": "/dashboard",
+    "wait": 2500,
+    "steps": [
+      { "click": ".roadmap-node.current", "after": 800 },
+      { "click": ".tooltip-start-btn", "after": 1500 },
+      { "click": ".interactive-close-btn", "after": 900 },
+      { "contrast": "quit-sheet" }
+    ]
+  },
   "grammar": {
     "about": "The first module's grammar guide opened from its banner, with the banner title above it (#395).",
     "preset": "signed-in",

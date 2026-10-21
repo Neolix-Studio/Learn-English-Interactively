@@ -1,0 +1,121 @@
+/* ConfirmSheet (ConfirmSheet.tsx, UX0b-3 #397). On phones the panel is a sheet on the bottom edge, in
+   reach of the thumb; from 480 px it is a card in the middle, like every dialog (Dialog.css). */
+.lexi-dialog.confirm-sheet {
+    align-items: flex-end;
+    padding: 0;
+}
+
+.confirm-sheet-panel {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-4) max(var(--space-4), env(safe-area-inset-bottom));
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: var(--color-bg-surface);
+    color: var(--color-text-main);
+    box-shadow: var(--elevation-2);
+}
+
+.confirm-sheet-title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h2);
+    font-weight: 800;
+    line-height: var(--line-height-h2);
+    color: var(--color-text-main);
+}
+
+.confirm-sheet-body {
+    margin: 0;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-muted);
+}
+
+.confirm-sheet-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+}
+
+.confirm-sheet-button {
+    width: 100%;
+    min-height: 48px;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: var(--font-size-button);
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform var(--duration-press) var(--ease-out);
+}
+
+.confirm-sheet-button:active {
+    transform: translateY(2px);
+}
+
+.confirm-sheet-button:focus-visible {
+    outline: 3px solid var(--color-info-fill);
+    outline-offset: 2px;
+}
+
+/* The safe answer: the accent with its 3-D lip, like the lesson's main button. */
+.confirm-sheet-cancel {
+    border: 0;
+    border-bottom: 4px solid var(--color-accent-pressed);
+    background: var(--color-accent-in);
+    color: var(--color-on-accent);
+}
+
+.confirm-sheet-cancel:active {
+    border-bottom-width: 2px;
+}
+
+.confirm-sheet-confirm {
+    border: 2px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text-main);
+}
+
+.confirm-sheet-confirm.is-destructive {
+    color: var(--color-danger-fg);
+}
+
+@media (hover: hover) {
+    .confirm-sheet-cancel:hover {
+        background: var(--color-accent-on);
+    }
+
+    .confirm-sheet-confirm:hover {
+        background: var(--color-bg-base);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .confirm-sheet-panel {
+        animation: confirm-sheet-rise var(--duration-sheet) var(--ease-out);
+    }
+}
+
+@keyframes confirm-sheet-rise {
+    from {
+        transform: translateY(24px);
+        opacity: 0;
+    }
+}
+
+@media (min-width: 480px) {
+    .lexi-dialog.confirm-sheet {
+        align-items: center;
+        padding: var(--space-4);
+    }
+
+    .confirm-sheet-panel {
+        max-width: 26rem;
+        padding: var(--space-6);
+        border-radius: var(--radius-lg);
+    }
+}
