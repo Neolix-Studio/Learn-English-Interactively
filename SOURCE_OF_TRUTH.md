@@ -1421,7 +1421,7 @@ Grouped by what they block. These genuinely need your answer — I can implement
 11. ~~**Which mascot rendering is canonical?**~~ **ANSWERED 2026-08-28 — the 2D cel** (`Tyler-asset-pack.png`; §12.1 D3). The hand-coded grey SVG is retired and the photoreal `tyler-3d/` frames are not canonical, which **withdraws recommendation 7 in §13** (the run-cycle swap). **The crops already exist** — 24 of the 26 files in `public/assets/images/Transparent PNGs/` are separated cel views cut from the pack, so nothing needs slicing; they need only the WP-G1 alpha-bounding-box crop. *(An earlier pass said the crops had to be cut by hand — corrected 2026-08-28 by checking the folder.)* The one real gap is a **run cycle**: only `tyler-running-right.png` exists, a single pose.
 12. ~~**Is the mascot named Lexi or Tyler?**~~ **ANSWERED — Lexi.** Already a standing owner constraint (§2, constraint #2: *Tyler is the owner's real dog and the origin of "Lexipaws", but the in-product character is Lexi*); recorded here 2026-08-28. The 26 `tyler-*.png` filenames are legacy and the rename is **WP-G2** — which also ends the 404 class in §13.
 13. **Do you hold a redistribution licence for `cartoon-pitbull-illustrated-collection/`?** (`.ai`/`.eps` stock source, tracked in git and publicly served.)
-14. **Should emoji stay as the icon system?** It means the app looks different on your users' Windows/Android machines than on your Mac.
+14. ~~**Should emoji stay as the icon system?** It means the app looks different on your users' Windows/Android machines than on your Mac.~~ **ANSWERED 2026-10-22 (#378) — no: hybrid icons.** See UX Q14 below.
 
 ### Blocks architecture decisions
 15. ~~**Should `save_progress` become a partial/PATCH update, or should the client send the full object?** *(My recommendation: server-side partial merge — no client deploy needed, cannot regress older clients.)*~~ **SETTLED by WP-B1's reviewed design, shipped in #359 (2026-09-30): neither.** A read-and-merge was rejected in review (lost-update race; `REMEDIATION_PLAN.md` WP-B1). The server has a fixed list instead: a save may change the five fields the client sends and the activity day, nothing else. The client still has to send all five; one that is left out is stored empty.
@@ -1457,6 +1457,15 @@ Grouped by what they block. These genuinely need your answer — I can implement
 
 ### Answered questions from `UX_REVIEW.md` §7
 The UI/UX review keeps its own owner questions (`Q1`–`Q15`, `UX_REVIEW.md` §7). An answered one is recorded there and here.
+
+- **UX Q14 — Icons, button case, the 3-D lip and theme variants.** **Icons ANSWERED 2026-10-22 (#378); the other three parts are still open.**
+  - **Hybrid icons, the same in Lexipaws and LexipawsPY.** The owner approved a hybrid over the review's single outline set: outline glyphs for controls, solid coloured icons for resources, more detailed illustrations for large rewards.
+  - **Controls: Lucide outline**, chosen over Phosphor. 33 glyphs vendored unmodified from `lucide-static` 1.61.0 (ISC licence, kept as `LUCIDE-LICENSE.txt` beside the code), on `currentColor`, 2 px stroke, shown at 20, 24 or 28 px. They follow the theme colour.
+  - **Resources: six custom solid icons** — treats ('Lexi-falat', a bone), streak (flame), energy (bolt, teal), XP (star), streak shield and achievement badge. Colours are baked in and must not be recoloured by CSS; 28 px in the HUD, 48–64 px only in reward contexts. The drawings may still be refined after review. The XP star is not the currency, and the badge is not a generic success mark.
+  - **Large rewards** keep the existing chests and the cel art; no new art (§2).
+  - **Emoji leave the interface strings** (their words and keys stay); svgDictionary, learning content, user text and examples keep theirs.
+  - **What it changes, and where:** `src/components/icons/shared-icons/` (#378, 2026-10-22) holds `Icon` and `GameIcon` (decorative by default, `label` for a meaningful standalone glyph); nothing uses them yet. UX9-3 (#553) migrates the chrome, UX2-5 (#466) names the icon buttons, C3c (#432) builds `IconButton`.
+  - **Still open:** sentence-case or ALL-CAPS buttons, keeping the 3-D lip in brand colour, and whether purchased themes are dark-only or get light variants.
 
 - ~~**UX Q13 — What is the currency called, and is the 'LexiPaws score' defined or deleted?**~~ **ANSWERED 2026-09-30 (#370).**
   - **The currency is 'Lexi-falat'** ("Lexi treat"). The owner chose the branded name over the review's recommendation, 'csont' ("bone"). Forms: '10 Lexi-falat', '5 Lexi-falatot kaptál' ("you got 5 Lexi treats"), 'nincs elég Lexi-falatod' ("you don't have enough Lexi treats"). It replaces all four names in §8 ('Lexi Treats', 'Csont', 'Jutalom Falatok', 'Maškrty'). The icon stays the existing 🦴: no new art. Only the Hungarian name is decided; the Slovak one is decided in D3b-sk ('Lexi-maškrta' is the matching candidate).
